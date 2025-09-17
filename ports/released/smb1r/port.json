@@ -21,12 +21,12 @@
     "image": null,
     "rtr": false,
     "exp": false,
-    "runtime": [],
+    "runtime": [
+	  "weston_pkg_0.2.squashfs"
+	],
     "store": [],
     "availability": "paid",
-    "reqs": [
-	  "opengl"
-	],
+    "reqs": [],,
     "arch": [
       "aarch64"
     ],

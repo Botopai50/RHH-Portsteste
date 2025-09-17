@@ -83,10 +83,37 @@ find_and_copy_rom() {
 # Run ROM search
 [ ! -f "$TARGET_ROM" ] && find_and_copy_rom
 
+# Mount Weston runtime
+weston_dir=/tmp/weston
+$ESUDO mkdir -p "${weston_dir}"
+weston_runtime="weston_pkg_0.2"
+if [ ! -f "$controlfolder/libs/${weston_runtime}.squashfs" ]; then
+  if [ ! -f "$controlfolder/harbourmaster" ]; then
+    pm_message "This port requires the latest PortMaster to run, please go to https://portmaster.games/ for more info."
+    sleep 5
+    exit 1
+  fi
+  $ESUDO $controlfolder/harbourmaster --quiet --no-check runtime_check "${weston_runtime}.squashfs"
+fi
+if [[ "$PM_CAN_MOUNT" != "N" ]]; then
+    $ESUDO umount "${weston_dir}"
+fi
+$ESUDO mount "$controlfolder/libs/${weston_runtime}.squashfs" "${weston_dir}"
+
 # --- Launch the game ---
 $GPTOKEYB "godot-45.aarch64" -c "mario.gptk" &
-pm_platform_helper "$GAMEDIR/godot-45.aarch64" >/dev/null
-./godot-45.aarch64 --main-pack SMB1R.pck
 
-# Cleanup
+# Start Westonpack and Godot
+$ESUDO env $weston_dir/westonwrap.sh headless noop kiosk crusty_x11egl \
+./godot-45.aarch64 \
+--resolution ${DISPLAY_WIDTH}x${DISPLAY_HEIGHT} -f \
+--rendering-driver opengl3_es \
+--main-pack SMB1R.pck
+
+#Clean up after ourselves
+$ESUDO $weston_dir/westonwrap.sh cleanup
+if [[ "$PM_CAN_MOUNT" != "N" ]]; then
+    $ESUDO umount "${weston_dir}"
+    $ESUDO umount "${godot_dir}"
+fi
 pm_finish

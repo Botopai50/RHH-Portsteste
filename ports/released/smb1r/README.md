@@ -1,5 +1,5 @@
 ## Installation
-You must provide a copy of Super Mario Bros. for the NES. The launchscript will search for the rom in the port folder and in your `roms/nes` folder.
+You must provide a copy of Super Mario Bros. for the NES. The launchscript will search for the rom in the port folder and in your `roms/nes` folder. If for some reason it can't use a rom in `roms/nes` (ex. MuOS users) then you can drop a rom in `ports/smb1r`.
 
 ## Usage
 Gamepad controls and modernization options can be set in the settings menu.
@@ -8,8 +8,6 @@ Mods can be found at [Gamebanana](https://gamebanana.com/mods/games/22798) and c
 
 Custom levels are hosted with nonprofit [Level Share Square](https://levelsharesquare.com/SMBR/levels) and can be installed the same way or can be downloaded directly within SMB1R with an internet connection.
 
-## Notes
-This port requires x11 or wayland since Godot 4.5 requires it.
-
 ## Thanks
 JHDev2006 and contributors -- The remaster  
+BinaryCounter -- Westonpack which allows the port to run on devices without native x11  
