@@ -13,7 +13,7 @@
     ],
     "desc": "A fan remake of Super Mario Bros., Super Mario Bros.: The Lost Levels, Super Mario Bros. Special and All Night Nippon: Super Mario Bros. Fully recreated from the ground up! Requires original nes rom for assets.",
     "desc_md": null,
-    "inst": "Download the latest [Linux.zip release](https://github.com/JHDev2006/Super-Mario-Bros.-Remastered-Public/releases/tag/1.0.1) and unzip contents to the `ports/smb1r` folder.\n\nYou must provide a copy of Super Mario Bros. for the NES. The launchscript will search for the rom in the port folder and in your `roms/nes` folder.",
+    "inst": "You must provide a copy of Super Mario Bros. for the NES. The launchscript will search for the rom in the port folder and in your `roms/nes` folder.",
     "inst_md": null,
     "genres": [
       "platformer"

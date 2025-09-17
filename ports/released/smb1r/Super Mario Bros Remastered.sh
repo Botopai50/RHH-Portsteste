@@ -19,16 +19,13 @@ get_controls
 
 # Paths and constants
 GAMEDIR="/$directory/ports/smb1r"
-BOX64="$GAMEDIR/box64/box64"
-NES_DIR="/$directory/nes"
 CONFDIR="$GAMEDIR/config"
 TARGET_ROM="$CONFDIR/SMB1R/baserom.nes"
-VALID_MD5="f94bb9bb55f325d9af8a0fff80b9376d"
 
 # Logging and permissions
 cd "$GAMEDIR"
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
-$ESUDO chmod +rwx "$GAMEDIR/SMB1R.x86_64"
+$ESUDO chmod +rwx "$GAMEDIR/godot-45.aarch64"
 
 # Environment exports
 export XDG_DATA_HOME="$CONFDIR"
@@ -37,6 +34,8 @@ export GODOT_SILENCE_ROOT_WARNING=1
 
 # --- ROM detection & validation ---
 find_and_copy_rom() {
+    NES_DIR="/$directory/nes"
+    VALID_MD5="f94bb9bb55f325d9af8a0fff80b9376d"
     mkdir -p "$(dirname "$TARGET_ROM")"
     local search_dirs=("$GAMEDIR" "$NES_DIR")
     local found=false
@@ -85,9 +84,9 @@ find_and_copy_rom() {
 [ ! -f "$TARGET_ROM" ] && find_and_copy_rom
 
 # --- Launch the game ---
-$GPTOKEYB "SMB1R.x86_64" -c "mario.gptk" &
-pm_platform_helper "$GAMEDIR/SMB1R.x86_64" >/dev/null
-$BOX64 ./SMB1R.x86_64
+$GPTOKEYB "godot-45.aarch64" -c "mario.gptk" &
+pm_platform_helper "$GAMEDIR/godot-45.aarch64" >/dev/null
+./godot-45.aarch64 --main-pack SMB1R.pck
 
 # Cleanup
 pm_finish
