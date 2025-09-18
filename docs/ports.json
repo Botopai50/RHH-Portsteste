@@ -1531,6 +1531,31 @@
     "last_modified": "2025-07-08T20:02:49.901Z"
   },
   {
+    "title": "Super Mario Bros. Remastered",
+    "description": "A fan remake of Super Mario Bros., Super Mario Bros.: The Lost Levels, Super Mario Bros. Special and All Night Nippon: Super Mario Bros. Fully recreated from the ground up! Requires original nes rom for assets.",
+    "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/smb1r",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/smb1r/screenshot.png",
+    "porter": [
+      "Jeod"
+    ],
+    "genres": [
+      "platformer"
+    ],
+    "availability": "paid",
+    "store": [],
+    "instructions": "You must provide a copy of Super Mario Bros. for the NES. The launchscript will search for the rom in the port folder and in your `roms/nes` folder.",
+    "runtime": [
+      "weston_pkg_0.2.squashfs"
+    ],
+    "exp": false,
+    "rtr": false,
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": "",
+    "last_modified": "2025-09-18T22:10:34.599Z"
+  },
+  {
     "title": "Super Star Trek",
     "description": "Super Star Trek (1978) with 25th Anniversary pixel art! Find and destroy all enemies before time runs out! Manage your shields and energy well, or you will be stranded as the enemies destroy the Federation...",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/superstartrek",

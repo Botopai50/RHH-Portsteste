@@ -20,7 +20,7 @@ get_controls
 # Paths and constants
 GAMEDIR="/$directory/ports/smb1r"
 CONFDIR="$GAMEDIR/config"
-TARGET_ROM="$CONFDIR/SMB1R/baserom.nes"
+TARGET_ROM="$CONFDIR/baserom.nes"
 
 # Logging and permissions
 cd "$GAMEDIR"
@@ -28,7 +28,6 @@ cd "$GAMEDIR"
 $ESUDO chmod +rwx "$GAMEDIR/godot-45.aarch64"
 
 # Environment exports
-export XDG_DATA_HOME="$CONFDIR"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export GODOT_SILENCE_ROOT_WARNING=1
 
