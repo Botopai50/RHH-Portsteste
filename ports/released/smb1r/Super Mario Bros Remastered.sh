@@ -79,6 +79,10 @@ find_and_copy_rom() {
     fi
 }
 
+# Display loading splash
+[ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/splash" "$GAMEDIR/splash.png" 1
+$ESUDO "$GAMEDIR/splash" "$GAMEDIR/splash.png" 10000 & 
+
 # Run ROM search
 [ ! -f "$TARGET_ROM" ] && find_and_copy_rom
 
