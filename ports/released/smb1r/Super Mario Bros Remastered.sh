@@ -79,10 +79,6 @@ find_and_copy_rom() {
     fi
 }
 
-# Display loading splash
-[ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/splash" "$GAMEDIR/splash.png" 1
-$ESUDO "$GAMEDIR/splash" "$GAMEDIR/splash.png" 10000 & 
-
 # Run ROM search
 [ ! -f "$TARGET_ROM" ] && find_and_copy_rom
 
@@ -104,11 +100,11 @@ fi
 $ESUDO mount "$controlfolder/libs/${weston_runtime}.squashfs" "${weston_dir}"
 
 # --- Launch the game ---
-$GPTOKEYB "godot-45.aarch64" -c "mario.gptk" &
+$GPTOKEYB "SMB1R.arm64" -c "mario.gptk" &
 
 # Start Westonpack and Godot
 $ESUDO env $weston_dir/westonwrap.sh headless noop kiosk crusty_x11egl \
-./godot-45.aarch64 \
+./SMB1R.arm64 \
 --resolution ${DISPLAY_WIDTH}x${DISPLAY_HEIGHT} -f \
 --rendering-driver opengl3_es \
 --main-pack SMB1R.pck
