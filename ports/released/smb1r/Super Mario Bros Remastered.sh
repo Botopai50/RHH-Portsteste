@@ -17,17 +17,18 @@ source "$controlfolder/control.txt"
 [ -f "${controlfolder}/mod_${CFW_NAME}.txt" ] && source "${controlfolder}/mod_${CFW_NAME}.txt"
 get_controls
 
-# Paths and constants
+# Paths
 GAMEDIR="/$directory/ports/smb1r"
 CONFDIR="$GAMEDIR/config"
 TARGET_ROM="$CONFDIR/baserom.nes"
 
-# Logging and permissions
+# CD and set up log and permissions
 cd "$GAMEDIR"
-> "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
-$ESUDO chmod +rwx "$GAMEDIR/godot-45.aarch64"
+> "$GAMEDIR/log.txt" 2>/dev/null
+exec >/dev/null 2>&1
+$ESUDO chmod +rwx "$GAMEDIR/SMB1R.arm64"
 
-# Environment exports
+# Exports
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export GODOT_SILENCE_ROOT_WARNING=1
 
@@ -36,20 +37,20 @@ find_and_copy_rom() {
     NES_DIR="/$directory/nes"
     VALID_MD5="f94bb9bb55f325d9af8a0fff80b9376d"
     mkdir -p "$(dirname "$TARGET_ROM")"
-    local search_dirs=("$GAMEDIR" "$NES_DIR")
-    local found=false
+    search_dirs="$NES_DIR"
+    found=0
 
-    for dir in "${search_dirs[@]}"; do
+    for dir in $search_dirs; do
         echo "Searching in $dir..."
 
         # 1. Check .nes files
         for rom in "$dir"/*.nes; do
             [ -e "$rom" ] || continue
             md5=$(md5sum "$rom" | awk '{print $1}')
-            if [[ "$md5" == "$VALID_MD5" ]]; then
+            if [ "$md5" = "$VALID_MD5" ]; then
                 echo "Valid ROM found: $rom"
                 cp "$rom" "$TARGET_ROM"
-                found=true
+                found=1
                 break 2
             fi
         done
@@ -57,62 +58,117 @@ find_and_copy_rom() {
         # 2. Check .nes files inside zip archives
         for zip in "$dir"/*.zip; do
             [ -e "$zip" ] || continue
-            while IFS= read -r nes_file; do
-                tmpfile=$(mktemp)
-                unzip -p "$zip" "$nes_file" > "$tmpfile" 2>/dev/null
-                md5=$(md5sum "$tmpfile" | awk '{print $1}')
-                if [[ "$md5" == "$VALID_MD5" ]]; then
+            tmpfile=$(mktemp)
+            unzip -Z1 "$zip" | grep -i '\.nes$' > "$tmpfile"
+            while read nes_file; do
+                tmpnes=$(mktemp)
+                unzip -p "$zip" "$nes_file" > "$tmpnes" 2>/dev/null
+                md5=$(md5sum "$tmpnes" | awk '{print $1}')
+                rm -f "$tmpnes"
+                if [ "$md5" = "$VALID_MD5" ]; then
                     echo "Valid ROM found inside zip: $zip -> $nes_file"
-                    cp "$tmpfile" "$TARGET_ROM"
-                    found=true
-                    rm -f "$tmpfile"
-                    break 3
+                    cp "$tmpnes" "$TARGET_ROM"
+                    found=1
+                    break 2
                 fi
-                rm -f "$tmpfile"
-            done < <(unzip -Z1 "$zip" | grep -i '\.nes$')
+            done < "$tmpfile"
+            rm -f "$tmpfile"
         done
     done
 
-    if ! $found; then
+    if [ $found -eq 0 ]; then
         echo "No valid baserom.nes found in $GAMEDIR or $NES_DIR!"
         exit 1
     fi
 }
+
+# --- Check for PCK updates ---
+update_check() {
+    remote_url="https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/smb1r/smb1r/SMB1R.pck"
+    local_pck="$GAMEDIR/SMB1R.pck"
+    etag_file="$GAMEDIR/.SMB1R.pck.etag"
+    SPLASH="splash.png"
+
+    echo "Checking for PCK updates..."
+
+    remote_etag=$(curl -sI -L "$remote_url" | grep -i '^etag:' | cut -d'"' -f2)
+
+    if [ -z "$remote_etag" ]; then
+        echo "Could not determine remote ETag. Skipping PCK update check."
+        [ "$CFW_NAME" = "muOS" ] && $ESUDO "$GAMEDIR/splash" "$GAMEDIR/$SPLASH" 1
+        $ESUDO "$GAMEDIR/splash" "$GAMEDIR/$SPLASH" 8000 &
+        return
+    fi
+
+    download_needed=0
+
+    if [ ! -f "$local_pck" ]; then
+        echo "SMB1R.pck is missing. Will download latest."
+        SPLASH="update.png"
+        download_needed=1
+    elif [ ! -f "$etag_file" ] || [ "$remote_etag" != "$(cat "$etag_file")" ]; then
+        echo "Newer PCK found. Will update."
+        SPLASH="update.png"
+        download_needed=1
+    else
+        echo "SMB1R.pck is up-to-date."
+        [ "$CFW_NAME" = "muOS" ] && $ESUDO "$GAMEDIR/splash" "$GAMEDIR/$SPLASH" 1
+        $ESUDO "$GAMEDIR/splash" "$GAMEDIR/$SPLASH" 8000 &
+    fi
+
+    if [ $download_needed -eq 1 ]; then
+        [ "$CFW_NAME" = "muOS" ] && $ESUDO "$GAMEDIR/splash" "$GAMEDIR/$SPLASH" 1
+        $ESUDO "$GAMEDIR/splash" "$GAMEDIR/$SPLASH" 8000 &
+        echo "Downloading SMB1R.pck..."
+        if curl -L -o "$local_pck" "$remote_url"; then
+            chmod +r "$local_pck"
+            echo "$remote_etag" > "$etag_file"
+            echo "Download complete."
+        else
+            echo "Failed to download SMB1R.pck — please check your internet connection!"
+            [ ! -f "$local_pck" ] && exit 1
+        fi
+    fi
+}
+
+# Run update check
+update_check
 
 # Run ROM search
 [ ! -f "$TARGET_ROM" ] && find_and_copy_rom
 
 # Mount Weston runtime
 weston_dir=/tmp/weston
-$ESUDO mkdir -p "${weston_dir}"
+$ESUDO mkdir -p "$weston_dir"
 weston_runtime="weston_pkg_0.2"
 if [ ! -f "$controlfolder/libs/${weston_runtime}.squashfs" ]; then
-  if [ ! -f "$controlfolder/harbourmaster" ]; then
-    pm_message "This port requires the latest PortMaster to run, please go to https://portmaster.games/ for more info."
-    sleep 5
-    exit 1
-  fi
-  $ESUDO $controlfolder/harbourmaster --quiet --no-check runtime_check "${weston_runtime}.squashfs"
+    if [ ! -f "$controlfolder/harbourmaster" ]; then
+        pm_message "This port requires the latest PortMaster to run, please go to https://portmaster.games/ for more info."
+        sleep 5
+        exit 1
+    fi
+    $ESUDO $controlfolder/harbourmaster --quiet --no-check runtime_check "${weston_runtime}.squashfs"
 fi
-if [[ "$PM_CAN_MOUNT" != "N" ]]; then
-    $ESUDO umount "${weston_dir}"
-fi
-$ESUDO mount "$controlfolder/libs/${weston_runtime}.squashfs" "${weston_dir}"
 
-# --- Launch the game ---
+if [ "$PM_CAN_MOUNT" != "N" ]; then
+    $ESUDO umount "$weston_dir"
+fi
+
+$ESUDO mount "$controlfolder/libs/${weston_runtime}.squashfs" "$weston_dir"
+
+# Launch game
 $GPTOKEYB "SMB1R.arm64" -c "mario.gptk" &
 
-# Start Westonpack and Godot
 $ESUDO env $weston_dir/westonwrap.sh headless noop kiosk crusty_x11egl \
 ./SMB1R.arm64 \
 --resolution ${DISPLAY_WIDTH}x${DISPLAY_HEIGHT} -f \
 --rendering-driver opengl3_es \
 --main-pack SMB1R.pck
 
-#Clean up after ourselves
+# Clean up
 $ESUDO $weston_dir/westonwrap.sh cleanup
-if [[ "$PM_CAN_MOUNT" != "N" ]]; then
-    $ESUDO umount "${weston_dir}"
-    $ESUDO umount "${godot_dir}"
+if [ "$PM_CAN_MOUNT" != "N" ]; then
+    $ESUDO umount "$weston_dir"
+    $ESUDO umount "$godot_dir"
 fi
 pm_finish

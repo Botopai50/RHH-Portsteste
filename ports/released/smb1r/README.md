@@ -1,6 +1,8 @@
 ## Installation
 You must provide a copy of Super Mario Bros. for the NES. The launchscript will search for the rom in the port folder and in your `roms/nes` folder. If for some reason it can't use a rom in `roms/nes` (ex. MuOS users) then you can drop a rom in `ports/smb1r`.
 
+The launchscript is designed to check for updates to `SMB1R.pck` if there is an active internet connection.
+
 ## Usage
 Controls and modernization options can be set in the settings menu. The port relies on GPToKeyB controls.
 
