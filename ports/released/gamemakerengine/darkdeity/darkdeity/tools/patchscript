@@ -95,47 +95,23 @@ prepare_files() {
     fi
 }
 
-# Apply a patch to enforce stretching to fill the display
-apply_xdelta() {
-    GOG_MD5="1c3ac1d5c2bb7d3c49f601d21b2e584d"
-    STEAM_MD5="2a491f42eea91f76b838c7196430afe9"
-
-    if [ -f "$DATADIR/data.win" ]; then
-        checksum=$(md5sum "$DATADIR/data.win" | awk '{print $1}')
-        case "$checksum" in
-            "$GOG_MD5")
-                PATCH="darkdeity_gog.xdelta"
-                ;;
-            "$STEAM_MD5")
-                PATCH="darkdeity_steam.xdelta"
-                ;;
-            *)
-                echo "Unknown data.win checksum: $checksum"
-                echo "Cannot determine appropriate patch"
-                patch_failure
-                return
-                ;;
-        esac
-
-        if [ -f "$GAMEDIR/tools/$PATCH" ]; then
-            output=$($controlfolder/xdelta3 -d -s "$DATADIR/data.win" -f "$GAMEDIR/tools/$PATCH" "$DATADIR/data2.win" 2>&1)
-            if [ $? -eq 0 ]; then
-                echo "Patch applied successfully"
-                echo "$output"
-                rm "$DATADIR/data.win" && mv "$DATADIR/data2.win" "$DATADIR/data.win"
-                sleep 1
-            else
-                echo "Failed to apply patch"
-                echo "$output"
-                patch_failure
-            fi
-        else
-            echo "Patch file not found: $GAMEDIR/tools/$PATCH"
-            patch_failure
-        fi
+# Toggle GeneralInfo flags via envars - see https://github.com/UnderminersTeam/UndertaleModTool/blob/master/UndertaleModLib/Models/UndertaleGeneralInfo.cs for options
+set_flags() {
+    export SET_FLAGS="Fullscreen"
+    export CLEAR_FLAGS="Scale"
+    dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
+        load "$DATADIR/data.win" \
+        -s "$GAMEDIR/tools/toggleflags.csx" \
+        -o "$DATADIR/data2.win"
+        
+    if [ $? -ne 0 ]; then
+        echo "Failed to toggle info flags."
+        return 1
     else
-        echo "data.win not found in $DATADIR"
-        patch_failure
+        echo "Successfully toggled info flags."
+        rm -f "$DATADIR/data.win"
+        mv "$DATADIR/data2.win" "$DATADIR/data.win"
+        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
     fi
 }
 
@@ -161,36 +137,42 @@ dump_textures() {
     [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
 }
 
-compress_audio() {  
-    if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -v -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/game.droid"; then
+compress_audio() {
+    # Test for data.win
+    if [ -f "$DATADIR/data.win" ]; then
+        mv "$DATADIR/data.win" "$DATADIR/game.droid"
+    fi
+    
+    # Do audio compression
+    if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -vv -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/game.droid"; then
         mv "$TMPDIR/"* "$DATADIR" && rmdir "$TMPDIR"
         echo "Audio compression applied successfully."
     else
         # Failure
-        echo "Audio compression failed for $GAMEFILE."
+        echo "Audio compression failed."
         rmdir "$TMPDIR"
-        patch_failure
+        return 1
     fi
 }
 
 zip_archive() {
-        zip -r -0 "$DATAFILE" ./assets/
-        echo "Zipped contents to $DATAFILE"
-        rm -rf "$GAMEDIR/assets/"*
+    $ZIP -r -0 "$DATAFILE" ./assets/
+    echo "Zipped contents to $DATAFILE"
+    rm -rf "$DATADIR/"*
 }
 
 process_game() { 
     echo "Preparing game..."
-    prepare_files || patch_failure 
-    echo "Applying xdelta patch..."
-    apply_xdelta || patch_failure
+    prepare_files || { patch_failure; return 1; }
+    echo "Toggling GeneralInfo flags..."
+    set_flags || { patch_failure; return 1; }
     echo "Externalizing textures..."
-    dump_textures || patch_failure
+    dump_textures || { patch_failure; return 1; }
     echo "Compressing audio..."
-    compress_audio || patch_failure
+    compress_audio ||| { patch_failure; return 1; }
     sleep 1
     echo "Finishing up..."
-    zip_archive || patch_failure
+    zip_archive || { patch_failure; return 1; }
     sleep 1
     
     # Unmount runtimes

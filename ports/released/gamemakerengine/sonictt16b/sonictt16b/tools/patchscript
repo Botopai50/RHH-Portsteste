@@ -10,6 +10,7 @@ echo "GAMEDIR is set to: $GAMEDIR"
 
 # Patch failure function
 patch_failure() {
+    $ESUDO umount "$DOTNETDIR" 2>/dev/null || true
     $ESUDO umount "$TOOLKIT" 2>/dev/null || true
     # Exit script, or return if sourced
     return 1 2>/dev/null || exit 1
@@ -90,48 +91,56 @@ unzip_apk() {
     fi
 }
 
-apply_xdelta() {
-    # Check if the game.droid file exists and apply xdelta
-    if [ -f "$DATADIR/game.droid" ]; then
-        output=$($controlfolder/xdelta3 -d -s "$DATADIR/game.droid" -f "$TOOLDIR/patches/sonictt16b.xdelta" "$DATADIR/game2.droid" 2>&1)
-        if [ $? -eq 0 ]; then
-            echo "Patch applied successfully"
-            echo "$output"
-            rm "$DATADIR/game.droid" && mv "$DATADIR/game2.droid" "$DATADIR/game.droid"
-        else
-            echo "Failed to apply patch"
-            echo "$output"
-            return 1
-        fi
+# Toggle GeneralInfo flags via envars - see https://github.com/UnderminersTeam/UndertaleModTool/blob/master/UndertaleModLib/Models/UndertaleGeneralInfo.cs for options
+set_flags() {
+    export SET_FLAGS="Fullscreen"
+    export CLEAR_FLAGS="Scale"
+    dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
+        load "$DATADIR/data.win" \
+        -s "$GAMEDIR/tools/toggleflags.csx" \
+        -o "$DATADIR/data2.win"
+        
+    if [ $? -ne 0 ]; then
+        echo "Failed to toggle info flags."
+        return 1
     else
-        echo "No data.win file found to patch!"
+        echo "Successfully toggled info flags."
+        rm -f "$DATADIR/data.win"
+        mv "$DATADIR/data2.win" "$DATADIR/data.win"
+        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
     fi
 }
 
-compress_audio() {  
+compress_audio() {
+    # Test for data.win
+    if [ -f "$DATADIR/data.win" ]; then
+        mv "$DATADIR/data.win" "$DATADIR/game.droid"
+    fi
+    
+    # Do audio compression
     if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -vv -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/game.droid"; then
         mv "$TMPDIR/"* "$DATADIR" && rmdir "$TMPDIR"
         echo "Audio compression applied successfully."
     else
         # Failure
-        echo "Audio compression failed for $GAMEFILE."
+        echo "Audio compression failed."
         rmdir "$TMPDIR"
         return 1
     fi
 }
 
 zip_archive() {
-        $ZIP -r -0 $DATAFILE ./assets/
-        mkdir -p saves
-        rm -rf assets
+    $ZIP -r -0 "$DATAFILE" ./assets/
+    echo "Zipped contents to $DATAFILE"
+    rm -rf "$DATADIR/"*
 }
 
 process_game() {
 
     echo "Looking for apk file..."
     unzip_apk || { patch_failure; return 1; }
-    echo "Applying xdelta patch"
-    apply_xdelta || { patch_failure; return 1; }
+    echo "Toggling GeneralInfo flags..."
+    set_flags || { patch_failure; return 1; }
     echo "Compressing audio..."
     compress_audio || { patch_failure; return 1; }
     echo "Finishing up..."
@@ -147,4 +156,5 @@ else
 fi
 
 # Unmount runtimes
+$ESUDO umount "$DOTNETDIR" 2>/dev/null || true
 $ESUDO umount "$TOOLKIT" 2>/dev/null || true

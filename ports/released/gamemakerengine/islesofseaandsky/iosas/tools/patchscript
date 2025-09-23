@@ -259,9 +259,9 @@ compress_audio() {
 }
 
 zip_archive() {
-        zip -r -0 $DATAFILE ./assets/
-        rm -rf $DATADIR/*
-        mkdir -p saves
+    $ZIP -r -0 "$DATAFILE" ./assets/
+    echo "Zipped contents to $DATAFILE"
+    rm -rf "$DATADIR/"*
 }
 
 process_game() {
