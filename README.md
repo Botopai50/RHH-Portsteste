@@ -30,6 +30,7 @@ Some of the ports in this repository have minimum requirements. Be sure to check
 - `opengl`: The port requires OpenGL (not OpenGLES). This means a mainline custom firmware.
 - `wide`: The port demands an aspect ratio above 4:3.
 - `analog_#`: The port requires analog sticks.
+- `!arkos`: The port will not run on ArkOS (GLIBC too old).
 
 ## Runtimes
 Some of my ports require runtimes--mounted squashfs files that contain common scripts, programs, etc. These are found in the `runtimes` folder of this repository and should be placed in `PortMaster/libs` on your device. For large runtimes (like GMToolkit), the squashfs file may be split into multiple parts. You’ll need to recombine the parts before transferring to your device. Download all the parts and, in the same folder, do one of the following:
