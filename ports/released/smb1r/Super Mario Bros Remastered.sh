@@ -79,7 +79,7 @@ find_and_copy_rom() {
 				unzip -p "$zip" "$nes_file" > "$tmpnes" 2>/dev/null
 				if check_crc "$tmpnes"; then
 					echo "Valid ROM found inside zip: $zip -> $nes_file"
-					cp "$tmpnes" "$GAMEDIR"
+					cp "$tmpnes" "$GAMEDIR/$(basename "$nes_file")"
 					rm -f "$tmpnes"
 					rm -f "$tmpfile"
 					return
