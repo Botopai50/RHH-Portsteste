@@ -208,7 +208,6 @@ $GPTOKEYB "SMB1R.arm64" -c "$GAMEDIR/tools/mario.gptk" &
 $ESUDO env $weston_dir/westonwrap.sh headless noop kiosk crusty_x11egl \
 	./SMB1R.arm64 \
 	--resolution ${DISPLAY_WIDTH}x${DISPLAY_HEIGHT} -f \
-	--rendering-driver opengl3_es \
 	--main-pack SMB1R.pck
 
 # Clean up
