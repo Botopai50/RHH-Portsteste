@@ -10,9 +10,8 @@ echo "GAMEDIR is set to: $GAMEDIR"
 
 # Patch failure function
 patch_failure() {
-    mv "$LOGFILE" "$LOGERR"
-    $ESUDO umount "$TOOLKIT"
-    echo "Patching process failed."
+    $ESUDO umount "$DOTNETDIR" 2>/dev/null || true
+    $ESUDO umount "$TOOLKIT" 2>/dev/null || true
     # Exit script, or return if sourced
     return 1 2>/dev/null || exit 1
 }
@@ -30,8 +29,21 @@ else
     patch_failure
 fi
 
+# Mount the dotnet runtime
+DOTNETDIR="$HOME/mono"
+DOTNETFILE="$controlfolder/libs/dotnet-8.0.12.squashfs"
+if [ -f "$DOTNETFILE" ]; then
+    $ESUDO mkdir -p "$DOTNETDIR"
+    $ESUDO umount "$DOTNETDIR" 2>/dev/null || true
+    $ESUDO mount "$DOTNETFILE" "$DOTNETDIR"
+else
+    echo "This port requires the Dotnet runtime. Please download it."
+    sleep 2
+    patch_failure
+fi
+
 # Exports
-export PATH="$TOOLKIT/gmtools:$PATH"
+export PATH="$DOTNETDIR:$TOOLKIT/gmtools:$TOOLKIT/utmt-cli:$PATH"
 export LD_LIBRARY_PATH="/usr/lib:$TOOLKIT/libs:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export DATADIR="$GAMEDIR/assets"
@@ -113,9 +125,9 @@ prepare_assets() {
     mkdir -p "$TOOLDIR/patches"
 
     # Pull the vanilla-to-utry patch
-    BASEPATCH="$DATADIR/utry/Undertale v1.08 to UTRY v2.1.2.xdelta"
+    BASEPATCH=$(find "$DATADIR/utry" -maxdepth 1 -type f -name "Undertale v1.08 to UTRY v*.xdelta" | head -n 1)
     if [ ! -f "$BASEPATCH" ]; then
-        echo "Did not find base patch file $BASEPATCH! If this game has been updated, maybe notify the port creator."
+        echo "Did not find base patch file! Please notify the port creator."
         return 1
     else
         mv "$BASEPATCH" "$TOOLDIR/patches/utry_steam.xdelta"
@@ -168,18 +180,29 @@ apply_xdelta() {
         echo "Failed to apply Undertale Red & Yellow patch!"
         return 1
     fi
+}
 
-    # Apply Retro Handhelds fix patch
-    echo "Applying Retro Handhelds Fix patch..."
-    if "$controlfolder/xdelta3" -d -s "$DATADIR/game.droid" -f "./tools/patches/rhh-fix.xdelta" "$DATADIR/game2.droid"; then
-        echo "Retro Handhelds Fix patch applied successfully"
+# Replace game code entries for data.win
+replace_code() {
+    # Build --code args from all gml files
+    CODEARGS=()
+    for file in "$GAMEDIR/tools/patches/"*.gml; do
+        [ -f "$file" ] || continue
+        entry=$(basename "$file" .gml)
+        echo "Adding modified gml script: $file"
+        CODEARGS+=(--code "$entry=$file")
+    done
+
+    # Replace scripts
+    if dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" replace "$DATADIR/game.droid" -o "$DATADIR/game2.droid" "${CODEARGS[@]}"; then
+        echo "Successfully replaced gml scripts."
         mv -f "$DATADIR/game2.droid" "$DATADIR/game.droid"
+        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
     else
-        echo "Failed to apply Retro Handhelds Fix patch"
+        echo "Failed to replace gml scripts."
         return 1
     fi
 }
-
 
 compress_audio() {  
     if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -vv -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/game.droid"; then
@@ -202,6 +225,7 @@ zip_archive() {
 process_game() {
     prepare_assets || { patch_failure; return 1; }
     apply_xdelta || { patch_failure; return 1; }
+    replace_code || { patch_failure; return 1; }
     compress_audio || { patch_failure; return 1; }
     zip_archive || { patch_failure; return 1; }
 }
@@ -215,4 +239,5 @@ else
 fi
 
 # Unmount runtimes
+$ESUDO umount "$DOTNETDIR" 2>/dev/null || true
 $ESUDO umount "$TOOLKIT" 2>/dev/null || true
