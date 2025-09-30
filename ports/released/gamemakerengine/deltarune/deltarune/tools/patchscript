@@ -76,11 +76,11 @@ fi
 sanitize() {
     echo "Sanitizing $ASSETDIR"
     
-    # Check if data.win exists in ASSETDIR or its subfolders
-    if [ -f "$ASSETDIR/data.win" ] || [ -n "$(find "$ASSETDIR" -maxdepth 2 -type f -name "data.win" -print 2>/dev/null)" ]; then
+    # Check if data.win exists in ASSETDIR or its subfolders (except $INSTALLDIR)
+    if [ -f "$ASSETDIR/data.win" ] || find "$ASSETDIR" -maxdepth 2 -type f -name "data.win" ! -path "$INSTALLDIR/*" -print -quit | grep -q .; then
         # Move files to $INSTALLDIR, excluding install and archives
         move_files
-    elif [ -f "$INSTALLDIR/data.win" ] || [ -n "$(find "$INSTALLDIR" -maxdepth 2 -type f -name "data.win" -print 2>/dev/null)" ]; then
+    elif [ -f "$INSTALLDIR/data.win" ] || find "$INSTALLDIR" -maxdepth 2 -type f -name "data.win" -print -quit | grep -q .; then
         echo "Found game assets, continuing."
     else
         echo "Unable to find game data! Cannot patch!"
