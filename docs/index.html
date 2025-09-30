@@ -1,95 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Jeod's Retro Handheld Ports</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Jeod's Retro Handheld Ports</title>
+	<link
+		rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+	/>
+	<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h1>Jeod's Retro Handheld Ports</h1>
-    
-    <div style="text-align: center; margin-bottom: 1rem;">
-        <a href="https://github.com/JeodC" target="_blank" rel="noopener noreferrer">
-            <img src="jeod.png" alt="Jeod's Avatar" style="max-width: 120px;" />
-        </a>
-    </div>
-    
-    <!-- Links Table -->
-    <div style="text-align: center; padding-left: 4.5%;">
-    <table style="display: inline-table; margin: 0 auto 2rem auto; border-collapse: collapse; text-align: center;">
-        <tr>
-            <td style="padding: 20px;">
-            <a href="https://x.com/JeodPM" target="_blank" rel="noopener noreferrer" aria-label="X" style="display: inline-flex; align-items: center; gap: 4px; text-decoration: none; color: inherit;">
-                <i class="fa-solid fa-x"></i>
-                <span>@JeodPM</span>
-            </a>
-        </td>
-        <td style="padding: 20px;">
-            <a href="https://bsky.app/profile/jeodpm.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky" style="display: inline-flex; align-items: center; gap: 4px; text-decoration: none; color: inherit;">
-                <i class="fa-brands fa-bluesky"></i>
-                <span>@JeodPM</span>
-            </a>
-        </td>
-        <td style="padding: 20px;">
-            <a href="https://ko-fi.com/jeodc" target="_blank" rel="noopener noreferrer" aria-label="Ko-fi" style="display: inline-flex; align-items: center; gap: 4px; text-decoration: none; color: inherit;">
-                <i class="fa-solid fa-mug-hot"></i>
-                <span>Donate on Ko-Fi!</span>
-            </a>
-        </td>
-        </tr>
-    </table>
-    </div>
-    
-    <!-- Autoinstall -->
-    <div id="autoinstall" style="text-align: center; font-size: 14px; margin-bottom: 2rem;">
-        <p>Clicking a download button will download a zip archive of the port, which you can then copy to <u>PortMaster/autoinstall</u> folder. Once copied, running the PortMaster application will install the port for you.</p>
-    </div>
-    
-    <!-- Port Counter -->
-    <div id="port-count" style="text-align: center; font-weight: bold; font-size: 30px; margin-bottom: 2rem;"></div>
-    
-    <!-- Search Bar -->
-    <div style="text-align: center; margin: 1rem 0;">
-      <input
-        type="text"
-        id="search-bar"
-        placeholder="Search ports..."
-        style="width: 300px; padding: 8px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc;"
-      />
-    </div>
-    
-    <!-- Filter and Sort Controls -->
-    <div class="filters-container">
-    
-      <!-- Genre -->
-      <label for="genre-filter" style="font-weight: bold;">Filter by genre:</label>
-      <select id="genre-filter" style="min-width: 150px;">
-        <option value="all">All</option>
-      </select>
-      
-      <!-- Availability -->
-      <label for="availability-filter" style="font-weight: bold;">Filter by type:</label>
-      <select id="availability-filter" style="min-width: 150px;">
-        <option value="all">All</option>
-      </select>
+	<header class="site-header">
+		<h1>Jeod's Retro Handheld Ports</h1>
 
-      <!-- Sort -->
-      <label for="sort-select" style="font-weight: bold; margin-left: 1rem;">Sort by:</label>
-      <select id="sort-select" style="min-width: 180px;">
-        <option value="alphabetical">Alphabetical</option>
-        <option value="most_recent" selected>Recently updated</option>
-      </select>
-    </div>
+		<div class="avatar">
+			<a href="https://github.com/JeodC" target="_blank" rel="noopener noreferrer">
+				<img src="jeod.png" alt="Jeod's GitHub profile" />
+			</a>
+		</div>
 
-    <!-- Javascript -->
-    <div id="ports-container">Loading ports...</div>
-    
-    <script src="loadports.js"></script>
-    
+		<nav class="social-links" aria-label="Social and Support Links">
+			<ul>
+				<li>
+					<a href="https://x.com/JeodPM" target="_blank" rel="noopener noreferrer">
+						<i class="fa-brands fa-x-twitter"></i> <span>@JeodPM</span>
+					</a>
+				</li>
+				<li>
+					<a href="https://bsky.app/profile/jeodpm.bsky.social" target="_blank" rel="noopener noreferrer">
+						<i class="fa-brands fa-bluesky"></i> <span>@JeodPM</span>
+					</a>
+				</li>
+				<li>
+					<a href="https://ko-fi.com/jeodc" target="_blank" rel="noopener noreferrer">
+						<i class="fa-solid fa-mug-hot"></i> <span>Donate on Ko-Fi!</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+        <!-- Autoinstall Instructions -->
+        <section id="autoinstall" class="instructions">
+            <h2 style="text-align: center;">Installing Ports</h2>
+            <p>
+                Clicking a download button will download a zip archive of the port, which
+                you can then copy to the PortMaster <code>autoinstall</code> folder for your platform.
+            </p>
+            <div style="text-align: left; margin-left: 1rem;">
+                AmberELEC, ROCKNIX, uOS, Jelos: <code>/roms/ports/PortMaster/autoinstall/</code></br>
+                muOS: <code>/mmc/MUOS/PortMaster/autoinstall/</code></br>
+                ArkOS: <code>/roms/tools/PortMaster/autoinstall/</code></br>
+                Knulli: <code>/userdata/system/.local/share/PortMaster/autoinstall/</code></br>
+            </div>
+            <p>
+                Once copied, running the PortMaster application will install the port for you.
+            </p>
+        </section>
+
+		<!-- Port Counter -->
+		<section id="port-count" aria-live="polite"></section>
+
+		<!-- Search Bar -->
+		<section class="search-section">
+			<label for="search-bar" class="sr-only">Search ports</label>
+			<input
+				type="text"
+				id="search-bar"
+				placeholder="Search ports..."
+			/>
+		</section>
+
+		<!-- Filters -->
+		<section class="filters-container">
+			<label for="genre-filter">Filter by genre:</label>
+			<select id="genre-filter">
+				<option value="all">All</option>
+			</select>
+
+			<label for="availability-filter">Filter by type:</label>
+			<select id="availability-filter">
+				<option value="all">All</option>
+			</select>
+
+			<label for="requirements-filter">Filter by requirements:</label>
+			<select id="requirements-filter">
+				<option value="all">All</option>
+			</select>
+		</section>
+		
+		<section class="filters-container">
+			<label for="sort-select">Sort by:</label>
+			<select id="sort-select">
+				<option value="alphabetical">Alphabetical</option>
+				<option value="most_recent" selected>Recently updated</option>
+			</select>
+		</section>
+
+		<!-- Ports Grid -->
+		<section id="ports-container" aria-live="polite">Loading ports...</section>
+	</main>
+
+	<script src="loadports.js"></script>
 </body>
 </html>

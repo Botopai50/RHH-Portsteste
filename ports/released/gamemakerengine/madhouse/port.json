@@ -34,7 +34,7 @@
     ],
     "availability": "free",
     "reqs": [
-      "!rk3326"
+      "!lowpower"
 	],
     "arch": [
       "aarch64"
