@@ -34,8 +34,7 @@ export GODOT_SILENCE_ROOT_WARNING=1
 
 # -- Display splash --
 display_splash() {
-    [ "$CFW_NAME" = "muOS" ] && $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/tools/$SPLASH" 1
-    $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/tools/$SPLASH" 16000 &
+    $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/tools/$SPLASH" 10000 &
 }
 
 # -- GL Test --
@@ -167,16 +166,18 @@ update_check() {
         if [ ! -f "$local_file" ]; then
             echo "$local_file is missing. Will download."
             download_needed=1
+            SPLASH="update.png"
         elif [ ! -f "$etag_file" ] || [ "$remote_etag" != "$(cat "$etag_file")" ]; then
             echo "Newer version of $local_file found. Will update."
             download_needed=1
+            SPLASH="update.png"
         else
             echo "$local_file is up-to-date."
-            display_splash
         fi
+        
+        display_splash
 
         if [ $download_needed -eq 1 ]; then
-            SPLASH="update.png" && display_splash
             echo "Downloading $local_file..."
             if curl -L -C - --retry 5 --retry-delay 5 --max-time 600 --progress-bar -o "$local_file" "$remote_url"; then
                 chmod +rx "$local_file"
@@ -195,7 +196,6 @@ update_check() {
     # Check ARM64 binary
     check_and_update_file "$remote_bin_url" "$local_bin" "$etag_bin_file" "update.png"
 }
-
 
 # Run update check
 update_check
@@ -242,7 +242,6 @@ $ESUDO mount "$controlfolder/libs/${weston_runtime}.squashfs" "$weston_dir"
 
 # Launch game
 $GPTOKEYB "SMB1R.arm64" -c "$GAMEDIR/tools/mario.gptk" &
-
 $ESUDO env $weston_dir/westonwrap.sh headless noop kiosk crusty_x11egl \
 	./SMB1R.arm64 \
 	--resolution ${DISPLAY_WIDTH}x${DISPLAY_HEIGHT} -f \
