@@ -93,6 +93,73 @@ prepare_files() {
     fi
 }
 
+# Dump game code entries from data.win
+dump_code() {
+    # Purge cache before operations
+    rm -rf "$TMPDIR/"*
+
+    # Specify which code entries to extract
+    CODE_ENTRIES=(
+        "gml_GlobalScript_game_save_migrate"
+    )
+
+    CODEARGS=""
+    for entry in "${CODE_ENTRIES[@]}"; do
+        CODEARGS="$CODEARGS --code $entry"
+    done
+
+    echo "Dumping GML scripts: ${CODE_ENTRIES[*]}"
+
+    dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
+        dump "$DATADIR/data.win" \
+        -o "$TMPDIR" \
+        $CODEARGS
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to dump GML scripts."
+        return 1
+    fi
+
+    echo "GML scripts dumped to $TMPDIR"
+}
+
+modify_code() {
+    # Modify the extracted gml
+    $PYTHON "$GAMEDIR/tools/mod.py" "$TMPDIR/CodeEntries"
+    if [ $? -ne 0 ]; then
+        echo "Failed to modify GML scripts."
+        return 1
+    fi
+}
+
+# Replace game code entries for data.win
+replace_code() {
+    # Build --code args from all gml files
+    CODEARGS=""
+    for file in "$TMPDIR/CodeEntries/"*.gml; do
+        [ -f "$file" ] || continue
+        entry=$(basename "$file" .gml)
+        echo "Will replace gml script: $file"
+        CODEARGS="$CODEARGS --code $entry=$file"
+    done
+
+    # Begin replace operations
+    dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
+        replace "$DATADIR/data.win" \
+        -o "$DATADIR/data2.win" \
+        $CODEARGS
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to replace gml scripts."
+        return 1
+    else
+        echo "Successfully replaced gml scripts."
+        rm -f "$DATADIR/data.win"
+        mv "$DATADIR/data2.win" "$DATADIR/data.win"
+        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+    fi
+}
+
 # Externalize game textures with compression
 dump_textures() {
     # Purge cache before operations
@@ -140,6 +207,12 @@ zip_archive() {
 process_game() {
     echo "Preparing game..."
     prepare_files || { patch_failure; return 1; }
+
+    dump_code || { patch_failure; return 1; }
+    echo "Modifying gml scripts..."
+    modify_code || { patch_failure; return 1; }
+    echo "Repacking gml scripts..."
+    replace_code || { patch_failure; return 1; }
 
     echo "Externalizing textures..."
     dump_textures || { patch_failure; return 1; }
