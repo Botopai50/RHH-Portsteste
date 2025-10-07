@@ -1,0 +1,52 @@
+{
+  "version": 4,
+  "name": "shrineslegacy.zip",
+  "items": [
+    "Shrine's Legacy.sh",
+    "shrineslegacy"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Shrine's Legacy",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "Follow a pair of heroes as they try to unite the elements of magic, restore the Sword of Shrine, and save the world in both single player and co-op action.",
+    "desc_md": null,
+    "inst": "Copy game data to the assets folder.",
+    "inst_md": null,
+    "genres": [
+      "rpg"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [
+      "dotnet-8.0.12.squashfs",
+      "gmtoolkit.squashfs"
+    ],
+    "store": [
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/1435410/Shrines_Legacy/",
+        "developerurl": ""
+      },
+      {
+        "name": "GOG",
+        "gameurl": "https://www.gog.com/en/game/shrines_legacy",
+        "developerurl": ""
+      },
+      {
+        "name": "Epic Games",
+        "gameurl": "https://store.epicgames.com/en-US/p/shrines-legacy-909af2",
+        "developerurl": ""
+      }
+    ],
+    "availability": "paid",
+    "reqs": [],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": ""
+  }
+}

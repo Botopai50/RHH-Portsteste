@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Shrine's Legacy.sh</path>
+		<name>Shrine's Legacy</name>
+		<desc>Follow a pair of heroes as they try to unite the elements of magic, restore the Sword of Shrine, and save the world in both single player and co-op action.</desc>
+		<image>./shrineslegacy/cover.png</image>
+		<releasedate>10072025</releasedate>
+		<developer>Positive Concept Games</developer>
+		<genre>RPG</genre>
+	</game>
+</gamelist>

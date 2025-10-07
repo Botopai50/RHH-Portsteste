@@ -1323,6 +1323,49 @@
     "requirements": ""
   },
   {
+    "title": "Shrine's Legacy",
+    "description": "Follow a pair of heroes as they try to unite the elements of magic, restore the Sword of Shrine, and save the world in both single player and co-op action.",
+    "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/shrineslegacy",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/shrineslegacy/screenshot.png",
+    "porter": [
+      "Jeod"
+    ],
+    "genres": [
+      "rpg"
+    ],
+    "availability": "paid",
+    "store": [
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/1435410/Shrines_Legacy/",
+        "developerurl": ""
+      },
+      {
+        "name": "GOG",
+        "gameurl": "https://www.gog.com/en/game/shrines_legacy",
+        "developerurl": ""
+      },
+      {
+        "name": "Epic Games",
+        "gameurl": "https://store.epicgames.com/en-US/p/shrines-legacy-909af2",
+        "developerurl": ""
+      }
+    ],
+    "instructions": "Copy game data to the assets folder.",
+    "runtime": [
+      "dotnet-8.0.12.squashfs",
+      "gmtoolkit.squashfs"
+    ],
+    "exp": false,
+    "rtr": false,
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": "",
+    "last_modified": "2025-10-07T19:17:52.436Z",
+    "requirements": ""
+  },
+  {
     "title": "Sonic 1",
     "description": "Sonic the Hedgehog 1 decompilation by Rubberduckycooly.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/sonic-collection/sonic.1",
