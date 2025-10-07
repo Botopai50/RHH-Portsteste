@@ -1,0 +1,42 @@
+{
+  "version": 4,
+  "name": "ooo.zip",
+  "items": [
+    "Ooo.sh",
+    "ooo"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Ooo",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "A Bomb Caterpillar's Big Adventure! \"Öoo\" is a charming yet mysterious exploration puzzle platformer where you discover creative ways to use bombs!",
+    "desc_md": null,
+    "inst": "Copy game data to the assets folder.",
+    "inst_md": null,
+    "genres": [
+      "rpg"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [
+      "dotnet-8.0.12.squashfs",
+      "gmtoolkit.squashfs"
+    ],
+    "store": [
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/2721890/oo/",
+        "developerurl": ""
+      }
+    ],
+    "availability": "paid",
+    "reqs": [],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": ""
+  }
+}

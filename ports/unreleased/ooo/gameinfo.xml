@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Ooo.sh</path>
+		<name>Ooo</name>
+		<desc>A Bomb Caterpillar's Big Adventure! "Öoo" is a charming yet mysterious exploration puzzle platformer where you discover creative ways to use bombs!</desc>
+		<image>./ooo/cover.png</image>
+		<releasedate>20250807</releasedate>
+		<developer>Tiny Cactus Studios</developer>
+		<genre>Puzzle</genre>
+	</game>
+</gamelist>
