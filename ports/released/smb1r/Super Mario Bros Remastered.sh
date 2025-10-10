@@ -39,20 +39,22 @@ display_splash() {
 
 # -- GL Test --
 gl_test() {
-    # Extract the OpenGL version number (e.g., "4.6" or "3.3")
-    version=$(glxinfo | grep -oP 'OpenGL version string: \K[0-9]+\.[0-9]+' | head -n 1)
-
-    # Split into major and minor version
-    major=${version%%.*}
-    minor=${version#*.}
-
-    # Check if it's at least 3.3
-    if [ "$major" -lt 3 ] || { [ "$major" -eq 3 ] && [ "$minor" -lt 3 ]; }; then
-        # Dead Cells doesn't use geometry shaders, so let's fake the version.
+    if command -v glxinfo >/dev/null 2>&1; then
+        version=$(glxinfo 2>/dev/null | grep -Eo 'OpenGL version string: [0-9]+\.[0-9]+' | awk '{print $4}' | head -n1)
+        if [ -n "$version" ]; then
+            major=${version%%.*}
+            minor=${version#*.}
+            if [ "$major" -lt 3 ] || { [ "$major" -eq 3 ] && [ "$minor" -lt 3 ]; }; then
+                export MESA_GL_VERSION_OVERRIDE=3.3
+                export MESA_GLSL_VERSION_OVERRIDE=330
+            fi
+        fi
+    else
+        echo "glxinfo not found — assuming limited OpenGL (using 3.3 fallback)."
         export MESA_GL_VERSION_OVERRIDE=3.3
         export MESA_GLSL_VERSION_OVERRIDE=330
-        export MESA_NO_ASYNC_COMPILE=1
     fi
+    export MESA_NO_ASYNC_COMPILE=1
 }
 
 # --- ROM detection & validation (CRC32) ---
@@ -199,15 +201,11 @@ update_check() {
 
 # Run update check
 update_check
-
-# Rom check
 if [ -f "$GAMEDIR/config/baserom.nes" ]; then
-    # Clean up any copied rom from previous run
     for rom in "$GAMEDIR"/*.nes; do
         [ -e "$rom" ] && rm -f "$rom"
     done
 else
-    # If baserom.nes doesn't exist, search and copy ROM
     find_and_copy_rom
 fi
 
