@@ -35,7 +35,7 @@ if [ ! -f patchlog.txt ] || [ -f "$GAMEDIR/assets/data.win" ]; then
     if [ -f "$controlfolder/utils/patcher.txt" ]; then
         export PATCHER_FILE="$GAMEDIR/tools/patchscript"
         export PATCHER_GAME="$(basename "${0%.*}")"
-        export PATCHER_TIME="2 to 5 minutes"
+        export PATCHER_TIME="8 to 12 minutes"
         export controlfolder
         export ESUDO
         source "$controlfolder/utils/patcher.txt"
