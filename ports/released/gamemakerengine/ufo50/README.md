@@ -46,4 +46,5 @@ Mossmouth -- The absolutely amazing game
 JohnnyOnFlame -- GMLoader-Next and TextureRepacker via UTMT  
 Cyril aka kotzebuedog -- GMTools audio patcher  
 mavica -- Display patch  
+phil_macrocheira -- Code diff files when the game patches (makes it easy to update port)  
 Testers & Devs from the PortMaster Discord
