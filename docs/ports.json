@@ -916,7 +916,7 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-12T12:46:47.595Z",
+    "last_modified": "2025-10-12T14:05:55.842Z",
     "requirements": "!lowpower"
   },
   {
