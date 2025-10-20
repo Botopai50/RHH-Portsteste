@@ -90,13 +90,15 @@ dump_textures() {
     # Begin texture operations
     dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
         dump "$DATADIR/data.win" \
-        -e "$DATADIR/textures" "$DATADIR/game.droid"
+        -e "$DATADIR/textures" "$DATADIR/data2.win"
 
     if [ $? -ne 0 ]; then
         echo "[DOTNET]: Texture dumping failed to apply."
         return 1
     else
         mv "$DATADIR/textures" "$SAVEDIR/textures"
+        rm -f "$DATADIR/data.win"
+        mv "$DATADIR/data2.win" "$DATADIR/data.win"
         [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
     fi
 }
@@ -151,7 +153,6 @@ zip_archive() {
 
 # Cleanup function
 cleanup() {
-    rm -f "$DATADIR/data.win"
     rm -rf "$TMPDIR"
     $ESUDO umount "$DOTNETDIR" 2>/dev/null || true
     $ESUDO umount "$TOOLKIT" 2>/dev/null || true
