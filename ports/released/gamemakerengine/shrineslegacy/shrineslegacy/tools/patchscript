@@ -96,7 +96,6 @@ dump_textures() {
         echo "[DOTNET]: Texture dumping failed to apply."
         return 1
     else
-        rm -f "$DATADIR/data.win"
         mv "$DATADIR/textures" "$SAVEDIR/textures"
         [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
     fi
@@ -152,6 +151,7 @@ zip_archive() {
 
 # Cleanup function
 cleanup() {
+    rm -f "$DATADIR/data.win"
     rm -rf "$TMPDIR"
     $ESUDO umount "$DOTNETDIR" 2>/dev/null || true
     $ESUDO umount "$TOOLKIT" 2>/dev/null || true
