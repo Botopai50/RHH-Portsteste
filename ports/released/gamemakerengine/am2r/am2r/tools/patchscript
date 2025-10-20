@@ -59,19 +59,39 @@ unzip_archives() {
     # Create folders
     mkdir -p "$DATADIR/am2r" "$DATADIR/am2rpatch"
 
-    # Identify AM2R zip (data.win in root)
-    AM2R_ZIP=$(find "$DATADIR" -maxdepth 1 -type f -name "*.zip" -exec "$SEVENZIP" l {} \; | grep -E "^\s*[0-9]+\s+[0-9-]+\s+[0-9:]+\s+data\.win$" | cut -d' ' -f 1 | head -n 1)
-
-    # Identify autopatcher zip (has AM2R-Autopatcher-Windows-master/data/)
-    AUTOPATCHER_ZIP=$(find "$DATADIR" -maxdepth 1 -type f -name "*.zip" -exec "$SEVENZIP" l {} \; | grep "AM2R-Autopatcher-Windows-master/data/$" | cut -d' ' -f 1 | head -n 1)
-
+    echo "Scanning for AM2R and Autopatcher zips in $DATADIR..."
+    AM2R_ZIP=""
+    AUTOPATCHER_ZIP=""
     AM2R16B_ZIP="AM2R_1.6b2_windows.zip"
 
-    if [ -z "$AM2R_ZIP" ]; then
-        echo "Error: No valid AM2R zip file found."
-        return 1
+    for zip in "$DATADIR"/*.zip; do
+
+        # Identify AM2R zip (data.win in root)
+        if "$SEVENZIP" l "$zip" | grep -q 'data.win'; then
+            echo "Found data.win in $zip"
+            AM2R_ZIP="$zip"
+        fi
+
+        # Identify autopatcher zip (has AM2R-Autopatcher-Windows-master/data/)
+        if "$SEVENZIP" l "$zip" | grep -q 'AM2R-Autopatcher-Windows-master/data'; then
+            echo "Found Autopatcher structure in $zip"
+            AUTOPATCHER_ZIP="$zip"
+        fi
+    done
+
+    # Report results
+    if [ -n "$AM2R_ZIP" ]; then
+        echo "AM2R zip detected: $AM2R_ZIP"
+    else
+        echo "No valid AM2R zip found."
     fi
 
+    if [ -n "$AUTOPATCHER_ZIP" ]; then
+        echo "Autopatcher zip detected: $AUTOPATCHER_ZIP"
+    else
+        echo "No Autopatcher zip found."
+    fi
+    
     if [ ! -f "$DATADIR/$AM2R16B_ZIP" ]; then
         echo "AM2R 1.6b patch not found."
         return 1
@@ -79,7 +99,7 @@ unzip_archives() {
 
     # Unzip AM2R and autopatcher
     "$SEVENZIP" x -y "$AM2R_ZIP" -o"$DATADIR/am2r" >/dev/null
-    [ -n "$AUTOPATCHER_ZIP" ] && "$SEVENZIP" x -y "$AUTOPATCHER_ZIP" -o"$DATADIR/am2rpatch" >/dev/null
+    [ -n "$AUTOPATCHER_ZIP" ] && "$SEVENZIP" x -y "$AUTOPATCHER_ZIP" -o"$DATADIR/am2rpatch" >/dev/null 2>&1
 }
 
 prepare_files() {
@@ -155,7 +175,6 @@ zip_archive() {
 # Cleanup function
 cleanup() {
     rm -rf "$TMPDIR"
-    $ESUDO umount "$DOTNETDIR" 2>/dev/null || true
     $ESUDO umount "$TOOLKIT" 2>/dev/null || true
 }
 
