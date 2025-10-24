@@ -6,7 +6,7 @@ apt install -y \
 git cmake g++ make ninja-build pkg-config \
 libsdl2-dev libbz2-dev libfluidsynth-dev libopenal-dev \
 libvpx-dev libwebp-dev zlib1g-dev libzmusic-dev \
-libgtk-3-dev libgl1-mesa-dev
+libgtk-3-dev libgl1-mesa-dev libgles2-mesa-dev
 git clone --recursive https://github.com/ZDoom/gzdoom.git
 cd gzdoom
 git checkout g4.14.2
@@ -30,9 +30,9 @@ cd build
 cmake .. \
 -DCMAKE_BUILD_TYPE=Release \
 -DBUILD_SHARED_LIBS=OFF \
--DFORCE_CROSSCOMPILE=OFF \
 -DHAVE_GLES2=ON \
 -DHAVE_VULKAN=OFF \
+-DFORCE_CROSSCOMPILE=ON \
 -DCMAKE_INSTALL_PREFIX=/usr/local
 
 cmake --build . -j$(nproc)

@@ -70,7 +70,7 @@ prepare_files() {
     if unzip -l "$DATAFILE" "assets/*" | grep -q "assets/.*\.dat"; then
         echo "Prepatched game detected."
         PREPATCH=1
-        unzip_audiogroups || { patch_failure; return 1; }
+        unzip_audiogroups || return 1
     fi
 }
 
@@ -165,8 +165,10 @@ cleanup() {
 
 # Main function
 process_game() {
+    echo "Preparing system..."
+    prepare_system || { cleanup; return 1; }
     echo "Preparing game files..."
-    prepare_files
+    prepare_files || { cleanup; return 1; }
     echo "Adding modified scripts..."
     replace_code || { cleanup; return 1; }
     echo "Compressing audio..."
