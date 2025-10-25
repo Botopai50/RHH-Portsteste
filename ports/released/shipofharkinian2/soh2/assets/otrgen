@@ -59,6 +59,7 @@ if [ -f assets/extractor.zip ]; then
   if unzip -q extractor.zip; then
     rm extractor.zip
     cd ..
+  fi
 fi
 
 # Count the number of ROM files
