@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Set up vars and logging
+GAMEDIR="$PWD"
+BASEROMS_DIR="$GAMEDIR/baseroms"
+ARGS=""
+i=1
+> "$GAMEDIR/patchlog.txt" && exec > >(tee "$GAMEDIR/patchlog.txt") 2>&1
+
+# Exports
+export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
+
+# Extract extractor directory
+if [ -f "$GAMEDIR/assets/extractor.zip" ]; then
+    echo "Extracting xml files..."
+    cd "$GAMEDIR/assets"
+    if unzip -oq extractor.zip; then
+        #rm -f extractor.zip
+        echo "Extractor files unpacked successfully."
+    else
+        echo "Error: Failed to extract extractor.zip."
+        exit
+    fi
+    cd "$GAMEDIR"
+fi
+
+process_roms() {
+    # Collect ROM files
+    romfiles=("$BASEROMS_DIR"/*.*64)
+    if [ ! -e "${romfiles[0]}" ]; then
+        echo "Warning: No ROM files found in $BASEROMS_DIR."
+        echo "Please add one or more *.z64 or *.n64 files before running this script."
+        return 1
+    fi
+
+    # Process ROMs
+    for romfile in "${romfiles[@]}"; do
+        ext="${romfile##*.}"
+        newname="$BASEROMS_DIR/rom$i.$ext"
+        if mv -f "$romfile" "$newname"; then
+            echo "Renamed $romfile -> $newname"
+            ARGS="$ARGS \"$newname\""
+            ((i++))
+        else
+            echo "Error: Failed to rename $romfile"
+            return 1
+        fi
+    done
+}
+
+process_roms || { echo "Patching process failed!"; return 1; }
+
+# Run soh.elf with all ROM arguments
+eval "$GAMEDIR/soh.elf" $ARGS
+
+echo "Patching process complete!"

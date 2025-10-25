@@ -1,5 +1,4 @@
 #!/bin/bash
-# PORTMASTER: soh.zip, Ship of Harkinian.sh
 
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 
@@ -30,6 +29,8 @@ export PATCHER_TIME="5 to 10 minutes"
 # CD and set log
 cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
+$ESUDO chmod +xwr soh.elf
+$ESUDO chmod +xwr $PATCHER_FILE
 
 # Close the menu if open
 sed -i 's/"Menu": *1/"Menu": 0/' shipofharkinian.json
@@ -70,57 +71,31 @@ imgui_reset() {
 }
 
 otr_check() {
-    # Extract zip file
-    if [ -f assets/extractor.zip ]; then
-        echo "Extracting xml files..."
-        cd assets
-        if unzip -q extractor.zip; then
-            rm extractor.zip
-            cd ..
+    if [ ! -f "oot.o2r" ] || [ ! -f "oot-mq.o2r" ]; then
+        # Ensure we have a rom file before attempting to generate otr
+        if ls "$GAMEDIR/baseroms/"*.*64 1> /dev/null 2>&1; then
+            if [ -f "$controlfolder/utils/patcher.txt" ]; then
+                source "$controlfolder/utils/patcher.txt"
+                $ESUDO kill -9 $(pidof gptokeyb)
+            else
+                pm_message "This port requires the latest version of PortMaster."
+            fi
+        else
+            echo "Missing ROM files! Can't generate o2r!"
+        fi
+        
+        # Check if OTR files were generated
+        if [ ! -f "oot.o2r" ] && [ ! -f "oot-mq.o2r" ]; then
+            echo "No o2r files, can't run the game!"
+            exit 1
         fi
     fi
-    
-    BASEROMS_DIR="baseroms"
-
-    if [ ! -d "$BASEROMS_DIR" ]; then
-        echo "Warning: baseroms directory not found at $BASEROMS_DIR"
-        return
-    fi
-
-    i=1
-    TIME=0
-    for romfile in "$BASEROMS_DIR"/*.*64; do
-        # Check if glob matched any file
-        [ -e "$romfile" ] || { echo "Warning: No ROM files found in $BASEROMS_DIR"; return; }
-
-        # Get file extension
-        ext="${romfile##*.}"
-
-        # Rename the file to rom1, rom2, etc.
-        newname="$BASEROMS_DIR/rom$i.$ext"
-        mv "$romfile" "$newname"
-        echo "Renamed $romfile -> $newname"
-
-        # Append to ARGS (no quotes needed)
-        ARGS="$ARGS $newname"
-
-        # Add 12000 per ROM to TIME
-        TIME=$((TIME + 18000))
-
-        i=$((i + 1))
-    done
-
-    # Display loading splash
-    [ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/splash" "$GAMEDIR/splash.png" 1
-    $ESUDO "$GAMEDIR/splash" "$GAMEDIR/splash.png" $TIME & 
 }
 
 # --------------------- END FUNCTIONS ---------------------
 
 # Perform functions
-if [ ! -f "oot.o2r" ] || [ ! -f "oot-mq.o2r" ]; then
-    otr_check
-fi
+otr_check
 
 if [ -f "imgui.ini" ]; then
     imgui_reset
@@ -129,19 +104,7 @@ fi
 # Run the game
 $GPTOKEYB "soh.elf" -c "soh.gptk" & 
 pm_platform_helper "soh.elf" >/dev/null
-if [ -n "$ARGS" ]; then
-    ./soh.elf $ARGS
-else
-    ./soh.elf
-fi
-
-# Rerun script if ARGS is not empty
-if [ -n "$ARGS" ]; then
-    echo "ARGS not empty, rerunning script..."
-    # Clear ARGS to avoid infinite loop
-    ARGS=""
-    exec "$0" "$@"  # rerun the same script with same arguments
-fi
+./soh.elf
 
 # Cleanup
 rm -rf "$GAMEDIR/logs/"
