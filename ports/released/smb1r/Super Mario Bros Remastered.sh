@@ -20,6 +20,7 @@ get_controls
 # Paths
 GAMEDIR="/$directory/ports/smb1r"
 CONFDIR="$GAMEDIR/config"
+GPTK="$GAMEDIR/tools/mario-gp.gptk"
 
 # CD and set up log and permissions
 cd "$GAMEDIR"
@@ -238,8 +239,16 @@ fi
 
 $ESUDO mount "$controlfolder/libs/${weston_runtime}.squashfs" "$weston_dir"
 
+# Disable gamepad for Knulli
+if [ "$CFW_NAME" = *"Knulli"* ]; then
+    export LD_PRELOAD="$GAMEDIR/libs/hacksdl.so"
+    export HACKSDL_NO_GAMECONTROLLER=1
+    export HACKSDL_VERBOSE=0
+    GPTK="$GAMEDIR/tools/mario-kb.gptk"
+fi
+
 # Launch game
-$GPTOKEYB "SMB1R.arm64" -c "$GAMEDIR/tools/mario.gptk" &
+$GPTOKEYB "SMB1R.arm64" -c "$GPTK" &
 $ESUDO env $weston_dir/westonwrap.sh headless noop kiosk crusty_x11egl \
 	./SMB1R.arm64 \
 	--resolution ${DISPLAY_WIDTH}x${DISPLAY_HEIGHT} -f \
