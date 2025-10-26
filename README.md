@@ -17,9 +17,11 @@ Whether you're new to retro handhelds, a developer who came across this reposito
 </div>
 
 ## Port Installation
-You can use the [https://jeodc.github.io/RHH-Ports](https://jeodc.github.io/RHH-Ports/) website frontend to download specific ports. Clicking the blue Download button on a port will download a zip archive of the port, which you can then copy to `PortMaster/autoinstall` folder. 
+You can use the [https://jeodc.github.io/RHH-Ports](https://jeodc.github.io/RHH-Ports/) website frontend to download specific ports. Clicking the blue Download button on a port will download a zip archive of the port, which you can then copy to `PortMaster/autoinstall` folder.
 
 Once copied, running the PortMaster application will install the port for you including cover art and gamelist.xml metadata.
+
+You should use the **BETA** branch of the PortMaster application to ensure you have all the included tools (e.g. 7zzs).
 
 ## Port Capability Requirements
 Some of the ports in this repository have minimum requirements. Be sure to check the `port.json` file for a port to see if it lists any of the following requirements:
