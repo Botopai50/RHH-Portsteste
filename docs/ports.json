@@ -3,7 +3,7 @@
     "title": "Air",
     "description": "'AIR' follows Yukito Kunisaki, a traveling puppeteer searching for a winged girl from a childhood legend, who arrives in a small seaside town. There, he meets various girls, each with their own unique stories and supernatural abilities. As Yukito unravels their pasts and the town's mysteries, he discovers connections that transcend time and space, leading to poignant revelations about love, loss, and the human spirit.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/rlvm/air",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/air/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/air/air/screenshot.png",
     "porter": [
       "Jeod",
       "kloptops"
@@ -21,14 +21,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:19:54.633Z",
+    "last_modified": "2025-10-31T02:37:09.564Z",
     "requirements": ""
   },
   {
     "title": "AM2R",
     "description": "Another Metroid 2 Remake.  An action-adventure game developed by Argentinian programmer Milton Guasti (also known as DoctorM64).",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/am2r",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/am2r/screenshot.jpg",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/am2r/am2r/screenshot.jpg",
     "porter": [
       "Johnny on Flame",
       "Jeod"
@@ -50,14 +50,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-23T11:11:04.281Z",
+    "last_modified": "2025-10-31T02:37:09.472Z",
     "requirements": ""
   },
   {
     "title": "Arrest of a Stone Buddha",
     "description": "You are a hitman in France, 1976. Kill your target, fight your way through mobs to your getaway vehicle, and then...enjoy life while waiting for the next job. Is life as a hitman fulfilling?",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/yeotrilogy/arrestofastonebuddha",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/arrestofastonebuddha/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/arrestofastonebuddha/arrestofastonebuddha/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -84,14 +84,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:52:29.971Z",
+    "last_modified": "2025-10-31T02:37:09.545Z",
     "requirements": ""
   },
   {
     "title": "Aurascope Demo",
     "description": "Aurascope is a 2D action-adventure collectathon platformer with light puzzle and RPG elements. Join our friends Trace and Aurora to uncover the secrets surrounding the Aurascope, a mysterious drive from beyond the stars!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/aurascope",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/aurascope/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/aurascope/aurascope/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -123,14 +123,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:54:02.881Z",
+    "last_modified": "2025-10-31T02:37:09.474Z",
     "requirements": "ultra"
   },
   {
     "title": "Benbo Quest",
     "description": "🔥THE GATES OF HELL🔥 have opened, the Infinite Skeleton Hell Army from Hell has began the Ultimate InvasionWorld leaders come together to combat the Skeleton Menacehot new indie retro anime pixel platformer that all the cool kids are talking about. Smash your way through a handful of levels and defeat all of the bad dudes, THE GAME SUPER BENBO QUEST TURBO DELUX/SUPER BENBO QUERST CLASSIC",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/benboquest",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/benboquest/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/benboquest/benboquest/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -147,14 +147,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:21:33.273Z",
+    "last_modified": "2025-10-31T02:37:09.476Z",
     "requirements": ""
   },
   {
     "title": "Clannad",
     "description": "The story follows the life of Tomoya Okazaki, a high school delinquent who meets many people in his last year at school, including five girls, and helps resolve their individual problems. Follows a branching plot line which offers pre-determined scenarios with courses of interaction, and focuses on the appeal of the five female main characters by the player character.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/rlvm/clannad",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/clannad/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/clannad/clannad/screenshot.png",
     "porter": [
       "Jeod",
       "kloptops"
@@ -172,14 +172,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:20:06.210Z",
+    "last_modified": "2025-10-31T02:37:09.566Z",
     "requirements": ""
   },
   {
     "title": "Clannad: Tomoyo After - It's A Wonderful Life",
     "description": "Tomoyo After continues the story of Tomoyo Sakagami after the events of Clannad, focusing on her relationship with Tomoya Okazaki and the challenges they face together. It explores themes of love, loss, and redemption against a backdrop of personal growth and emotional healing.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/rlvm/tomoyo_after",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/tomoyo_after/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/tomoyo_after/tomoyo_after/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -196,14 +196,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:20:43.934Z",
+    "last_modified": "2025-10-31T02:37:09.576Z",
     "requirements": ""
   },
   {
     "title": "Dark Deity",
     "description": "Step into the world of Terrazael and lead soon-to-be legendary heroes in a quest to restore a land fractured by broken oaths, reckless wars, and untamed magic. Fight back in turn-based battles, manage character relationships, collect dangerous artifacts, and hopefully restore the world...",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/darkdeity",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/screenshot.jpg",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/screenshot.jpg",
     "porter": [
       "Jeod"
     ],
@@ -223,14 +223,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:54:02.884Z",
+    "last_modified": "2025-10-31T02:37:09.477Z",
     "requirements": "2GB"
   },
   {
     "title": "Dark Deity II",
     "description": "Verroa is a peaceful continent on the brink of war as the Asverellian Empire seeks to expand - at your homeland’s expense. Command unlikely heroes, fight challenging turn-based battles, and watch hardship forge iron into steel. Dark Deity is back, bigger and better than before!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/darkdeity2",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -250,14 +250,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:54:02.885Z",
+    "last_modified": "2025-10-31T02:37:09.480Z",
     "requirements": "2GB"
   },
   {
     "title": "Dead Cells",
     "description": "Dead Cells is a roguelite, metroidvania inspired, action-platformer. You'll explore a sprawling, ever-changing castle... assuming you’re able to fight your way past its keepers in 2D souls-lite combat. No checkpoints. Kill, die, learn, repeat.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/deadcells",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/deadcells/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/deadcells/deadcells/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -275,14 +275,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:33.175Z",
+    "last_modified": "2025-10-31T02:37:09.460Z",
     "requirements": "opengl, ultra"
   },
   {
     "title": "Deltarune",
     "description": "Dive into the parallel story to UNDERTALE! Fight or spare your way through action-packed battles as you explore a mysterious world alongside an endearing cast of new and familiar characters. Chapters 1-4 will be available on launch, with more planned as free updates!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/deltarune",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/screenshot.png",
     "porter": [
       "Jeod",
       "JohnnyOnFlame",
@@ -317,14 +317,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:54:02.888Z",
+    "last_modified": "2025-10-31T02:37:09.482Z",
     "requirements": ""
   },
   {
     "title": "Descent",
     "description": "Play as a mercenary sent into planetary mines to destroy them before a computer virus spreads! You'll fly through 3D mazes in search of keycards to gain access to each level's reactor--which, once destroyed, will begin a self-destruct! Make sure you know where the exit hatch is! It will only open when the reactor is destroyed. Oh, and watch out for those virus-infected robots. They'll shoot at you.\n\nIncludes shareware/demo files. See instructions to use full version.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/descent-1-2/descent",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent-1-2/descent/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent-1-2/descent/descent/screenshot.png",
     "porter": [
       "Jeod",
       "Cebion",
@@ -344,14 +344,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:33.183Z",
+    "last_modified": "2025-10-31T02:37:09.462Z",
     "requirements": "analog_1|analog_2"
   },
   {
     "title": "Descent II",
     "description": "Return as a mercenary sent into deep space mines to destroy them before a computer virus spreads! You'll fly through 3D mazes in search of keycards to gain access to each level's reactor--which, once destroyed, will begin a self-destruct! Make sure you know where the exit hatch is! It will only open when the reactor is destroyed. Oh, and watch out for those virus-infected robots. They'll shoot at you.\n\nIncludes shareware/demo files. See instructions to use full version.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/descent-1-2/descent2",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent-1-2/descent2/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent-1-2/descent2/descent2/screenshot.png",
     "porter": [
       "Jeod",
       "Cebion",
@@ -371,14 +371,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:33.191Z",
+    "last_modified": "2025-10-31T02:37:09.464Z",
     "requirements": "analog_1|analog_2"
   },
   {
     "title": "Descent III",
     "description": "Play the exciting final installment in the Descent trilogy! Saved by amateur do-gooders, the Material Defender sets out to stop the robot virus and Dravis' evil plans once and for all! Pilot through 3D space, navigating through familiar indoor mines and outdoor open space terrain. It's a big universe, but fortunately they threw in a guidebot.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/descent3",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent3/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent3/descent3/screenshot.png",
     "porter": [
       "Jeod",
       "fpasteau"
@@ -396,14 +396,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:22:44.250Z",
+    "last_modified": "2025-10-31T02:37:09.466Z",
     "requirements": "analog_1|analog_2"
   },
   {
     "title": "DigitalTamers Reborn",
     "description": "Train, fight, evolve! Digital Tamers: ReBorn is a casual fighting game for all Digimon fans. Your mission is to take care of your partner, keep it strong, healthy in order to evolve and win battles and several prizes! Excel and win the 12 Championships that will take place throughout the year in order to become a true Digimon Tamer! Live this experience and welcome, to the Digital World!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/digitaltamersreborn",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/digitaltamersreborn/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/digitaltamersreborn/digitaltamersreborn/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -422,14 +422,14 @@
       "armhf"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:33.264Z",
+    "last_modified": "2025-10-31T02:37:09.484Z",
     "requirements": "analog_1|analog_2"
   },
   {
     "title": "Dokimon: Quest",
     "description": "Dokimon: Quest is a game where you capture monsters to battle alongside and push through the dangerous open world. In advances to uncover the the mystery about your missing friend, you must become stronger, allowing you to venture on into increasingly dangerous areas. Battle against fellow Dokimon battlers who are also on the quest to get stronger, and take down evil corporations that stand in your way and disrupt the peace.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/dokimonquest",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimonquest/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimonquest/dokimon/screenshot.png",
     "porter": [
       "Jeod",
       "Yano"
@@ -456,14 +456,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-10T14:37:38.204Z",
+    "last_modified": "2025-10-31T02:37:09.486Z",
     "requirements": ""
   },
   {
     "title": "Doom Engines",
     "description": "Doom engines! A Love2D launcher makes selecting games and mods easy. See the readme for instructions and details.\n\nIncludes shareware demo files and freedoom.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/doomengines",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/doomengines/screenshot.jpg",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/doomengines/doomengines/screenshot.jpg",
     "porter": [
       "Slayer366",
       "DDRSoul",
@@ -483,14 +483,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-26T23:22:18.647Z",
+    "last_modified": "2025-10-31T02:37:09.470Z",
     "requirements": ""
   },
   {
     "title": "F-Zero Pocket",
     "description": "Select one of the 30 most skillful drivers of all-time and boost your way to the top in F-Zero Pocket, a racing fan-game made as a tribute to both the GameBoy Color and the F-Zero series.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/fzeropocket",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/fzeropocket/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/fzeropocket/f-zeropocket/screenshot.png",
     "porter": [
       "Tekkenfede",
       "MadShmupper",
@@ -510,14 +510,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:23:37.309Z",
+    "last_modified": "2025-10-31T02:37:09.488Z",
     "requirements": ""
   },
   {
     "title": "Fading Afternoon",
     "description": "Seiji Maruyama is a middle-aged yakuza recently released from prison. Known as \"Gozuki\" (one of the demon generals from Buddhist mythology) he is the power that his oyabun counts on. But there is one thing his aniki is not taking into account: Maruyama is getting old.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/yeotrilogy/fadingafternoon",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/fadingafternoon/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/fadingafternoon/fadingafternoon/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -544,14 +544,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:54:02.961Z",
+    "last_modified": "2025-10-31T02:37:09.548Z",
     "requirements": ""
   },
   {
     "title": "Guns of Fury",
     "description": "Guns of Fury is a retro-inspired action platformer that combines the run & gun and Metroidvania genres. Explore a vast interconnected world, gain new abilities and weapons, battle epic bosses and stop the plans of an evil corporation before it’s too late!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/gunsoffury",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gunsoffury/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gunsoffury/gunsoffury/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -578,14 +578,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-20T21:37:37.511Z",
+    "last_modified": "2025-10-31T02:37:09.490Z",
     "requirements": ""
   },
   {
     "title": "Gyakuten Live!",
     "description": "Gyakuten Live! is a Love Live fangame with Ace Attorney-style gameplay. Travel through the adventures of your favourite school idols as you solve mysteries and prove the innocence of your clients. Currently has: 3 episodes, with more on the way!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/gyakutenlive",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gyakutenlive/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gyakutenlive/gyakutenlive/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -608,14 +608,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:33.279Z",
+    "last_modified": "2025-10-31T02:37:09.492Z",
     "requirements": ""
   },
   {
     "title": "Hallow's Eve",
     "description": "On Halloween, the barrier between human world and the spirit world thins. The spirits play tricks, the dead can be seen, and monsters can run their human world errands.\n\nSet in the 90s, play as Ichabod, a pumpkin man who uses his chance to enter the human world to try and rent Jurassic Park from the video store. Unfortunately, the only copy has been rented by a teen who’s brought a witch’s curse upon the town.\n\nGameplay is inspired by the classics and the modern classics — a Zeldalike sense of exploration, with the tight, fast combat of Hyper Light Drifter. All soaked in a charming pixel art atmosphere and a dumb sense of humor. Playtime is around 1-2 hours.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/hallowseve",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/hallowseve/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/hallowseve/hallowseve/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -631,14 +631,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:23:52.584Z",
+    "last_modified": "2025-10-31T02:37:09.676Z",
     "requirements": ""
   },
   {
     "title": "Haque",
     "description": "Haque is a glitch fantasy roguelike adventure about cute monsters, low-bit hauntings, and a suspiciously talkative narrator. Choose your character and battle through forests, deserts and dungeons to defeat a mysterious evil. Die often. Try again!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/haque",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/haque/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/haque/haque/screenshot.png",
     "porter": [
       "Jeod",
       "Troidem"
@@ -670,14 +670,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-06-28T00:28:16.798Z",
+    "last_modified": "2025-10-31T02:37:09.493Z",
     "requirements": ""
   },
   {
     "title": "Hollow Knight",
     "description": "Forge your own path in Hollow Knight! An epic action adventure through a vast ruined kingdom of insects and heroes. Explore twisting caverns, battle tainted creatures and befriend bizarre bugs, all in a classic, hand-drawn 2D style.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/hollow_knight",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/hollow_knight/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/hollow_knight/hollow_knight/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -706,14 +706,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:34.399Z",
+    "last_modified": "2025-10-31T02:37:09.555Z",
     "requirements": "!lowres, 2gb, opengl"
   },
   {
     "title": "Hollow Knight: Silksong",
     "description": "Discover a vast, haunted kingdom in Hollow Knight: Silksong! Explore, fight and survive as you ascend to the peak of a land ruled by silk and song.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/hollow_knight_silksong",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/hollow_knight_silksong/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/hollow_knight_silksong/hollow_knight_silksong/screenshot.png",
     "porter": [
       "Jeod",
       "ReddestDream"
@@ -743,14 +743,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:34.558Z",
+    "last_modified": "2025-10-31T02:37:09.557Z",
     "requirements": "!lowres, 2gb, opengl"
   },
   {
     "title": "Isles of Sea and Sky",
     "description": "A fantastic, oceanic, open world puzzle adventure. Solve innovative block puzzles while unearthing a mystifying story and unlock powers that provide more options for how you choose to progress through the enigmatic Isles of Sea and Sky!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/islesofseaandsky",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/islesofseaandsky/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/islesofseaandsky/iosas/screenshot.png",
     "porter": [
       "Jeod",
       "kotzebuedog"
@@ -783,14 +783,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:54:02.899Z",
+    "last_modified": "2025-10-31T02:37:09.495Z",
     "requirements": ""
   },
   {
     "title": "Kanon",
     "description": "Kanon is a visual novel that follows Yuichi Aizawa's return to a town where he reconnects with childhood friends and encounters new ones, each with hidden pasts and supernatural ties. As Yuichi unravels their stories, themes of love, forgiveness, and second chances intertwine in this emotionally charged narrative.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/rlvm/kanon",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/kanon/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/kanon/kanon/screenshot.png",
     "porter": [
       "Jeod",
       "kloptops"
@@ -808,14 +808,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:20:14.901Z",
+    "last_modified": "2025-10-31T02:37:09.568Z",
     "requirements": ""
   },
   {
     "title": "Little Busters!",
     "description": "'Little Busters!' follows Riki Naoe and his group of childhood friends, the titular Little Busters, as they form a baseball team and navigate through various personal struggles and mysteries. As the story unfolds, Riki uncovers deeper secrets about his friends and the world around him, leading to poignant revelations and emotional growth for the characters. It was originally released in Japan on July 27, 2007.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/rlvm/littlebusters",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/littlebusters/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/littlebusters/littlebusters/screenshot.png",
     "porter": [
       "Jeod",
       "kloptops"
@@ -833,14 +833,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:20:22.792Z",
+    "last_modified": "2025-10-31T02:37:09.572Z",
     "requirements": ""
   },
   {
     "title": "LOZ Oracles Randomizer NG",
     "description": "A randomizer tool for Oracle of Ages/Seasons! Randomized roms are generated on-device. No external tools needed!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/oracles-randomizer-ng",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/oracles-randomizer-ng/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/oracles-randomizer-ng/oracles-randomizer-ng/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -857,14 +857,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:34.753Z",
+    "last_modified": "2025-10-31T02:37:09.560Z",
     "requirements": ""
   },
   {
     "title": "Lunar Lux",
     "description": "Experience a sci-fi action-adventure RPG on the Moon in the year 30XX! Join Bella in a story of science, truth, justice, and trust, as she travels the silver globe to find a way to save humanity from Comet Coda! It's time to unleash your Lux!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/lunarlux",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/lunarlux/screenshot.jpg",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/lunarlux/lunarlux/screenshot.jpg",
     "porter": [
       "Jeod"
     ],
@@ -886,14 +886,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:54:02.901Z",
+    "last_modified": "2025-10-31T02:37:09.498Z",
     "requirements": "!lowres"
   },
   {
     "title": "Madhouse",
     "description": "MADHOUSE is a horror action RPG where chibi characters slash and blast enemies in blood-soaked combat. Explore a dreary open world in the story campaign, or fight friends in the chaotic local 4-player versus mode. With retro pixel art and punk horror grit, it delivers macabre, thrilling action. WARNING! This game contains depictions of violence and foul language!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/madhouse",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/madhouse/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/madhouse/madhouse/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -920,14 +920,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-27T22:42:16.955Z",
+    "last_modified": "2025-10-31T02:37:09.499Z",
     "requirements": "!lowpower"
   },
   {
     "title": "Metal Slug FB Fanthology",
     "description": "Metal Slug SB Fanthology is a fan game developed by SuperBlinky, which has been in development since 2020. The latest version of the project is 0.7.2 The main goal of the project is to create 8 new Metal Slug experiences based on the 8 mainline games.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/metalslugsbfanthology",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/metalslugsbfanthology/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/metalslugsbfanthology/mslugsbf/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -948,14 +948,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:54:02.905Z",
+    "last_modified": "2025-10-31T02:37:09.502Z",
     "requirements": ""
   },
   {
     "title": "Mimi's Delivery Dash",
     "description": "Originally created in 10 days for Movie Game Jam 2018 as a tribute to Kiki's Delivery Service.\n\nMeet Mimi! A young witch in-training who has just recently decided what her special skill is: delivering mail - by broomstick!\n\nThe town is a bustling place so she'll need to be on the look out for potential customers, and they always tip well for a speedy delivery.\n\nBut watch out, Mimi! Angry crows are one thing, but flying a broom around town can be just as dangerous! ",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/mimisdeliverydash",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mimisdeliverydash/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mimisdeliverydash/mimisdeliverydash/screenshot.png",
     "porter": [
       "MadShmupper",
       "tekkenfede",
@@ -974,14 +974,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:24:41.367Z",
+    "last_modified": "2025-10-31T02:37:09.503Z",
     "requirements": ""
   },
   {
     "title": "Mystik Belle",
     "description": "A Metroidvania with Point and Click style elements like Psychonauts.\nHelp Belle fix the mystic Walpurgisnacht Brew by finding three rare magical ingredients in order to clear her name.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/mystikbelle",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mystikbelle/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mystikbelle/mystikbelle/screenshot.png",
     "porter": [
       "Pridetoons",
       "Jeod",
@@ -1004,14 +1004,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:57:57.129Z",
+    "last_modified": "2025-10-31T02:37:09.507Z",
     "requirements": ""
   },
   {
     "title": "Nubby's Number Factory",
     "description": "A plinko-style roguelike where you work at a number factory. Launch your spherical friend, Nubby, down a pegboard to make bigger and bigger numbers! But beware, if you fail to meet your number quota, the sun will explode.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/nubbysnumberfactory",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/nubbysnumberfactory/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/nubbysnumberfactory/nubbysnumberfactory/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1033,14 +1033,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-05-18T11:11:05.531Z",
+    "last_modified": "2025-10-31T02:37:09.509Z",
     "requirements": "!lowres"
   },
   {
     "title": "Ocean's Heart",
     "description": "When pirates attacked Limestone Island, it fell to Tilia’s father to go after them and rescue the young woman they kidnapped. When he hasn’t returned six months later, Tilia decides it’s up to her to track down her dad and find out what went wrong.\n\nPlay as Tilia as she travels across an archipelago full of pirate forts, forgotten magic, abominable beasts, and a diverse cast of people trying to find their place in it all. As Tilia follows her dad’s trail, she becomes entrangled in the pirates’ plot to use an old magic to control the ocean. And maybe along the way, she’ll play in a tick-tack-toe championship, prevent an art heist, or impresonate a piano tuner. It’s a large world full of secrets, dangers, and quirky wierdos for you to explore.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/oceansheart",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/oceansheart/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/oceansheart/oceansheart/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1056,14 +1056,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:25:07.501Z",
+    "last_modified": "2025-10-31T02:37:09.677Z",
     "requirements": ""
   },
   {
     "title": "Osana's Revenge",
     "description": "Osana's Revenge is a top down shooter filled with memes and private jokes arisen from Yandere Simulator drama and development setbacks, in particular, its first rival (Osana Najimi) being delayed for multiple years. However, you don't have to be familiar with all of this in order to play and enjoy it. ",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/osanasrevenge",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/osanasrevenge/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/osanasrevenge/osanasrevenge/screenshot.png",
     "porter": [
       "Consumerism",
       "Jeod"
@@ -1080,14 +1080,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:25:19.077Z",
+    "last_modified": "2025-10-31T02:37:09.679Z",
     "requirements": ""
   },
   {
     "title": "Outrider Mako",
     "description": "Take on the role of Mako on her quest to seek out and subsequently deliver her, uh, deliverables in this top-down view 2D action game. Jump on top of your enemies and slime them with goo to stop them in their tracks! Get those deliverables delivered!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/outridermako",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/outridermako/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/outridermako/outridermako/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1113,14 +1113,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-01T16:14:32.835Z",
+    "last_modified": "2025-10-31T02:37:09.512Z",
     "requirements": "power"
   },
   {
     "title": "Pizza Tower",
     "description": "Pizza Tower is a fast paced 2D platformer, with an emphasis on movement, exploration and score attack. Featuring highly stylized pixel art inspired by the cartoons from the '90s, and a highly energetic soundtrack.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/pizzatower",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pizzatower/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pizzatower/pizzatower/screenshot.png",
     "porter": [
       "Regular Character",
       "Johnny on Flame",
@@ -1148,14 +1148,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-02T17:01:31.065Z",
+    "last_modified": "2025-10-31T02:37:09.514Z",
     "requirements": "!lowpower"
   },
   {
     "title": "Planetarian",
     "description": "Planetarian is a visual novel set in a post-apocalyptic world where a lone survivor encounters a malfunctioning robot attendant named Yumemi Hoshino in an abandoned planetarium. Through their interactions, themes of hope, humanity, and the enduring power of memories are explored.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/rlvm/planetarian",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/planetarian/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rlvm/planetarian/planetarian/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1172,14 +1172,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:20:30.163Z",
+    "last_modified": "2025-10-31T02:37:09.573Z",
     "requirements": ""
   },
   {
     "title": "Plants vs Zombies : Neighborhood Defense",
     "description": "Plants vs zombies Neighborhood defense is a PVZ fangame with high difficulty and new content! +90 levels, hard mode, versus mode, vasebreaker, endless zone and more!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/pvznd",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pvznd/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pvznd/pvznd/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1198,14 +1198,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-16T18:44:44.083Z",
+    "last_modified": "2025-10-31T02:37:09.518Z",
     "requirements": ""
   },
   {
     "title": "Pocket Crystal League",
     "description": "Pocket Crystal League (PCL) is a Poke-card game, although completely different to the Official TCG. The gameplay mechanics were partially inspired by Inscryption, being pretty straightforward and easy to learn.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/pocketcrystalleague",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pocketcrystalleague/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pocketcrystalleague/pocketcrystalleague/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1222,14 +1222,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:25:42.351Z",
+    "last_modified": "2025-10-31T02:37:09.516Z",
     "requirements": ""
   },
   {
     "title": "Pokéwilds",
     "description": "PokéWilds is an open-world Pokémon fan game with survival and exploration elements. Built on Gen 2-style graphics, it features procedurally generated worlds, base-building, and freeform gameplay. Catch, train, and battle Pokémon while exploring diverse biomes, crafting shelters, and uncovering hidden secrets.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/pokewilds",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/pokewilds/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/pokewilds/pokewilds/screenshot.png",
     "porter": [
       "Jeod",
       "JanTrueno"
@@ -1247,14 +1247,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:25:57.333Z",
+    "last_modified": "2025-10-31T02:37:09.562Z",
     "requirements": "ultra"
   },
   {
     "title": "RomM App",
     "description": "An app for custom firmwares that connects to your RomM instance and allows you to fetch games wirelessly from your handheld device.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/RomM",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/RomM/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/RomM/RomM/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1273,14 +1273,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:51:25.422Z",
+    "last_modified": "2025-10-31T02:37:09.457Z",
     "requirements": ""
   },
   {
     "title": "Ship of Harkinian",
     "description": "A source port of Ocarina of Time &amp; Master Quest. Ship of Harkinian features extensive and significant enhancements over the original game, such as improved performance, increased frame-rate, native ultra-widescreen support, and extensive mod support (especially compared to emulated versions of the original), among other features.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/shipofharkinian",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/shipofharkinian/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/shipofharkinian/soh/screenshot.png",
     "porter": [
       "Jeod",
       "beniamino"
@@ -1299,14 +1299,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-25T12:56:07.694Z",
+    "last_modified": "2025-10-31T02:37:09.672Z",
     "requirements": ""
   },
   {
     "title": "Ship of Harkinian 2",
     "description": "A source port of Majora's Mask. 2Ship2Harkinian (aka SoH2) features extensive and significant enhancements over the original game, such as improved performance, increased frame-rate, native ultra-widescreen support, and extensive mod support (especially compared to emulated versions of the original), among other features.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/shipofharkinian2",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/shipofharkinian2/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/shipofharkinian2/soh2/screenshot.png",
     "porter": [
       "Jeod",
       "beniamino"
@@ -1325,14 +1325,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-26T11:18:29.585Z",
+    "last_modified": "2025-10-31T02:37:09.674Z",
     "requirements": ""
   },
   {
     "title": "Shrine's Legacy",
     "description": "Follow a pair of heroes as they try to unite the elements of magic, restore the Sword of Shrine, and save the world in both single player and co-op action.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/shrineslegacy",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/shrineslegacy/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/shrineslegacy/shrineslegacy/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1368,14 +1368,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-29T23:28:50.612Z",
+    "last_modified": "2025-10-31T02:37:09.520Z",
     "requirements": "power"
   },
   {
     "title": "Sonic 1",
     "description": "Sonic the Hedgehog 1 decompilation by Rubberduckycooly.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/sonic-collection/sonic.1",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.1/screenshot.jpg",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.1/sonic1/screenshot.jpg",
     "porter": [
       "Christian_Haitian",
       "Jeod"
@@ -1393,14 +1393,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:35.678Z",
+    "last_modified": "2025-10-31T02:37:09.696Z",
     "requirements": ""
   },
   {
     "title": "Sonic 2",
     "description": "Sonic the Hedgehog 2 decompilation by Rubberduckycooly.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/sonic-collection/sonic.2",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.2/screenshot.jpg",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.2/sonic2/screenshot.jpg",
     "porter": [
       "Christian_Haitian",
       "Jeod"
@@ -1418,14 +1418,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:35.685Z",
+    "last_modified": "2025-10-31T02:37:09.698Z",
     "requirements": ""
   },
   {
     "title": "Sonic 3 AIR",
     "description": "A fan-made widescreen remaster of Sonic 3 & Knuckles.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/sonic-collection/sonic3air",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic3air/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic3air/sonic3air/screenshot.png",
     "porter": [
       "spec58"
     ],
@@ -1442,14 +1442,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:27:05.481Z",
+    "last_modified": "2025-10-31T02:37:09.703Z",
     "requirements": ""
   },
   {
     "title": "Sonic CD",
     "description": "Sonic CD decompilation by Rubberduckycooly.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/sonic-collection/sonic.cd",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.cd/screenshot.jpg",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.cd/soniccd/screenshot.jpg",
     "porter": [
       "Christian_Haitian",
       "Jeod"
@@ -1467,14 +1467,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:35.695Z",
+    "last_modified": "2025-10-31T02:37:09.699Z",
     "requirements": ""
   },
   {
     "title": "Sonic Mania",
     "description": "Sonic Mania decompilation by Rubberduckycooly.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/sonic-collection/sonic.mania",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.mania/screenshot.jpg",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.mania/sonicmania/screenshot.jpg",
     "porter": [
       "TheGammaSqueeze",
       "Jeod"
@@ -1492,14 +1492,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:35.702Z",
+    "last_modified": "2025-10-31T02:37:09.701Z",
     "requirements": ""
   },
   {
     "title": "Sonic Time Twisted",
     "description": "Sonic Time Twisted is a fan-made game where Sonic must stop Dr. Eggman's plan to use time travel to resurrect Metal Sonic and conquer the world. Sonic travels through past, present, and future versions of levels, collecting Time Stones to thwart Eggman's scheme.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/sonictimetwisted",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/sonictimetwisted/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/sonictimetwisted/sonictimetwisted/screenshot.png",
     "porter": [
       "Jeod",
       "tekkenfede"
@@ -1517,14 +1517,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:27:21.889Z",
+    "last_modified": "2025-10-31T02:37:09.522Z",
     "requirements": ""
   },
   {
     "title": "Sonic Triple Trouble - 16-Bit",
     "description": "What if Sonic Triple Trouble had been originally released on the Sega Genesis / MegaDrive, after Sonic 3 & Knuckles?",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/sonictt16b",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/sonictt16b/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/sonictt16b/sonictt16b/screenshot.png",
     "porter": [
       "Jeod",
       "JanTrueno"
@@ -1548,14 +1548,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:33.354Z",
+    "last_modified": "2025-10-31T02:37:09.524Z",
     "requirements": ""
   },
   {
     "title": "Spine Lasher",
     "description": "With a whip made of human spines, you face the nightmarish creatures of humankind. Lash your enemies with your whip, stab them with your knives, crush them under chandeliers, and deflect weapons back at them—do whatever it takes to cleanse this world of darkness!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/spinelasher",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/spinelasher/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/spinelasher/spinelasher/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1586,14 +1586,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T10:31:46.222Z",
+    "last_modified": "2025-10-31T02:37:09.527Z",
     "requirements": ""
   },
   {
     "title": "Starship",
     "description": "A source port of Star Fox 64. Starship features extensive and significant enhancements over the original game, such as improved performance, increased frame-rate, native ultra-widescreen support, and extensive mod support (especially compared to emulated versions of the original), among other features.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/starship",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/starship/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/starship/starship/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1611,14 +1611,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-01T18:50:09.157Z",
+    "last_modified": "2025-10-31T02:37:09.705Z",
     "requirements": ""
   },
   {
     "title": "SteamLink",
     "description": "Steam Link is a hardware and software product developed by Valve Corporation for streaming Steam content from a personal computer or Steam Machine wirelessly to a mobile device or other monitor.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/steamlink",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/steamlink/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/steamlink/steamlink/screenshot.png",
     "porter": [
       "Noxwell",
       "Jeod"
@@ -1636,14 +1636,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:02:49.901Z",
+    "last_modified": "2025-10-31T02:37:09.707Z",
     "requirements": "opengl"
   },
   {
     "title": "Super Mario Bros. Remastered",
     "description": "A fan remake of Super Mario Bros., Super Mario Bros.: The Lost Levels, Super Mario Bros. Special and All Night Nippon: Super Mario Bros. Fully recreated from the ground up! Requires original nes rom for assets.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/smb1r",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/smb1r/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/smb1r/smb1r/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1669,7 +1669,7 @@
     "title": "Super Star Trek",
     "description": "Super Star Trek (1978) with 25th Anniversary pixel art! Find and destroy all enemies before time runs out! Manage your shields and energy well, or you will be stranded as the enemies destroy the Federation...",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/superstartrek",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/superstartrek/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/superstartrek/superstartrek/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1692,14 +1692,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-01T14:17:31.654Z",
+    "last_modified": "2025-10-31T02:37:09.529Z",
     "requirements": ""
   },
   {
     "title": "Tenjutsu",
     "description": "Your dojo has been attacked by mysterious armed men in black. You have to take it back! Fight enemies, collect DEATH MARKS (ie. skulls) and tag enemies with these marks. Every 10 seconds, marked enemies will die. Some stronger enemies will require more marks to get rid of.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/tenjutsu48h",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/tenjutsu48h/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/tenjutsu48h/tenjutsu48h/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1716,14 +1716,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:35.729Z",
+    "last_modified": "2025-10-31T02:37:09.710Z",
     "requirements": "opengl"
   },
   {
     "title": "The Friends of Ringo Ishikawa",
     "description": "The Friends of Ringo Ishikawa is a blend of a beat-em up and a slice of life take on mid 80's Japan. Take control of Ringo as he lives his final season of Autumn before high school graduation.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/yeotrilogy/friendsofringo",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/friendsofringo/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/friendsofringo/friendsofringo/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1755,14 +1755,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:34.163Z",
+    "last_modified": "2025-10-31T02:37:09.550Z",
     "requirements": ""
   },
   {
     "title": "The Girl From Arkanya",
     "description": "The Girl from Arkanya is a top-down treasure hunting RPG, mimicking the style and feel of 2D Zelda games. Explore the jungles of Amazonia as Marisa, alongside her capybara companion!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/thegirlfromarkanya",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/thegirlfromarkanya/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/thegirlfromarkanya/thegirlfromarkanya/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1787,14 +1787,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:35.865Z",
+    "last_modified": "2025-10-31T02:37:09.712Z",
     "requirements": "!lowres, 2gb, opengl"
   },
   {
     "title": "The Legend of Zelda: Mercuris Chess",
     "description": "The sequel to Mystery of Solarus XD. While Link and Zelda were away, a rich businessman bought Hyrule! There begins your next adventure, in a world where everything has a price and where truth and lies become undistinguishable.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/zeldaxd-mercurischess",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zeldaxd-mercurischess/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zeldaxd-mercurischess/zeldaxd-mercurischess/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1810,14 +1810,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:33:00.199Z",
+    "last_modified": "2025-10-31T02:37:09.689Z",
     "requirements": ""
   },
   {
     "title": "The Legend of Zelda: Mercuris' Chest (DEMO)",
     "description": "Link is kidnapped and brought to an unknown region! A priest explains that Link's heroic skills are needed to combat a birdlike foe and defend a legendary chest, which contains a dangerous weapon. Who is this foe, and what's in the chest? And why does this region feel so...familiar?",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/zelda-mercurischest",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-mercurischest/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-mercurischest/zelda-mercurischest/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1833,14 +1833,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-09T14:05:40.102Z",
+    "last_modified": "2025-10-31T02:37:09.685Z",
     "requirements": ""
   },
   {
     "title": "The Legend of Zelda: Mystery of Solarus DX",
     "description": "The Legend of Zelda: Mystery of Solarus DX is set to be a direct sequel to The Legend of Zelda: A Link to the Past on SNES, using the same graphics and game mechanisms. Mystery of Solarus DX was the first game made with the Solarus engine and in fact, Solarus was primarily designed for this game.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/zelda-mysteryofsolarusdx",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-mysteryofsolarusdx/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-mysteryofsolarusdx/zelda-mysteryofsolarusdx/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1856,14 +1856,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:32:51.185Z",
+    "last_modified": "2025-10-31T02:37:09.687Z",
     "requirements": ""
   },
   {
     "title": "The Legend of Zelda: Mystery of Solarus XD",
     "description": "The Legend of Zelda: Mystery of Solarus XD is a parodic game that we released on April 1st, 2011. Though it’s a big April 1st joke, it’s a real, full game with two huge dungeons and 5-10 hours of playing.\n\nIt was developed in a very short period of time, thanks to coffee, beer and pizzas. Though the development has been rushed to ship on time, the game is complete, with lots of jokes, references and quirky NPCs.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/zelda-mysteryofsolarusxd",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-mysteryofsolarusxd/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-mysteryofsolarusxd/zelda-mysteryofsolarusxd/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1879,14 +1879,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:32:46.411Z",
+    "last_modified": "2025-10-31T02:37:09.688Z",
     "requirements": ""
   },
   {
     "title": "The Legend of Zelda: Return of the Hylain SE",
     "description": "After Link’s victory over Ganon in A Link to the Past, no one knows what Link’s wish to the Triforce was. But this wish reunified the Light World and the Dark World and brought the Seven Wise Men’s descendants back to life. Peace was back in Hyrule. But unfortunately, this wish also ressurected Ganon and his henchmen. He was preparing his revenge, but he couldn’t do anything without the Triforce.\n\nOne night, a familiar voice speaks to Link in his sleep…",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/zelda-roth-se",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-roth-se/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-roth-se/zelda-roth-se/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1902,14 +1902,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:32:41.167Z",
+    "last_modified": "2025-10-31T02:37:09.688Z",
     "requirements": ""
   },
   {
     "title": "The Legend of Zelda: The Book of Mudora",
     "description": "Link’s newest quest is set a few generations after Twilight Princess and spans two different continents of Hyrule. Explore eight unique temples and defeat enemies and bosses in order to gain powerful items to assist you in your goal. Explore many areas of Hyrule and assist different races in their conflicts.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/zelda-bookofmudora",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-bookofmudora/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-bookofmudora/zelda-bookofmudora/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1925,14 +1925,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:32:35.684Z",
+    "last_modified": "2025-10-31T02:37:09.684Z",
     "requirements": ""
   },
   {
     "title": "The Legend of Zelda: Zeldo's Challenge",
     "description": "This game is then the first entry in ZeldoRetro’s series Le Défi de Zeldo (Zeldo’s Challenge). This first chapter is named La Revanche du Bingo (Bingo’s Revenge), and is much less ambitious than its sequel. It contains only one dungeon, and no overworld to explore, which makes the game rather short. You may beat it under an hour.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/zeldoschallenge",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zeldoschallenge/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zeldoschallenge/zeldoschallenge/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1948,14 +1948,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:32:21.137Z",
+    "last_modified": "2025-10-31T02:37:09.691Z",
     "requirements": ""
   },
   {
     "title": "The Legend of Zelda: Zeldo's Challenge 2",
     "description": "After having touched the Trophy of Victory won at the end of the first chapter’s dungeon, Link is teleported in High-rule, a parallel world where multiple video games universes are mixed up. Link must go to the Tower of Memories where Zeldo is waiting for him to get his revenge!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/zeldoschallenge2",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zeldoschallenge2/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zeldoschallenge2/zeldoschallenge2/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -1971,14 +1971,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:32:16.366Z",
+    "last_modified": "2025-10-31T02:37:09.694Z",
     "requirements": ""
   },
   {
     "title": "Triga",
     "description": "Slap triangular tiles down in this cause and effect, chain reactive, radically funky puzzle experience! Collect as many golden triangles as you can to unlock new levels, but don't sweat it if you aren't a triangle-brained genius: Each stage has 3 goals ranging from casual fun, to extreme puzzling!",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/triga",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/triga/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/triga/triga/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -2009,14 +2009,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:33.553Z",
+    "last_modified": "2025-10-31T02:37:09.531Z",
     "requirements": ""
   },
   {
     "title": "Tunics!",
     "description": "Tunics! is a Rogue-like Legend of Zelda quest. It means it’s only dungeons, and they are randomly generated. Moreover, once you’re dead, you’ll have to restart from the beginning, losing all your improvements (weapons, health, etc). It should be considered a well-polished proof-of-concept.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/tunics",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/tunics/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/tunics/tunics/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -2032,14 +2032,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:35.671Z",
+    "last_modified": "2025-10-31T02:37:09.681Z",
     "requirements": ""
   },
   {
     "title": "UFO 50",
     "description": "From the developer, Mossmouth: \"UFO 50 is a collection of 50 single and multiplayer games that span a variety of genres, from platformers and shoot 'em ups to puzzle games, roguelites, and RPGs. Our goal is to combine a familiar 8-bit aesthetic with new ideas and modern game design.\"",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/ufo50",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ufo50/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ufo50/ufo50/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -2058,14 +2058,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-24T22:13:52.435Z",
+    "last_modified": "2025-10-31T02:37:09.533Z",
     "requirements": ""
   },
   {
     "title": "Undertale",
     "description": "UNDERTALE! The RPG game where you don't have to destroy anyone.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/undertale",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertale/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertale/undertale/screenshot.png",
     "porter": [
       "krishenriksen",
       "Jeod",
@@ -2090,14 +2090,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:46:31.305Z",
+    "last_modified": "2025-10-31T02:37:09.535Z",
     "requirements": ""
   },
   {
     "title": "Undertale Red & Yellow",
     "description": "Undertale Red & Yellow is a mod for the game Undertale that incorporates elements from Undertale Yellow. It features Frisk, accompanied by two ghosts Chara and Clover, as they navigate through the Underground. The mod includes additional content such as new interactions, minigames, and mini-bosses, which significantly extend the gameplay experience.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/undertaleredyellow",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertaleredyellow/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertaleredyellow/undertaleredyellow/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -2122,14 +2122,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-28T11:50:16.692Z",
+    "last_modified": "2025-10-31T02:37:09.537Z",
     "requirements": ""
   },
   {
     "title": "Undertale Yellow",
     "description": "When a child named Clover sets out on a mission, they find themself deep within the Underground. In this foreign land, monsters lurk around every corner, but are they friend or foe?",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/undertaleyellow",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertaleyellow/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertaleyellow/utyellow/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -2149,14 +2149,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-17T00:54:02.941Z",
+    "last_modified": "2025-10-31T02:37:09.539Z",
     "requirements": ""
   },
   {
     "title": "VA-11 Hall-A: Cyberpunk Bartender Action",
     "description": "VA-11 HALL-A: Cyberpunk Bartender Action is a booze em' up about waifus, technology, and post-dystopia life. In this world, corporations reign supreme, all human life is infected with nanomachines designed to oppress them, and the terrifying White Knights ensure that everyone obeys the laws..",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/valhalla",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/valhalla/screenshot.png",
     "porter": [
       "Tekkenfede"
     ],
@@ -2192,14 +2192,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:33.958Z",
+    "last_modified": "2025-10-31T02:37:09.541Z",
     "requirements": ""
   },
   {
     "title": "Victory Heat Rally",
     "description": "Welcome to VHR! Unlock the secrets of speed in this turbocharged neo super scaler arcade racing experience. Dominate the track & drift your way to the finish line on the road to becoming the VHRC champion.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/victoryheatrally",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/victoryheatrally/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/victoryheatrally/vhr/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -2220,14 +2220,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-09-26T22:09:34.017Z",
+    "last_modified": "2025-10-31T02:37:09.543Z",
     "requirements": "power"
   },
   {
     "title": "Wolfenstein 3D",
     "description": "LZ Wolf and EZ Wolf come to PortMaster! A Love2D launcher makes selecting games and mods easy. See the readme for instructions and details.\n\nIncludes shareware demo files.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/wolfenstein3d",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/wolfenstein3d/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/wolfenstein3d/wolf3d/screenshot.png",
     "porter": [
       "Slayer366",
       "Jeod"
@@ -2245,14 +2245,14 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T21:07:53.070Z",
+    "last_modified": "2025-10-31T02:37:09.714Z",
     "requirements": ""
   },
   {
     "title": "Yarntown",
     "description": "You’ve come on the night of the hunt. The streets of this cursed, gothic town are overrun with beasts, and what has become of the men who tried to hunt them before. Explore the twisting roads, go toe to toe with powerful foes, and uncover Yarntown’s dark secrets.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/solarus/yarntown",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/yarntown/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/yarntown/yarntown/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -2267,14 +2267,14 @@
     "rtr": false,
     "arch": [],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:32:26.390Z",
+    "last_modified": "2025-10-31T02:37:09.683Z",
     "requirements": ""
   },
   {
     "title": "Zelda II: Enhanced",
     "description": "Zelda II Enhanced adds a ton of QoL improvements, widescreen, new areas, and new collectibles. The game is arguably much easier to play through.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/zelda2enhanced",
-    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda2enhanced/screenshot.png",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda2enhanced/ziiaol/screenshot.png",
     "porter": [
       "Jeod"
     ],
@@ -2295,7 +2295,7 @@
       "armhf"
     ],
     "min_glibc": "",
-    "last_modified": "2025-07-08T20:31:43.720Z",
+    "last_modified": "2025-10-31T02:37:09.552Z",
     "requirements": ""
   }
 ]
