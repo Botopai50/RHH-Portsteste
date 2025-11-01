@@ -978,6 +978,45 @@
     "requirements": ""
   },
   {
+    "title": "Momodora: Reverie Under the Moonlight",
+    "description": "Unleash ravaging combos against a variety of formidable monsters and deftly dodge your way through a cursed land to seek audience with the Queen and dispel the evil that threatens all life.",
+    "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/momodora_rutm",
+    "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/momodora_rutm/momodora_rutm/screenshot.png",
+    "porter": [
+      "Jeod",
+      "JohnnyOnFlame"
+    ],
+    "genres": [
+      "action",
+      "adventure"
+    ],
+    "availability": "paid",
+    "store": [
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/428550/Momodora_Reverie_Under_The_Moonlight/",
+        "developerurl": ""
+      },
+      {
+        "name": "GOG",
+        "gameurl": "https://www.gog.com/en/game/momodora_reverie_under_the_moonlight",
+        "developerurl": ""
+      }
+    ],
+    "instructions": "Download the linux version and add game files to `momodora_rutm/gamedata`.",
+    "runtime": [
+      "weston_pkg_0.2.squashfs"
+    ],
+    "exp": false,
+    "rtr": false,
+    "arch": [
+      "armhf"
+    ],
+    "min_glibc": "",
+    "last_modified": "2025-11-01T11:31:32.781Z",
+    "requirements": "power"
+  },
+  {
     "title": "Mystik Belle",
     "description": "A Metroidvania with Point and Click style elements like Psychonauts.\nHelp Belle fix the mystic Walpurgisnacht Brew by finding three rare magical ingredients in order to clear her name.",
     "download_url": "https://github.com/JeodC/RHH-Ports/tree/main/ports/released/gamemakerengine/mystikbelle",
@@ -1325,7 +1364,7 @@
       "aarch64"
     ],
     "min_glibc": "",
-    "last_modified": "2025-10-31T02:56:47.266Z",
+    "last_modified": "2025-11-01T03:57:29.659Z",
     "requirements": ""
   },
   {
