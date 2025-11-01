@@ -1,0 +1,50 @@
+{
+  "version": 4,
+  "name": "momodora_rutm.zip",
+  "items": [
+    "Momodora RUtM.sh",
+    "momodora_rutm"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Momodora: Reverie Under the Moonlight",
+    "porter": [
+      "Jeod",
+      "JohnnyOnFlame"
+    ],
+    "desc": "Unleash ravaging combos against a variety of formidable monsters and deftly dodge your way through a cursed land to seek audience with the Queen and dispel the evil that threatens all life.",
+    "desc_md": null,
+    "inst": "Download the linux version and add game files to `momodora_rutm/gamedata`.",
+    "inst_md": null,
+    "genres": [
+      "action",
+      "adventure"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [
+	  "weston_pkg_0.2.squashfs"
+	],
+    "store": [
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/428550/Momodora_Reverie_Under_The_Moonlight/",
+        "developerurl": ""
+      },
+      {
+        "name": "GOG",
+        "gameurl": "https://www.gog.com/en/game/momodora_reverie_under_the_moonlight",
+        "developerurl": ""
+      }
+    ],
+    "availability": "paid",
+    "reqs": [
+      "power"
+	],
+    "arch": [
+      "armhf"
+    ],
+    "min_glibc": ""
+  }
+}

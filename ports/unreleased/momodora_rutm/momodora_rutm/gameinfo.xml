@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Momodora RUtM.sh</path>
+		<name>Momodora: Reverie Under the Moonlight</name>
+		<desc>Unleash ravaging combos against a variety of formidable monsters and deftly dodge your way through a cursed land to seek audience with the Queen and dispel the evil that threatens all life.</desc>
+		<image>./momodora_rutm/cover.png</image>
+		<releasedate>20160304</releasedate>
+		<developer>Bombservice</developer>
+		<genre>Action, Adventure, Indie</genre>
+	</game>
+</gamelist>
