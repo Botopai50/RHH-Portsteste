@@ -10,19 +10,28 @@ i=1
 # Exports
 export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
 
-# Extract extractor directory
-if [ -f "$GAMEDIR/assets/extractor.zip" ]; then
-    echo "Extracting xml files..."
-    cd "$GAMEDIR/assets"
-    if unzip -oq extractor.zip; then
-        #rm -f extractor.zip
-        echo "Extractor files unpacked successfully."
-    else
-        echo "Error: Failed to extract extractor.zip."
-        exit
+unzip_assets() {
+    # Define 7zzs binary
+    SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
+    if [ ! -x "$SEVENZIP" ]; then
+        echo "7zzs binary not found at $SEVENZIP"
+        return 1
     fi
-    cd "$GAMEDIR"
-fi
+
+    EXTRACTOR_ZIP="$GAMEDIR/assets/extractor.zip"
+    EXTRACTOR_DIR="$GAMEDIR/assets"
+
+    if [ -f "$EXTRACTOR_ZIP" ]; then
+        echo "Extracting extractor.zip..."
+        if "$SEVENZIP" x -y "$EXTRACTOR_ZIP" -o"$EXTRACTOR_DIR" >/dev/null; then
+            chmod +x "$EXTRACTOR_DIR/extractor/ZAPD.out"
+            rm -f "$EXTRACTOR_ZIP"
+        else
+            echo "Error: Extraction failed"
+            return 1
+        fi
+    fi
+}
 
 process_roms() {
     # Collect ROM files
@@ -47,6 +56,8 @@ process_roms() {
         fi
     done
 }
+
+unzip_assets || { echo "Patching process failed!"; exit 1; }
 
 process_roms || { echo "Patching process failed!"; return 1; }
 

@@ -29,8 +29,8 @@ export PATCHER_TIME="5 to 10 minutes"
 # CD and set permissions
 cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
-$ESUDO chmod +xwr 2s2h.elf
-$ESUDO chmod +xwr $PATCHER_FILE
+$ESUDO chmod +xwr "$GAMEDIR/2s2h.elf"
+$ESUDO chmod +xwr "$PATCHER_FILE"
 
 # Close the menu if open
 sed -i 's/"Menu": *1/"Menu": 0/' 2ship2harkinian.json
@@ -75,6 +75,8 @@ if [ ! -f "mm.o2r" ]; then
     # Ensure we have a rom file before attempting to generate o2r
     if ls *.*64 1> /dev/null 2>&1; then
         if [ -f "$controlfolder/utils/patcher.txt" ]; then
+            export controlfolder
+            export DEVICE_ARCH
             source "$controlfolder/utils/patcher.txt"
             $ESUDO kill -9 $(pidof gptokeyb)
         else

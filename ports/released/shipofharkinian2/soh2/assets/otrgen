@@ -1,6 +1,39 @@
 #!/bin/bash
+# Set GAMEDIR to the current directory and set logfile
+GAMEDIR="$PWD"
+LOGFILE="$GAMEDIR/patchlog.txt"
 
-# Function to handle a single ROM file
+# Redirect output and error to the log file
+exec > >(tee "$LOGFILE") 2>&1
+echo "GAMEDIR is set to: $GAMEDIR"
+
+# Exports
+export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
+
+unzip_assets() {
+    # Define 7zzs binary
+    SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
+    if [ ! -x "$SEVENZIP" ]; then
+        echo "7zzs binary not found at $SEVENZIP"
+        return 1
+    fi
+
+    EXTRACTOR_ZIP="$GAMEDIR/assets/extractor.zip"
+    EXTRACTOR_DIR="$GAMEDIR/assets"
+
+    if [ -f "$EXTRACTOR_ZIP" ]; then
+        echo "Extracting extractor.zip..."
+        if "$SEVENZIP" x -y "$EXTRACTOR_ZIP" -o"$EXTRACTOR_DIR" >/dev/null; then
+            chmod +x "$EXTRACTOR_DIR/extractor/ZAPD.out"
+            rm -f "$EXTRACTOR_ZIP"
+        else
+            echo "Error: Extraction failed"
+            return 1
+        fi
+    fi
+}
+
+
 process_rom() {
     local romfile=$1
 
@@ -30,7 +63,7 @@ process_rom() {
     OTRNAME="mm.o2r"
     if [ ! -e "$GAMEDIR/$OTRNAME" ]; then
         echo "Generating $OTRNAME from $romfile..." | tee -a $LOGFILE
-        ./assets/extractor/ZAPD.out ed -eh -i ./assets/xml/$ROM -b ./$romfile -fl ./assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf ./assets/extractor/Config_$ROM.xml -se OTR --otrfile "$OTRNAME" --portVer "2.0.0"
+        "$GAMEDIR/assets/extractor/ZAPD.out" ed -eh -i "$GAMEDIR/assets/xml/$ROM" -b "$GAMEDIR/$romfile" -fl "$GAMEDIR/assets/extractor/filelists/" -o placeholder -osf placeholder -gsf 1 -rconf "$GAMEDIR/assets/extractor/Config_$ROM.xml" -se OTR --otrfile "$OTRNAME" --portVer "3.0.0"
         if [ $? -eq 0 ]; then
             echo "Successfully generated $OTRNAME"
         else
@@ -40,26 +73,7 @@ process_rom() {
     fi
 }
 
-# Set GAMEDIR to the current directory and set logfile
-GAMEDIR="$PWD"
-LOGFILE="$GAMEDIR/patchlog.txt"
-
-# Redirect output and error to the log file
-exec > >(tee "$LOGFILE") 2>&1
-echo "GAMEDIR is set to: $GAMEDIR"
-
-# Exports
-export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
-
-# Extract extractor directory
-if [ -f assets/extractor.zip ]; then
-    echo "Extracting xml files..."
-    cd assets
-    if unzip -oq extractor.zip; then
-        rm extractor.zip
-        cd ..
-    fi
-fi
+unzip_assets || { echo "Patching process failed!"; exit 1; }
 
 # Count the number of ROM files
 rom_count=0

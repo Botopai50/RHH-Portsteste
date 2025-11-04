@@ -75,6 +75,8 @@ otr_check() {
         # Ensure we have a rom file before attempting to generate otr
         if ls "$GAMEDIR/baseroms/"*.*64 1> /dev/null 2>&1; then
             if [ -f "$controlfolder/utils/patcher.txt" ]; then
+                export controlfolder
+                export DEVICE_ARCH
                 source "$controlfolder/utils/patcher.txt"
                 $ESUDO kill -9 $(pidof gptokeyb)
             else
