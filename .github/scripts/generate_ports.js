@@ -1,106 +1,105 @@
 const fs = require('fs').promises;
 const path = require('path');
+const readline = require('readline');
 
 const screenshotExtensions = ['.png', '.jpg', '.jpeg'];
+const optionalFiles = ['gameinfo.xml', 'README.md'];
+const GITHUB_REPO_BASE = 'https://github.com/JeodC/RHH-Ports/tree/main/ports/released';
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released';
 
-/**
- * Recursively find all ports with a port.json and a screenshot.
- * Also computes latest modified timestamp for each port.
- */
-async function findPorts(baseDir) {
-	const ports = [];
+const ports = [];
 
-	async function walk(currentDir) {
-		const entries = await fs.readdir(currentDir, { withFileTypes: true });
+async function processDir(currentDir) {
+    const entries = await fs.readdir(currentDir, { withFileTypes: true });
 
-		// Check subdirectories for port.json and screenshot
-		for (const entry of entries) {
-			if (!entry.isDirectory()) continue;
+    for (const entry of entries) {
+        if (!entry.isDirectory()) continue;
 
-			const subDir = path.join(currentDir, entry.name);
-			const subEntries = await fs.readdir(subDir, { withFileTypes: true });
+        const subDir = path.join(currentDir, entry.name);
+        const subEntries = await fs.readdir(subDir, { withFileTypes: true });
+        const fileNames = subEntries.filter(f => f.isFile()).map(f => f.name.toLowerCase());
 
-			const portJson = subEntries.find(e => e.isFile() && e.name.toLowerCase() === 'port.json');
-			const screenshot = subEntries.find(
-				e => e.isFile() &&
-					 e.name.toLowerCase().startsWith('screenshot') &&
-					 screenshotExtensions.includes(path.extname(e.name).toLowerCase())
-			);
+        const portJsonFile = fileNames.find(f => f === 'port.json');
+        const screenshotFile = subEntries.find(
+            e =>
+                e.isFile() &&
+                e.name.toLowerCase().startsWith('screenshot') &&
+                screenshotExtensions.includes(path.extname(e.name).toLowerCase())
+        );
 
-			if (portJson && screenshot) {
-				let latestMtime = 0;
+        // If port.json and screenshot exist, generate port
+        if (portJsonFile && screenshotFile) {
+            // Warn about missing optional files
+            const missingOptional = optionalFiles.filter(f => !fileNames.includes(f.toLowerCase()));
+            if (missingOptional.length) {
+                const folderName = path.relative(baseDir, subDir).split(path.sep).join('/');
+                const missingColored = missingOptional.map(f => `\x1b[94m${f}\x1b[0m`).join(', ');
+                console.log(`\x1b[33mWarning:\x1b[0m Missing ${missingColored} in ${folderName}`);
+            }
 
-				// Recursively compute latest modified timestamp in the subfolder
-				async function getLatest(dir) {
-					const allEntries = await fs.readdir(dir, { withFileTypes: true });
-					for (const e of allEntries) {
-						const fullPath = path.join(dir, e.name);
-						if (e.isFile()) {
-							const stat = await fs.stat(fullPath);
-							if (stat.mtimeMs > latestMtime) latestMtime = stat.mtimeMs;
-						} else if (e.isDirectory()) {
-							await getLatest(fullPath);
-						}
-					}
-				}
-				await getLatest(subDir);
+            // Compute latest modification recursively
+            let latestMtime = 0;
+            async function getLatest(dir) {
+                const allEntries = await fs.readdir(dir, { withFileTypes: true });
+                for (const e of allEntries) {
+                    const fullPath = path.join(dir, e.name);
+                    const stat = await fs.stat(fullPath);
+                    if (stat.mtimeMs > latestMtime) latestMtime = stat.mtimeMs;
+                    if (e.isDirectory()) await getLatest(fullPath);
+                }
+            }
+            await getLatest(subDir);
 
-				try {
-					const portRaw = await fs.readFile(path.join(subDir, 'port.json'), 'utf-8');
-					const data = JSON.parse(portRaw);
+            const portRaw = await fs.readFile(path.join(subDir, 'port.json'), 'utf-8');
+            const data = JSON.parse(portRaw);
 
-					const relDir = path.relative(baseDir, subDir).split(path.sep).join('/');
-					const downloadDir = path.relative(baseDir, path.dirname(subDir)).split(path.sep).join('/');
+            const relativeDir = path.relative(baseDir, subDir).split(path.sep).join('/');
+            const downloadDir = path.relative(baseDir, path.dirname(subDir)).split(path.sep).join('/');
 
-					ports.push({
-						title: data.attr?.title || entry.name,
-						description: data.attr?.desc || '',
-						download_url: `https://github.com/JeodC/RHH-Ports/tree/main/ports/released/${downloadDir}`,
-						screenshot_url: `https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/${relDir}/${screenshot.name}`,
-						porter: data.attr?.porter || [],
-						genres: data.attr?.genres || [],
-						availability: data.attr?.availability || 'unknown',
-						store: data.attr?.store || [],
-						instructions: data.attr?.inst || '',
-						runtime: data.attr?.runtime || [],
-						exp: data.attr?.exp || false,
-						rtr: data.attr?.rtr || false,
-						arch: data.attr?.arch || [],
-						min_glibc: data.attr?.min_glibc || '',
-						last_modified: new Date(latestMtime || Date.now()).toISOString(),
-						requirements: (data.attr?.reqs || []).join(', '),
-					});
-				} catch (err) {
-					console.warn(`Failed to process ${subDir}: ${err.message}`);
-				}
-			}
+            data.source = {
+                date_added: new Date(latestMtime || Date.now()).toISOString().split('T')[0],
+                date_updated: new Date(latestMtime || Date.now()).toISOString().split('T')[0],
+                release_id: new Date(latestMtime || Date.now()).toISOString().replace(/[-:]/g, '').split('.')[0],
+                url: `ports/released/${relativeDir}`,
+                download_url: `${GITHUB_REPO_BASE}/${downloadDir}`,
+                screenshot_url: `${GITHUB_RAW_BASE}/${relativeDir}/${screenshotFile.name}`
+            };
 
-			// Recurse into subdirectory
-			await walk(subDir);
-		}
-	}
+            ports.push(data);
+        }
 
-	await walk(baseDir);
-	return ports;
+        // Recurse into subfolders
+        await processDir(subDir);
+    }
 }
 
-/**
- * Main function
- */
 async function main() {
-	const baseDir = path.resolve('./ports/released');
-	const outputFile = path.resolve('./docs/ports.json');
+    try {
+        global.baseDir = path.resolve('./ports/released');
+        const outputFile = path.resolve('./docs/ports.json');
 
-	const ports = await findPorts(baseDir);
+        await processDir(baseDir);
 
-	// Sort alphabetically
-	ports.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+        ports.sort((a, b) => {
+            const aTitle = a.attr?.title || a.name || '';
+            const bTitle = b.attr?.title || b.name || '';
+            return aTitle.toLowerCase().localeCompare(bTitle.toLowerCase());
+        });
 
-	await fs.writeFile(outputFile, JSON.stringify(ports, null, 2), 'utf-8');
-	console.log(`Generated ports.json with ${ports.length} ports.`);
+        await fs.writeFile(outputFile, JSON.stringify(ports, null, 4), 'utf-8');
+        console.log(`\x1b[32mGenerated ports.json with ${ports.length} ports.\x1b[0m`);
+    } catch (err) {
+        console.error('Error:', err);
+    } finally {
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+        rl.question('Press Enter to exit...', () => {
+            rl.close();
+            process.exit(0);
+        });
+    }
 }
 
-main().catch(err => {
-	console.error(err);
-	process.exit(1);
-});
+main();
