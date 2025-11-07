@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gamelist>
 	<game>
-		<path>./Port.sh</path>
-		<name></name>
-		<desc></desc>
-		<image>./portname/cover.png</image>
-		<releasedate></releasedate>
-		<developer></developer>
-		<genre></genre>
+		<path>./The Legend of Zelda - Wand of Gamelon Remastered.sh</path>
+		<name>The Legend of Zelda - Wand of Gamelon Remastered</name>
+		<desc>Zelda: Wand of Gamelon and Link: Faces of Evil have been remastered using the original assets, and includes widescreen, cutscene subtitles, unlockables, and a Remastered Mode for less frustrating gameplay. The cutscenes are still the same old memey goodness you know and love!</desc>
+		<image>./zeldaa-wogr/cover.png</image>
+		<releasedate>20201127</releasedate>
+		<developer>Dopply, Nintendo</developer>
+		<genre>Action, Adventure</genre>
 	</game>
 </gamelist>

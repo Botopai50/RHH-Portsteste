@@ -1,21 +1,7 @@
 ## Installation
-
-
-## Default Gameplay Controls
-| Button            | Action |
-|--                 |--|
-| START             | |
-| SELECT            | |
-| D-PAD / JOYSTICK  | |
-| A                 | |
-| B                 | |
-| X                 | |
-| Y                 | |
-| L1                | |
-| R1                | |
-| L2                | |
-| R2                | |
+Download **WOGR v1.4.2 (Android).zip** from https://archive.org/details/foer-wogr-patched-12-9-20 and add to `zelda-wogr/assets`.
 
 ## Thanks
-
+Dopply -- The remaster  
+Unknown community members -- Fan patch  
 JohnnyOnFlame -- GMLoader-Next  
