@@ -34,7 +34,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y zip jq
+        run: sudo apt-get update && sudo apt-get install -y zip jq gh
 
       - name: Prepare environment
         run: |
@@ -107,7 +107,7 @@ jobs:
 
             # Remove any existing entry for this port, then add new
             TMP=$(mktemp)
-            'map(select((.name | split(".")[0]) != $portname)) + [$PORT_JSON_MERGED]' "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
+            jq --arg portname "$PORTNAME" 'map(select((.name | split(".")[0]) != $portname)) + [$PORT_JSON_MERGED]' "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
           done
 
       - name: Sort ports by title
@@ -115,6 +115,19 @@ jobs:
           PORTS_JSON="$GITHUB_WORKSPACE/docs/ports.json"
           TMP=$(mktemp)
           jq 'sort_by(.attr.title)' "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
+
+      - name: Delete existing release assets
+        if: ${{ steps.ports.outputs.Ports != '' }}
+        run: |
+          RELEASE_ID=$(gh api repos/${GITHUB_REPOSITORY}/releases/tags/ports-latest --jq '.id')
+          for FILE in temp_ports/*.zip; do
+            NAME=$(basename "$FILE")
+            ASSET_ID=$(gh api repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets --jq ".[] | select(.name==\"$NAME\") | .id")
+            if [ -n "$ASSET_ID" ]; then
+              echo "Deleting existing asset $NAME ($ASSET_ID)"
+              gh api -X DELETE repos/${GITHUB_REPOSITORY}/releases/assets/$ASSET_ID
+            fi
+          done
 
       - name: Create release and upload zips
         if: ${{ steps.ports.outputs.Ports != '' }}
