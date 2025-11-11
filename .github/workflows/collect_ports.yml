@@ -15,7 +15,7 @@ on:
           - 'false'
   push:
     paths:
-      - 'docs/ports.json'
+      - 'ports/released/**'
 
 concurrency:
   group: release-ports
