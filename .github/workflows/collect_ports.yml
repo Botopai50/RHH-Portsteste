@@ -41,7 +41,8 @@ jobs:
           ZIP_DIR="$GITHUB_WORKSPACE/temp_ports"
           mkdir -p "$ZIP_DIR"
           PORTS_JSON="$GITHUB_WORKSPACE/docs/ports.json"
-          echo "[]" > "$PORTS_JSON"
+          # Ensure existing ports.json exists
+          [ -f "$PORTS_JSON" ] || echo "[]" > "$PORTS_JSON"
 
       - name: Determine ports to process
         id: ports
@@ -57,6 +58,7 @@ jobs:
               fi
             done
           fi
+          # Deduplicate
           mapfile -t PORTS < <(printf "%s\n" "${PORTS[@]}" | sort -u)
           echo "Ports=${PORTS[*]}" >> $GITHUB_OUTPUT
 
@@ -64,14 +66,16 @@ jobs:
         run: |
           ZIP_DIR="$GITHUB_WORKSPACE/temp_ports"
           PORTS_JSON="$GITHUB_WORKSPACE/docs/ports.json"
+
           for STAGING_DIR in ${{ steps.ports.outputs.Ports }}; do
             PORTNAME=$(basename "$STAGING_DIR")
             echo "→ Processing $PORTNAME"
 
-            # Find inner folder
-            PORTDIR=$(find "$STAGING_DIR" -mindepth 1 -maxdepth 1 -type d | head -n1)
-            [ -d "$PORTDIR" ] || { echo "  Skipping $PORTNAME: no inner folder"; continue; }
-            [ -f "$PORTDIR/port.json" ] || { echo "  Skipping $PORTNAME: missing port.json"; continue; }
+            # Find port.json recursively
+            PORT_JSON=$(find "$STAGING_DIR" -type f -name "port.json" | head -n1)
+            [ -f "$PORT_JSON" ] || { echo "  Skipping $PORTNAME: missing port.json"; continue; }
+
+            PORTDIR=$(dirname "$PORT_JSON")
 
             # Find screenshot
             SCREENSHOT=$(find "$PORTDIR" -maxdepth 1 -type f \( -iname "screenshot*.png" -o -iname "screenshot*.jpg" -o -iname "screenshot*.jpeg" \) | head -n1)
@@ -79,7 +83,7 @@ jobs:
 
             # Zip entire port folder
             echo "  📦 Zipping port → $ZIP_DIR/${PORTNAME}.zip"
-            (cd "$STAGING_DIR" && zip -r -q "$ZIP_DIR/${PORTNAME}.zip" .)
+            (cd "$PORTDIR" && zip -r -q "$ZIP_DIR/${PORTNAME}.zip" .)
 
             # Compute MD5 and size
             ZIP_PATH="$ZIP_DIR/${PORTNAME}.zip"
@@ -90,10 +94,10 @@ jobs:
             DOWNLOAD_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/ports-latest/${PORTNAME}.zip"
 
             # Read original port.json
-            ORIGINAL_JSON=$(cat "$PORTDIR/port.json")
+            ORIGINAL_JSON=$(cat "$PORT_JSON")
 
             # Merge port.json with source at bottom
-            PORT_JSON=$(jq -n \
+            PORT_JSON_MERGED=$(jq -n \
               --argjson original "$ORIGINAL_JSON" \
               --arg date_updated "$DATE_UPDATED" \
               --arg download_url "$DOWNLOAD_URL" \
@@ -103,9 +107,10 @@ jobs:
               '$original + {source: {date_updated: $date_updated, download_url: $download_url, screenshot_url: $screenshot_url, size: ($size|tonumber), md5: $md5}}'
             )
 
-            # Append to ports.json
+            # Remove existing entry if present
             TMP=$(mktemp)
-            jq ". + [$PORT_JSON]" "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
+            jq "map(select(.name != \"${PORTNAME}\")) + [$PORT_JSON_MERGED]" "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
+            echo "  ✅ Updated $PORTNAME in ports.json"
           done
 
       - name: Sort ports by title
