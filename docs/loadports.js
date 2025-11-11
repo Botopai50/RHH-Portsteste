@@ -107,7 +107,7 @@ async function loadPorts() {
                 const title = port.attr.title || port.name;
                 const desc = port.attr.desc || '';
                 const screenshot = port.source.screenshot_url || '';
-                const detailsHref = `${GITHUB_REPO_BASE}/${port.source.url}`;
+                const detailsHref = port.source.readme_url || '';
 
                 // Use last folder of download_url as filename
                 let downloadFolderName = 'download';

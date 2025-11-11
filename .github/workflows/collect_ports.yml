@@ -83,12 +83,16 @@ jobs:
             SCREENSHOT=$(find "$PORTDIR" -maxdepth 1 -type f \( -iname "screenshot*.png" -o -iname "screenshot*.jpg" -o -iname "screenshot*.jpeg" \) | head -n1)
             [ -f "$SCREENSHOT" ] || { echo "  Skipping $PORTNAME: no screenshot found"; continue; }
 
+            # Find README in inner folder
+            README=$(find "$PORTDIR" -maxdepth 1 -type f \( -iname "README.md" -o -iname "readme.md" \) | head -n1)
+
             # Compute MD5 and size
             ZIP_PATH="$ZIP_DIR/${PORTNAME}.zip"
             MD5=$(md5sum "$ZIP_PATH" | awk '{print $1}')
             SIZE=$(stat -c %s "$ZIP_PATH")
             DATE_UPDATED=$(date -u +"%Y-%m-%d")
             SCREENSHOT_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${SCREENSHOT#"$GITHUB_WORKSPACE/"}"
+            README_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${README#"$GITHUB_WORKSPACE/"}"
             DOWNLOAD_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/ports-latest/${PORTNAME}.zip"
 
             # Read original port.json
@@ -99,6 +103,7 @@ jobs:
               --argjson original "$ORIGINAL_JSON" \
               --arg date_updated "$DATE_UPDATED" \
               --arg download_url "$DOWNLOAD_URL" \
+              --arg readme_url "$README_URL" \
               --arg screenshot_url "$SCREENSHOT_URL" \
               --arg size "$SIZE" \
               --arg md5 "$MD5" \
@@ -107,7 +112,9 @@ jobs:
 
             # Remove any existing entry for this port, then add new
             TMP=$(mktemp)
-            jq --arg portname "$PORTNAME" --argjson portjson "$PORT_JSON_MERGED" 'map(select((.name | split(".")[0]) != $portname)) + [$portjson]' "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
+            jq --arg portname "$PORTNAME" --argjson portjson "$PORT_JSON_MERGED" \
+               'map(select((.name | split(".")[0]) != $portname)) + [$portjson]' \
+               "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
           done
 
       - name: Sort ports by title
@@ -115,19 +122,6 @@ jobs:
           PORTS_JSON="$GITHUB_WORKSPACE/docs/ports.json"
           TMP=$(mktemp)
           jq 'sort_by(.attr.title)' "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
-
-      - name: Delete existing release assets
-        if: ${{ steps.ports.outputs.Ports != '' }}
-        run: |
-          RELEASE_ID=$(gh api repos/${GITHUB_REPOSITORY}/releases/tags/ports-latest --jq '.id')
-          for FILE in temp_ports/*.zip; do
-            NAME=$(basename "$FILE")
-            ASSET_ID=$(gh api repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets --jq ".[] | select(.name==\"$NAME\") | .id")
-            if [ -n "$ASSET_ID" ]; then
-              echo "Deleting existing asset $NAME ($ASSET_ID)"
-              gh api -X DELETE repos/${GITHUB_REPOSITORY}/releases/assets/$ASSET_ID
-            fi
-          done
 
       - name: Create release and upload zips
         if: ${{ steps.ports.outputs.Ports != '' }}
