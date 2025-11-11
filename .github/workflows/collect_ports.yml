@@ -34,18 +34,20 @@ jobs:
           fetch-depth: 0
 
       - name: Prepare environment
-        run: mkdir -p temp_ports docs
+        run: mkdir -p temp_ports
 
       # ------------------------------------------------------
-      # Determine which ports need to be zipped and generate ports.json
-      - name: Process ports and generate ports.json
-        id: processports
+      # Determine which ports need to be zipped
+      - name: Determine changed ports
+        id: changedports
         run: |
           set -e
           ZIP_DIR="$GITHUB_WORKSPACE/temp_ports"
           PORTS_JSON="$GITHUB_WORKSPACE/docs/ports.json"
+          mkdir -p "$ZIP_DIR"
           echo "[]" > "$PORTS_JSON"
 
+          # Decide which ports to process
           if [ "${{ github.event.inputs.force }}" = "true" ]; then
             echo "Force update: including all ports"
             mapfile -t PORTS_ARRAY < <(find ports/released -type f -name "*.sh" -exec dirname {} \;)
@@ -63,75 +65,90 @@ jobs:
           # Remove duplicate directories
           mapfile -t PORTS_ARRAY < <(printf "%s\n" "${PORTS_ARRAY[@]}" | sort -u)
 
+          CHANGED=false
+
+          # ------------------------------------------------------
+          # Process each port
           for PORTDIR in "${PORTS_ARRAY[@]}"; do
             PORTNAME=$(basename "$PORTDIR")
             echo "→ Processing $PORTNAME"
 
-            # Inner folder containing port data
-            INNER=$(find "$PORTDIR" -mindepth 1 -maxdepth 1 -type d | head -n1)
-            if [ ! -d "$INNER" ]; then
+            # Inner folder must exist
+            INNER_DIR=$(find "$PORTDIR" -mindepth 1 -maxdepth 1 -type d | head -n1)
+            if [ ! -d "$INNER_DIR" ]; then
               echo "  Skipping $PORTNAME: no inner folder"
               continue
             fi
 
-            # Must contain port.json
-            if [ ! -f "$INNER/port.json" ]; then
+            # Must have port.json
+            PORT_JSON_FILE="$INNER_DIR/port.json"
+            if [ ! -f "$PORT_JSON_FILE" ]; then
               echo "  Skipping $PORTNAME: missing port.json"
               continue
             fi
 
-            # Must contain a screenshot
-            SCREENSHOT=$(find "$INNER" -maxdepth 1 -type f \( -iname "screenshot*.png" -o -iname "screenshot*.jpg" -o -iname "screenshot*.jpeg" \) | head -n1)
+            # Must have a screenshot
+            SCREENSHOT=$(find "$INNER_DIR" -maxdepth 1 -type f \( -iname "screenshot*.png" -o -iname "screenshot*.jpg" -o -iname "screenshot*.jpeg" \) | head -n1)
             if [ ! -f "$SCREENSHOT" ]; then
               echo "  Skipping $PORTNAME: no screenshot found"
               continue
             fi
 
-            # ------------------------------------------------------
-            # Zip inner folder contents
+            # Zip all contents of the port folder (including scripts)
             echo "  📦 Zipping port → $ZIP_DIR/${PORTNAME}.zip"
             (
-              cd "$INNER"
+              cd "$PORTDIR"
               zip -r -q "$ZIP_DIR/${PORTNAME}.zip" .
             )
 
+            # Compute MD5 and size of zip
             ZIP_PATH="$ZIP_DIR/${PORTNAME}.zip"
             MD5=$(md5sum "$ZIP_PATH" | awk '{print $1}')
             SIZE=$(stat -c %s "$ZIP_PATH")
             DATE_UPDATED=$(date -u +"%Y-%m-%d")
-            SCREENSHOT_REL="${SCREENSHOT#$GITHUB_WORKSPACE/}"
-            SCREENSHOT_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/$SCREENSHOT_REL"
 
-            PORT_JSON=$(jq -n \
-              --arg name "$PORTNAME" \
+            # Build port JSON preserving original content
+            ORIGINAL_JSON=$(cat "$PORT_JSON_FILE")
+            SCREENSHOT_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${SCREENSHOT#"$GITHUB_WORKSPACE/"}"
+            PORT_ENTRY=$(jq -n \
+              --argjson orig "$ORIGINAL_JSON" \
               --arg date_updated "$DATE_UPDATED" \
               --arg download_url "https://github.com/${GITHUB_REPOSITORY}/releases/download/ports-latest/${PORTNAME}.zip" \
               --arg screenshot_url "$SCREENSHOT_URL" \
               --arg size "$SIZE" \
               --arg md5 "$MD5" \
-              '{
-                name: $name,
-                source: {
-                  date_updated: $date_updated,
-                  download_url: $download_url,
-                  screenshot_url: $screenshot_url,
-                  size: ($size|tonumber),
-                  md5: $md5
-                }
-              }'
+              '. + {source: {date_updated: $date_updated, download_url: $download_url, screenshot_url: $screenshot_url, size: ($size|tonumber), md5: $md5}} | . + $orig'
             )
 
+            # Append to ports.json
             TMP=$(mktemp)
-            jq ". + [$PORT_JSON]" "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
+            jq ". + [$PORT_ENTRY]" "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
+
+            CHANGED=true
           done
 
+          # Sort ports by title
+          TMP=$(mktemp)
+          jq 'sort_by(.attr.title // .name)' "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
+
+          echo "changed=$CHANGED" >> $GITHUB_OUTPUT
           echo "Generated ports.json with $(jq length "$PORTS_JSON") ports."
-          echo "changed=true" >> $GITHUB_OUTPUT
+
+      # ------------------------------------------------------
+      # Commit and push ports.json if changed
+      - name: Commit and push ports.json
+        if: steps.changedports.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/ports.json
+          git commit -m "Update ports.json [skip ci]" || echo "No changes to commit"
+          git push
 
       # ------------------------------------------------------
       # Upload zip files to GitHub release if any were created
       - name: Upload to release
-        if: steps.processports.outputs.changed == 'true'
+        if: steps.changedports.outputs.changed == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ports-latest
@@ -139,17 +156,6 @@ jobs:
           overwrite_files: true
           generate_release_notes: false
           files: temp_ports/*.zip
-
-      # ------------------------------------------------------
-      # Commit ports.json
-      - name: Commit ports.json
-        if: steps.processports.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/ports.json
-          git commit -m "Update ports.json"
-          git push
 
       # ------------------------------------------------------
       # Cleanup temporary files
