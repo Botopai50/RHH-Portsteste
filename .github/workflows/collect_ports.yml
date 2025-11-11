@@ -41,7 +41,6 @@ jobs:
           ZIP_DIR="$GITHUB_WORKSPACE/temp_ports"
           mkdir -p "$ZIP_DIR"
           PORTS_JSON="$GITHUB_WORKSPACE/docs/ports.json"
-          # Ensure existing ports.json exists
           [ -f "$PORTS_JSON" ] || echo "[]" > "$PORTS_JSON"
 
       - name: Determine ports to process
@@ -58,7 +57,6 @@ jobs:
               fi
             done
           fi
-          # Deduplicate
           mapfile -t PORTS < <(printf "%s\n" "${PORTS[@]}" | sort -u)
           echo "Ports=${PORTS[*]}" >> $GITHUB_OUTPUT
 
@@ -71,19 +69,19 @@ jobs:
             PORTNAME=$(basename "$STAGING_DIR")
             echo "→ Processing $PORTNAME"
 
-            # Find port.json recursively
+            # Find port.json recursively inside outer directory
             PORT_JSON=$(find "$STAGING_DIR" -type f -name "port.json" | head -n1)
             [ -f "$PORT_JSON" ] || { echo "  Skipping $PORTNAME: missing port.json"; continue; }
 
+            # Zip outer directory
+            echo "  📦 Zipping port → $ZIP_DIR/${PORTNAME}.zip"
+            (cd "$STAGING_DIR" && zip -r -q "$ZIP_DIR/${PORTNAME}.zip" .)
+
             PORTDIR=$(dirname "$PORT_JSON")
 
-            # Find screenshot
+            # Find screenshot in inner folder
             SCREENSHOT=$(find "$PORTDIR" -maxdepth 1 -type f \( -iname "screenshot*.png" -o -iname "screenshot*.jpg" -o -iname "screenshot*.jpeg" \) | head -n1)
             [ -f "$SCREENSHOT" ] || { echo "  Skipping $PORTNAME: no screenshot found"; continue; }
-
-            # Zip entire port folder
-            echo "  📦 Zipping port → $ZIP_DIR/${PORTNAME}.zip"
-            (cd "$PORTDIR" && zip -r -q "$ZIP_DIR/${PORTNAME}.zip" .)
 
             # Compute MD5 and size
             ZIP_PATH="$ZIP_DIR/${PORTNAME}.zip"
@@ -96,7 +94,7 @@ jobs:
             # Read original port.json
             ORIGINAL_JSON=$(cat "$PORT_JSON")
 
-            # Merge port.json with source at bottom
+            # Merge port.json with source info
             PORT_JSON_MERGED=$(jq -n \
               --argjson original "$ORIGINAL_JSON" \
               --arg date_updated "$DATE_UPDATED" \
@@ -107,7 +105,7 @@ jobs:
               '$original + {source: {date_updated: $date_updated, download_url: $download_url, screenshot_url: $screenshot_url, size: ($size|tonumber), md5: $md5}}'
             )
 
-            # Remove existing entry if present
+            # Remove any existing entry for this port, then add new
             TMP=$(mktemp)
             jq "map(select(.name != \"${PORTNAME}\")) + [$PORT_JSON_MERGED]" "$PORTS_JSON" > "$TMP" && mv "$TMP" "$PORTS_JSON"
             echo "  ✅ Updated $PORTNAME in ports.json"
