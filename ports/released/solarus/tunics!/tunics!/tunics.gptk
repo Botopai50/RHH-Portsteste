@@ -4,20 +4,16 @@ up = up
 down = down
 left = left
 right = right
-
 a = space
 b = s
 y = a
 x = d
-
 l1 = tab
 l2 = \"
 r1 = \"
 r2 = \"
-
 l3 = \"
 r3 = \"
-
 left_analog_up = up
 left_analog_down = down
 left_analog_left = left
