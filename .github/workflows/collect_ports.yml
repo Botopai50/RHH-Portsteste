@@ -45,8 +45,10 @@ jobs:
         id: ports
         run: |
           if [ "${{ github.event.inputs.force }}" = "true" ]; then
-            mapfile -t PORTS < <(find ports/released -type f -name "*.sh" -exec dirname {} \;)
+            # Include all directories that contain a port.json
+            mapfile -t PORTS < <(find ports/released -type f -name "port.json" -exec dirname {} \;)
           else
+            # Get changed files in ports/released
             mapfile -t CHANGED < <(git diff --name-only HEAD^ HEAD)
             PORTS=()
             for f in "${CHANGED[@]}"; do
@@ -56,6 +58,7 @@ jobs:
             done
           fi
 
+          # Remove duplicates
           mapfile -t PORTS < <(printf "%s\n" "${PORTS[@]}" | sort -u)
           echo "Ports=${PORTS[*]}" >> $GITHUB_OUTPUT
           echo "Found ${#PORTS[@]} changed paths."
@@ -69,14 +72,12 @@ jobs:
           for CHANGED_PATH in ${{ steps.ports.outputs.Ports }}; do
             echo "→ Searching from $CHANGED_PATH"
 
+            # Search upward until port.json is found
             SEARCH_DIR="$CHANGED_PATH"
             PORT_JSON=""
-            while [ "$SEARCH_DIR" != "$GITHUB_WORKSPACE" ]; do
+            while [[ "$SEARCH_DIR" == "$GITHUB_WORKSPACE/ports/released"* ]] && [ "$SEARCH_DIR" != "$GITHUB_WORKSPACE" ]; do
               if [ -f "$SEARCH_DIR/port.json" ]; then
                 PORT_JSON="$SEARCH_DIR/port.json"
-                break
-              fi
-              if [[ "$SEARCH_DIR" == *"ports/released" ]]; then
                 break
               fi
               SEARCH_DIR=$(dirname "$SEARCH_DIR")
@@ -87,9 +88,8 @@ jobs:
               continue
             fi
 
-            # The staging dir is the directory *above* the one containing port.json
-            PORT_JSON_DIR=$(dirname "$PORT_JSON")
-            STAGING_DIR=$(dirname "$PORT_JSON_DIR")
+            PORT_JSON_DIR=$(dirname "$PORT_JSON")   # port directory
+            STAGING_DIR=$(dirname "$PORT_JSON_DIR") # staging directory (to zip)
             PORTNAME=$(basename "$STAGING_DIR")
 
             echo "  ✅ Found port.json in: $PORT_JSON_DIR"
@@ -98,7 +98,7 @@ jobs:
 
             ZIP_PATH="$ZIP_DIR/${PORTNAME}.zip"
             echo "  Zipping → $ZIP_PATH"
-            (cd "$STAGING_DIR" && zip -r -q "$ZIP_PATH" .)
+            (cd "$STAGING_DIR" && zip -r -q "$ZIP_PATH" . -x '*.git*')
 
             SCREENSHOT=$(find "$PORT_JSON_DIR" -maxdepth 1 -type f \( -iname "screenshot*.png" -o -iname "screenshot*.jpg" -o -iname "screenshot*.jpeg" \) | head -n1)
             [ -f "$SCREENSHOT" ] || { echo "  Skipping $PORTNAME: no screenshot found"; continue; }
