@@ -345,12 +345,12 @@
       ]
     },
     "source": {
-      "date_updated": "2025-11-13T21:17:23Z",
+      "date_updated": "2025-11-13T21:25:07Z",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/README.md",
-      "size": 8106524,
-      "md5": "d83994ee0804acc60cf0895223df6ca6"
+      "size": 8106519,
+      "md5": "80c088b12c9667e52c31a62bad0df2b4"
     }
   },
   {
