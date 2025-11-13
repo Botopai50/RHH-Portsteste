@@ -1,11 +1,9 @@
 back = \"
 start = \"
-
 up = \"
 down = \"
 left = \"
 right = \"
-
 a = \"
 b = \"
 y = \"
@@ -14,10 +12,8 @@ l1 = \"
 l2 = \"
 r1 = \"
 r2 = \"
-
 l3 = \"
 r3 = \"
-
 left_analog_up = \"
 left_analog_down = \"
 left_analog_left = \"
