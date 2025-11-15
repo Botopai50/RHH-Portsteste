@@ -147,11 +147,13 @@ async function loadPorts() {
                             <h2 class="port-title">${title}</h2>
                             <p class="port-desc">${desc}</p>
                             <p class="download-count"><strong>Downloads:</strong> ${downloadCount}</p>
-                            ${reqs ? `<div class="port-reqs">${reqs}</div>` : ''}
-                            ${genres ? `<div class="port-genres">${genres}</div>` : ''}
-                            <div class="port-buttons">
-                                <a class="details-link" href="${detailsHref}" target="_blank" rel="noopener noreferrer">Details</a>
-                                <a class="download-link" href="${downloadHref}" target="_blank" rel="noopener noreferrer">Download</a>
+                            <div class="port-footer">
+                                ${reqs ? `<div class="port-reqs">${reqs}</div>` : ''}
+                                ${genres ? `<div class="port-genres">${genres}</div>` : ''}
+                                <div class="port-buttons">
+                                    <a class="details-link" href="${detailsHref}" target="_blank" rel="noopener noreferrer">Details</a>
+                                    <a class="download-link" href="${downloadHref}" target="_blank" rel="noopener noreferrer">Download</a>
+                                </div>
                             </div>
                         </div>
                     </div>`;

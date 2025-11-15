@@ -160,6 +160,7 @@ body {
 	flex-direction: column;
 	align-items: center;
 	box-shadow: var(--shadow-sm);
+	height: 100%; /* Stretch cards to fill grid cell */
 }
 
 .port-card img {
@@ -176,7 +177,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-	flex-grow: 1;
+	flex-grow: 1; /* Info section expands to push footer down */
 	width: 100%;
 }
 
@@ -185,8 +186,15 @@ body {
 	margin: 0 0 0.5rem;
 }
 
+/* Reserve space for description + download count */
 .port-desc {
-	margin: 0.3rem 0 0.8rem;
+    min-height: 4.5rem;
+    margin: 0.3rem 0 0.3rem;
+}
+
+.download-count {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
 }
 
 /* Genres */
@@ -208,7 +216,6 @@ body {
 	font-weight: 600;
 	color: #222;
 	background: #f7e6b5;
-	background: #f7e6b5;
 	padding: 0.2rem 0.6rem;
 	border-radius: 12px;
 	white-space: nowrap;
@@ -219,7 +226,7 @@ body {
 
 /* Card Footer */
 .port-footer {
-	margin-top: auto;
+	margin-top: auto; /* Push buttons to the bottom */
 	display: flex;
 	flex-direction: column;
 	gap: 0.6rem;
