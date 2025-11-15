@@ -146,8 +146,8 @@ async function loadPorts() {
                         <div class="port-info">
                             <h2 class="port-title">${title}</h2>
                             <p class="port-desc">${desc}</p>
-                            <p class="download-count"><strong>Downloads:</strong> ${downloadCount}</p>
                             <div class="port-footer">
+                                <p class="download-count"><strong>Downloads:</strong> ${downloadCount}</p>
                                 ${reqs ? `<div class="port-reqs">${reqs}</div>` : ''}
                                 ${genres ? `<div class="port-genres">${genres}</div>` : ''}
                                 <div class="port-buttons">
