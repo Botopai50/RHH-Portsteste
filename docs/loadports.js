@@ -6,9 +6,13 @@ async function loadPorts() {
     const availabilityDropdown = document.getElementById('availability-filter');
     const requirementsDropdown = document.getElementById('requirements-filter');
     const sortDropdown = document.getElementById('sort-select');
-    const GITHUB_REPO_BASE = 'https://github.com/JeodC/RHH-Ports/tree/main/';
+    const GITHUB_REPO_OWNER = 'JeodC';
+    const GITHUB_REPO_NAME = 'RHH-Ports';
 
     try {
+        // ------------------------------
+        // Load ports.json
+        // ------------------------------
         const res = await fetch('ports.json');
         if (!res.ok) throw new Error('Failed to load ports.json');
         const ports = await res.json();
@@ -19,7 +23,22 @@ async function loadPorts() {
         }
 
         // ------------------------------
-        // Helper to populate dropdowns
+        // Fetch GitHub releases for download counts
+        // ------------------------------
+        const apiRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases`);
+        if (!apiRes.ok) throw new Error('Failed to fetch GitHub releases');
+        const releases = await apiRes.json();
+
+        // Map asset download counts by filename
+        const downloadCounts = {};
+        releases.forEach(release => {
+            release.assets.forEach(asset => {
+                downloadCounts[asset.name] = asset.download_count;
+            });
+        });
+
+        // ------------------------------
+        // Populate Dropdown Helper
         // ------------------------------
         const populateDropdown = (dropdown, values, mapFn = v => v) => {
             values.forEach(v => {
@@ -49,29 +68,12 @@ async function loadPorts() {
         // ------------------------------
         const reqSet = new Set();
         ports.forEach(p => (p.attr?.reqs || []).forEach(r => reqSet.add(r.replace(/^analog_/, 'analog').toLowerCase())));
-        const reqOrder = [
-            '!lowpower',
-            'power',
-            '!lowres',
-            'hires',
-            '2gb',
-            'ultra',
-            'opengl',
-            'wide',
-            'analog',
-            '!arkos'
-        ];
+        const reqOrder = ['!lowpower','power','!lowres','hires','2gb','ultra','opengl','wide','analog','!arkos'];
         const reqMap = {
-            '!lowpower':'Needs moderate CPU',
-            '!lowres':'Needs minimum 640x480 resolution',
-            'hires':'Best on high resolution',
-            'power':'Needs high CPU power',
-            '2gb':'Needs 2GB RAM',
-            'ultra':'Needs > 2GB RAM',
-            'opengl':'Requires mainline OpenGL',
-            'wide':'Requires widescreen',
-            'analog':'Requires analog sticks',
-            '!arkos':'Won’t run on ArkOS'
+            '!lowpower':'Needs moderate CPU','!lowres':'Needs minimum 640x480 resolution',
+            'hires':'Best on high resolution','power':'Needs high CPU power','2gb':'Needs 2GB RAM',
+            'ultra':'Needs > 2GB RAM','opengl':'Requires mainline OpenGL','wide':'Requires widescreen',
+            'analog':'Requires analog sticks','!arkos':'Won’t run on ArkOS'
         };
         const allReqs = Array.from(reqSet).sort((a,b) => {
             const iA = reqOrder.indexOf(a), iB = reqOrder.indexOf(b);
@@ -83,14 +85,36 @@ async function loadPorts() {
         populateDropdown(requirementsDropdown, allReqs, r => reqMap[r] || r);
 
         // ------------------------------
-        // Sorting Function
+        // Add "Most Downloaded" option to sort dropdown if missing
         // ------------------------------
-        const sortPorts = (list, method) => method === 'most_recent'
-            ? [...list].sort((a,b) => new Date(b.source?.date_updated) - new Date(a.source?.date_updated))
-            : [...list].sort((a,b) => (a.attr?.title || '').localeCompare(b.attr?.title || ''));
+        if (![...sortDropdown.options].some(o => o.value === 'most_downloaded')) {
+            const opt = document.createElement('option');
+            opt.value = 'most_downloaded';
+            opt.textContent = 'Most Downloaded';
+            sortDropdown.appendChild(opt);
+        }
 
         // ------------------------------
-        // Render Function
+        // Sorting Function
+        // ------------------------------
+        const sortPorts = (list, method) => {
+            if (method === 'most_recent') {
+                return [...list].sort((a,b) => new Date(b.source?.date_updated) - new Date(a.source?.date_updated));
+            } else if (method === 'most_downloaded') {
+                return [...list].sort((a,b) => {
+                    const fileA = a.source.download_url ? a.source.download_url.split('/').pop() : '';
+                    const fileB = b.source.download_url ? b.source.download_url.split('/').pop() : '';
+                    const countA = downloadCounts[fileA] || 0;
+                    const countB = downloadCounts[fileB] || 0;
+                    return countB - countA;
+                });
+            } else {
+                return [...list].sort((a,b) => (a.attr?.title || '').localeCompare(b.attr?.title || ''));
+            }
+        };
+
+        // ------------------------------
+        // Render Ports Function
         // ------------------------------
         const renderPorts = (filtered) => {
             const genreVal = genreDropdown.value;
@@ -108,13 +132,10 @@ async function loadPorts() {
                 const desc = port.attr.desc || '';
                 const screenshot = port.source.screenshot_url || '';
                 const detailsHref = port.source.readme_url || '';
-
-                // Use last folder of download_url as filename
-                let downloadFolderName = 'download';
-                if (port.source.download_url) {
-                    downloadFolderName = port.source.download_url.replace(/\/+$/, '').split('/').pop();
-                }
-                const downloadHref = port.source.download_url;
+                const downloadHref = port.source.download_url || '';
+                
+                const filename = downloadHref ? downloadHref.split('/').pop() : '';
+                const downloadCount = downloadCounts[filename] || 0;
 
                 const reqs = (port.attr?.reqs || []).join(', ');
                 const genres = (port.attr?.genres || []).join(', ');
@@ -125,13 +146,12 @@ async function loadPorts() {
                         <div class="port-info">
                             <h2 class="port-title">${title}</h2>
                             <p class="port-desc">${desc}</p>
-                            <div class="port-footer">
-                                ${reqs ? `<div class="port-reqs">${reqs}</div>` : ''}
-                                ${genres ? `<div class="port-genres">${genres}</div>` : ''}
-                                <div class="port-buttons">
-                                    <a class="details-link" href="${detailsHref}" target="_blank" rel="noopener noreferrer">Details</a>
-                                    <a class="download-link" href="${downloadHref}" target="_blank" rel="noopener noreferrer">Download</a>
-                                </div>
+                            <p class="download-count"><strong>Downloads:</strong> ${downloadCount}</p>
+                            ${reqs ? `<div class="port-reqs">${reqs}</div>` : ''}
+                            ${genres ? `<div class="port-genres">${genres}</div>` : ''}
+                            <div class="port-buttons">
+                                <a class="details-link" href="${detailsHref}" target="_blank" rel="noopener noreferrer">Details</a>
+                                <a class="download-link" href="${downloadHref}" target="_blank" rel="noopener noreferrer">Download</a>
                             </div>
                         </div>
                     </div>`;
@@ -158,10 +178,10 @@ async function loadPorts() {
             renderPorts(sortPorts(filtered, sortDropdown.value));
         };
 
-        // Initial render
+        // ------------------------------
+        // Initial Render & Event Listeners
+        // ------------------------------
         updateDisplay();
-
-        // Event listeners
         [searchBar, genreDropdown, availabilityDropdown, requirementsDropdown, sortDropdown]
             .forEach(el => el.addEventListener('input', updateDisplay));
 
