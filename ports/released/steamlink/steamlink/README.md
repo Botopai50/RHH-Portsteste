@@ -20,4 +20,4 @@ Steam Link has been tested to work on the following devices thus far:
 [x] - Ayn Odin 2  
 
 ## Thanks
-A million thanks to [Noxwell](https://github.com/beebono/SLink-RPCompat) for their work on this, where the previous version of this wrapper was not functioning.
+A million thanks to [Noxwell](https://github.com/beebono/handecoder) for their work on this, where the previous version of this wrapper was not functioning.
