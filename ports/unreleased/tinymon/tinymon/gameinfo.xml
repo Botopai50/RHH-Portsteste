@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gamelist>
 	<game>
-		<path>./Port.sh</path>
-		<name></name>
-		<desc></desc>
-		<image>./portname/cover.png</image>
-		<releasedate></releasedate>
-		<developer></developer>
-		<genre></genre>
+		<path>./Tinymon.sh</path>
+		<name>Tinymon</name>
+		<desc>Delve into an isekai world full of tiny monsters ready to battle, learn a new language on the way, and explore the land of Tinymon! A refreshing but retro take on the monster-taming genre.</desc>
+		<image>./tinymon/cover.png</image>
+		<releasedate>2026</releasedate>
+		<developer>Yanako RPGs</developer>
+		<genre>Adventure, Casual, RPG</genre>
 	</game>
 </gamelist>
