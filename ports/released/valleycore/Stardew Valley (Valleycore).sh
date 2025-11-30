@@ -1,5 +1,8 @@
 #!/bin/bash
 
+########################################
+# PortMaster Preamble
+########################################
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 
 if [ -d "/opt/system/Tools/PortMaster/" ]; then
@@ -16,7 +19,9 @@ source $controlfolder/control.txt
 [ -f "${controlfolder}/mod_${CFW_NAME}.txt" ] && source "${controlfolder}/mod_${CFW_NAME}.txt"
 get_controls
 
-# Variables
+########################################
+# Local setup
+########################################
 GAMEDIR="/$directory/ports/valleycore"
 
 # CD and set logging
@@ -24,15 +29,51 @@ cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
 # Setup permissions
-$ESUDO chmod +xwr "$GAMEDIR/gamedata/Stardew Valley"
-$ESUDO chmod +xwr "$GAMEDIR/gamedata/StardewModdingAPI"
-$ESUDO chmod +xwr "$GAMEDIR/gamedata/patch.sh"
-$ESUDO chmod +xr "$GAMEDIR/tools/splash"
+for f in \
+    "$GAMEDIR/gamedata/Stardew Valley" \
+    "$GAMEDIR/gamedata/StardewModdingAPI" \
+    "$GAMEDIR/gamedata/patch.sh"
+do
+    [ -f "$f" ] && $ESUDO chmod +xwr "$f"
+done
+
+[ -f "$GAMEDIR/tools/splash" ] && $ESUDO chmod +xr "$GAMEDIR/tools/splash"
 
 # Exports
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
+export XDG_CONFIG_HOME="$GAMEDIR"
 
-# Check for latest ValleyCore release
+########################################
+# System Requirement Check
+########################################
+sys_requirements_check() {
+    # Minimum resolution
+    if [ "$DISPLAY_WIDTH" -lt 1280 ]; then
+        echo "Valleycore requires a widescreen resolution."
+        return 1
+    fi
+
+    # Minimum RAM
+    if [ "$DEVICE_RAM" -le 1 ]; then
+        echo "Valleycore requires at least 2GB of RAM to run."
+        return 1
+    fi
+
+    # Graphics requirements
+    if ! command -v glxinfo >/dev/null 2>&1; then
+        echo "Valleycore requires a mainline-compatible OpenGL stack (glxinfo not found)."
+        return 1
+    fi
+
+    if ! glxinfo | grep "OpenGL version string" >/dev/null 2>&1; then
+        echo "Valleycore does not support the libMali graphics driver. Switch to Panfrost to continue."
+        return 1
+    fi
+}
+
+########################################
+# Check ValleyCore Update
+########################################
 check_valleycore_update() {
 	repo="a9ix/ValleyCore"
 	version_file="$GAMEDIR/.install"
@@ -75,7 +116,9 @@ check_valleycore_update() {
 	return $?
 }
 
-# Download ValleyCore release
+########################################
+# Download
+########################################
 download_valleycore() {
   latest_tag="$1"
   download_url="$2"
@@ -97,7 +140,9 @@ download_valleycore() {
   return 0
 }
 
-# Unzip Valleycore if exists
+########################################
+# Extraction
+########################################
 extract_valleycore() {
 	SEVENZIP="$GAMEDIR/tools/7zzs.${DEVICE_ARCH}"
 
@@ -126,14 +171,21 @@ extract_valleycore() {
 	fi
 }
 
+########################################
+# Run system checks
+########################################
+sys_requirements_check || exit
+
 # Check for updates
 check_valleycore_update
 
-# Check for any matching archive
+# Extract if archive exists
 archive="$(ls "$GAMEDIR"/ValleyCore*.tar.gz 2>/dev/null | head -n 1)"
 [ -n "$archive" ] && extract_valleycore "$archive"
 
-# Check if we need to patch the game
+########################################
+# Patch
+########################################
 if [ -f "$GAMEDIR/gamedata/patch.sh" ]; then
 	if [ -f "$controlfolder/utils/patcher.txt" ]; then
 		export PATCHER_FILE="$GAMEDIR/gamedata/patch.sh"
@@ -147,23 +199,26 @@ if [ -f "$GAMEDIR/gamedata/patch.sh" ]; then
 	fi
 fi
 
-# Display loading splash
+########################################
+# Splash
+########################################
 if [ -f .install ]; then
 	[ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 1
 	$ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 8000 & 
 fi
 
-# Determine exec to use
+########################################
+# Determine executable
+########################################
 if [ -f "$GAMEDIR/gamedata/StardewModdingAPI" ]; then
 	EXEC="StardewModdingAPI"
 else
 	EXEC="Stardew Valley"
 fi
 
-# Set XDG_DATA_HOME to our GAMEDIR
-export XDG_CONFIG_HOME="$GAMEDIR"
-
-# Assign gptokeyb and load the game
+########################################
+# Launch
+########################################
 $GPTOKEYB "$EXEC" -c "valleycore.gptk" &
 pm_platform_helper "$GAMEDIR/gamedata/$EXEC" >/dev/null
 ./gamedata/"$EXEC"
