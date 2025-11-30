@@ -63,9 +63,9 @@ check_valleycore_update() {
 
 	# Find download URL for ValleyCore.tar.gz
 	download_url=$(echo "$release_json" \
-		| grep -iPo '"browser_download_url":\s*"\K[^"]*ValleyCore\.tar\.gz(?=")')
+		| grep -iPo '"browser_download_url":\s*"\K[^"]*ValleyCore-SMAPI\.tar\.gz(?=")')
 	if [ -z "$download_url" ]; then
-		echo "No ValleyCore.tar.gz asset found in latest release"
+		echo "No ValleyCore-SMAPI.tar.gz asset found in latest release"
 		return 1
 	fi
 
@@ -168,7 +168,7 @@ export XDG_CONFIG_HOME="$GAMEDIR"
 # Assign gptokeyb and load the game
 $GPTOKEYB "$EXEC" -c "valleycore.gptk" &
 pm_platform_helper "$GAMEDIR/gamedata/$EXEC" >/dev/null
-./gamedata/$EXEC
+./gamedata/"$EXEC"
 
 # Cleanup
 pm_finish

@@ -1,5 +1,5 @@
 # Installation
-Download the Linux (non-compat) version with `download_depot 413150 413153 6005910083361727734` or with GOG. Copy all game assets to `valleycore/gamedata`, then download ValleyCore from https://github.com/a9ix/ValleyCore/releases and add the `tar.gz` file to `ports/valleycore/`. Game will be patched on first run.
+Download the Linux (non-compat) version with `download_depot 413150 413153 6005910083361727734` or with GOG. Copy all game assets to `valleycore/gamedata`, then download ValleyCore-SMAPI from https://github.com/a9ix/ValleyCore/releases and add the `tar.gz` file to `ports/valleycore/`. Game will be patched on first run.
 
 If using SMAPI you can add mods to `gamedata/Mods`.
 
