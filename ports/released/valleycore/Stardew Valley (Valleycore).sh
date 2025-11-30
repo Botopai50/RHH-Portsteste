@@ -79,7 +79,7 @@ check_valleycore_update() {
 download_valleycore() {
   latest_tag="$1"
   download_url="$2"
-  archive_file="$GAMEDIR/ValleyCore.tar.gz"
+  archive_file="$GAMEDIR/ValleyCore-SMAPI.tar.gz"
   tmpfile="$GAMEDIR/ValleyCore.tar.gz.tmp"
   version_file="$GAMEDIR/.install"
 
@@ -101,7 +101,7 @@ download_valleycore() {
 extract_valleycore() {
 	SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
 
-	[ -x "$SEVENZIP" ] || { pm_message "7zss not found. Please use the beta branch of the PortMaster app."; return 1; }
+	[ -x "$SEVENZIP" ] || { echo "7zss not found. Please use the beta branch of the PortMaster app."; return 1; }
 
 	archive="$1"
 	[ -f "$archive" ] || return 1
@@ -109,12 +109,12 @@ extract_valleycore() {
 	mkdir -p "$GAMEDIR/gamedata"
 	echo "Extracting $archive..."
 
-	if "$SEVENZIP" x -y "$archive" -o"$GAMEDIR/gamedata"; then
+	if "$SEVENZIP" x -y -aoa "$archive" -o"$GAMEDIR/gamedata"; then
 		# Handle nested .tar
 		inner_tar="$(ls "$GAMEDIR"/gamedata/*.tar 2>/dev/null | head -n 1)"
 		if [ -f "$inner_tar" ]; then
 			echo "Extracting inner tar: $inner_tar"
-			if "$SEVENZIP" x -y "$inner_tar" -o"$GAMEDIR/gamedata"; then
+			if "$SEVENZIP" x -y -aoa "$inner_tar" -o"$GAMEDIR/gamedata"; then
 				rm -f "$inner_tar"
 			else
 				echo "Failed to extract inner tar"
