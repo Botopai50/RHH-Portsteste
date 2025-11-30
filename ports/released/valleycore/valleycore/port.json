@@ -39,7 +39,7 @@
     "reqs": [
       "hires",
       "power",
-      "ultra"
+      "2GB"
     ],
     "arch": [
       "aarch64"
