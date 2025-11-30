@@ -99,9 +99,7 @@ download_valleycore() {
 
 # Unzip Valleycore if exists
 extract_valleycore() {
-	SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
-
-	[ -x "$SEVENZIP" ] || { echo "7zss not found. Please use the beta branch of the PortMaster app."; return 1; }
+	SEVENZIP="$GAMEDIR/tools/7zzs.${DEVICE_ARCH}"
 
 	archive="$1"
 	[ -f "$archive" ] || return 1
