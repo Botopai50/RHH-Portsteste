@@ -38,7 +38,8 @@
     "availability": "paid",
     "reqs": [
       "hires",
-      "4gb"
+      "power",
+      "ultra"
     ],
     "arch": [
       "aarch64"
