@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Stardew Valley (Valleycore).sh</path>
+		<name>Stardew Valley (Valleycore)</name>
+		<desc>Valleycore brings arm64 compatibility to Stardew Valley and SMAPI! Play with mods!</desc>
+		<image>./valleycore/cover.png</image>
+		<releasedate>20160226T000000</releasedate>
+		<developer>ConcernedApe</developer>
+        <genre>Simulation</genre>
+</gamelist>

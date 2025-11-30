@@ -1,0 +1,48 @@
+{
+  "version": 4,
+  "name": "valleycore.zip",
+  "items": [
+    "Stardew Valley (Valleycore).sh",
+    "valleycore"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Stardew Valley (Valleycore)",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "Valleycore brings arm64 compatibility to Stardew Valley and SMAPI! Play with mods!",
+    "desc_md": null,
+    "inst": "Download the latest Linux (non-compat) version with `download_depot 413150 413153 6005910083361727734` or with GOG. Copy all game assets to `valleycore/gamedata`, then download ValleyCore from https://github.com/a9ix/ValleyCore/releases and add the `tar.gz` file to `ports/valleycore/`. Game will be patched on first run.",
+    "inst_md": null,
+    "genres": [
+      "rpg",
+      "simulation"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": true,
+    "runtime": [],
+    "store": [
+      {
+        "name": "GOG",
+        "gameurl": "https://www.gog.com/en/game/stardew_valley",
+        "developerurl": ""
+      },
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/413150/Stardew_Valley/",
+        "developerurl": ""
+      }
+    ],
+    "availability": "paid",
+    "reqs": [
+      "hires",
+      "4gb"
+    ],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": ""
+  }
+}
