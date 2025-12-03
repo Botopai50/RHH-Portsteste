@@ -2752,12 +2752,12 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2025-11-13T22:28",
+      "date_updated": "2025-12-03T23:42",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/smb1r.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/smb1r/smb1r/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/smb1r/smb1r/README.md",
-      "size": 67761987,
-      "md5": "a07c686a5d07c0d7afb4b79fe320297f"
+      "size": 67761706,
+      "md5": "16abfaa528ea3ad471a83d8dd5b86eb1"
     }
   },
   {
