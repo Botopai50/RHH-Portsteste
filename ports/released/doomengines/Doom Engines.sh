@@ -19,15 +19,6 @@ get_controls
 # Variables
 GAMEDIR="/$directory/ports/doomengines"
 
-GZDOOM1="$GAMEDIR/configs/gzdoom/gzdoom.ini"
-GZDOOM2="$GAMEDIR/configs/gzdoom/heretic.ini"
-GZDOOM3="$GAMEDIR/configs/gzdoom/hexen.ini"
-GZDOOM4="$GAMEDIR/configs/gzdoom/strife.ini"
-CRISPY1="$GAMEDIR/configs/crispy-doom/crispy-doom.cfg"
-CRISPY2="$GAMEDIR/configs/crispy-doom/crispy-heretic.cfg"
-CRISPY3="$GAMEDIR/configs/crispy-doom/crispy-hexen.cfg"
-CRISPY4="$GAMEDIR/configs/crispy-doom/crispy-strife.cfg"
-
 # CD and set permissions
 cd $GAMEDIR
 exec > "$GAMEDIR/log.txt" 2>&1
@@ -37,6 +28,7 @@ $ESUDO chmod +xwr -R $GAMEDIR/*
 export LD_LIBRARY_PATH="$GAMEDIR/libs/lovelibs:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export XDG_DATA_HOME="$GAMEDIR/configs"
+export XDG_CONFIG_HOME="$GAMEDIR/configs"
 export TEXTINPUTINTERACTIVE="Y"        # enables interactive text input mode
 export TEXTINPUTNOAUTOCAPITALS="Y"     # disables automatic capitalisation of first letter of words in interactive text input mode
 export TEXTINPUTADDEXTRASYMBOLS="Y"    # enables additional symbols for interactive text input
@@ -81,17 +73,24 @@ SAVEDIR="$(basename "$FILE")"
 SAVEDIR="${SAVEDIR%.*}"
 
 # Modify resolution ad save dir in config files
-gzdoom_configs="$GZDOOM1 $GZDOOM2 $GZDOOM3 $GZDOOM4"
-for config in $gzdoom_configs; do
+for config in "$GAMEDIR"/configs/gzdoom/*.ini "$GAMEDIR"/configs/gzdoom/*.cfg; do
+    [ -f "$config" ] || continue
     sed -i "s/^vid_defheight=[0-9]\+/vid_defheight=$DISPLAY_HEIGHT/" "$config"
     sed -i "s/^vid_defwidth=[0-9]\+/vid_defwidth=$DISPLAY_WIDTH/" "$config"
     sed -i "s|^save_dir=.*|save_dir=./configs/gzdoom/saves/$SAVEDIR|" "$config"
 done
 
-crispy_configs="$CRISPY1 $CRISPY2 $CRISPY3 $CRISPY4"
-for config in $crispy_configs; do
+for config in "$GAMEDIR"/configs/crispy-doom/*.cfg; do
+    [ -f "$config" ] || continue
     sed -i "s/^window_height=[0-9]\+/window_height=$DISPLAY_HEIGHT/" "$config"
     sed -i "s/^window_width=[0-9]\+/window_width=$DISPLAY_WIDTH/" "$config"
+done
+
+for config in "$GAMEDIR"/configs/uzdoom/*.ini; do
+    [ -f "$config" ] || continue
+    sed -i "s/^vid_defheight=[0-9]\+/vid_defheight=$DISPLAY_HEIGHT/" "$config"
+    sed -i "s/^vid_defwidth=[0-9]\+/vid_defwidth=$DISPLAY_WIDTH/" "$config"
+    sed -i "s|^save_dir=.*|save_dir=./configs/uzdoom/saves/$SAVEDIR|" "$config"
 done
 
 # If Exit chosen from launcher, quit
