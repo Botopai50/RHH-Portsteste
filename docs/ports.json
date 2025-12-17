@@ -3050,6 +3050,52 @@
     }
   },
   {
+    "version": 3,
+    "name": "zeldadoi.zip",
+    "items": [
+      "Zelda Dungeons of Infinity.sh",
+      "zeldadoi"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "The Legend of Zelda: Dungeons of Infinity",
+      "porter": [
+        "t0b10",
+        "Shallow",
+        "JanTrueno",
+        "Jeod"
+      ],
+      "desc": "This game is a procedurally-generated rogue-like 'Link to the Past' dungeon crawler. It's not a rom hack, it was created in Gamemaker Studio from scratch using the original assets. Many new features and assets were added to this game, but special care was put in to ensure it still looks, feels, and plays like the original game.\nThe goal of the game is to descend through the many enemy-infested dungeons to defeat Link's nemesis, Aghanim. Along the way you will find many weapons, items, and treasures that will help you along your quest.",
+      "desc_md": null,
+      "inst": "Ready to run",
+      "inst_md": null,
+      "genres": [
+        "action",
+        "adventure",
+        "rpg"
+      ],
+      "image": null,
+      "rtr": true,
+      "exp": false,
+      "runtime": null,
+      "reqs": [
+        "4gb",
+        "power"
+      ],
+      "arch": [
+        "aarch64"
+      ]
+    },
+    "source": {
+      "date_updated": "2025-12-17T00:43",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zeldadoi.zip",
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zeldadoi/zeldadoi/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zeldadoi/zeldadoi/README.md",
+      "size": 42845184,
+      "md5": "9e1f8d17e308e59fa3a1bab1bec06ecf"
+    }
+  },
+  {
     "version": 2,
     "name": "zeldaxd-mercurischess.zip",
     "items": [
