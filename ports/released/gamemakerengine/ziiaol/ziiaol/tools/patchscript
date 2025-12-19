@@ -33,7 +33,7 @@ export PATH="$TOOLKIT/gmtools:$TOOLKIT/utmt-cli:$PATH"
 export LD_LIBRARY_PATH="/usr/lib:$TOOLKIT/libs:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export DATADIR="$GAMEDIR/assets"
-export DATAFILE="utyellow.port"
+export DATAFILE="ziiaol.port"
 export TMPDIR="$GAMEDIR/tmp"
 
 # Permissions
