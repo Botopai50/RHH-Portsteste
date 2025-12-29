@@ -1,0 +1,41 @@
+{
+  "version": 4,
+  "name": "theforceengine.zip",
+  "items": [
+    "Star Wars - The Force Engine.sh",
+    "theforceengine"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Star Wars : Dark Forces (TFE)",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "Dark Forces with The Force Engine to enable widescreen support, custom settings, and mods!",
+    "desc_md": null,
+    "inst": "Copy your `Star Wars: Dark Forces` .GOB files and `LFD` folder to `theforceengine/darkforces`. You can also copy `enhanced.gob` from the remaster.",
+    "inst_md": null,
+    "genres": [
+      "fps"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [],
+    "store": [
+      {
+        "name": "",
+        "gameurl": "",
+        "developerurl": ""
+      }
+    ],
+    "availability": "paid",
+    "reqs": [
+      "opengl"
+    ],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": ""
+  }
+}
