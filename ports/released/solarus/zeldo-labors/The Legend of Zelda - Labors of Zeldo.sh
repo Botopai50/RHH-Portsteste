@@ -17,7 +17,7 @@ source $controlfolder/control.txt
 get_controls
 
 # Set variables
-GAMEDIR="/$directory/ports/zeldoschallenge2"
+GAMEDIR="/$directory/ports/zeldo-labors"
 runtime="solarus-1.6.5"
 solarus_dir="$HOME/portmaster-solarus"
 solarus_file="$controlfolder/libs/${runtime}.squashfs"
@@ -46,7 +46,7 @@ $ESUDO mount "$solarus_file" "$solarus_dir"
 PATH="$solarus_dir:$PATH"
 
 # Run the game
-$GPTOKEYB "$runtime" -c "zeldo2.gptk" & 
+$GPTOKEYB "$runtime" -c "zeldo-labors.gptk" & 
 "$runtime" $GAMEDIR/*.solarus
 
 # Cleanup

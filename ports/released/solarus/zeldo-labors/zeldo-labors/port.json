@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "name": "zeldo-labors.zip",
+  "items": [
+    "The Legend of Zelda - Labors of Zeldo.sh",
+    "zeldoschallenge/"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "The Legend of Zelda : The Labors of Zeldo",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "In The Labors of Zeldo, you can explore the unreleased projects that ZeldoRetro made using the Solarus Engine. Games, retranscriptions of existing contents or simple tests, ZeldoREtro is offering you to play them in a totally playable and enjoyable version.",
+    "inst": "Download the game from https://www.solarus-games.org/games/the-labors-of-zeldo/ and put in the `ports/zeldo-labors` folder.",
+    "genres": [
+      "action",
+	  "adventure"
+    ],
+	"availability": "free",
+    "image": "screenshot.png",
+    "rtr": false,
+    "exp": false,
+    "runtime": "solarus-1.6.5.squashfs",
+    "reqs": []
+  }
+}

@@ -2,7 +2,11 @@
 <gameList>
   <game>
     <path>./The Legend of Zelda - Mystery of Solarus DX.sh</path>
-    <name>The Legend of Zelda: Mystery of Solarus DX</name>
+    <name>The Legend of Zelda : Mystery of Solarus DX</name>
+    <desc>Years after Ganon’s defeat, Hyrule’s king dies, weakening the Seal of the Seven Sages. Guided by Sahasrahla, the Hero and Princess Zelda hide the Triforce in eight fragments across the kingdom, restoring peace.</desc>
     <image>./zelda-mysteryofsolarusdx/cover.png</image>
+    <developer>Solarus Team</developer>
+    <releasedate>20111216</releasedate>
+    <genre>Action, Adventure</genre>
   </game>
 </gameList>

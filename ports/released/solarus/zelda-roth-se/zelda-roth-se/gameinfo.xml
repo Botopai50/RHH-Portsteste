@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gameList>
+  <game>
+    <path>./The Legend of Zelda - Return of the Hylian.sh</path>
+    <name>The Legend of Zelda : Return of the Hylian</name>
+    <desc>After Link’s victory over Ganon, his unknown wish restored Hyrule and the descendants of the Seven Wise Men—but also resurrected Ganon. One night, a familiar voice calls to Link in his sleep…</desc>
+    <image>./zelda-roth-se/cover.png</image>
+    <developer>Solarus Team, Vincent Jouillat</developer>
+    <releasedate>20150813</releasedate>
+    <genre>Action, Adventure</genre>
+  </game>
+</gameList>
