@@ -81,34 +81,27 @@ async function loadPorts() {
             { keys: ['!arkos'], value: 'Won’t run on ArkOS' }
         ];
 
-        // Generate keyword → value map
-        const reqMap = {};
-        mappings.forEach(entry => entry.keys.forEach(k => reqMap[k] = entry.value));
+        // Build key → label lookup
+        const keyToLabel = {};
+        mappings.forEach(m =>
+            m.keys.forEach(k => keyToLabel[k.toLowerCase()] = m.value)
+        );
 
-        // Generate display order using the first key from each mapping
-        const reqOrder = mappings.flatMap(entry => entry.keys);
-
-        // Build unique set of keywords from ports
-        const reqSet = new Set();
-        ports.forEach(p => (p.attr?.reqs || []).forEach(r =>
-            reqSet.add(r.replace(/^analog_/, 'analog').toLowerCase())
-        ));
-
-        // Map keywords to descriptions and deduplicate
-        const allReqs = Array.from(reqSet)
-            .map(k => reqMap[k] || k)          // map to descriptions
-            .filter((v, i, a) => a.indexOf(v) === i) // remove duplicates
-            .sort((a,b) => {
-                const getIndex = desc => {
-                    const entry = mappings.find(m => m.value === desc);
-                    if(!entry) return 999; // unknown descriptions go last
-                    return reqOrder.indexOf(entry.keys[0]);
-                };
-                return getIndex(a) - getIndex(b);
+        // Collect unique requirement labels from ports
+        const reqLabels = new Set();
+        ports.forEach(p => {
+            (p.attr?.reqs || []).forEach(r => {
+                const label = keyToLabel[r.toLowerCase()];
+                if (label) reqLabels.add(label);
             });
+        });
 
-        // Populate dropdown
-        populateDropdown(requirementsDropdown, allReqs, r => r);
+        // Populate dropdown (preserve mapping order)
+        const orderedReqs = mappings
+            .map(m => m.value)
+            .filter(v => reqLabels.has(v));
+
+        populateDropdown(requirementsDropdown, orderedReqs);
 
         // ------------------------------
         // Add "Most Downloaded" option to sort dropdown if missing
