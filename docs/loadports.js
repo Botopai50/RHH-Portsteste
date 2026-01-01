@@ -66,15 +66,32 @@ async function loadPorts() {
         // ------------------------------
         // Populate Requirements Dropdown
         // ------------------------------
+        // Define mappings with multiple keys per value
+        const mappings = [
+            { keys: ['!lowpower'], value: 'Needs moderate CPU' },
+            { keys: ['!lowres'], value: 'Needs minimum 640x480 resolution' },
+            { keys: ['hires'], value: 'Best on high resolution' },
+            { keys: ['power'], value: 'Needs high CPU power' },
+            { keys: ['2gb'], value: 'Needs 2GB RAM' },
+            { keys: ['4gb','ultra'], value: 'Needs > 2GB RAM' },
+            { keys: ['opengl'], value: 'Requires mainline OpenGL' },
+            { keys: ['wide'], value: 'Requires widescreen' },
+            { keys: ['analog1, analog2'], value: 'Requires analog sticks' },
+            { keys: ['!arkos'], value: 'Won’t run on ArkOS' }
+        ];
+
+        // Generate reqMap
+        const reqMap = {};
+        mappings.forEach(entry => entry.keys.forEach(k => reqMap[k] = entry.value));
+
+        // Define display order (pick first key from each mapping)
+        const reqOrder = mappings.flatMap(entry => entry.keys);
+
+        // Build unique set from ports
         const reqSet = new Set();
         ports.forEach(p => (p.attr?.reqs || []).forEach(r => reqSet.add(r.replace(/^analog_/, 'analog').toLowerCase())));
-        const reqOrder = ['!lowpower','power','!lowres','hires','2gb','ultra','opengl','wide','analog','!arkos'];
-        const reqMap = {
-            '!lowpower':'Needs moderate CPU','!lowres':'Needs minimum 640x480 resolution',
-            'hires':'Best on high resolution','power':'Needs high CPU power','2gb':'Needs 2GB RAM',
-            'ultra':'Needs > 2GB RAM','opengl':'Requires mainline OpenGL','wide':'Requires widescreen',
-            'analog':'Requires analog sticks','!arkos':'Won’t run on ArkOS'
-        };
+
+        // Sort using reqOrder
         const allReqs = Array.from(reqSet).sort((a,b) => {
             const iA = reqOrder.indexOf(a), iB = reqOrder.indexOf(b);
             if(iA===-1 && iB===-1) return a.localeCompare(b);
@@ -82,6 +99,8 @@ async function loadPorts() {
             if(iB===-1) return -1;
             return iA-iB;
         });
+
+        // Populate dropdown
         populateDropdown(requirementsDropdown, allReqs, r => reqMap[r] || r);
 
         // ------------------------------
