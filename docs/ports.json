@@ -1788,7 +1788,7 @@
       ],
       "availability": "paid",
       "reqs": [
-        "power"
+        "ultra"
       ],
       "arch": [
         "aarch64"
@@ -1796,12 +1796,12 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-01T19:46",
+      "date_updated": "2026-01-02T15:09",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/ooo.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ooo/ooo/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ooo/ooo/README.md",
       "size": 7071604,
-      "md5": "0facb7d4e00dec8b607b4fca558bf2d1"
+      "md5": "309725a7e61c03145aa45ac30def0f54"
     }
   },
   {
