@@ -57,12 +57,10 @@ prepare_system() {
 unzip_archives() {
     # Create folders
     mkdir -p "$DATADIR/am2r" "$DATADIR/am2rpatch"
-
-    echo "Scanning for AM2R and Autopatcher zips in $DATADIR..."
     AM2R_ZIP=""
     AUTOPATCHER_ZIP=""
     AM2R16B_ZIP="AM2R_1.6b2_windows.zip"
-    
+
     # Bail early if we don't have 1.6b
     if [ ! -f "$DATADIR/$AM2R16B_ZIP" ]; then
         echo "AM2R 1.6b patch not found."
@@ -74,13 +72,9 @@ unzip_archives() {
 
         # Identify AM2R zip (data.win in root)
         if "$SEVENZIP" l "$zip" | grep -q 'data.win'; then
-            echo "Found data.win in $zip"
             AM2R_ZIP="$zip"
-        fi
-
         # Identify autopatcher zip (has AM2R-Autopatcher-Windows-master/data/)
-        if "$SEVENZIP" l "$zip" | grep -q 'AM2R-Autopatcher-Windows-master/data'; then
-            echo "Found Autopatcher structure in $zip"
+        elif "$SEVENZIP" l "$zip" | grep -q 'AM2R-Autopatcher-Windows-master/data'; then
             AUTOPATCHER_ZIP="$zip"
         fi
     done
@@ -135,7 +129,7 @@ apply_xdelta() {
     fi
 
     mv "$tmp_out" "$data"
-    echo "Patch applied successfully: $patch_file"
+    echo "Patch applied successfully."
 }
 
 clean_files() {  
@@ -164,7 +158,7 @@ clean_files() {
 
 # Zip it all into the .port file
 zip_archive() {
-    if "$SEVENZIP" a -tzip -aoa -mx=0 "$GAMEDIR/$DATAFILE" "$DATADIR"; then
+    if "$SEVENZIP" a -tzip -aoa -mx=0 "$GAMEDIR/$DATAFILE" "$DATADIR" >/dev/null; then
         rm -rf "$DATADIR"/*
     else
         echo "Failed to create $DATAFILE."
