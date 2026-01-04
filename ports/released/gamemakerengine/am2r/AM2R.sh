@@ -31,14 +31,27 @@ $ESUDO chmod +xr "$GAMEDIR/tools/splash"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
 # Check if we need to patch the game
-if [ ! -f "$GAMEDIR/patchlog.txt" ] || [ -f "$GAMEDIR/assets/"*.zip ]; then
+need_patch=0
+
+# Check patchlog
+if [ ! -f "$GAMEDIR/patchlog.txt" ]; then
+    need_patch=1
+fi
+
+# Check for any zip files in assets
+for f in "$GAMEDIR/assets/"*.zip; do
+    if [ -f "$f" ]; then
+        need_patch=1
+        break
+    fi
+done
+
+if [ "$need_patch" -eq 1 ]; then
     if [ -f "$controlfolder/utils/patcher.txt" ]; then
         export PATCHER_FILE="$GAMEDIR/tools/patchscript"
         export PATCHER_GAME="$(basename "${0%.*}")"
         export PATCHER_TIME="2 to 5 minutes"
-        export controlfolder
-        export ESUDO
-        export DEVICE_ARCH
+        export controlfolder ESUDO DEVICE_ARCH
         
         # Test aspect ratio
         if [[ "$ASPECT_X" -eq 3 && "$ASPECT_Y" -eq 2 ]]; then
