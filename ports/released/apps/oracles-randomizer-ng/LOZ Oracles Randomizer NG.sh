@@ -24,10 +24,11 @@ cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
 # Setup permissions
-$ESUDO chmod +xwr oracles-randomizer-ng
-$ESUDO chmod +xwr ./love
+$ESUDO chmod +x oracles-randomizer-ng
+$ESUDO chmod +x love
 
 # Exports
+export OUTPUT="/$directory/gbc/randomized-${GAME}.gbc"
 export LD_LIBRARY_PATH="$GAMEDIR/libs/lovelibs:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
@@ -41,8 +42,7 @@ fi
 
 # Check for roms
 if [ ! -f "$GAMEDIR/randomizer/seasons.gbc" ] || [ ! -f "$GAMEDIR/randomizer/ages.gbc" ]; then
-    export directory
-    export ESUDO
+    export directory ESUDO
     source search
 fi
 
@@ -118,7 +118,6 @@ if [ "$GAME" = "Exit" ]; then
 fi
 
 # Run the randomizer
-export OUTPUT="/$directory/gbc/randomized-${GAME}.gbc"
 ./oracles-randomizer-ng $ARGS randomizer/"$GAME".gbc "$OUTPUT"
 
 # Cleanup
