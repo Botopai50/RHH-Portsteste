@@ -14,8 +14,8 @@ export DATAFILE="iosas.port"
 export TMPDIR="$GAMEDIR/tmp"
 
 prepare_system() {
-    # Test for commands: python, zip
-    PYTHON=$(which python3)
+    # Test for python
+    PYTHON=$(command -v python3)
     if [ -z "$PYTHON" ]; then
         echo "Missing Python!"
         return 1
@@ -27,7 +27,10 @@ prepare_system() {
     if [ -f "$RUNTIME" ]; then
         $ESUDO mkdir -p "$TOOLKIT"
         $ESUDO umount "$TOOLKIT" 2>/dev/null || true
-        $ESUDO mount "$RUNTIME" "$TOOLKIT"
+        if ! $ESUDO mount "$RUNTIME" "$TOOLKIT"; then
+            echo "Failed to mount GMToolkit runtime: $RUNTIME"
+            return 1
+        fi
     else
         echo "This port requires the GMToolkit runtime. Please download it."
         return 1
@@ -39,7 +42,10 @@ prepare_system() {
     if [ -f "$DOTNETFILE" ]; then
         $ESUDO mkdir -p "$DOTNETDIR"
         $ESUDO umount "$DOTNETDIR" 2>/dev/null || true
-        $ESUDO mount "$DOTNETFILE" "$DOTNETDIR"
+        if ! $ESUDO mount "$DOTNETFILE" "$DOTNETDIR"; then
+            echo "Failed to mount Dotnet runtime: $DOTNETFILE"
+            return 1
+        fi
     else
         echo "This port requires the Dotnet runtime. Please download it."
         return 1
@@ -125,6 +131,39 @@ cpu_check() {
             fi
             ;;
     esac
+}
+
+compress_audio() {  
+    # Do audio compression
+    if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -vv -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/data.win"; then
+        mv "$TMPDIR/"* "$DATADIR" && rmdir "$TMPDIR"
+        echo "Audio compression applied successfully."
+    else
+        # Failure
+        echo "Audio compression failed."
+        rmdir "$TMPDIR"
+        return 1
+    fi
+}
+
+# Fix datafile alignment audio compression
+fix_alignment() {
+    # Purge cache before operations
+    rm -rf "$TMPDIR/"*
+    
+    echo "Loading data.win to fix alignments..."
+
+    dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
+        load "$DATADIR/data.win" \
+        -o "$DATADIR/data2.win"
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to load data.win."
+        return 1
+    else
+        rm -rf "$DATADIR/data.win"
+        mv "$DATADIR/data2.win" "$DATADIR/data.win"
+    fi
 }
 
 # Dump game code entries from data.win
@@ -239,24 +278,6 @@ dump_textures() {
     [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
 }
 
-compress_audio() {
-    # Test for data.win
-    if [ -f "$DATADIR/data.win" ]; then
-        mv "$DATADIR/data.win" "$DATADIR/game.droid"
-    fi
-    
-    # Do audio compression
-    if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -vv -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/game.droid"; then
-        mv "$TMPDIR/"* "$DATADIR" && rmdir "$TMPDIR"
-        echo "Audio compression applied successfully."
-    else
-        # Failure
-        echo "Audio compression failed."
-        rmdir "$TMPDIR"
-        return 1
-    fi
-}
-
 # Zip it all into the .port file
 zip_archive() {
     if "$controlfolder/7zzs.${DEVICE_ARCH}" a -tzip -aoa -mx=0 "$GAMEDIR/$DATAFILE" "$DATADIR"; then
@@ -276,6 +297,7 @@ cleanup() {
 
 # Helper for dotnet funcs
 modify_datafile() {
+    fix_alignment || return 1
     dump_code || return 1
     echo "Modifying gml scripts..."
     modify_code || return 1
@@ -292,11 +314,10 @@ process_game() {
     prepare_system || { cleanup; return 1; }
     echo "Preparing game..."
     prepare_files || { cleanup; return 1; }
-    #echo "Performing datafile edits..."
-    #modify_datafile || { cleanup; return 1; }
     echo "Compressing audio..."
     compress_audio || { cleanup; return 1; }
-    sleep 1
+    echo "Performing datafile edits..."
+    modify_datafile || { cleanup; return 1; }
     echo "Finishing up..."
     zip_archive || { cleanup; return 1; }
 }
