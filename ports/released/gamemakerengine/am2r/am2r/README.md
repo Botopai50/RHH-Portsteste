@@ -13,6 +13,7 @@ You will need the following **zip files** (copy all files to `ports/am2r/assets`
 Copy all zip files to `ports/am2r/assets` and run the port. It may take some time to install.
 
 ## Thanks
+AM2R Team -- The game  
 JohnnyOnFlame -- GMLoader-Next and original AM2R port  
 Jeod -- Enhancements to GMLoader-Next and 64-bit port update  
-AM2R Team -- The game  
+hotcereal -- The 3:2 aspect ratio patch  

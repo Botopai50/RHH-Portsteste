@@ -13,8 +13,8 @@ export DATAFILE="am2r.port"
 export TMPDIR="$GAMEDIR/tmp"
 
 prepare_system() {
-    # Test for commands: python, zip
-    PYTHON=$(which python3)
+    # Test for python
+    PYTHON=$(command -v python3)
     if [ -z "$PYTHON" ]; then
         echo "Missing Python!"
         return 1
@@ -86,12 +86,9 @@ unzip_archives() {
     done
 
     # Report results
-    if [ -n "$AM2R_ZIP" ]; then
-        echo "AM2R zip detected: $AM2R_ZIP"
-    else
-        echo "No valid AM2R 1.1 zip found."
-    fi
+    [ -n "$AM2R_ZIP" ] || { echo "Missing AM2R base zip"; return 1; }
 
+    # HQ audio is optional
     if [ -n "$AUTOPATCHER_ZIP" ]; then
         echo "Autopatcher zip detected: $AUTOPATCHER_ZIP"
     else
@@ -116,31 +113,29 @@ prepare_files() {
     "$SEVENZIP" x -y "$DATADIR/$AM2R16B_ZIP" -o"$DATADIR/am2r16b" >/dev/null
     cp -rf "$DATADIR/am2r16b/files_to_copy/"* "$DATADIR/am2r/"
     [ -n "$AUTOPATCHER_ZIP" ] && cp -rf "$DATADIR/am2rpatch/AM2R-Autopatcher-Windows-master/data/HDR_HQ_in-game_music/"* "$DATADIR/am2r/"
-
-    DATA="$DATADIR/am2r/data.win"
-    PATCH="$DATADIR/am2r16b/data.xdelta"
 }
 
 apply_xdelta() {
-    # Check if the data.win file exists and apply xdelta
-    if [ -f "$DATADIR/am2r/data.win" ]; then
-        output=$($controlfolder/xdelta3 -d -s "$DATA" -f "$PATCH" "$DATADIR/am2r/game.droid" 2>&1)
-        if [ $? -eq 0 ]; then
-            echo "Patch applied successfully"
-            echo "$output"
-            rm -rf "$DATA"
-            [ -n "$AUTOPATCHER_ZIP" ] && rm -rf "$DATADIR/am2rpatch"
-        else
-            # If this happens, it's not AM2R 1.1
-            echo "Failed to apply patch"
-            echo "$output"
-            return 1
-        fi
-    else
-        # This shouldn't be reachable, but we'll do a safety check anyway
-        echo "No data.win file found to patch!"
+    local data="$1"
+    local patch_file="$2"
+    local tmp_out="${data}.patched"
+    local output
+
+    if [ ! -f "$data" ]; then
+        echo "Source file not found: $data"
         return 1
     fi
+
+    output=$("$controlfolder/xdelta3" -d -s "$data" "$patch_file" "$tmp_out" 2>&1)
+    if [ $? -ne 0 ]; then
+        echo "Failed to apply patch: $patch_file"
+        echo "$output"
+        rm -f "$tmp_out"
+        return 1
+    fi
+
+    mv "$tmp_out" "$data"
+    echo "Patch applied successfully: $patch_file"
 }
 
 clean_files() {  
@@ -158,10 +153,13 @@ clean_files() {
 
     # Move everything back from TMPDIR to DATADIR
     mv "$TMPDIR/"* "$DATADIR/" 2>/dev/null
-    mv "$TMPDIR/".* "$DATADIR/" 2>/dev/null || true  # Hidden files again
+    mv "$TMPDIR/".* "$DATADIR/" 2>/dev/null || true
 
     # Clean TMPDIR
     rm -rf "$TMPDIR/"*
+    
+    # Rename data.win
+    mv "$DATADIR/data.win" "$DATADIR/game.droid"
 }
 
 # Zip it all into the .port file
@@ -188,7 +186,11 @@ process_game() {
     echo "Preparing game..."
     prepare_files || { cleanup; return 1; }
     echo "Applying 1.6b2 patch..."
-    apply_xdelta || { cleanup; return 1; }
+    apply_xdelta "$DATADIR/am2r/data.win" "$DATADIR/am2r16b/data.xdelta" || { cleanup; return 1; }
+    if [ "$ASPECTPATCH" ]; then
+        echo "Applying 3:2 patch..."
+        apply_xdelta "$DATADIR/am2r/data.win" "$GAMEDIR/tools/am2r16b2_3-2.xdelta" || { cleanup; return 1; }
+    fi
     echo "Cleaning excess files..."
     clean_files || { cleanup; return 1; }
     echo "Finishing up..."

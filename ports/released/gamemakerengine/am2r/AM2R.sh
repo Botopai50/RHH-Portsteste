@@ -31,7 +31,7 @@ $ESUDO chmod +xr "$GAMEDIR/tools/splash"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
 # Check if we need to patch the game
-if [ ! -f "$GAMEDIR/patchlog.txt" ]; then
+if [ ! -f "$GAMEDIR/patchlog.txt" ] || [ -f "$GAMEDIR/assets/"*.zip ]; then
     if [ -f "$controlfolder/utils/patcher.txt" ]; then
         export PATCHER_FILE="$GAMEDIR/tools/patchscript"
         export PATCHER_GAME="$(basename "${0%.*}")"
@@ -39,6 +39,11 @@ if [ ! -f "$GAMEDIR/patchlog.txt" ]; then
         export controlfolder
         export ESUDO
         export DEVICE_ARCH
+        
+        # Test aspect ratio
+        if [[ "$ASPECT_X" -eq 3 && "$ASPECT_Y" -eq 2 ]]; then
+            export ASPECTPATCH=1
+        fi
         source "$controlfolder/utils/patcher.txt"
         $ESUDO kill -9 $(pidof gptokeyb)
     else
