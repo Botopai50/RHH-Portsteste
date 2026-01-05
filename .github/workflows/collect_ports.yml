@@ -45,7 +45,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          PORT_DIRS=()   # Each entry: full path to the *port* directory (contains port.json)
+          PORT_DIRS=()
 
           if [ "${{ github.event.inputs.force }}" = "true" ]; then
             echo "Force mode: scanning all port.json"
@@ -56,32 +56,32 @@ jobs:
             mapfile -t CHANGED < <(git diff --name-only HEAD^ HEAD)
             for file in "${CHANGED[@]}"; do
               [[ "$file" == ports/released/* ]] || continue
-              dir="$(dirname "$file")"
+
+              filepath="$GITHUB_WORKSPACE/$file"
               candidate=""
 
-              # Walk up (including current dir)
-              while [[ "$dir" == *"ports/released"* && "$dir" != "." ]]; do
+              # Walk up directories to find port.json
+              dir="$(dirname "$filepath")"
+              while [[ "$dir" != "$GITHUB_WORKSPACE" ]]; do
                 if [[ -f "$dir/port.json" ]]; then
-                  candidate="$dir"; break
+                  candidate="$dir"
+                  break
                 fi
                 dir="$(dirname "$dir")"
               done
 
-              # .sh next to port dir
-              if [[ -z "$candidate" ]]; then
-                parent="$(dirname "$file")"
-                if [[ -f "$parent/port.json" ]] && [[ "$file" == *.sh ]]; then
-                  candidate="$parent"
-                fi
-              fi
-
-              # .sh inside port dir
-              if [[ -z "$candidate" ]] && [[ -f "$dir/port.json" ]] && [[ "$file" == *.sh ]]; then
-                candidate="$dir"
+              # Special case: .sh file outside port folder
+              if [[ -z "$candidate" && "$file" == *.sh ]]; then
+                parent="$(dirname "$filepath")"
+                for sibling in "$parent"/*/; do
+                  [[ -f "$sibling/port.json" ]] && candidate="$sibling" && break
+                done
               fi
 
               [[ -n "$candidate" ]] && PORT_DIRS+=("$candidate")
             done
+
+            # Remove duplicates
             mapfile -t PORT_DIRS < <(printf '%s\n' "${PORT_DIRS[@]}" | sort -u)
           fi
 
