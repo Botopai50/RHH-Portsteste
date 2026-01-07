@@ -2356,12 +2356,12 @@
       ]
     },
     "source": {
-      "date_updated": "2026-01-01T18:33",
+      "date_updated": "2026-01-07T11:58",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/soh2.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh2/soh2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh2/soh2/README.md",
-      "size": 13129202,
-      "md5": "b86000d9a9b7aa2cf45da269fda0026e"
+      "size": 13132739,
+      "md5": "3c600cd9b23d07ec5fda6a567f03083b"
     }
   },
   {
@@ -3555,7 +3555,7 @@
         "Jeod"
       ],
       "desc": "In The Labors of Zeldo, you can explore the unreleased projects that ZeldoRetro made using the Solarus Engine. Games, retranscriptions of existing contents or simple tests, ZeldoREtro is offering you to play them in a totally playable and enjoyable version.",
-      "inst": "Download the game from https://www.solarus-games.org/games/the-labors-of-zeldo/ and put in the `ports/zeldo-labors` folder.",
+      "inst": "Download the game from https://www.solarus-games.org/games/the-labors-of-zeldo/ and put the .solarus file in the `ports/zeldo-labors` folder.",
       "genres": [
         "action",
         "adventure"
@@ -3568,12 +3568,12 @@
       "reqs": []
     },
     "source": {
-      "date_updated": "2026-01-01T18:33",
+      "date_updated": "2026-01-07T11:58",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zeldo-labors.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zeldo-labors/zeldo-labors/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zeldo-labors/zeldo-labors/README.md",
-      "size": 652919,
-      "md5": "9a5b02467e1a9cccf2076e1e072ba528"
+      "size": 652934,
+      "md5": "c3c58462a2d0df3712c25b155321fb48"
     }
   },
   {
