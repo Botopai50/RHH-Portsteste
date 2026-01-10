@@ -37,17 +37,7 @@ Some of the ports in this repository have minimum requirements. Be sure to check
 - `!arkos`: The port will not run on ArkOS (GLIBC too old).
 
 ## Runtimes
-Some of my ports require runtimes--mounted squashfs files that contain common scripts, programs, etc. These are found in the `runtimes` folder of this repository and should be placed in `PortMaster/libs` on your device. For large runtimes (like GMToolkit), the squashfs file may be split into multiple parts. You’ll need to recombine the parts before transferring to your device. Download all the parts and, in the same folder, do one of the following:
-
-#### On Linux and MacOS:
-
-`cat gmtoolkit.squashfs.part.* > gmtoolkit.squashfs`
-
-#### On Windows:
-
-cmd: `copy /b gmtoolkit.squashfs.part.001 + gmtoolkit.squashfs.part.002 + gmtoolkit.squashfs.part.003 gmtoolkit.squashfs`
-
-powershell: `Get-ChildItem -Filter "gmtoolkit.squashfs.part.*" | Sort-Object Name | Get-Content -Encoding Byte -ReadCount 0 | Set-Content gmtoolkit.squashfs -Encoding Byte`
+Some of my ports require runtimes--mounted squashfs files that contain common scripts, programs, etc. These are found in the `runtimes` folder of this repository and should be placed in `PortMaster/libs` on your device.
 
 ## Keeping up
 You can keep up with ports that I consider "complete" by checking the [commit history](https://github.com/JeodC/RHH-Ports/commits/main). I always prepend my commits with `[PORTNAME]` so it's easy to see what the commit most affects.
