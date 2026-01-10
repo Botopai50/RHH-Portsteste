@@ -12,27 +12,37 @@ else
   controlfolder="/roms/ports/PortMaster"
 fi
 
-source $controlfolder/control.txt
+source "$controlfolder/control.txt"
 export PORT_32BIT="Y"
 [ -f "${controlfolder}/mod_${CFW_NAME}.txt" ] && source "${controlfolder}/mod_${CFW_NAME}.txt"
 get_controls
 
-# Variables
 GAMEDIR="/$directory/ports/momodora_rutm"
 GAME="$GAMEDIR/gamedata/MomodoraRUtM"
 BOX86="$GAMEDIR/box86/box86"
+game_libs="$GAMEDIR/box86/x86:$weston_dir/lib_armhf:$GAMEDIR/libs.armhf:/usr/lib32:/lib32"
 
-# CD and set log
-cd $GAMEDIR
+# Variables
+cd "$GAMEDIR"
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
 # Permissions
-chmod +xwr -R "$BOX86"
+chmod +x"$BOX86"
 
 # Exports
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
-export LD_LIBRARY_PATH="$GAMEDIR/libs.armhf:/usr/lib32:$LD_LIBRARY_PATH"
-export BOX86_LD_LIBRARY_PATH="$GAMEDIR/box86/x86"
+
+export LIBGL_FB=0
+export LIBGL_X11=1
+export LIBGL_GL=21
+export LIBGL_ES=2
+
+export LIBGL_SHRINK=0
+export LIBGL_UPLOAD_OPTIMIZE=1
+export LIBGL_NPOT=2
+
+export BOX86_DYNAREC_SAFEFLAGS=1
+export BOX86_DYNAREC_WAIT=1
 
 # Bind config dir
 bind_directories ~/.config/MomodoraRUtM "$GAMEDIR/config"
@@ -48,36 +58,40 @@ $ESUDO mkdir -p "$weston_dir"
 weston_runtime="weston_pkg_0.2"
 
 if [ ! -f "$controlfolder/libs/${weston_runtime}.squashfs" ]; then
-	if [ ! -f "$controlfolder/harbourmaster" ]; then
-		pm_message "This port requires the latest PortMaster to run, please go to https://portmaster.games/ for more info."
-		sleep 5
-		exit 1
-	fi
+    if [ ! -f "$controlfolder/harbourmaster" ]; then
+        pm_message "This port requires the latest PortMaster. Please visit https://portmaster.games/."
+        sleep 5
+        exit 1
+    fi
 
-	# Try quiet install
-	if ! $ESUDO "$controlfolder/harbourmaster" --quiet --no-check runtime_check "${weston_runtime}.squashfs"; then
-		pm_message "Failed to install the runtime automatically. Please update PortMaster or install '${weston_runtime}' manually."
-		sleep 5
-		exit 1
-	fi
+    # Try quiet install
+    if ! $ESUDO "$controlfolder/harbourmaster" --quiet --no-check runtime_check "${weston_runtime}.squashfs"; then
+        pm_message "Failed to install runtime. Please update PortMaster or install '${weston_runtime}' manually."
+        sleep 5
+        exit 1
+    fi
 fi
 
 if [ "$PM_CAN_MOUNT" != "N" ]; then
-	$ESUDO umount "$weston_dir"
+    $ESUDO umount "$weston_dir" 2>/dev/null
 fi
 
 $ESUDO mount "$controlfolder/libs/${weston_runtime}.squashfs" "$weston_dir"
 
 # Run it
 cd "$GAMEDIR/gamedata"
-$GPTOKEYB "MomodoraRUtM" -c "$GAMEDIR/momodora.gptk" & 
+$GPTOKEYB "MomodoraRUtM" -c "$GAMEDIR/momodora.gptk" &
 pm_platform_helper "$GAME" > /dev/null
-$ESUDO env WRAPPED_LIBRARY_PATH="$GAMEDIR/libs.armhf" $weston_dir/westonwrap32.sh headless noop kiosk crusty_x11egl \
-"$BOX86" "$GAME"
+$ESUDO env \
+    WRAPPED_LIBRARY_PATH="$game_libs" \
+    BOX86_LD_LIBRARY_PATH="$game_libs" \
+    $weston_dir/westonwrap32.sh headless noop kiosk crusty_glx_gl4es \
+    "$BOX86" "$GAME"
 
-# Clean up
-$ESUDO $weston_dir/westonwrap.sh cleanup
+# Cleanup
+$ESUDO "$weston_dir/westonwrap32.sh" cleanup
 if [ "$PM_CAN_MOUNT" != "N" ]; then
-	$ESUDO umount "$weston_dir"
+    $ESUDO umount "$weston_dir" 2>/dev/null
 fi
+
 pm_finish
