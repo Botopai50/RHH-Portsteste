@@ -109,7 +109,9 @@ apply_xdelta() {
 # Externalize game textures with compression
 dump_textures() {
     # Purge cache before operations
-    [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+    if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
+        rm -rf "$TMPDIR"/*
+    fi
 
     # Begin texture operations
     if ! dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
@@ -125,7 +127,9 @@ dump_textures() {
     mv "$DATADIR/textures" "$SAVEDIR/textures"
 
     # Final cleanup
-    [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+    if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
+        rm -rf "$TMPDIR"/*
+    fi
 }
 
 compress_audio() {

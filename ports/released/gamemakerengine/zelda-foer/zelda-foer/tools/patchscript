@@ -133,7 +133,9 @@ compress_audio() {
     else
         # Failure
         echo "Audio compression failed."
-        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+        if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
+            rm -rf "$TMPDIR"/*
+        fi
         return 1
     fi
 }

@@ -165,7 +165,9 @@ dump_textures() {
         mkdir -p "$SAVEDIR/textures/$GAMEFILE/"
         mv "$INSTALLDIR/assets/textures"/* "$SAVEDIR/textures/$GAMEFILE/"
         rm -rf "$INSTALLDIR/assets/textures"
-        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+        if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
+            rm -rf "$TMPDIR"/*
+        fi
     fi
 }
 

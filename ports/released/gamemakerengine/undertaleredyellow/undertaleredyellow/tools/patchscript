@@ -197,7 +197,9 @@ replace_code() {
     if dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" replace "$DATADIR/game.droid" -o "$DATADIR/game2.droid" "${CODEARGS[@]}"; then
         echo "Successfully replaced gml scripts."
         mv -f "$DATADIR/game2.droid" "$DATADIR/game.droid"
-        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+        if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
+            rm -rf "$TMPDIR"/*
+        fi
     else
         echo "Failed to replace gml scripts."
         return 1

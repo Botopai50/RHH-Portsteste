@@ -137,7 +137,9 @@ replace_code() {
         echo "Successfully replaced gml scripts."
         rm -f "$DATADIR/data.win"
         mv "$DATADIR/data2.win" "$DATADIR/data.win"
-        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+        if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
+            rm -rf "$TMPDIR"/*
+        fi
     fi
 }
 
@@ -157,7 +159,9 @@ set_flags() {
         echo "Successfully toggled info flags."
         rm -f "$DATADIR/data.win"
         mv "$DATADIR/data2.win" "$DATADIR/data.win"
-        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+        if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
+            rm -rf "$TMPDIR"/*
+        fi
     fi
 }
 
@@ -178,7 +182,9 @@ dump_textures() {
     else
         rm -f "$DATADIR/data.win"
         mv "$DATADIR/textures" "$SAVEDIR/textures"
-        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+        if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
+            rm -rf "$TMPDIR"/*
+        fi
     fi
 }
 

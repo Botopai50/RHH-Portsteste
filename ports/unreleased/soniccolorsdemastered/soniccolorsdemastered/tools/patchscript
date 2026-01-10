@@ -95,7 +95,9 @@ dump_textures() {
         rm -f "$DATADIR/data.win"
         mkdir -p "$SAVEDIR"
         mv "$DATADIR/textures" "$SAVEDIR/textures"
-        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+        if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
+            rm -rf "$TMPDIR"/*
+        fi
     fi
 }
 
