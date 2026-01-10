@@ -44,7 +44,7 @@
     ],
     "availability": "paid",
     "reqs": [
-      "power"
+      "ultra"
 ],
     "arch": [
       "aarch64"

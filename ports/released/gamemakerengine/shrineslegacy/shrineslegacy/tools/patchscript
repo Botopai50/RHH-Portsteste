@@ -99,7 +99,7 @@ dump_textures() {
         mv "$DATADIR/textures" "$SAVEDIR/textures"
         rm -f "$DATADIR/data.win"
         mv "$DATADIR/data2.win" "$DATADIR/data.win"
-        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+        rm -rf "$TMPDIR"/*
     fi
 }
 
@@ -119,7 +119,7 @@ set_flags() {
         echo "Successfully toggled info flags."
         rm -f "$DATADIR/data.win"
         mv "$DATADIR/data2.win" "$DATADIR/data.win"
-        [ -d "$TMPDIR" ] && rm -rf "$TMPDIR"/*
+        rm -rf "$TMPDIR"/*
     fi
 }
 
