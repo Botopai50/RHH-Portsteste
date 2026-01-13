@@ -577,12 +577,12 @@
       ]
     },
     "source": {
-      "date_updated": "2026-01-01T18:32",
+      "date_updated": "2026-01-13T19:37",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/descent2.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent-1-2/descent2/descent2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent-1-2/descent2/descent2/README.md",
-      "size": 15170602,
-      "md5": "0fa9efbfee22ca6c48e3ce39080cb072"
+      "size": 15170604,
+      "md5": "1bbb7094b53250d222bf387a2bafee19"
     }
   },
   {
