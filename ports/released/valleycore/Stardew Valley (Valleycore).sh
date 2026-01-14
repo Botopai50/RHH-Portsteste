@@ -199,6 +199,17 @@ if [ -f "$GAMEDIR/gamedata/patch.sh" ]; then
 	fi
 fi
 
+if [ -d "$GAMEDIR/gamedata/Mods" ]; then
+    find "$GAMEDIR/gamedata/Mods" -type f -name "*.dll" | while read -r filepath; do
+        # Patch only if needed by checking bytes
+        arch=$(od -A n -j 0x85 -N 1 -t x1 "$filepath" 2>/dev/null | tr -d ' ')
+        if [ "$arch" = "86" ]; then
+            printf "\xaa" | dd of="$filepath" bs=1 seek=$((0x85)) conv=notrunc 2>/dev/null
+			echo "Patched mod DLL: $(basename "$filepath")"
+        fi
+    done
+fi
+
 ########################################
 # Splash
 ########################################
