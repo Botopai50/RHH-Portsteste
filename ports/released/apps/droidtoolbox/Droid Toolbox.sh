@@ -17,19 +17,16 @@ source "${controlfolder}/control.txt"
 get_controls
 
 GAMEDIR="/${directory}/ports/droidtoolbox"
-LOG_DIR="${GAMEDIR}/logs"
-
-mkdir -p "${LOG_DIR}"
 
 cd "${GAMEDIR}" || exit 1
 
-export LOG_FILE="${LOG_DIR}/$(date +'%Y-%m-%d').log"
 export LD_LIBRARY_PATH="${GAMEDIR}/libs:${LD_LIBRARY_PATH}"
 export SDL_GAMECONTROLLERCONFIG="${sdl_controllerconfig}"
+export XDG_DATA_HOME="${GAMEDIR}"
 
 # Run the app
 pm_platform_helper "DroidToolbox" >/dev/null
-./SWGE_DroidToolbox > "${LOG_FILE}" 2>&1 || true
+./SWGE_DroidToolbox
 
 # Cleanup
 pm_finish
