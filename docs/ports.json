@@ -795,12 +795,12 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-17T19:16",
+      "date_updated": "2026-01-17T21:24",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/droidtoolbox.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/droidtoolbox/droidtoolbox/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/droidtoolbox/droidtoolbox/README.md",
-      "size": 11376418,
-      "md5": "5383c198080e01da34884c314621ad84"
+      "size": 11375673,
+      "md5": "07b326677b7ac0cdc7e0c8a2406564eb"
     }
   },
   {
