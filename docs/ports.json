@@ -2396,12 +2396,12 @@
       ]
     },
     "source": {
-      "date_updated": "2026-01-01T18:33",
+      "date_updated": "2026-01-18T20:50",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/soh.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh/soh/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh/soh/README.md",
-      "size": 45710963,
-      "md5": "90ec14cca408403b12367cd93220de8b"
+      "size": 45710832,
+      "md5": "b1735ec837358278d0cf149da9a75f50"
     }
   },
   {
@@ -2435,12 +2435,12 @@
       ]
     },
     "source": {
-      "date_updated": "2026-01-07T11:58",
+      "date_updated": "2026-01-18T20:50",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/soh2.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh2/soh2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh2/soh2/README.md",
-      "size": 13132739,
-      "md5": "3c600cd9b23d07ec5fda6a567f03083b"
+      "size": 13132626,
+      "md5": "81b0c495f522a04746a4e88b4eb6302d"
     }
   },
   {
@@ -3026,12 +3026,12 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-01T18:33",
+      "date_updated": "2026-01-18T20:50",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/starship.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/starship/starship/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/starship/starship/README.md",
-      "size": 6656439,
-      "md5": "f8192600a0f8e9a1331ed8fa47314be1"
+      "size": 6656370,
+      "md5": "03b35952a0c0f3ce3f96cdbee707c268"
     }
   },
   {
