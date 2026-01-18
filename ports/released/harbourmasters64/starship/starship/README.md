@@ -13,8 +13,7 @@ The supported ROMs are:
 
 Legally obtain your rom and place it in `ports/starship`, then start the port. Texture pack files can be added to the `ports/starship/mods` folder.
 
-Logs are recorded automatically as `ports/starship/log.txt`. Please provide a log if you report an issue. PortMaster does not maintain the Starship repository and is not responsible for bugs or issues outside of our control. Likewise, HarbourMasters is not affiliated with PortMaster and this distribution is not officially supported by them. *Please come to PortMaster for help before approaching the HarbourMasters!*
-
+Logs are recorded automatically as `ports/starship/log.txt`. Please provide a log if you report an issue. HarbourMasters is not affiliated with PortMaster or RHH-Ports and this distribution is not officially supported by them. *Please report an issue to the RHH-Ports repository before going to HarbourMasters!*
 ## Menu Navigation
 There is a `starship.gptk` file you can use to change which button emulates F1 (default is L3). Some devices have a special button called `guide` that makes for a good F1 mapping.
 
@@ -36,7 +35,6 @@ The port uses SDL controller mapping and controls can be remapped from the menu 
 ## Thanks
 - Nintendo for the game  
 - HarbourMasters for the native pc port  
-- Testers and Devs from the PortMaster Discord  
 
 
 

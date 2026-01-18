@@ -9,7 +9,7 @@ You need to provide your own roms. See the [Shipwright](https://github.com/Harbo
 
 Texture pack files and mods can be added to the `ports/soh/mods` folder. 
 
-Logs are recorded automatically as `ports/soh/log.txt`. Please provide a log if you report an issue. PortMaster does not maintain the Ship of Harkinian repository and is not responsible for bugs or issues outside of our control. Likewise, HarbourMasters is not affiliated with PortMaster and this distribution is not officially supported by them. *Please come to PortMaster for help before approaching the HarbourMasters!*
+Logs are recorded automatically as `ports/soh/log.txt`. Please provide a log if you report an issue. HarbourMasters is not affiliated with PortMaster or RHH-Ports and this distribution is not officially supported by them. *Please report an issue to the RHH-Ports repository before going to HarbourMasters!*
 
 ## Menu Navigation
 Ship of Harkinian has built-in controller navigation for the imgui menu. Press `SELECT` to open the menu and use the `D-PAD` to choose a submenu, then press `A` to switch focus to it. Press `B` to back out of a submenu.
@@ -38,11 +38,8 @@ I prefer the OoT 3DS look along with a studio ghibli style skybox:
 ## Thanks
 Nintendo for the game  
 HarbourMasters for the native pc port  
-fpasteau for the original 8.0.4 compatibility build  
-beniamino for the updated build steps for develop to work on more devices  
 AkerHasReawakened for the cover art  
 IanSantos for the ghibli skybox mod  
-Testers and Devs from the PortMaster Discord  
 
 
 

@@ -13,7 +13,7 @@ You can verify your rom at https://2ship.equipment.
 
 Legally obtain your rom and place it in `ports/soh2`, then start the port. Texture pack files can be added to the `ports/soh2/mods` folder.
 
-Logs are recorded automatically as `ports/soh/log.txt`. Please provide a log if you report an issue. PortMaster does not maintain the 2Ship2Harkinian repository and is not responsible for bugs or issues outside of our control. Likewise, HarbourMasters is not affiliated with PortMaster and this distribution is not officially supported by them. *Please come to PortMaster for help before approaching the HarbourMasters!*
+Logs are recorded automatically as `ports/soh/log.txt`. Please provide a log if you report an issue. HarbourMasters is not affiliated with PortMaster or RHH-Ports and this distribution is not officially supported by them. *Please report an issue to the RHH-Ports repository before going to HarbourMasters!*
 
 ## Graphics Adjustments
 You can open `2ship2harkinan.json` in a text editor and modify the values as you wish. If you mess up the syntax, the game will regenerate this file and your settings will be reverted to default. Please create a backup before modification.
@@ -32,9 +32,7 @@ The [MM Reloaded](https://github.com/GhostlyDark/MM-Reloaded-2S2H) texture pack 
 ## Thanks
 - Nintendo for the game  
 - HarbourMasters for the native pc port  
-- beniamino for the build steps allowing this to run on older Ubuntu-based systems  
 - AkerHasReawakened for the cover art  
-- Testers and Devs from the PortMaster Discord  
 
 
 
