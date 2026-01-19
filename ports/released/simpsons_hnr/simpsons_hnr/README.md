@@ -11,6 +11,11 @@ strings hitandrun | grep "/target/libs/scrooby/src/utility/EnumConversion.cpp"
 strings hitandrun | grep "r36swiki.com"
 ```
 
+## Disclaimers
+The source code for Simpsons: Hit and Run is known to be leaked, not officially released. As such, *YOU* the *USER* are responsible for using this port and obtaining the game executable and game assets required for it to run.
+
+PortMaster has not endorsed this port. I am not affiliated with PortMaster, and I personally see no problem with hosting a cleaned up launchscript and a shim. That said, I will not offer support for issues with this port and I also have no problems removing this wrapper.
+
 ## Installation
 You need the original Windows PC version of The Simpsons: Hit and Run to use this port. Copy the following items from your installation to `simpsons_h&r/gamedata`:
 
@@ -32,7 +37,7 @@ Files:
 - scripts.rcf
 - sound.fx.rcf
 
-You will also need to source the original `hitandrun` binary from the R36SWiki link above. Download `hitandrun.zip`, grab the `hitandrun` binary file from within, and copy it to `simpsons_h&r`. This is necessary until reproducible build steps from a public repository are discovered.
+You will also need to source the original `hitandrun` binary from the R36SWiki link above. Download `hitandrun.zip`, grab the `hitandrun` binary file from within, and copy it to `simpsons_h&r`.
 
 ## Thanks
 Radical Entertainment -- The game  
