@@ -23,14 +23,14 @@
 # Universal controls, needed for menu -- DO NOT CHANGE
 back = esc
 start = enter
-up = \"
-down = \"
-left = \"
-right = \"
+up = up
+down = down
+left = left
+right = right
 a = \"
 
 # Assigning integer keys to remaining universal buttons
-b = 0
+b = \"
 y = 1
 x = 2
 l1 = 3
@@ -40,12 +40,14 @@ r2 = 6
 b_hk = 7
 x_hk = 8
 y_hk = 9
+r2_hk = 0
 
 # Leave L3 and R3 blank since not available on all supported devices
-l3 = \"
+l3 = d
+l3 = add_ctrl
 r3 = \"
 
-# UDefer to SDL controls for analog sticks
+# Defer to SDL controls for analog sticks
 left_analog_up = \"
 left_analog_down = \"
 left_analog_left = \"
