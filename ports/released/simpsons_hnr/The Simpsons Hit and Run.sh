@@ -20,11 +20,11 @@ get_controls
 GAMEDIR="/$directory/ports/simpsons_hnr"
 
 # CD and set logging
-cd $GAMEDIR/gamedata
+cd "$GAMEDIR/gamedata"
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
 # Setup permissions
-$ESUDO chmod +xwr "$GAMEDIR/hitandrun"
+$ESUDO chmod +x "$GAMEDIR/hitandrun"
 
 # Exports
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
@@ -52,7 +52,7 @@ check_data() {
 
     # Report and exit if anything is missing
     if [ ${#missing_items[@]} -ne 0 ]; then
-        echo "The following required items are missing from $GAMEDIR:"
+        echo "The following required items are missing from $GAMEDIR/gamedata:"
         for item in "${missing_items[@]}"; do
             echo " - $item"
         done
@@ -63,10 +63,18 @@ check_data() {
 # Check for game assets
 check_data
 
+# Check for hitandrun
+if [ ! -f "$GAMEDIR/hitandrun" ]; then
+  echo "Error: hitandrun binary not found in $GAMEDIR"
+  echo "Check the README for installation steps"
+  exit 1
+fi
+
 # Run game
 $GPTOKEYB "hitandrun" -c "$GAMEDIR/hitandrun.gptk" &
-pm_platform_helper "$GAMEDIR/hitandrun" >/dev/null
-LD_PRELOAD="$GAMEDIR/libs/libfakespace.so" "$GAMEDIR/hitandrun"
+pm_platform_helper "$GAMEDIR/hitandrun" >/dev/null &
+LD_PRELOAD="$GAMEDIR/libs/libfakespace.so" \
+"$GAMEDIR/hitandrun"
 
 # Cleanup
 pm_finish
