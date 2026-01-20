@@ -1,3 +1,5 @@
+// This shim resolves a bug in https://github.com/ZenoArrows/The-Simpsons-Hit-and-Run/blob/master/libs/radcore/src/radfile/win32/win32drive.cpp#L605
+
 // Modern SD Cards, when large, will cause an integer overflow and make the game think the drive is full
 // This shim tricks the game into reading a drive with 512MB free space, more than enough for save files
 // Compile with gcc -fPIC -shared -o libfakespace.so fake_space.c -ldl on debian bullseye
@@ -7,6 +9,13 @@
 #include <sys/statvfs.h>
 #include <sys/vfs.h>
 #include <stddef.h>
+#include <stdio.h>
+
+__attribute__((constructor))
+static void fakespace_init(void)
+{
+    fprintf(stderr, "[fakespace] libfakespace loaded\n");
+}
 
 int statvfs(const char *path, struct statvfs *buf) {
     int (*orig)(const char *, struct statvfs *) = dlsym(RTLD_NEXT, "statvfs");
