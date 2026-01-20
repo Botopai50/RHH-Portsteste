@@ -25,13 +25,9 @@ Ghostship has built-in controller navigation for the imgui menu. Press `SELECT` 
 The port uses SDL controller mapping and controls can be remapped from the menu bar.
 
 ## Suggested Mods
-The [SM64 Reloaded](https://evilgames.eu/files/texture-packs/sm64-reloaded-v2.5.0-pc-hd.zip) texture pack can be [converted to o2r format](https://tex2gship.net64.dev/). The converter will download the same file you upload with a `cnv_` prefix, which you can rename.
+Find mods at the [Gamebanana page](https://gamebanana.com/mods/games/24131), and [SM64-Reloaded](https://github.com/GhostlyDark/SM64-Reloaded-GS).
 
-- Download `sm64-reloaded-v2.5.0-pc-hd.zip`
-- Convert and get `cnv_sm64-reloaded-v2.5.0-pc-hd.zip`
-- Rename `cnv_sm64-reloaded-v2.5.0-pc-hd.zip` to `sm64-reloaded-v2.5.0-pc-hd.o2r`
-
-Add the o2r pack to `ghostship/mods`, and either have the line `"gAltAssets": 1,` in your json or assign `TAB` to a button in the `soh2.gptk` file (default R3).
+Add the mod packs to `ghostship/mods`, and either have the line `"gAltAssets": 1,` in your json or assign `TAB` to a button in the `soh2.gptk` file (default R3).
 
 ## Thanks
 - Nintendo for the game  
