@@ -28,7 +28,6 @@ $ESUDO chmod +xwr "$GAMEDIR/hitandrun"
 
 # Exports
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
-export LD_PRELOAD="$GAMEDIR/libs/libfakespace.so"
 
 check_data() {
     # Directories and files to check
@@ -67,7 +66,7 @@ check_data
 # Run game
 $GPTOKEYB "hitandrun" -c "$GAMEDIR/hitandrun.gptk" &
 pm_platform_helper "$GAMEDIR/hitandrun" >/dev/null
-"$GAMEDIR/hitandrun"
+LD_PRELOAD="$GAMEDIR/libs/libfakespace.so" "$GAMEDIR/hitandrun"
 
 # Cleanup
 pm_finish
