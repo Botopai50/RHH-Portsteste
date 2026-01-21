@@ -143,3 +143,37 @@ long syscall(long number, ...)
 
     return orig_syscall(number, a1, a2, a3, a4, a5, a6);
 }
+
+int fstatvfs(int fd, struct statvfs *buf)
+{
+    static int (*orig)(int, struct statvfs *) = NULL;
+    if (!orig) orig = dlsym(RTLD_NEXT, "fstatvfs");
+
+    int ret = orig(fd, buf);
+    if (ret == 0)
+    {
+        fakespace_hits++;
+        buf->f_blocks = 1000000;
+        buf->f_bavail = 500000;
+        buf->f_bfree  = 500000;
+        buf->f_frsize = 1024;
+    }
+    return ret;
+}
+
+int fstatvfs64(int fd, struct statvfs64 *buf)
+{
+    static int (*orig)(int, struct statvfs64 *) = NULL;
+    if (!orig) orig = dlsym(RTLD_NEXT, "fstatvfs64");
+
+    int ret = orig(fd, buf);
+    if (ret == 0)
+    {
+        fakespace_hits++;
+        buf->f_blocks = 1000000;
+        buf->f_bavail = 500000;
+        buf->f_bfree  = 500000;
+        buf->f_frsize = 1024;
+    }
+    return ret;
+}
