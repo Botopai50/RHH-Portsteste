@@ -37,7 +37,7 @@ Files:
 - scripts.rcf
 - sound.fx.rcf
 
-You will also need to source the original `hitandrun` binary from the R36SWiki link above. Download `hitandrun.zip`, grab the `hitandrun` binary file from within, and copy it to `simpsons_h&r`.
+You will also need to source the original `hitandrun` binary from the R36SWiki link above. Download `hitandrun.zip`, grab the `hitandrun` binary file from within, and copy it to `simpsons_hnr`.
 
 ## Thanks
 Radical Entertainment -- The game  
