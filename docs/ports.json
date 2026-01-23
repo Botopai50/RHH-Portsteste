@@ -345,12 +345,12 @@
       ]
     },
     "source": {
-      "date_updated": "2026-01-10T17:38",
+      "date_updated": "2026-01-23T23:00",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/README.md",
-      "size": 8106531,
-      "md5": "8ae545c6028ed7d7163b307a7f7e8e33"
+      "size": 8106536,
+      "md5": "49d4f2c7d829937daac69189f2fb7e29"
     }
   },
   {
@@ -389,12 +389,12 @@
       ]
     },
     "source": {
-      "date_updated": "2026-01-10T17:38",
+      "date_updated": "2026-01-23T23:00",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity2.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/README.md",
-      "size": 8400171,
-      "md5": "8ceb39509287f7e9ac13b188bae6d286"
+      "size": 8400175,
+      "md5": "13b28265e010c0c79bf3a0b4564825b8"
     }
   },
   {
