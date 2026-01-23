@@ -1,11 +1,13 @@
 #!/bin/bash
 
-# Set up vars and logging
+# Variables
 GAMEDIR="$PWD"
+LOGFILE="$GAMEDIR/assets/otrlog.txt"
 BASEROMS_DIR="$GAMEDIR/baseroms"
 ARGS=""
 i=1
-> "$GAMEDIR/patchlog.txt" && exec > >(tee "$GAMEDIR/patchlog.txt") 2>&1
+
+exec > >(tee "$LOGFILE") 2>&1
 
 # Exports
 export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
@@ -58,7 +60,6 @@ process_roms() {
 }
 
 unzip_assets || { echo "Patching process failed!"; exit 1; }
-
 process_roms || { echo "Patching process failed!"; return 1; }
 
 # Run soh.elf with all ROM arguments

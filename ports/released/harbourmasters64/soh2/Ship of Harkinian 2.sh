@@ -22,15 +22,12 @@ GAMEDIR="/$directory/ports/soh2"
 # Exports
 export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG=$sdl_controllerconfig
-export PATCHER_FILE="$GAMEDIR/assets/otrgen"
-export PATCHER_GAME="$(basename "${0%.*}")" # This gets the current script filename without the extension
-export PATCHER_TIME="5 to 10 minutes"
 
 # CD and set permissions
 cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
-$ESUDO chmod +xwr "$GAMEDIR/2s2h.elf"
-$ESUDO chmod +xwr "$PATCHER_FILE"
+$ESUDO chmod +x "$GAMEDIR/2s2h.elf"
+$ESUDO chmod +x "$GAMEDIR/assets/otrgen"
 
 # Close the menu if open
 sed -i 's/"Menu": *1/"Menu": 0/' 2ship2harkinian.json
@@ -75,6 +72,9 @@ if [ ! -f "mm.o2r" ]; then
     # Ensure we have a rom file before attempting to generate o2r
     if ls *.*64 1> /dev/null 2>&1; then
         if [ -f "$controlfolder/utils/patcher.txt" ]; then
+            export PATCHER_FILE="$GAMEDIR/assets/otrgen"
+            export PATCHER_GAME="$(basename "${0%.*}")"
+            export PATCHER_TIME="5 to 10 minutes"
             export controlfolder
             export DEVICE_ARCH
             source "$controlfolder/utils/patcher.txt"

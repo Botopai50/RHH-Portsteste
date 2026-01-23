@@ -1,7 +1,7 @@
 #!/bin/bash
 # Set GAMEDIR to the current directory and set logfile
 GAMEDIR="$PWD"
-LOGFILE="$GAMEDIR/patchlog.txt"
+LOGFILE="$GAMEDIR/assets/otrlog.txt"
 
 # Redirect output and error to the log file
 exec > >(tee "$LOGFILE") 2>&1
@@ -32,7 +32,6 @@ unzip_assets() {
         fi
     fi
 }
-
 
 process_rom() {
     local romfile=$1
