@@ -30,7 +30,7 @@ jobs:
           unzip -o temp.zip -d "$TARGET_DIR"
           
           # Remove only the src directory
-          rm -rf "$TARGET_DIR/src"
+          find "$TARGET_DIR" -type d -name "src" -exec rm -rf {} +
           rm temp.zip
 
           # Store variables for the commit step
