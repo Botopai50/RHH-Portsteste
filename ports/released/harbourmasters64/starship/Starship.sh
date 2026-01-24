@@ -96,5 +96,5 @@ pm_platform_helper "$GAMEDIR/Starship" > /dev/null
 ./Starship
 
 # Cleanup
-pm_cleanup
+pm_finish
 rm -rf logs
