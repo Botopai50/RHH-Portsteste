@@ -3114,12 +3114,12 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-27T00:07",
+      "date_updated": "2026-01-27T00:11",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/steamlink.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/steamlink/steamlink/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/steamlink/steamlink/README.md",
-      "size": 21555092,
-      "md5": "07a7461d3e0c9d45c77d205567d2360b"
+      "size": 21555095,
+      "md5": "aa7db45c33ff36f125f34da712c1f0b6"
     }
   },
   {
