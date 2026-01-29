@@ -11,7 +11,7 @@
     "porter": [
       "Jeod"
     ],
-    "desc": "Pharos is a tool for downloading port wrappers hosted outside of PortMaster.",
+    "desc": "Pharos is a tool for downloading ports and wine bottles hosted outside of PortMaster. Modify the included .sources file to point to GitHub repositories.",
     "desc_md": null,
     "inst": "Add repository URLs to the .sources file to have Pharos check them for ports.",
     "inst_md": null,
