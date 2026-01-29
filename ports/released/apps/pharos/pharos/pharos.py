@@ -206,6 +206,7 @@ class Pharos:
                         size=src.get("size"),
                         date_updated=src.get("date_updated"),
                     )
+                    port.last_commit = src.get("last_commit", "")
                     port.md5 = src.get("md5")
                     local_md5 = local_md5s.get(port.name)
                     port.update_available = bool(local_md5 and port.md5 and local_md5 != port.md5)
@@ -329,7 +330,8 @@ class Pharos:
         repo = self.repositories[self.repo_idx]
         items = getattr(repo, "ports", None) or getattr(repo, "bottles", None)
         owner = repo.url.split("github.com/")[1].split("/")[0]
-        self.ui.draw_header(f"{owner}/{repo.name}", color_text)
+        header_text = f"{len(items)} items in {owner}/{repo.name}"
+        self.ui.draw_header(header_text, color_text)
 
         max_vis = 12
         start = max(0, self.port_idx - max_vis + 1)
@@ -406,7 +408,7 @@ class Pharos:
             if selected and selected.md5 and local_md5 and selected.md5 != local_md5:
                 bottom_log = f"{selected.title} – Update available!"
             else:
-                bottom_log = f"{len(items)} items in {owner}/{repo.name}"
+                bottom_log = f"{selected.last_commit}"
 
         self.ui.draw_log(text_line_1=bottom_log, background=True)
 
