@@ -38,28 +38,25 @@ fi
 
 # Exports
 export LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/libs.aarch64:$GAMEDIR/data:$LD_LIBRARY_PATH"
-export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export BOX64_LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/gamedata:$LD_LIBRARY_PATH"
 export XDG_CONFIG_HOME="$GAMEDIR/config" && mkdir -p "$GAMEDIR/config"
+export SDL_GAMECONTROLLERCONFIG="030000005e0400008e02000010010000,Xbox 360 Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,rightx:a3,righty:a4,start:b7,x:b2,y:b3,lefttrigger:a2,righttrigger:a5,"
 
-# Box64 optimizations
+# Box64 settings
 export BOX64_NOBANNER=1
 export BOX64_DYNAREC=1
-export BOX64_DYNAREC_SAFEFLAGS=1
-export BOX64_DYNAREC_FASTROUND=0
-export BOX64_BIGBLOCK=1
+export BOX64_DYNAREC_SAFEFLAGS=0
+export BOX64_DYNAREC_FASTROUND=1
 export BOX64_DYNAREC_BIGBLOCK=1
-export BOX64_DYNAREC_CALLRET=0
+export BOX64_DYNAREC_CALLRET=1
+export BOX64_DYNAREC_DIRTY=1
+export BOX64_DYNAREC_FORWARD=128
+export BOX64_RDTSC_1GHZ=1
 export BOX64_VSYNC=0
-export LIBGL_NOERROR=1
-export MESA_NO_ERROR=1
 
 # Display loading splash
 [ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 1 
 $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 30000 &
-
-# Use x11 for game but not for splash
-export SDL_VIDEODRIVER="x11"
 
 # Run it
 $GPTOKEYB "$GAME" xbox360 & 
