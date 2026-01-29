@@ -754,12 +754,12 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-25T17:28",
+      "date_updated": "2026-01-29T00:23",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/dokimon.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/README.md",
-      "size": 104561106,
-      "md5": "09d048d6b096aee28797943038e26ea9"
+      "size": 104564479,
+      "md5": "bb1ef966fdca92366ab53f1b9bb29dc6"
     }
   },
   {
