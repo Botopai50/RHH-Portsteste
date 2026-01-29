@@ -96,6 +96,10 @@ async function loadPorts() {
                 const downloadCount = downloadCounts[filename] || 0;
                 const reqs = (port.attr?.reqs || []).join(', ');
                 const genres = (port.attr?.genres || []).join(', ');
+                const lastCommit = port.source.last_commit;
+                const displayCommit = (!lastCommit || lastCommit.includes('Update ports.json')) 
+                    ? "" 
+                    : lastCommit;
 
                 return `
                     <div class="port-card">
@@ -111,6 +115,12 @@ async function loadPorts() {
                                     <a class="details-link" href="${port.source.readme_url || ''}" target="_blank" rel="noopener noreferrer">Details</a>
                                     <a class="download-link" href="${downloadHref}" target="_blank" rel="noopener noreferrer">Download</a>
                                 </div>
+                                
+                                ${displayCommit ? `
+                                    <div class="port-commit-banner" title="${displayCommit}">
+                                        ${displayCommit}
+                                    </div>
+                                ` : ''}
                             </div>
                         </div>
                     </div>`;
