@@ -48,7 +48,8 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/am2r/am2r/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/am2r/am2r/README.md",
       "size": 5261487,
-      "md5": "027f56d8cb5f315be981a054a82b31b6"
+      "md5": "027f56d8cb5f315be981a054a82b31b6",
+      "last_commit": "[AM2R] Add 3:2 aspect ratio patch"
     }
   },
   {
@@ -395,7 +396,8 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/README.md",
       "size": 8122539,
-      "md5": "36e648ec4959a6286e83c3ec23a578c8"
+      "md5": "36e648ec4959a6286e83c3ec23a578c8",
+      "last_commit": "[DARKDEITY] Fix patchscript and gmtoolkit errors"
     }
   },
   {
@@ -439,7 +441,8 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/README.md",
       "size": 8418789,
-      "md5": "2cb5f9878e78ef21e16ad8eee35290db"
+      "md5": "2cb5f9878e78ef21e16ad8eee35290db",
+      "last_commit": "[DARKDEITY2] Fix patchscript and gmtoolkit errors"
     }
   },
   {
@@ -760,7 +763,8 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/README.md",
       "size": 104546293,
-      "md5": "b90f826bcf5717c77c6cb1edf1d149df"
+      "md5": "b90f826bcf5717c77c6cb1edf1d149df",
+      "last_commit": "[DOKIMON] Update .port file for latest Steam assets"
     }
   },
   {
@@ -1570,7 +1574,8 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/madhouse/madhouse/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/madhouse/madhouse/README.md",
       "size": 7401821,
-      "md5": "70c02f455aca70f6afe513c9da924187"
+      "md5": "70c02f455aca70f6afe513c9da924187",
+      "last_commit": "Update gmtoolkit for 2024.14"
     }
   },
   {
@@ -2190,7 +2195,8 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pocketcrystalleague/pocketcrystalleague/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pocketcrystalleague/pocketcrystalleague/README.md",
       "size": 21658217,
-      "md5": "f7076f2f738ef9fbd48428b42cc5c1a2"
+      "md5": "f7076f2f738ef9fbd48428b42cc5c1a2",
+      "last_commit": "[PCL] Add sell and berry icons to deck edit menu"
     }
   },
   {
@@ -3077,7 +3083,8 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/steamlink/steamlink/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/steamlink/steamlink/README.md",
       "size": 21555095,
-      "md5": "aa7db45c33ff36f125f34da712c1f0b6"
+      "md5": "aa7db45c33ff36f125f34da712c1f0b6",
+      "last_commit": "[STEAMLINK] Fix app for sway and retain x11 compatibility"
     }
   },
   {
@@ -3767,7 +3774,8 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/simpsons_hnr/simpsons_hnr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/simpsons_hnr/simpsons_hnr/README.md",
       "size": 323019,
-      "md5": "05d63c8ebd6cf5213cbb3b0d4fd89234"
+      "md5": "05d63c8ebd6cf5213cbb3b0d4fd89234",
+      "last_commit": "[SIMPSONS] Fix bug in saving on large storage"
     }
   },
   {
