@@ -1,7 +1,7 @@
 # Introduction
-Descent 1 & 2 using DXX-Rebirth, ported to retro handhelds. Runs via [PortMaster](https://portmaster.games). Shareware demo files included; you can provide your own full game version.
+Descent 1 & 2 using DXX-Rebirth, ported to retro handhelds. Shareware demo files included; you can provide your own full game version.
 
-Latest PortMaster version built from commit [b5ca993](https://github.com/dxx-rebirth/dxx-rebirth/commit/b5ca993d71739e9542fafe13d7332cc6ce008cc5) for aarch64. Cmpatibility binary built from commit [e1d68f5](https://github.com/JeodC/dxx-rebirth/commit/e1d68f58ab6a2fe43eb011555ab9a1582d523bab) and compatibility fix [c22de97](https://github.com/JeodC/dxx-rebirth/commit/c22de974133f407e6413dafde8c0769019881fec).
+Latest version built from commit [b5ca993](https://github.com/dxx-rebirth/dxx-rebirth/commit/b5ca993d71739e9542fafe13d7332cc6ce008cc5) for aarch64. Compatibility binary built from commit [e1d68f5](https://github.com/JeodC/dxx-rebirth/commit/e1d68f58ab6a2fe43eb011555ab9a1582d523bab) and compatibility fix [c22de97](https://github.com/JeodC/dxx-rebirth/commit/c22de974133f407e6413dafde8c0769019881fec).
 
 # Add-On Files
 Add-On files allow you to customize DXX-Rebirth to your liking. You might prefer certain soundcard midi audio, or even the PS1 soundtrack.
