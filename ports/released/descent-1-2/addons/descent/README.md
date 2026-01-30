@@ -25,7 +25,7 @@ Usage: `*.dxa` files go in the `descent/data` folder. Levels of the World's enti
 ## Missions
 Descent I & II: The Definitive Collection came packaged with 20 bonus levels by Parallax Software.
 
-Levels of the World is an official add-on with all of the entries from a level design competition held by Interplay in 1995, plus one level designed by Parallax Software. It contains Parallax Software's top 10 picks, 90 singleplayer and 23 multiplayer levels, for a total of 123 levels.  
+Levels of the World is an official add-on with all of the entries from a level design competition held by Interplay in 1995, plus one level designed by Parallax Software (`SATURN15` aka Destination Saturn, the only unique level from the bundled CD-ROM of the same name). It contains Parallax Software's top 10 picks, 90 singleplayer and 23 multiplayer levels, for a total of 123 levels.  
 
 Dimensions was an unauthorized distribution disc from Lasersoft that contains fan-made levels. It was not authorized by Interplay and Lasersoft was sued for trademark infringement.  
 
