@@ -97,4 +97,5 @@ if [ -n "$rom_file" ]; then
 fi
 
 # Cleanup
+rm -rf "$GAMEDIR/placeholder"
 echo "Patching process complete!"

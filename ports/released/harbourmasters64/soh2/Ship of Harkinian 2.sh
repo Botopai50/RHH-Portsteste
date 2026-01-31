@@ -122,4 +122,5 @@ pm_platform_helper "2s2h.elf" >/dev/null
 ./2s2h.elf
 
 # Cleanup
+rm -rf "$GAMEDIR/logs"
 pm_finish
