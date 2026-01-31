@@ -68,9 +68,21 @@ imgui_reset() {
 }
 
 o2r_check() {
+
+# Warn if mm.o2r is older than 2s2h.elf or 2ship.o2r
+if [ -f "$GAMEDIR/mm.o2r" ]; then
+    if [ -f "$GAMEDIR/2s2h.elf" ] && [ "$GAMEDIR/2s2h.elf" -nt "$GAMEDIR/mm.o2r" ] \
+       || [ -f "$GAMEDIR/2ship.o2r" ] && [ "$GAMEDIR/2ship.o2r" -nt "$GAMEDIR/mm.o2r" ]; then
+        echo "Notice: mm.o2r is older than 2s2h.elf and/or 2ship.o2r. Forcing regeneration."
+        rm -f "$GAMEDIR/mm.o2r"
+        REGEN=1
+        export REGEN
+    fi
+fi
+
 if [ ! -f "mm.o2r" ]; then
     # Ensure we have a rom file before attempting to generate o2r
-    if ls *.*64 1> /dev/null 2>&1; then
+    if ls "$GAMEDIR/baseroms/"*.*64 1> /dev/null 2>&1; then
         if [ -f "$controlfolder/utils/patcher.txt" ]; then
             export PATCHER_FILE="$GAMEDIR/assets/otrgen"
             export PATCHER_GAME="$(basename "${0%.*}")"
@@ -83,7 +95,8 @@ if [ ! -f "mm.o2r" ]; then
             pm_message "This port requires the latest version of PortMaster."
         fi
     else
-        echo "Missing ROM files! Can't generate o2r!"
+        echo "Missing ROM files in $GAMEDIR/baseroms! Can't generate o2r!"
+        exit 1
     fi
     
     # Check if OTR files were generated

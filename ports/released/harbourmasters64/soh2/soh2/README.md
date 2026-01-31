@@ -11,9 +11,9 @@ d6133ace5afaa0882cf214cf88daba39e266c078 - N64 US
 
 You can verify your rom at https://2ship.equipment.
 
-Legally obtain your rom and place it in `ports/soh2`, then start the port. Texture pack files can be added to the `ports/soh2/mods` folder.
+Legally obtain your rom and place it in `ports/soh2/baseroms`, then start the port. Texture pack files can be added to the `ports/soh2/mods` folder.
 
-Logs are recorded automatically as `ports/soh/log.txt`. Please provide a log if you report an issue. HarbourMasters is not affiliated with PortMaster or RHH-Ports and this distribution is not officially supported by them. *Please report an issue to the RHH-Ports repository before going to HarbourMasters!*
+Logs are recorded automatically as `ports/soh2/log.txt`. Please provide a log if you report an issue. HarbourMasters is not affiliated with PortMaster or RHH-Ports and this distribution is not officially supported by them. *Please report an issue to the RHH-Ports repository before going to HarbourMasters!*
 
 ## Graphics Adjustments
 You can open `2ship2harkinan.json` in a text editor and modify the values as you wish. If you mess up the syntax, the game will regenerate this file and your settings will be reverted to default. Please create a backup before modification.

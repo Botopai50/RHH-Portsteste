@@ -2,6 +2,8 @@
 # Set GAMEDIR to the current directory and set logfile
 GAMEDIR="$PWD"
 LOGFILE="$GAMEDIR/assets/otrlog.txt"
+ASSETS_ZIP="$GAMEDIR/assets/extractor.zip"
+ASSETS_DIR="$GAMEDIR/assets"
 
 # Redirect output and error to the log file
 exec > >(tee "$LOGFILE") 2>&1
@@ -10,6 +12,7 @@ echo "GAMEDIR is set to: $GAMEDIR"
 # Exports
 export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
 
+# Check if we need to unzip the assets archive
 unzip_assets() {
     # Define 7zzs binary
     SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
@@ -18,16 +21,12 @@ unzip_assets() {
         return 1
     fi
 
-    EXTRACTOR_ZIP="$GAMEDIR/assets/extractor.zip"
-    EXTRACTOR_DIR="$GAMEDIR/assets"
-
-    if [ -f "$EXTRACTOR_ZIP" ]; then
-        echo "Extracting extractor.zip..."
-        if "$SEVENZIP" x -y "$EXTRACTOR_ZIP" -o"$EXTRACTOR_DIR" >/dev/null; then
-            chmod +x "$EXTRACTOR_DIR/extractor/ZAPD.out"
-            rm -f "$EXTRACTOR_ZIP"
+    if [ -f "$ASSETS_ZIP" ]; then
+        echo "Extracting assets.zip..."
+        if "$SEVENZIP" x -y "$ASSETS_ZIP" -o"$ASSETS_DIR" >/dev/null; then
+            rm -f "$ASSETS_ZIP"
         else
-            echo "Error: Extraction failed"
+            echo "[OTRGEN] Unable to extract assets.zip."
             return 1
         fi
     fi
@@ -37,7 +36,7 @@ process_rom() {
     local romfile=$1
 
     # Compute SHA-1 hash of the file
-    ROMHASH=$(sha1sum -b "$romfile" 2>> log.txt | awk '{ print $1 }') || { echo "Error: Failed to compute SHA-1 hash" >> log.txt; return 1; }
+    ROMHASH=$(sha1sum -b "$romfile" 2>> "$LOGFILE" | awk '{ print $1 }') || { echo "Error: Failed to compute SHA-1 hash" >> "$LOGFILE"; return 1; }
 
     # Remap v64 and n64 hashes to their z64 hash equivalent
     case "$ROMHASH" in
@@ -54,7 +53,7 @@ process_rom() {
     d6133ace5afaa0882cf214cf88daba39e266c078) ROM=N64_US;;
     9743aa026e9269b339eb0e3044cd5830a440c1fd) ROM=GC_US;;
     *)
-        echo "$ROMHASH rom hash does not match: $ROMHASH" | tee -a $LOGFILE
+        echo "[OTRGEN] Unsupported ROM hash: $ROMHASH" | tee -a "$LOGFILE"
         return 1
         ;;
     esac
@@ -62,57 +61,40 @@ process_rom() {
     OTRNAME="mm.o2r"
     if [ ! -e "$GAMEDIR/$OTRNAME" ]; then
         echo "Generating $OTRNAME from $romfile..." | tee -a $LOGFILE
-        "$GAMEDIR/assets/extractor/ZAPD.out" ed -eh -i "$GAMEDIR/assets/xml/$ROM" -b "$GAMEDIR/$romfile" -fl "$GAMEDIR/assets/extractor/filelists/" -o placeholder -osf placeholder -gsf 1 -rconf "$GAMEDIR/assets/extractor/Config_$ROM.xml" -se OTR --otrfile "$OTRNAME" --portVer "3.0.0" > "$GAMEDIR/otrlog.txt"
-        if [ $? -eq 0 ]; then
-            echo "Successfully generated $OTRNAME"
+        if "$GAMEDIR/assets/extractor/ZAPD.out" ed -eh -i "$GAMEDIR/assets/xml/$ROM" -b "$romfile" -fl "$GAMEDIR/assets/extractor/filelists/" -o placeholder -osf placeholder -gsf 1 -rconf "$GAMEDIR/assets/extractor/Config_$ROM.xml" -se OTR --otrfile "$OTRNAME" --portVer "4.0.0" >> "$LOGFILE"; then
+            echo "[OTRGEN] Successfully generated $OTRNAME"
         else
-            echo "Error: Failed to generate $OTRNAME."
+            echo "[OTRGEN] Failed to generate $OTRNAME."
             return 1
         fi
     fi
 }
 
-unzip_assets || { echo "Patching process failed!"; exit 1; }
+# Main logic
+rom_file=$(find "$GAMEDIR/baseroms" -maxdepth 1 \( -name "*.z64" -o -name "*.n64" \) -print -quit)
 
-# Count the number of ROM files
-rom_count=0
-for romfile in *.*64; do
-    if [ -f "$romfile" ]; then
-        rom_count=$((rom_count + 1))
-    fi
-done
-
-sleep 1
-echo "Found $rom_count ROM files!"
-
-# Process them all
-counter=1
-processed_any_rom=0
-
-for romfile in *.*64; do
-    if [ -f "$romfile" ]; then
-        echo "Processing ${romfile}..."
-        mv "$romfile" "rom${counter}.z64"
-        if [ $? -eq 0 ]; then
-            process_rom "rom${counter}.z64"
-            if [ $? -eq 0 ]; then
-                processed_any_rom=1
-                counter=$((counter + 1))
-            else
-                echo "Error: process_rom failed for rom${counter}.z64"
-            fi
-        else
-            echo "Error: Failed to rename $romfile"
-        fi
-    fi
-done
-
-# Conditional cleanup
-if [ "$processed_any_rom" -eq 1 ]; then
-    echo "Cleaning up..."
-    rm -rf ./placeholder
-    rm -rf *.*64
+# Test if regenerating o2r
+if [ -n "$REGEN" ] && [ ! -f "$ASSETS_ZIP" ]; then
+    echo "[OTRGEN] Attempt to regenerate o2r with old assets!"
+    echo "[OTRGEN] Copy tools/assets.zip and remove the old tools/assets directory!"
+    echo "Patching process failed!"
+    exit 1
 fi
 
-echo "Finished processing all ROM files."
+if [ -z "$rom_file" ]; then
+    echo "[OTRGEN] No ROM file found in baseroms!"
+    exit 1
+fi
+
+if [ -f "$ASSETS_ZIP" ]; then
+    unzip_assets
+fi
+
+echo "Processing $rom_file..."
+
+if [ -n "$rom_file" ]; then
+    process_rom "$rom_file"  || { echo "Patching process failed!"; exit 1; }
+fi
+
+# Cleanup
 echo "Patching process complete!"
