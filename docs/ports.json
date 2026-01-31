@@ -2130,13 +2130,13 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-31T17:15",
+      "date_updated": "2026-01-31T17:50",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pharos.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/README.md",
-      "size": 3202288,
-      "md5": "56ec9e5590bacbda3950ef9cca7e7b2f",
-      "last_commit": "[PHAROS] Fix wine bottles crash"
+      "size": 3202094,
+      "md5": "2b2316aaffaa83c299307da0283c7a70",
+      "last_commit": "[PHAROS] Only keep 5 log files at a time"
     }
   },
   {
