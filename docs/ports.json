@@ -50,7 +50,7 @@
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/am2r/am2r/README.md",
       "size": 5261478,
       "md5": "a8acf50684b5b6bab7d026018013699c",
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[AM2R] Add 3:2 aspect ratio patch"
     }
   },
   {
@@ -249,7 +249,7 @@
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/retro64/banjorecompiled/banjorecompiled/README.md",
       "size": 8708338,
       "md5": "1278e049b056f67060fa7498513b82fc",
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[BANJO] Bump to v1.0.1 release"
     }
   },
   {
@@ -423,7 +423,7 @@
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/README.md",
       "size": 8122548,
       "md5": "e78c47a4564e3da0bd253af72c029e94",
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[DARKDEITY] Fix patchscript and gmtoolkit errors"
     }
   },
   {
@@ -470,7 +470,7 @@
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/README.md",
       "size": 8418797,
       "md5": "4ba7b316192e9a0e35377ec1b0c621b7",
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[DARKDEITY2] Fix patchscript and gmtoolkit errors"
     }
   },
   {
@@ -623,7 +623,7 @@
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent-1-2/descent/descent/README.md",
       "size": 15516364,
       "md5": "f40c4ea4e9648db32a68adc683b04f4d",
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[DESCENT] Consistent gptk between two games"
     }
   },
   {
@@ -670,7 +670,7 @@
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/descent-1-2/descent2/descent2/README.md",
       "size": 15183436,
       "md5": "c90bef073d7b84ddf8c327bea5dd2100",
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[DESCENT] Consistent gptk between two games"
     }
   },
   {
@@ -2136,7 +2136,7 @@
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/README.md",
       "size": 3202288,
       "md5": "56ec9e5590bacbda3950ef9cca7e7b2f",
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[PHAROS] Fix wine bottles crash"
     }
   },
   {
@@ -2636,7 +2636,7 @@
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh2/soh2/README.md",
       "size": 13643094,
       "md5": "1063c1a09fb255f8faabb69fde0f8950",
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[SOH2] v4.0.0"
     }
   },
   {
