@@ -49,7 +49,7 @@ echo "Welcome to bullseye chroot (ARM64)!"
 sudo chroot $TARGET /bin/bash
 ```
 
-Save it, and when you open windows terminal you can simply run:
+Save it, and run `chmod +x bullseye.sh` in your wsl terminal. When you open windows terminal again you can simply run:
 
 ```
 wsl
