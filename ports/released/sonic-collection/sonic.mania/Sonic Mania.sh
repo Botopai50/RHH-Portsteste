@@ -81,8 +81,8 @@ else
 fi
 
 # Run the game
-pm_platform_helper "$GAMEDIR/sonicmania"
 $GPTOKEYB "sonicmania" &
+pm_platform_helper "$GAMEDIR/sonicmania" > /dev/null
 ./sonicmania
 
 pm_finish
