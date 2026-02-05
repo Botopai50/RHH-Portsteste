@@ -495,7 +495,7 @@
         "adventure"
       ],
       "image": null,
-      "rtr": true,
+      "rtr": false,
       "exp": false,
       "runtime": [],
       "store": [],
@@ -510,13 +510,13 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-31T17:16",
+      "date_updated": "2026-02-05T13:04",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/deadcells.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/deadcells/deadcells/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/deadcells/deadcells/README.md",
-      "size": 9776431,
-      "md5": "aa383f0ef2b137a0d20433d4068c3946",
-      "last_commit": "Normalize all port.json files for version 4"
+      "size": 9776428,
+      "md5": "0c7cf4a6287da08a7e22553915122626",
+      "last_commit": "[TEARSCAPE] Release Tearscape port"
     }
   },
   {
@@ -3396,6 +3396,50 @@
       "size": 31105162,
       "md5": "bba851f05ebd71490e14d18093e05bee",
       "last_commit": "Normalize all port.json files for version 4"
+    }
+  },
+  {
+    "version": 4,
+    "name": "tearscape.zip",
+    "items": [
+      "Tearscape.sh",
+      "tearscape"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "Tearscape",
+      "porter": [
+        "Jeod"
+      ],
+      "desc": "As a hunter, you explore a dark, interconnected world filled with dungeons, relying on precise combat to survive. Battle grotesque monsters, expand your arsenal, and uncover hidden paths in a non-linear, pixel art journey.",
+      "desc_md": null,
+      "inst": "Add the linux assets to the data folder",
+      "inst_md": null,
+      "genres": [
+        "action",
+        "adventure",
+        "rpg"
+      ],
+      "image": null,
+      "rtr": false,
+      "exp": false,
+      "runtime": [],
+      "store": [],
+      "availability": "paid",
+      "reqs": [],
+      "arch": [
+        "aarch64"
+      ],
+      "min_glibc": ""
+    },
+    "source": {
+      "date_updated": "2026-02-05T13:04",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/tearscape.zip",
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/tearscape/tearscape/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/tearscape/tearscape/README.md",
+      "size": 5230367,
+      "md5": "0d14ead069a00705beeb1e12fd7bd29f",
+      "last_commit": "[TEARSCAPE] Release Tearscape port"
     }
   },
   {
