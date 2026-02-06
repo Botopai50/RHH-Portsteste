@@ -1249,13 +1249,13 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-02-06T02:22",
+      "date_updated": "2026-02-06T02:31",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/hollow_knight.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/hollow_knight/hollow_knight/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/hollow_knight/hollow_knight/README.md",
-      "size": 6668850,
-      "md5": "6289864bf6d366eac10ed81f6eb4ecba",
-      "last_commit": "[HOLLOWKNIGHT] Update artwork"
+      "size": 6696335,
+      "md5": "e4a9b10673a71a4ca0ff00ba302ceaaa",
+      "last_commit": "[TEAMCHERRY] Use custom gptokeyb to fix d-pad"
     }
   },
   {
@@ -1308,13 +1308,13 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-31T17:16",
+      "date_updated": "2026-02-06T02:31",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/hollow_knight_silksong.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/hollow_knight_silksong/hollow_knight_silksong/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/hollow_knight_silksong/hollow_knight_silksong/README.md",
-      "size": 6747301,
-      "md5": "44e79f0b48b55168e2eb6a31241fd1fd",
-      "last_commit": "Normalize all port.json files for version 4"
+      "size": 6774803,
+      "md5": "3f35117b5de399f4c030d16cb032f194",
+      "last_commit": "[TEAMCHERRY] Use custom gptokeyb to fix d-pad"
     }
   },
   {
