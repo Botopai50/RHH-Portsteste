@@ -1,5 +1,5 @@
 # Installation
-Use the direct down load option from https://www.tectonic-game.com and add the zip file to the `pkmn_tectonic` folder. On first launch the game will be unzipped for you.
+Use the direct download option from https://www.tectonic-game.com and add the zip file to the `pkmn_tectonic` folder. On first launch the game will be unzipped for you.
 
 # Modifications
 The following edits to `mkxp.json` may enhance the experience:

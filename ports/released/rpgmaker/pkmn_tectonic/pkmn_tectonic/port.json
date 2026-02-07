@@ -1,19 +1,19 @@
 {
   "version": 4,
-  "name": "pkmn_fireash.zip",
+  "name": "pkmn_tectonic.zip",
   "items": [
-    "Pokemon Fire Ash.sh",
-    "pkmn_fireash"
+    "Pokemon Tectonic.sh",
+    "pkmn_tectonic"
   ],
   "items_opt": [],
   "attr": {
-    "title": "Pokemon Fire Ash",
+    "title": "Pokemon Tectonic",
     "porter": [
       "Jeod"
     ],
-    "desc": "Pokémon Fire Ash is a fan-made Pokémon game that follows the journey of Ash Ketchum through multiple regions just like in the Pokémon anime series.",
+    "desc": "Pokémon Tectonic is a fan-made Pokémon RPG set in the underground-focused Makya region. It features a nonlinear story, extensive side quests, and a major rebalance of Pokémon, moves, and abilities so every Pokémon is viable. The game includes Pokémon up to Generation 8, regional forms, new evolutions, and quality-of-life improvements, with a strong emphasis on strategy and exploration.",
     "desc_md": null,
-    "inst": "Download the [Windows bundle](https://pokemonfireash.net/windows/) and add the zip file to the `pkmn_fireash` folder. On first launch the game will be unzipped for you.",
+    "inst": "Use the direct download option from https://www.tectonic-game.com and add the zip file to the `pkmn_tectonic` folder. On first launch the game will be unzipped for you.",
     "inst_md": null,
     "genres": [
       "adventure",
