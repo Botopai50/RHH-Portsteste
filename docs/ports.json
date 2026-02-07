@@ -2382,7 +2382,7 @@
       ],
       "desc": "Pokémon Fire Ash is a fan-made Pokémon game that follows the journey of Ash Ketchum through multiple regions just like in the Pokémon anime series.",
       "desc_md": null,
-      "inst": "Download the [Windows bundle](https://pokemonfireash.net/windows/) and add the zip file to the `pkmn_fireash` folder. On first launch the game will be unzipped for you.",
+      "inst": "Download the Windows bundle from https://pokemonfireash.net/windows and add the zip file to the `pkmn_fireash` folder. On first launch the game will be unzipped for you.",
       "inst_md": null,
       "genres": [
         "adventure",
@@ -2401,13 +2401,13 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-02-07T23:25",
+      "date_updated": "2026-02-07T23:34",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pkmn_fireash.zip",
-      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_tectonic/pkmn_tectonic/screenshot.png",
-      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_tectonic/pkmn_tectonic/README.md",
-      "size": 25231008,
-      "md5": "30c346b3a5cacf8185a0e8861bc757cd",
-      "last_commit": "[PKMNTECTONIC] Release"
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_fireash/pkmn_fireash/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_fireash/pkmn_fireash/README.md",
+      "size": 12539488,
+      "md5": "922f8e8ab75270a5a73c19aa5f954280",
+      "last_commit": "[FIREASH] Restore port.json"
     }
   },
   {
