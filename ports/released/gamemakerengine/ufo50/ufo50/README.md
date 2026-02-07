@@ -1,8 +1,8 @@
-# UFO 50 - PortMaster Modification & Wrapper
-This is a wrapper and xdelta modification for vanilla UFO50 that makes the game more manageable on retro handheld systems running linux arm64. If you are running android on a retro handheld system, you may be looking for the [unofficial android port](https://github.com/Skyline969/UFO50AndroidUnofficial) by Skyline969.
+# UFO 50
+This is a wrapper and in-place scripts modification for vanilla UFO 50 that makes the game more manageable on retro handheld systems running linux arm64. If you are running android on a retro handheld system, you may be looking for the [unofficial android port](https://github.com/Skyline969/UFO50AndroidUnofficial) by Skyline969.
 
 ## Installation
-Purchase the game on Steam and copy all the data to `ports/ufo50/assets`. On first run the game will be patched.
+This wrapper is compatible with all UFO 50 versions up to 1.8.9, the latest. Purchase the game on Steam and copy all the data to `ports/ufo50/assets`. On first run the game will be patched.
 
 If you are updating a prepatched game, simply add your new `data.win` file to `assets` *in addition to any new data you want added*. This means you can add the `ext` folder for any language updates and the `Textures` folder.
 
@@ -23,7 +23,7 @@ For the more technically inclined, here are specific modifications made in order
     - Remove/hide the scale options and the CRT shader options, since CRT shaders do not work on 1x scale
     
 ## Modding
-The UFO50 community has a number of mods that can work with the game. Most of them can be found on the [UFO50 Community Discord](https://50games.fans) or [Gamebanana](https://gamebanana.com/mods/games/23000).
+The UFO 50 community has a number of mods that can work with the game. Most of them can be found on the [UFO 50 Community Discord](https://50games.fans) or [Gamebanana](https://gamebanana.com/mods/games/23000).
 
 To use them, you will want to do the following:
 
