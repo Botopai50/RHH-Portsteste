@@ -2401,13 +2401,13 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-31T17:17",
+      "date_updated": "2026-02-07T23:25",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pkmn_fireash.zip",
-      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/pkmn_fireash/pkmn_fireash/screenshot.png",
-      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/pkmn_fireash/pkmn_fireash/README.md",
-      "size": 12539492,
-      "md5": "2c0df5b8568f1bba4bc31a73f1708c25",
-      "last_commit": "Normalize all port.json files for version 4"
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_tectonic/pkmn_tectonic/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_tectonic/pkmn_tectonic/README.md",
+      "size": 25231008,
+      "md5": "30c346b3a5cacf8185a0e8861bc757cd",
+      "last_commit": "[PKMNTECTONIC] Release"
     }
   },
   {
