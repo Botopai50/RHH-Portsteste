@@ -3410,7 +3410,10 @@
       "desc_md": null,
       "inst": "",
       "inst_md": null,
-      "genres": [],
+      "genres": [
+        "action",
+        "adventure"
+      ],
       "image": null,
       "rtr": true,
       "exp": false,
@@ -3424,13 +3427,13 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-02-08T00:38",
+      "date_updated": "2026-02-08T02:04",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/smxpr.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/smxpr/smxpr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/smxpr/smxpr/README.md",
-      "size": 24537874,
-      "md5": "1672a941c0048b52e64bb3124c70f73a",
-      "last_commit": "[SMXPR] Release"
+      "size": 24537887,
+      "md5": "d2959d37713417304dd56f6874a840c1",
+      "last_commit": "[SMXPR] Add genre"
     }
   },
   {
