@@ -17,7 +17,7 @@ source $controlfolder/control.txt
 get_controls
 
 # Set variables
-GAMEDIR="/$directory/ports/starship"
+GAMEDIR="/$directory/ports/spaghettikart"
 
 # Exports
 export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
@@ -28,18 +28,18 @@ cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
 # Permissions
-$ESUDO chmod +x "$GAMEDIR/Starship"
+$ESUDO chmod +x "$GAMEDIR/Spaghettify"
 $ESUDO chmod +x "$GAMEDIR/tools/otrgen"
 
 # Close the menu if open
 sed -i 's/"Menu": *1/"Menu": 0/' ghostship.cfg.json
 
-# Warn if mk64.o2r is older than Starship or starship.o2r
-if [ -f "$GAMEDIR/sf64.o2r" ]; then
-    if [ -f "$GAMEDIR/Starship" ] && [ "$GAMEDIR/Starship" -nt "$GAMEDIR/sf64.o2r" ] \
-       || [ -f "$GAMEDIR/starship.o2r" ] && [ "$GAMEDIR/starship.o2r" -nt "$GAMEDIR/sf64.o2r" ]; then
-        echo "Notice: sf64.o2r is older than Starship and/or starship.o2r. Forcing regeneration."
-        rm -f "$GAMEDIR/sf64.o2r"
+# Warn if mk64.o2r is older than Spaghettify or spaghetti.o2r
+if [ -f "$GAMEDIR/mk64.o2r" ]; then
+    if [ -f "$GAMEDIR/Spaghettify" ] && [ "$GAMEDIR/Spaghettify" -nt "$GAMEDIR/mk64.o2r" ] \
+       || [ -f "$GAMEDIR/spaghetti.o2r" ] && [ "$GAMEDIR/spaghetti.o2r" -nt "$GAMEDIR/mk64.o2r" ]; then
+        echo "Notice: mk64.o2r is older than Spaghettify and/or spaghetti.o2r. Forcing regeneration."
+        rm -f "$GAMEDIR/mk64.o2r"
         REGEN=1
         export REGEN
     fi
@@ -65,15 +65,15 @@ if [ ! -f "$GAMEDIR/mk64.o2r" ]; then
 fi
 
 # Check if O2R files were generated
-if [ ! -f "$GAMEDIR/sf64.o2r" ]; then
+if [ ! -f "$GAMEDIR/mk64.o2r" ]; then
     echo "No o2r found, can't run the game!"
     exit 1
 fi
 
 # Run the game
-$GPTOKEYB "Starship" -c "starship.gptk" & 
-pm_platform_helper "$GAMEDIR/Starship" > /dev/null
-./Starship
+$GPTOKEYB "Spaghettify" -c "spaghetti.gptk" & 
+pm_platform_helper "$GAMEDIR/Spaghettify" > /dev/null
+./Spaghettify
 
 # Cleanup
 rm -rf logs
