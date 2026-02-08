@@ -1,0 +1,34 @@
+{
+  "version": 4,
+  "name": "mariokartzx.zip",
+  "items": [
+    "Mario Kart ZX.sh",
+    "mariokartzx"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Super Mario Kart ZX",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "Super Mario Kart ZX is the definitive edition of Super Mario Kart. With support for up to 4 players, a brand new cup and widescreen ratio, you'll be having lots of fun! Just like you did when it first came out.",
+    "desc_md": null,
+    "inst": "Download the game from https://srperez.itch.io/smk-zx and unzip to the assets folder.",
+    "inst_md": null,
+    "genres": [],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [
+      "dotnet-8.0.12.squashfs",
+      "gmtoolkit.squashfs"
+	],
+    "store": [],
+    "availability": "free",
+    "reqs": [],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": ""
+  }
+}

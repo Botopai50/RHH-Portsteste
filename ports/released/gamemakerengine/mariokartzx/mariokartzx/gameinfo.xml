@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Mario Kart ZX.sh</path>
+		<name>Super Mario Kart ZX</name>
+		<desc>Super Mario Kart ZX is the definitive edition of Super Mario Kart. With support for up to 4 players, a brand new cup and widescreen ratio, you'll be having lots of fun! Just like you did when it first came out.</desc>
+		<image>./mariokartzx/cover.png</image>
+		<thumbnail>./mariokartzx/thumb.png</thumbnail>
+		<releasedate></releasedate>
+		<developer>srPerez</developer>
+		<genre>Racing</genre>
+	</game>
+</gamelist>
