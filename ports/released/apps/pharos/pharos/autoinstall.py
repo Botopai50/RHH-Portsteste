@@ -39,6 +39,11 @@ class AutoInstaller:
                 is_port = target_json.endswith("port.json")
                 base_dir = PORTS_DIR if is_port else WINDOWS_DIR
                 gamelist_path = base_dir / "gamelist.xml"
+                
+                if not is_port and not WINDOWS_DIR.exists():
+                    print(f"[ERROR] {WINDOWS_DIR} system folder is missing. Aborting bottle install.")
+                    return 255
+
                 base_dir.mkdir(parents=True, exist_ok=True)
 
                 print(f"[EXTRACT] Extracting {zip_name} → {base_dir}/ (flat)")

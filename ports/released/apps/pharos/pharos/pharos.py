@@ -29,6 +29,7 @@ if os.path.exists(MANIFEST_PATH):
 # ----------------------------------------------------------------------
 # Local imports
 # ----------------------------------------------------------------------
+from autoinstall import WINDOWS_DIR
 from config import get_controller_layout, Repository, Port
 from input import Input
 from ui import (
@@ -333,6 +334,10 @@ class Pharos:
         owner = repo.url.split("github.com/")[1].split("/")[0]
         header_text = f"{len(items)} items in {owner}/{repo.name}"
         self.ui.draw_header(header_text, color_text)
+        
+        is_bottle_repo = hasattr(repo, "bottles") and repo.bottles is not None
+        windows_exists = WINDOWS_DIR.exists()
+        can_download = not (is_bottle_repo and not windows_exists)
 
         max_vis = 12
         start = max(0, self.port_idx - max_vis + 1)
@@ -406,18 +411,26 @@ class Pharos:
         else:
             selected = items[self.port_idx] if items else None
             local_md5 = local_md5s.get(selected.name) if selected else None
-            if selected and selected.md5 and local_md5 and selected.md5 != local_md5:
+            
+            # If download is disabled, show a warning in the log area
+            if not can_download:
+                bottom_log = f"ERROR: {WINDOWS_DIR} not found!"
+            elif selected and selected.md5 and local_md5 and selected.md5 != local_md5:
                 bottom_log = f"{selected.title} – Update available!"
             else:
                 bottom_log = f"{selected.last_commit}"
 
         self.ui.draw_log(text_line_1=bottom_log, background=True)
 
-        btns = [
-            {"key": self.layout["a"]["btn"], "label": "Download", "color": self.layout["a"]["color"]},
-            {"key": self.layout["b"]["btn"], "label": "Back", "color": self.layout["b"]["color"]},
-            {"key": self.layout["y"]["btn"], "label": "All", "color": self.layout["y"]["color"]},
-        ]
+        btns = []
+        if can_download:
+            btns.append({"key": self.layout["a"]["btn"], "label": "Download", "color": self.layout["a"]["color"]})
+        
+        btns.append({"key": self.layout["b"]["btn"], "label": "Back", "color": self.layout["b"]["color"]})
+        
+        if can_download:
+            btns.append({"key": self.layout["y"]["btn"], "label": "All", "color": self.layout["y"]["color"]})
+            
         self._draw_button_bar(btns)
 
     # ------------------------------------------------------------------
@@ -446,13 +459,19 @@ class Pharos:
         items = getattr(repo, "ports", None) or getattr(repo, "bottles", None)
         if not items:
             return
-        if self.input.key(self.layout["a"]["key"]):
-            self.dl_queue.put((items[self.port_idx], "port" if getattr(repo, "ports", None) else "bottle"))
+
+        is_bottle_repo = hasattr(repo, "bottles") and repo.bottles is not None
+        can_download = not (is_bottle_repo and not WINDOWS_DIR.exists())
+
+        if self.input.key(self.layout["a"]["key"]) and can_download:
+            self.dl_queue.put((items[self.port_idx], "port" if not is_bottle_repo else "bottle"))
             self._ensure_worker()
-        elif self.input.key(self.layout["y"]["key"]):
+
+        elif self.input.key(self.layout["y"]["key"]) and can_download:
             for item in items:
-                self.dl_queue.put((item, "port" if getattr(repo, "ports", None) else "bottle"))
+                self.dl_queue.put((item, "port" if not is_bottle_repo else "bottle"))
             self._ensure_worker()
+
         if self.input.key(self.layout["b"]["key"]):
             for item in items:
                 item.image_path = None
