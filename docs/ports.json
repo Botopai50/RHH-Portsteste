@@ -2130,13 +2130,13 @@
       "min_glibc": ""
     },
     "source": {
-      "date_updated": "2026-01-31T17:50",
+      "date_updated": "2026-02-08T18:08",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pharos.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/README.md",
-      "size": 3202094,
-      "md5": "2b2316aaffaa83c299307da0283c7a70",
-      "last_commit": "[PHAROS] Only keep 5 log files at a time"
+      "size": 3202328,
+      "md5": "58be7278164c0d7ae0ef74bd601f84a1",
+      "last_commit": "[PHAROS] Block wine bottle downloads if roms/windows is not present"
     }
   },
   {
