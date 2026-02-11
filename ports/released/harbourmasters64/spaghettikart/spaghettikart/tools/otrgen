@@ -42,12 +42,16 @@ process_rom() {
 
     # Run the extraction
     echo "Extracting data from ../baseroms/$input_file..."
-    if ./torch o2r "../baseroms/$input_file" --additional-files meta/mods.toml >> "$LOGFILE"; then
-        echo "[OTRGEN] Extraction complete. O2R generated."
-        mv mk64.o2r ../mk64.o2r
+    if ./torch header -o "../baseroms/$input_file" > /dev/null; then
+        if ./torch o2r "../baseroms/$input_file" --additional-files meta/mods.toml >> "$LOGFILE"; then
+            echo "[OTRGEN] Extraction complete. O2R generated."
+            mv mk64.o2r ../mk64.o2r
+        else
+            echo "[OTRGEN] Error: O2R generation failed for ../baseroms/$input_file."
+            exit 1
+        fi
     else
-        echo "[OTRGEN] Error: Extraction failed for ../baseroms/$input_file."
-        exit 1
+        echo "[OTRGEN] Error: Header extraction failed for ../baseroms/$input_file."
     fi
     cd "$GAMEDIR"
 }

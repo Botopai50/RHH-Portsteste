@@ -1,6 +1,8 @@
 ## Information
 SpaghettiKart was built from GitHub Actions at the [HM64 Autobuild Factory](https://github.com/JeodC/hm64-builder).
 
+*THIS IS CURRENTLY A NIGHTLY BUILD! Commit hash https://github.com/HarbourMasters/SpaghettiKart/commit/3aa2c9662aa811023ca6730e7f4815ae61886691 with pull requests https://github.com/HarbourMasters/SpaghettiKart/pull/650 and https://github.com/Kenix3/libultraship/pull/1004*
+
 ## Installation
 The supported ROMs are:
 - US 1.0: 579C48E211AE952530FFC8738709F078D5DD215E
