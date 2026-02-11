@@ -3099,6 +3099,48 @@
   },
   {
     "version": 4,
+    "name": "spaghettikart.zip",
+    "items": [
+      "SpaghettiKart.sh",
+      "spaghettikart"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "SpaghettiKart",
+      "porter": [
+        "Jeod"
+      ],
+      "desc": "A source port of Mario Kart 64. It features extensive and significant enhancements over the original game, such as improved performance, increased frame-rate, native ultra-widescreen support, and extensive mod support (especially compared to emulated versions of the original), among other features.",
+      "desc_md": null,
+      "inst": "Follow the guide in the readme to generate your mk64.o2r file.",
+      "inst_md": null,
+      "genres": [
+        "racing"
+      ],
+      "image": null,
+      "rtr": false,
+      "exp": false,
+      "runtime": [],
+      "store": [],
+      "availability": "free",
+      "reqs": [],
+      "arch": [
+        "aarch64"
+      ],
+      "min_glibc": ""
+    },
+    "source": {
+      "date_updated": "2026-02-11T00:21",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/spaghettikart.zip",
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/spaghettikart/spaghettikart/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/spaghettikart/spaghettikart/README.md",
+      "size": 28941902,
+      "md5": "4b5e4f3b3d053fa3ce4718dbfd55cd6c",
+      "last_commit": "[RELEASE] SpaghettiKart"
+    }
+  },
+  {
+    "version": 4,
     "name": "spinelasher.zip",
     "items": [
       "Spine Lasher.sh",
