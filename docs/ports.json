@@ -2629,13 +2629,13 @@
       "min_glibc": null
     },
     "source": {
-      "date_updated": "2026-02-08T01:01",
+      "date_updated": "2026-02-12T01:28",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/soh.zip",
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh/soh/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh/soh/README.md",
-      "size": 45829634,
-      "md5": "0e6b143d83cfe269a36fb69c07c86001",
-      "last_commit": "[SOH] Remove suggested mods images, just link to the gamebanana page"
+      "size": 51295134,
+      "md5": "7ce10d0b47ac95ec54a84984180c775b",
+      "last_commit": "[SOH] Bump to nightly with Anchor support"
     }
   },
   {
