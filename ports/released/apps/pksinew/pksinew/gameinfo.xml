@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./PKsinew.sh</path>
+		<name>PKsinew</name>
+		<desc>PKsinew is a companion app/frontend launcher for Gen 3 Pokémon games that lets you track your progress across all 5 GBA games, obtain event items, and more.</desc>
+		<image>./pksinew/cover.png</image>
+		<thumbnail>./pksinew/thumb.png</thumbnail>
+		<releasedate>20260218</releasedate>
+		<developer>Cambotz</developer>
+		<genre>App</genre>
+	</game>
+</gamelist>
