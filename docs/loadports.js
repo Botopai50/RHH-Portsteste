@@ -93,6 +93,7 @@ async function loadPorts() {
                 const screenshot = port.source.screenshot_url || '';
                 const downloadHref = port.source.download_url || '';
                 const filename = downloadHref ? downloadHref.split('/').pop() : '';
+                const lifetimeDownloads = port.source.lifetime_downloads || 0;
                 const downloadCount = downloadCounts[filename] || 0;
                 const reqs = (port.attr?.reqs || []).join(', ');
                 const genres = (port.attr?.genres || []).join(', ');
@@ -108,7 +109,10 @@ async function loadPorts() {
                             <h2 class="port-title">${title}</h2>
                             <p class="port-desc">${port.attr.desc || ''}</p>
                             <div class="port-footer">
-                                <p class="download-count"><strong>Downloads since last update:</strong> ${downloadCount}</p>
+                                <p class="download-count">
+                                    <strong>Lifetime Downloads:</strong> ${lifetimeDownloads}</br>
+                                    <strong>Downloads since last update:</strong> ${downloadCount}
+                                </p>
                                 ${reqs ? `<div class="port-reqs">${reqs}</div>` : ''}
                                 ${genres ? `<div class="port-genres">${genres}</div>` : ''}
                                 ${displayCommit ? `<div class="port-commit-banner" title="${displayCommit}">${displayCommit}</div>` : ''}
