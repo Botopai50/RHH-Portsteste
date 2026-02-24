@@ -135,14 +135,35 @@ jobs:
             SIZE=$(stat -c %s "$ZIP_PATH")
             MD5=$(md5sum "$ZIP_PATH" | awk '{print $1}')
             DATE_UPDATED=$(date -u +"%Y-%m-%dT%H:%M")
+            
+            # URLs
+            SCREENSHOT_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${SCREENSHOT#"$GITHUB_WORKSPACE/"}"
+            README_URL=""
+            [[ -n "$README" ]] && README_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${README#"$GITHUB_WORKSPACE/"}"
+            DOWNLOAD_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/ports-latest/${CANONICAL_NAME}"
+            
+            # Last commit message
             COMMIT_MSG=$(git log -1 --format=%s -- "$PORT_DIR")
+            
+            # Check if entry already exists (match by canonical name)
+            EXISTING=$(jq -c --arg name "$CANONICAL_NAME" '.[] | select(.name == $name)' "$PORTS_JSON" 2>/dev/null || echo "")
 
-            EXISTING=$(jq -c --arg n "$CANONICAL_NAME" '.[] | select(.name==$n)' "$PORTS_JSON" || true)
+            if [[ -n "$EXISTING_ENTRY" ]]; then
+              OLD_MD5=$(echo "$EXISTING_ENTRY" | jq -r '.source.md5 // empty')
+              OLD_SIZE=$(echo "$EXISTING_ENTRY" | jq -r '.source.size // empty')
+              if [[ "$MD5" == "$OLD_MD5" && "$SIZE" == "$OLD_SIZE" ]]; then
+                DATE_UPDATED=$(echo "$EXISTING_ENTRY" | jq -r '.source.date_updated')
+              fi
+            fi
+
             LIFE=$(jq -r '.source.lifetime_downloads // 0' <<< "$EXISTING")
 
             MERGED=$(jq -n \
               --argjson o "$(cat "$PORT_JSON")" \
               --arg d "$DATE_UPDATED" \
+              --arg download_url "$DOWNLOAD_URL" \
+              --arg readme_url "$README_URL" \
+              --arg screenshot_url "$SCREENSHOT_URL" \
               --arg m "$MD5" \
               --arg s "$SIZE" \
               --arg l "$LIFE" \
