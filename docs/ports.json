@@ -4395,11 +4395,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/simpsons_hnr/simpsons_hnr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/simpsons_hnr/simpsons_hnr/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/simpsons_hnr.zip",
-      "date_updated": "2026-02-24T17:55",
-      "md5": "5a41b78b74ee4931c39619cc94cf0cad",
-      "size": 323096,
+      "date_updated": "2026-02-24T21:35",
+      "md5": "9f2f2a0b78714a96729691117f355a88",
+      "size": 323110,
       "lifetime_downloads": 0,
-      "last_commit": "[SIMPSONS] FakeSpace.c uses constants and is a bit safer"
+      "last_commit": "[SIMPSONS] Compiled libfakespace"
     }
   },
   {
