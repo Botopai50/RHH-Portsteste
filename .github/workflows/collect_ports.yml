@@ -129,6 +129,7 @@ jobs:
             SCREENSHOT=$(find "$PORT_DIR" -maxdepth 1 -iname 'screenshot*.png' -o -iname 'screenshot*.jpg' -o -iname 'screenshot*.jpeg' | head -n1)
             [[ -n "$SCREENSHOT" ]] || continue
 
+            README=$(find "$PORT_DIR" -maxdepth 1 \( -iname "README.md" -o -iname "readme.md" \) | head -n1 || echo "")
             ZIP_PATH="temp_ports/$CANONICAL_NAME"
             (cd "$STAGING_DIR" && zip -qr "$GITHUB_WORKSPACE/$ZIP_PATH" .)
 
