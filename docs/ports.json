@@ -2410,7 +2410,9 @@
       ],
       "store": [],
       "availability": "free",
-      "reqs": [],
+      "reqs": [
+        "2GB"
+      ],
       "arch": [
         "aarch64"
       ],
@@ -2420,11 +2422,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pvznd/pvznd/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pvznd/pvznd/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pvznd.zip",
-      "date_updated": "2026-02-24T00:38",
-      "md5": "8573bf51f2c89505a9bf6572ce6c4d59",
-      "size": 4749045,
+      "date_updated": "2026-02-24T17:24",
+      "md5": "b24f79e4f6ad90c81794c987263f42e8",
+      "size": 4749053,
       "lifetime_downloads": 0,
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[PVZND] Needs 2GB"
     }
   },
   {
