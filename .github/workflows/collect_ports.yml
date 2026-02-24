@@ -248,12 +248,9 @@ jobs:
 
             [[ "$ASSET_NAME" == *.zip ]] || continue
 
-            if ! printf '%s\n' "${VALID_NAMES[@]}" | grep -qx "$ASSET_NAME"; then
+            if ! printf '%s\n' "${VALID_NAMES[@]}" | grep -iqx "$ASSET_NAME"; then
               echo "Deleting orphaned asset: $ASSET_NAME"
-              DELETE_RESULT=$(gh api -X DELETE "repos/${GITHUB_REPOSITORY}/releases/assets/$ASSET_ID" 2>&1)
-              if [[ $? -ne 0 ]]; then
-                echo "Warning: Failed to delete asset $ASSET_NAME: $DELETE_RESULT"
-              fi
+              gh api -X DELETE "repos/${GITHUB_REPOSITORY}/releases/assets/$ASSET_ID" || echo "Failed to delete $ASSET_NAME"
             fi
           done
 
