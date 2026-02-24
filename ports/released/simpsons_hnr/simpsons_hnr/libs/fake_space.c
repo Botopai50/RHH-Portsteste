@@ -22,17 +22,21 @@
 #include <stdio.h>
 #include <string.h>
 
+#define FAKE_TOTAL_BLOCKS 524288
+#define FAKE_FREE_BLOCKS  262144
+#define FAKE_BLOCK_SIZE   1024
+
 static void apply_fake_stats(void *buf, int is_vfs) {
     if (is_vfs) {
         struct statvfs *v = (struct statvfs *)buf;
-        v->f_bsize = v->f_frsize = 1024;
-        v->f_blocks = 32768; 
-        v->f_bfree = v->f_bavail = 16384;
+        v->f_bsize = v->f_frsize = FAKE_BLOCK_SIZE;
+        v->f_blocks = FAKE_TOTAL_BLOCKS; 
+        v->f_bfree = v->f_bavail = FAKE_FREE_BLOCKS;
     } else {
         struct statfs *s = (struct statfs *)buf;
-        s->f_bsize = 1024;
-        s->f_blocks = 32768; 
-        s->f_bfree = s->f_bavail = 16384;
+        s->f_bsize = FAKE_BLOCK_SIZE;
+        s->f_blocks = FAKE_TOTAL_BLOCKS; 
+        s->f_bfree = s->f_bavail = FAKE_FREE_BLOCKS;
     }
 }
 
@@ -40,22 +44,25 @@ int statvfs(const char *path, struct statvfs *buf) {
     static int (*o)(const char*, struct statvfs*) = NULL;
     if (!o) o = dlsym(RTLD_NEXT, "statvfs");
     int r = o(path, buf);
-    apply_fake_stats(buf, 1);
-    return 0;
+    if (r == 0 && buf)
+        apply_fake_stats(buf, 1);
+    return r;
 }
 
 int fstatfs64(int fd, struct statfs64 *buf) {
     static int (*o)(int, struct statfs64*) = NULL;
     if (!o) o = dlsym(RTLD_NEXT, "fstatfs64");
     int r = o(fd, buf);
-    apply_fake_stats(buf, 0);
-    return 0;
+    if (r == 0 && buf)
+        apply_fake_stats(buf, 0);
+    return r;
 }
 
 int fstatfs(int fd, struct statfs *buf) {
     static int (*o)(int, struct statfs*) = NULL;
     if (!o) o = dlsym(RTLD_NEXT, "fstatfs");
     int r = o(fd, buf);
-    apply_fake_stats(buf, 0);
-    return 0;
+    if (r == 0 && buf)
+        apply_fake_stats(buf, 0);
+    return r;
 }
