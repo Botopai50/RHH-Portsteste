@@ -93,8 +93,9 @@ async function loadPorts() {
                 const screenshot = port.source.screenshot_url || '';
                 const downloadHref = port.source.download_url || '';
                 const filename = downloadHref ? downloadHref.split('/').pop() : '';
-                const lifetimeDownloads = port.source.lifetime_downloads || 0;
-                const downloadCount = downloadCounts[filename] || 0;
+                const baseLifetime = port.source?.lifetime_downloads ?? 0;
+                const downloadCount = downloadCounts?.[filename] ?? 0;
+                const totalLifetime = baseLifetime + downloadCount;
                 const reqs = (port.attr?.reqs || []).join(', ');
                 const genres = (port.attr?.genres || []).join(', ');
                 const lastCommit = port.source.last_commit;
@@ -110,8 +111,8 @@ async function loadPorts() {
                             <p class="port-desc">${port.attr.desc || ''}</p>
                             <div class="port-footer">
                                 <p class="download-count">
-                                    <strong>Lifetime Downloads:</strong> ${lifetimeDownloads}</br>
-                                    <strong>Downloads since last update:</strong> ${downloadCount}
+                                    <strong>Downloads since last update:</strong> ${downloadCount}</br>
+                                    <strong>Total Downloads:</strong> ${totalLifetime}
                                 </p>
                                 ${reqs ? `<div class="port-reqs">${reqs}</div>` : ''}
                                 ${genres ? `<div class="port-genres">${genres}</div>` : ''}
@@ -153,8 +154,10 @@ async function loadPorts() {
                 if (method === 'most_recent') {
                     return new Date(b.source?.date_updated) - new Date(a.source?.date_updated);
                 } else if (method === 'most_downloaded') {
-                    const countA = a.source?.lifetime_downloads || 0;
-                    const countB = b.source?.lifetime_downloads || 0;
+                    const keyA = a.source?.download_url?.split('/').pop();
+                    const keyB = b.source?.download_url?.split('/').pop();
+                    const countA = (a.source?.lifetime_downloads ?? 0) + (downloadCounts?.[keyA] ?? 0); 
+                    const countB = (b.source?.lifetime_downloads ?? 0) + (downloadCounts?.[keyB] ?? 0);
                     return countB - countA;
                 }
                 return (a.attr?.title || '').localeCompare(b.attr?.title || '');
