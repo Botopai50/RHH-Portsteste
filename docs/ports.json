@@ -4395,11 +4395,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/simpsons_hnr/simpsons_hnr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/simpsons_hnr/simpsons_hnr/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/simpsons_hnr.zip",
-      "date_updated": "2026-02-24T21:35",
-      "md5": "9f2f2a0b78714a96729691117f355a88",
-      "size": 323110,
+      "date_updated": "2026-02-24T22:43",
+      "md5": "848504e1fdaeb35498c980df3ea1b7c8",
+      "size": 323393,
       "lifetime_downloads": 0,
-      "last_commit": "[SIMPSONS] Compiled libfakespace"
+      "last_commit": "[SIMPSONS] Use expected block size for maths"
     }
   },
   {
