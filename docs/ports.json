@@ -3309,11 +3309,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/spaghettikart/spaghettikart/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/spaghettikart/spaghettikart/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/spaghettikart.zip",
-      "date_updated": "2026-02-24T00:39",
-      "md5": "88da085cef9cd4c06d0f71747795f440",
-      "size": 28988870,
+      "date_updated": "2026-02-25T14:10",
+      "md5": "47e5023472b241a9c7fec6d6ff57cbd3",
+      "size": 28989112,
       "lifetime_downloads": 0,
-      "last_commit": "[SPAGHETTIKART] Add gamecontrollerdb.txt"
+      "last_commit": "[SPAGHETTIKART] Update to 1.0.0"
     }
   },
   {
