@@ -114,6 +114,10 @@ jobs:
         run: |
           set -euo pipefail
 
+          if [[ -z "${{ steps.ports.outputs.ports }}" ]]; then
+            echo "No ports to process; skipping."
+            exit 0
+          fi
           mapfile -t PORT_DIRS <<< "${{ steps.ports.outputs.ports }}"
           PORTS_JSON="docs/ports.json"
 
@@ -155,9 +159,10 @@ jobs:
               if [[ "$MD5" == "$OLD_MD5" && "$SIZE" == "$OLD_SIZE" ]]; then
                 DATE_UPDATED=$(echo "$EXISTING" | jq -r '.source.date_updated')
               fi
+              LIFE=$(jq -r '.source.lifetime_downloads // 0' <<< "$EXISTING")
+            else
+              LIFE=0
             fi
-
-            LIFE=$(jq -r '.source.lifetime_downloads // 0' <<< "$EXISTING")
 
             MERGED=$(jq -n \
               --argjson o "$(cat "$PORT_JSON")" \
