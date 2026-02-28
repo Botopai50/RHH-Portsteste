@@ -3748,11 +3748,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/superstartrek/superstartrek/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/superstartrek/superstartrek/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/superstartrek.zip",
-      "date_updated": "2026-02-24T00:38",
-      "md5": "d0f550576a34c4b69bf05350776da349",
-      "size": 31105162,
+      "date_updated": "2026-02-28T18:10",
+      "md5": "96bcc13dad2b663846e30823a89f0a12",
+      "size": 20132725,
       "lifetime_downloads": 0,
-      "last_commit": "Normalize all port.json files for version 4"
+      "last_commit": "[SST25TH] Update v1.0.3"
     }
   },
   {
