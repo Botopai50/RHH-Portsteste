@@ -484,53 +484,6 @@
   },
   {
     "version": 4,
-    "name": "deadcells.zip",
-    "items": [
-      "Dead Cells",
-      "deadcells"
-    ],
-    "items_opt": [],
-    "attr": {
-      "title": "Dead Cells",
-      "porter": [
-        "Jeod"
-      ],
-      "desc": "Dead Cells is a roguelite, metroidvania inspired, action-platformer. You'll explore a sprawling, ever-changing castle... assuming you’re able to fight your way past its keepers in 2D souls-lite combat. No checkpoints. Kill, die, learn, repeat.",
-      "desc_md": null,
-      "inst": "See the readme for details",
-      "inst_md": null,
-      "genres": [
-        "action",
-        "adventure"
-      ],
-      "image": null,
-      "rtr": false,
-      "exp": false,
-      "runtime": [],
-      "store": [],
-      "availability": "paid",
-      "reqs": [
-        "opengl",
-        "ultra"
-      ],
-      "arch": [
-        "aarch64"
-      ],
-      "min_glibc": ""
-    },
-    "source": {
-      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/deadcells/deadcells/screenshot.png",
-      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/deadcells/deadcells/README.md",
-      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/deadcells.zip",
-      "date_updated": "2026-02-24T00:37",
-      "md5": "c21a617ae91bb9a8b1d55c83d9b475a2",
-      "size": 9776428,
-      "lifetime_downloads": 159,
-      "last_commit": "[TEARSCAPE] Release Tearscape port"
-    }
-  },
-  {
-    "version": 4,
     "name": "deltarune.zip",
     "items": [
       "Deltarune.sh",
@@ -2842,11 +2795,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh2/soh2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh2/soh2/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/soh2.zip",
-      "date_updated": "2026-02-27T04:35",
-      "md5": "6034e8c6bd97cae90e5171af78cc4eec",
-      "size": 14068624,
+      "date_updated": "2026-03-02T04:36",
+      "md5": "9d098befdf6ee2e3a949e4987cf7abee",
+      "size": 14069297,
       "lifetime_downloads": 0,
-      "last_commit": "[SOH2] Update to 4.0.1"
+      "last_commit": "[SOH2] Update to 4.0.2"
     }
   },
   {
