@@ -756,7 +756,9 @@
       "image": null,
       "rtr": true,
       "exp": false,
-      "runtime": [],
+      "runtime": [
+        "gmtoolkit.squashfs"
+      ],
       "store": [
         {
           "name": "Steam",
@@ -778,11 +780,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/dokimon.zip",
-      "date_updated": "2026-03-17T11:09",
-      "md5": "088197b06180d2be4af176a451990286",
-      "size": 104556379,
+      "date_updated": "2026-03-17T11:15",
+      "md5": "b2678fa661eba04d8f6ada05048533f6",
+      "size": 104556393,
       "lifetime_downloads": 95,
-      "last_commit": "[DOKIMON] Compatibility with latest update"
+      "last_commit": "[DOKIMON] Latest game data working"
     }
   },
   {
