@@ -2752,11 +2752,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh/soh/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/harbourmasters64/soh/soh/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/soh.zip",
-      "date_updated": "2026-02-24T00:38",
-      "md5": "e81ab91933c4972322178f521f8bf9eb",
-      "size": 51295134,
+      "date_updated": "2026-03-23T04:58",
+      "md5": "2bdc2f9bf8cc0c3a96dc7383727b477e",
+      "size": 51867983,
       "lifetime_downloads": 0,
-      "last_commit": "[SOH] Bump to nightly with Anchor support"
+      "last_commit": "[SOH] Update to 9.2.0"
     }
   },
   {
