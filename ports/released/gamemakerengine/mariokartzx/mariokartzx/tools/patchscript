@@ -86,20 +86,26 @@ prepare_files() {
     fi
 }
 
+unzip_audiogroups() {
+    echo "Unzipping ${DATAFILE}..."
+    mkdir -p assets
+    "$controlfolder/7zzs.${DEVICE_ARCH}" e -y "$DATAFILE" "assets/*.dat" -o"$DATADIR"
+    if [ $? -eq 0 ]; then
+        echo "Unzipped successfully to $DATADIR."
+    else
+        echo "Failed to unzip file."
+        return 1
+    fi
+}
+
 # Compress audio files inside datafile and audiogroups
 compress_audio() {
     # Purge cache before operations
     rm -rf "$TMPDIR/"*
     
-    # Test for data.win
-    if [ -f "$DATADIR/data.win" ]; then
-        mv "$DATADIR/data.win" "$DATADIR/game.droid"
-    fi
-
     # Run the compression tool
-    PYTHON=$(which python3)
     echo "Running GMTools on data and audiogroups."
-    $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -vv -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/game.droid"
+    $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -vv -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/data.win"
 
     if [ $? -eq 0 ]; then
         echo "Compression completed successfully."
@@ -123,16 +129,16 @@ set_flags() {
     export SET_FLAGS="Fullscreen"
     export CLEAR_FLAGS="Scale"
     dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
-        load "$DATADIR/game.droid" \
+        load "$DATADIR/data.win" \
         -s "$GAMEDIR/tools/toggleflags.csx" \
-        -o "$DATADIR/game2.droid"
+        -o "$DATADIR/data2.win"
         
     if [ $? -ne 0 ]; then
         echo "Failed to toggle info flags."
         return 1
     else
         echo "Successfully toggled info flags."
-        rm -f "$DATADIR/data.win" && mv "$DATADIR/game2.droid" "$DATADIR/game.droid"
+        rm -f "$DATADIR/data.win" && mv "$DATADIR/data2.win" "$DATADIR/data.win"
         if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
             rm -rf "$TMPDIR"/*
         fi
@@ -141,6 +147,7 @@ set_flags() {
 
 # Zip it all into the .port file
 zip_archive() {
+    [ -f "$DATADIR/data.win" ] && mv "$DATADIR/data.win" "$DATADIR/game.droid"
     if "$controlfolder/7zzs.${DEVICE_ARCH}" a -tzip -aoa -mx=0 "$GAMEDIR/$DATAFILE" "$DATADIR"; then
         rm -rf "$DATADIR"/*
     else

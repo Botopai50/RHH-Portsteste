@@ -59,7 +59,7 @@ fi
 
 swapabxy() {
     # Update SDL_GAMECONTROLLERCONFIG to swap a/b and x/y button
-    PYTHON=$(which python3)
+    PYTHON=$(command -v python3)
     if [ "$CFW_NAME" == "knulli" ] && [ -f "$SDL_GAMECONTROLLERCONFIG_FILE" ];then
         cat "$SDL_GAMECONTROLLERCONFIG_FILE" | $PYTHON $GAMEDIR/tools/swapabxy.py > "$GAMEDIR/gamecontrollerdb_swapped.txt"
         export SDL_GAMECONTROLLERCONFIG_FILE="$GAMEDIR/gamecontrollerdb_swapped.txt"

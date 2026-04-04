@@ -57,6 +57,11 @@ prepare_system() {
     export SAVEDIR
     export PATH="$DOTNETDIR:$TOOLKIT/gmtools:$TOOLKIT/utmt-cli:$PATH"
     export LD_LIBRARY_PATH="/usr/lib:$TOOLKIT/libs:$LD_LIBRARY_PATH"
+
+    # These exports help dotnet save memory and hopefully eliminate oomkill issues during patching
+    export DOTNET_gcServer=0
+    export DOTNET_gcLatencyLevel=SustainedLowLatency
+    export DOTNET_GCHighMemPercent=50
 }
 
 # Prepare game data
@@ -98,9 +103,9 @@ replace_code() {
         CODEARGS+=(--code "$entry=$file")
     done
 
-    if dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" replace "$DATADIR/game.droid" -o "$DATADIR/game2.droid" "${CODEARGS[@]}"; then
+    if dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" replace "$DATADIR/data.win" -o "$DATADIR/data2.win" "${CODEARGS[@]}"; then
         echo "Successfully replaced gml scripts."
-        rm -f "$DATADIR/game.droid" && mv "$DATADIR/game2.droid" "$DATADIR/game.droid"
+        rm -f "$DATADIR/data.win" && mv "$DATADIR/data2.win" "$DATADIR/data.win"
     else
         echo "Failed to replace gml scripts."
         return 1
@@ -112,10 +117,8 @@ compress_audio() {
     rm -rf "$TMPDIR"
     mkdir -p "$TMPDIR"
 
-    [ -f "$DATADIR/data.win" ] && mv "$DATADIR/data.win" "$DATADIR/game.droid"
-
-    local flags="-vv -m 1000 -r -b 64 -d $TMPDIR $DATADIR/game.droid"
-    [ "$PREPATCH" = 1 ] && flags="-vv -O 0 -m 1000 -b 64 -r -d $TMPDIR $DATADIR/game.droid"
+    local flags="-vv -m 1000 -r -b 64 -d $TMPDIR $DATADIR/data.win"
+    [ "$PREPATCH" = 1 ] && flags="-vv -O 0 -m 1000 -b 64 -r -d $TMPDIR $DATADIR/data.win"
 
     echo "Running GMTools..."
     if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" $flags; then
@@ -131,6 +134,7 @@ compress_audio() {
 
 # Zip it all into the .port file
 zip_archive() {
+    [ -f "$DATADIR/data.win" ] && mv "$DATADIR/data.win" "$DATADIR/game.droid"
     if "$controlfolder/7zzs.${DEVICE_ARCH}" a -tzip -aoa -mx=0 "$GAMEDIR/$DATAFILE" "$DATADIR"; then
         rm -rf "$DATADIR"/*
     else

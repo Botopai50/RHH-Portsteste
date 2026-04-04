@@ -15,7 +15,7 @@ export TMPDIR="$GAMEDIR/tmp"
 
 prepare_system() {
     # Test for commands: python, zip
-    PYTHON=$(which python3)
+    PYTHON=$(command -v python3)
     if [ -z "$PYTHON" ]; then
         echo "Missing Python!"
         return 1
@@ -57,6 +57,11 @@ prepare_system() {
     export SAVEDIR
     export PATH="$DOTNETDIR:$TOOLKIT/gmtools:$TOOLKIT/utmt-cli:$PATH"
     export LD_LIBRARY_PATH="/usr/lib:$TOOLKIT/libs:$LD_LIBRARY_PATH"
+
+    # These exports help dotnet save memory and hopefully eliminate oomkill issues during patching
+    export DOTNET_gcServer=0
+    export DOTNET_gcLatencyLevel=SustainedLowLatency
+    export DOTNET_GCHighMemPercent=50
 }
 
 # Prepare game data
@@ -78,9 +83,9 @@ replace_code() {
     done
 
     # Replace scripts
-    if dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" replace "$DATADIR/data.win" -o "$DATADIR/game.droid" "${CODEARGS[@]}"; then
+    if dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" replace "$DATADIR/data.win" -o "$DATADIR/data2.win" "${CODEARGS[@]}"; then
         echo "Successfully replaced gml scripts."
-        rm -rf "$DATADIR/data.win"
+        rm -f "$DATADIR/data.win" && mv "$DATADIR/data2.win" "$DATADIR/data.win"
         rm -rf "$TMPDIR"/* 2>/dev/null || true
         return 0
     else
@@ -91,6 +96,7 @@ replace_code() {
 
 # Zip it all into the .port file
 zip_archive() {
+    [ -f "$DATADIR/data.win" ] && mv "$DATADIR/data.win" "$DATADIR/game.droid"
     if "$controlfolder/7zzs.${DEVICE_ARCH}" a -tzip -aoa -mx=0 "$GAMEDIR/$DATAFILE" "$DATADIR"; then
         rm -rf "$DATADIR"/*
     else

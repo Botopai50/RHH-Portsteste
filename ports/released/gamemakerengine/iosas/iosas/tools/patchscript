@@ -63,6 +63,11 @@ prepare_system() {
     export SAVEDIR
     export PATH="$DOTNETDIR:$TOOLKIT/gmtools:$TOOLKIT/utmt-cli:$PATH"
     export LD_LIBRARY_PATH="/usr/lib:$TOOLKIT/libs:$LD_LIBRARY_PATH"
+
+    # These exports help dotnet save memory and hopefully eliminate oomkill issues during patching
+    export DOTNET_gcServer=0
+    export DOTNET_gcLatencyLevel=SustainedLowLatency
+    export DOTNET_GCHighMemPercent=50
 }
 
 prepare_files() {
@@ -270,13 +275,13 @@ dump_textures() {
     # Begin texture operations
     if ! dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
         dump "$DATADIR/data.win" \
-        -e "$DATADIR/textures" "$DATADIR/game.droid"; then
+        -e "$DATADIR/textures" "$DATADIR/data2.win"; then
         echo "[DOTNET]: Texture dumping failed to apply."
         return 1
     fi
 
     # Cleanup & move textures
-    rm -f "$DATADIR/data.win"
+    rm -f "$DATADIR/data.win" && mv "$DATADIR/data2.win" "$DATADIR/data.win"
     [ -d "$SAVEDIR/textures" ] && rm -rf "$SAVEDIR/textures"
     mv "$DATADIR/textures" "$SAVEDIR/textures"
 
@@ -288,6 +293,7 @@ dump_textures() {
 
 # Zip it all into the .port file
 zip_archive() {
+    [ -f "$DATADIR/data.win" ] && mv "$DATADIR/data.win" "$DATADIR/game.droid"
     if "$controlfolder/7zzs.${DEVICE_ARCH}" a -tzip -aoa -mx=0 "$GAMEDIR/$DATAFILE" "$DATADIR"; then
         rm -rf "$DATADIR"/*
     else

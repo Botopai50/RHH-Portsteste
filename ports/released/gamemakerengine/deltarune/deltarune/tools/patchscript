@@ -16,7 +16,7 @@ export TMPDIR="$GAMEDIR/tmp"
 
 prepare_system() {
     # Test for commands: python, zip
-    PYTHON=$(which python3)
+    PYTHON=$(command -v python3)
     if [ -z "$PYTHON" ]; then
         echo "Missing Python!"
         return 1
@@ -58,6 +58,11 @@ prepare_system() {
     export SAVEDIR
     export PATH="$DOTNETDIR:$TOOLKIT/gmtools:$TOOLKIT/utmt-cli:$PATH"
     export LD_LIBRARY_PATH="/usr/lib:$TOOLKIT/libs:$LD_LIBRARY_PATH"
+
+    # These exports help dotnet save memory and hopefully eliminate oomkill issues during patching
+    export DOTNET_gcServer=0
+    export DOTNET_gcLatencyLevel=SustainedLowLatency
+    export DOTNET_GCHighMemPercent=50
 }
 
 # SANITIZE THE INSTALL DIRECTORIES
@@ -154,13 +159,13 @@ dump_textures() {
     # Begin texture operations
     dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
         dump "$INSTALLDIR/assets/data.win" \
-        -e "$INSTALLDIR/assets/textures" "$INSTALLDIR/assets/game.droid"
+        -e "$INSTALLDIR/assets/textures" "$INSTALLDIR/assets/data2.win"
 
     if [ $? -ne 0 ]; then
         echo "[DOTNET]: Patch failed to apply."
-        exit 1
+        return 1
     else
-        rm -f "$INSTALLDIR/assets/data.win"
+        rm -f "$INSTALLDIR/assets/data.win" && mv "$INSTALLDIR/assets/data2.win" "$INSTALLDIR/assets/data.win"
         [ -d "$SAVEDIR/textures/$GAMEFILE/" ] && rm -rf "$SAVEDIR/textures/$GAMEFILE/"
         mkdir -p "$SAVEDIR/textures/$GAMEFILE/"
         mv "$INSTALLDIR/assets/textures"/* "$SAVEDIR/textures/$GAMEFILE/"
@@ -181,11 +186,11 @@ process_assets() {
     # Process data.win if it exists
     if [ -f "$INSTALLDIR/assets/data.win" ]; then
 
-        dump_textures || { cleanup; return 1; }
-        
         # Compress audio
         echo "Compressing audio for $GAMEFILE..."
         compress_audio || { cleanup; return 1; }
+
+        dump_textures || { cleanup; return 1; }
         
         # Special case for Chapter 3
         if [ -d "$INSTALLDIR/assets/vid" ]; then
@@ -213,11 +218,11 @@ clean_assets() {
 # APPLY XDELTA PATCHES
 apply_xdelta() {
     if [ -f "$INSTALLDIR/assets/data.win" ]; then
-        output=$("$controlfolder"/xdelta3 -d -s "$INSTALLDIR/assets/data.win" -f "$GAMEDIR/patches/$GAMEFILE.xdelta" "$INSTALLDIR/assets/game.droid" 2>&1)
+        output=$("$controlfolder"/xdelta3 -d -s "$INSTALLDIR/assets/data.win" -f "$GAMEDIR/patches/$GAMEFILE.xdelta" "$INSTALLDIR/assets/data2.win" 2>&1)
         if [ $? -eq 0 ]; then
             echo "Patch applied successfully for $GAMEFILE"
             echo "$output"
-            rm -f "$INSTALLDIR/assets/data.win"
+            rm -f "$INSTALLDIR/assets/data.win" && mv "$INSTALLDIR/assets/data2.win" "$INSTALLDIR/assets/data.win"
         else
             echo "Failed to apply patch for $GAMEFILE"
             echo "$output"
@@ -235,7 +240,7 @@ compress_audio() {
 
     echo "Running GMTools on data and audiogroups for $GAMEFILE."
     
-    if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -v -m 1000 -r -b 64 -d "$TMPDIR" "$INSTALLDIR/assets/game.droid"; then
+    if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -v -m 1000 -r -b 64 -d "$TMPDIR" "$INSTALLDIR/assets/data.win"; then
         mv "$TMPDIR/"* "$INSTALLDIR/assets/" && rm -rf "$TMPDIR"
         echo "Audio compression applied successfully for $GAMEFILE."
     else
@@ -248,6 +253,8 @@ compress_audio() {
 
 # FINALIZE PORT ARCHIVE
 zip_archive() {
+    # Rename data.win to game.droid for the final archive
+    [ -f "$INSTALLDIR/assets/data.win" ] && mv "$INSTALLDIR/assets/data.win" "$INSTALLDIR/assets/game.droid"
     # Copy base.port and zip assets into it
     cp "$INSTALLDIR/base.port" "$INSTALLDIR/$GAMEFILE.zip"
     cd "$INSTALLDIR" && "$controlfolder/7zzs.${DEVICE_ARCH}" a -tzip -aoa -mx=0 "$GAMEFILE.zip" assets/

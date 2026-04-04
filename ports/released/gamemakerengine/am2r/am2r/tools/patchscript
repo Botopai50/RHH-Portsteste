@@ -152,12 +152,11 @@ clean_files() {
     # Clean TMPDIR
     rm -rf "$TMPDIR/"*
     
-    # Rename data.win
-    mv "$DATADIR/data.win" "$DATADIR/game.droid"
 }
 
 # Zip it all into the .port file
 zip_archive() {
+    [ -f "$DATADIR/data.win" ] && mv "$DATADIR/data.win" "$DATADIR/game.droid"
     if "$SEVENZIP" a -tzip -aoa -mx=0 "$GAMEDIR/$DATAFILE" "$DATADIR" >/dev/null; then
         rm -rf "$DATADIR"/*
     else
