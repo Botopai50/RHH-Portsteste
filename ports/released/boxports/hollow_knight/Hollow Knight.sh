@@ -24,6 +24,11 @@ BOX64="$GAMEDIR/box64/box64"
 cd $GAMEDIR/data
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
+# Permissions
+chmod +x "$BOX64"
+chmod +x "$GAMEDIR/tools/splash"
+chmod +x "$GAMEDIR/tools/gptokeyb"
+
 # Pre-flight checks for X11 and OpenGL
 if [ -z "$DISPLAY" ]; then
     echo "Error: Display manager not found. Hollow Knight requires OpenGL and X11 to run."
@@ -66,6 +71,8 @@ elif [ -f "$GAMEDIR/data/Hollow Knight" ]; then
     fi
 fi
 
+chmod +x "$GAME"
+
 # Exports
 export LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/libs.aarch64:$GAMEDIR/data:$LD_LIBRARY_PATH"
 export BOX64_LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/gamedata:$LD_LIBRARY_PATH"
@@ -93,9 +100,6 @@ $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 30000 &
 
 # Use x11 for game but not for splash
 export SDL_VIDEODRIVER="x11"
-
-# Use custom gptokeyb to fix d-pad
-export GPTOKEYB="$GAMEDIR/tools/gptokeyb $ESUDOKILL"
 
 # Run it
 $GPTOKEYB $GAME xbox360 & 

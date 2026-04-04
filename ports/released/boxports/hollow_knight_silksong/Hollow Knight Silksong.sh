@@ -25,6 +25,12 @@ GAME="Hollow Knight Silksong"
 cd $GAMEDIR/data
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
+# Permissions
+chmod +x "$BOX64"
+chmod +x "$GAMEDIR/tools/splash"
+chmod +x "$GAMEDIR/tools/gptokeyb"
+chmod +x "$GAME"
+
 # Pre-flight checks for X11 and OpenGL
 if [ -z "$DISPLAY" ]; then
     echo "Error: Display manager not found. Hollow Knight: Silksong requires OpenGL and X11 to run."
