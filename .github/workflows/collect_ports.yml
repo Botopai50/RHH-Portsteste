@@ -86,27 +86,8 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           
           
-      - name: Refresh lifetime downloads only
-        if: steps.ports.outputs.ports == ''
-        run: |
-          set -euo pipefail
-          PORTS_JSON="docs/ports.json"
-
-          RELEASE_ID=$(gh api repos/${GITHUB_REPOSITORY}/releases/tags/ports-latest --jq '.id' 2>/dev/null || exit 0)
-
-          jq -c '.[]' "$PORTS_JSON" | while read -r entry; do
-            NAME=$(jq -r '.name' <<< "$entry")
-            PREV=$(jq -r '.source.lifetime_downloads // 0' <<< "$entry")
-
-            CURRENT=$(gh api repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets \
-              --jq ".[] | select(.name==\"$NAME\") | .download_count" 2>/dev/null || echo 0)
-
-            [[ "$CURRENT" -gt 0 ]] || continue
-
-            jq --arg n "$NAME" --arg c "$CURRENT" \
-              'map(if .name==$n then .source.lifetime_downloads += ($c|tonumber) else . end)' \
-              "$PORTS_JSON" > "$PORTS_JSON.tmp" && mv "$PORTS_JSON.tmp" "$PORTS_JSON"
-          done
+      # lifetime_downloads is only updated when a port is re-uploaded (Process ports step).
+      # The frontend adds the live GitHub download_count on top for the current period.
 
       # ────────────────────── PROCESS PORTS ──────────────────────
       - name: Process ports
@@ -160,6 +141,13 @@ jobs:
                 DATE_UPDATED=$(echo "$EXISTING" | jq -r '.source.date_updated')
               fi
               LIFE=$(jq -r '.source.lifetime_downloads // 0' <<< "$EXISTING")
+
+              # Capture current download_count before --clobber resets it to 0
+              if [[ -n "$RELEASE_ID" ]]; then
+                CURRENT_DL=$(gh api "repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets" \
+                  --jq ".[] | select(.name==\"$CANONICAL_NAME\") | .download_count" 2>/dev/null || echo 0)
+                LIFE=$((LIFE + ${CURRENT_DL:-0}))
+              fi
             else
               LIFE=0
             fi
