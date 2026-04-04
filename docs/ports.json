@@ -1233,11 +1233,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/hollow_knight/hollow_knight/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/boxports/hollow_knight/hollow_knight/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/hollow_knight.zip",
-      "date_updated": "2026-04-04T11:53",
-      "md5": "545e661b034047daae7870df4f91fb5f",
-      "size": 6696749,
+      "date_updated": "2026-04-04T12:44",
+      "md5": "af6db9e4cceabb0d8ca04f9bc3036e76",
+      "size": 6697109,
       "lifetime_downloads": 83,
-      "last_commit": "[HK/SS] Update gptokeyb and fix permissions"
+      "last_commit": "[HK/SS] Update launchscripts"
     }
   },
   {
