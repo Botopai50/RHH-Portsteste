@@ -1,0 +1,313 @@
+#!/bin/sh
+# LADXHD Patcher for Linux ARM64
+# Extracts game from zip, then applies xdelta3 patches to update v1.0.0 to the latest version.
+# Based on the Windows patcher by BigheadSMZ: https://github.com/BigheadSMZ/Zelda-LA-DX-HD-Updated
+
+GAMEDIR="$PWD"
+LOGFILE="patchlog.txt"
+LOGERR="patcherr.txt"
+
+> "$GAMEDIR/$LOGFILE" && exec > >(tee "$GAMEDIR/$LOGFILE") 2>&1
+echo "GAMEDIR is set to: $GAMEDIR"
+
+# Paths
+DATADIR="$GAMEDIR/data"
+TMPDIR="$GAMEDIR/tmp"
+PATCHES="$TMPDIR/patches"
+PATCHED="$TMPDIR/patchedFiles"
+PATCHES_URL="https://raw.githubusercontent.com/BigheadSMZ/Zelda-LA-DX-HD-Updated/main/ladxhd_patcher_source_code/Resources/patches_linux_arm64.zip"
+PATCHES_ZIP="$TMPDIR/patches_linux_arm64.zip"
+GOOD_HASH="f4adfba864b852908705ea6a18a48f18"
+
+# ZIPFILE and controlfolder are exported by the launch script
+
+# Multi-file targets: get derived files for a given source filename
+get_derived_files() {
+    case "$1" in
+        "eng.lng")             echo "chn.lng deu.lng esp.lng fre.lng ind.lng ita.lng por.lng rus.lng" ;;
+        "dialog_eng.lng")      echo "dialog_chn.lng dialog_deu.lng dialog_esp.lng dialog_fre.lng dialog_ind.lng dialog_ita.lng dialog_por.lng dialog_rus.lng" ;;
+        "smallFont.xnb")       echo "smallFont_redux.xnb smallFont_vwf.xnb smallFont_vwf_redux.xnb smallFont_chn.xnb smallFont_chn_0.xnb smallFont_chn_redux.xnb smallFont_chn_redux_0.xnb" ;;
+        "menuBackground.xnb")  echo "menuBackgroundB.xnb menuBackgroundC.xnb sgb_border.xnb" ;;
+        "ligth room.xnb")      echo "mamuLight.xnb" ;;
+        "link0.png")           echo "link1.png" ;;
+        "npcs.png")            echo "npcs_redux.png" ;;
+        "items.png")           echo "items_chn.png items_deu.png items_esp.png items_fre.png items_ind.png items_ita.png items_por.png items_rus.png items_redux.png items_redux_chn.png items_redux_deu.png items_redux_esp.png items_redux_fre.png items_redux_ind.png items_redux_ita.png items_redux_por.png items_redux_rus.png" ;;
+        "intro.png")           echo "intro_chn.png intro_deu.png intro_esp.png intro_fre.png intro_ind.png intro_ita.png intro_por.png intro_rus.png" ;;
+        "intro.atlas")         echo "intro_chn.atlas" ;;
+        "minimap.png")         echo "minimap_chn.png minimap_deu.png minimap_esp.png minimap_fre.png minimap_ind.png minimap_ita.png minimap_por.png minimap_rus.png" ;;
+        "objects.png")         echo "objects_chn.png objects_deu.png objects_esp.png objects_fre.png objects_ind.png objects_ita.png objects_por.png objects_rus.png" ;;
+        "photos.png")          echo "photos_chn.png photos_deu.png photos_esp.png photos_fre.png photos_ind.png photos_ita.png photos_por.png photos_rus.png photos_redux.png photos_redux_chn.png photos_redux_deu.png photos_redux_esp.png photos_redux_fre.png photos_redux_ind.png photos_redux_ita.png photos_redux_por.png photos_redux_rus.png" ;;
+        "ui.png")              echo "ui_chn.png ui_deu.png ui_esp.png ui_fre.png ui_ind.png ui_ita.png ui_por.png ui_rus.png" ;;
+        "musicOverworld.data") echo "musicOverworldClassic.data" ;;
+        "dungeon3_1.map")      echo "dungeon3.map" ;;
+        "dungeon3_1.map.data") echo "dungeon3.map.data" ;;
+        "BowWow.ani")          echo "bowwow_water.ani" ;;
+        "mapPlayer.ani")       echo "mapDungeon.ani mapManboPond.ani" ;;
+        *)                     echo "" ;;
+    esac
+}
+
+prepare_system() {
+    # Locate 7zip
+    SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
+    if [ ! -x "$SEVENZIP" ]; then
+        SEVENZIP="$(command -v 7zzs 2>/dev/null || command -v 7z 2>/dev/null)"
+    fi
+    if [ -z "$SEVENZIP" ]; then
+        echo "Missing 7zip!"
+        return 1
+    fi
+
+    # Locate xdelta3
+    XDELTA3="$controlfolder/xdelta3"
+    if [ ! -x "$XDELTA3" ]; then
+        XDELTA3="$(command -v xdelta3 2>/dev/null)"
+    fi
+    if [ -z "$XDELTA3" ]; then
+        echo "Missing xdelta3!"
+        return 1
+    fi
+
+    # Locate a download tool
+    if command -v curl >/dev/null 2>&1; then
+        FETCH="curl -L -o"
+    elif command -v wget >/dev/null 2>&1; then
+        FETCH="wget -O"
+    else
+        echo "Missing curl or wget!"
+        return 1
+    fi
+}
+
+extract_game() {
+    # Find the zip if not already set
+    if [ -z "$ZIPFILE" ]; then
+        for f in "$DATADIR/"*.zip; do
+            [ -f "$f" ] || continue
+            ZIPFILE="$f"
+            break
+        done
+    fi
+
+    if [ -z "$ZIPFILE" ] || [ ! -f "$ZIPFILE" ]; then
+        echo "ERROR: No zip file found in $DATADIR"
+        return 1
+    fi
+
+    echo "Extracting game from zip..."
+
+    # The zip has everything under a top-level folder
+    "$SEVENZIP" x -aoa -o"$TMPDIR/game_extract" "$ZIPFILE"
+    if [ $? -ne 0 ]; then
+        echo "Failed to extract zip."
+        return 1
+    fi
+
+    # Find the extracted folder (name may vary)
+    EXTRACT_DIR=""
+    for d in "$TMPDIR/game_extract/"*/; do
+        [ -d "$d" ] || continue
+        EXTRACT_DIR="$d"
+        break
+    done
+
+    if [ -z "$EXTRACT_DIR" ]; then
+        EXTRACT_DIR="$TMPDIR/game_extract/"
+    fi
+
+    # Move contents into data dir
+    cp -r "$EXTRACT_DIR"* "$DATADIR/"
+    rm -rf "$TMPDIR/game_extract"
+
+    # Validate the exe
+    EXECUTABLE=""
+    if [ -f "$DATADIR/Link's Awakening DX HD.exe" ]; then
+        EXECUTABLE="$DATADIR/Link's Awakening DX HD.exe"
+    elif [ -f "$DATADIR/Link's Awakening DX HD" ]; then
+        EXECUTABLE="$DATADIR/Link's Awakening DX HD"
+    fi
+
+    if [ -z "$EXECUTABLE" ]; then
+        echo "ERROR: Executable not found after extraction."
+        return 1
+    fi
+
+    hash=$(md5sum "$EXECUTABLE" | awk '{print $1}')
+    if [ "$hash" != "$GOOD_HASH" ]; then
+        echo "ERROR: Executable hash mismatch. Expected v1.0.0 original."
+        echo "  Expected: $GOOD_HASH"
+        echo "  Got:      $hash"
+        return 1
+    fi
+
+    echo "Game extracted and validated."
+
+    # Clean up the zip and source archive
+    rm -f "$ZIPFILE"
+    rm -f "$DATADIR/source.7z"
+    rm -f "$DATADIR/.gitkeep"
+}
+
+download_patches() {
+    mkdir -p "$PATCHES" "$PATCHED"
+
+    echo "Downloading patches..."
+    $FETCH "$PATCHES_ZIP" "$PATCHES_URL"
+    if [ $? -ne 0 ]; then
+        echo "Failed to download patches."
+        return 1
+    fi
+
+    echo "Extracting patches..."
+    "$SEVENZIP" x -aoa -o"$PATCHES" "$PATCHES_ZIP"
+    rm -f "$PATCHES_ZIP"
+}
+
+prepare_linux_files() {
+    # Rename exe to extensionless for Linux
+    local exe_noext="$DATADIR/Link's Awakening DX HD"
+    if [ "$EXECUTABLE" != "$exe_noext" ] && [ -f "$EXECUTABLE" ]; then
+        mv "$EXECUTABLE" "$exe_noext"
+        EXECUTABLE="$exe_noext"
+    fi
+
+    # Remove Windows/Mac-specific files
+    for file in "Link's Awakening DX HD.exe" \
+        "System.IO.Compression.Native.a" "System.Native.a" \
+        "System.Net.Http.Native.a" "System.Net.Security.Native.a" \
+        "System.Security.Cryptography.Native.OpenSsl.a" \
+        "libopenal.dylib" "libSDL2-2.0.0.dylib"; do
+        rm -f "$DATADIR/$file"
+    done
+}
+
+handle_multi_file_patches() {
+    local source_file="$1"
+    local source_name
+    source_name=$(basename "$source_file")
+    local source_dir
+    source_dir=$(dirname "$source_file")
+
+    local derived
+    derived=$(get_derived_files "$source_name")
+    [ -n "$derived" ] || return
+
+    for d in $derived; do
+        local xdelta_file="$PATCHES/$d.xdelta"
+        [ -f "$xdelta_file" ] || continue
+
+        local patched_file="$PATCHED/$d"
+        local target_file="$source_dir/$d"
+
+        "$XDELTA3" -d -f -s "$source_file" "$xdelta_file" "$patched_file"
+        mv -f "$patched_file" "$target_file"
+    done
+}
+
+patch_game_files() {
+    prepare_linux_files
+
+    echo "Patching game files..."
+
+    find "$DATADIR" -type f | while IFS= read -r file; do
+        filename=$(basename "$file")
+
+        # Skip temp/mod folders
+        case "$file" in
+            */~temp/*|*/tmp/*|*/Mods/*) continue ;;
+        esac
+
+        [ "$filename" = "xdelta3" ] && continue
+
+        xdelta_file="$PATCHES/$filename.xdelta"
+        patch_exists=0
+        [ -f "$xdelta_file" ] && patch_exists=1
+
+        # Handle multi-file patches
+        derived=$(get_derived_files "$filename")
+        if [ -n "$derived" ]; then
+            handle_multi_file_patches "$file"
+        fi
+
+        [ $patch_exists -eq 0 ] && continue
+
+        # Apply the patch
+        patched_file="$PATCHED/$filename"
+        "$XDELTA3" -d -f -s "$file" "$xdelta_file" "$patched_file"
+        mv -f "$patched_file" "$file"
+    done
+
+    echo "Patching complete."
+    post_patch
+}
+
+post_patch() {
+    dungeon3_fix
+
+    mkdir -p "$GAMEDIR/Mods/LAHDMods"
+    mkdir -p "$GAMEDIR/Mods/Graphics"
+
+    # Remove junk minimap data
+    for file in three_1.txt three_2.txt three_3.txt; do
+        rm -f "$DATADIR/Dungeon/$file"
+    done
+
+    # Remove junk map files
+    for file in \
+        "dungeon3_1.map" "dungeon3_1.map.data" \
+        "dungeon3_2.map" "dungeon3_2.map.data" \
+        "dungeon3_3.map" "dungeon3_3.map.data" \
+        "dungeon3_4.map" "dungeon3_4.map.data"; do
+        rm -f "$DATADIR/Maps/$file"
+    done
+
+    # Rename binary to avoid spaces/apostrophe issues with gptokeyb
+    mv "$DATADIR/Link's Awakening DX HD" "$DATADIR/LADXHD"
+    chmod +x "$DATADIR/LADXHD"
+}
+
+dungeon3_fix() {
+    local d3map=""
+
+    if [ -f "$DATADIR/Maps/dungeon3_1.map" ]; then
+        d3map="$DATADIR/Maps/dungeon3_1.map"
+    fi
+
+    if [ -z "$d3map" ]; then
+        echo "WARNING: Could not find dungeon3_1.map for dungeon 3 fix."
+        echo "Dungeon 3 may crash!"
+        return
+    fi
+
+    local xdelta_file="$PATCHES/dungeon3.map.xdelta"
+    if [ -f "$xdelta_file" ]; then
+        "$XDELTA3" -d -f -s "$d3map" "$xdelta_file" "$DATADIR/Maps/dungeon3.map"
+        echo "Dungeon 3 map fix applied."
+    fi
+}
+
+cleanup() {
+    rm -rf "$TMPDIR"
+}
+
+process_game() {
+    echo "Preparing system..."
+    prepare_system || return 1
+    echo "Extracting and validating game..."
+    extract_game || return 1
+    echo "Downloading and extracting patches..."
+    download_patches || return 1
+    echo "Patching game files..."
+    patch_game_files || return 1
+    echo "Finishing up..."
+}
+
+# Main
+if ! process_game; then
+    echo "Patching process failed!"
+    mv "$LOGFILE" "$LOGERR"
+else
+    echo "Patching process complete!"
+fi
+
+cleanup
