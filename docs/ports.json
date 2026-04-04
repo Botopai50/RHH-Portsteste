@@ -4366,6 +4366,52 @@
   },
   {
     "version": 4,
+    "name": "zelda-ladxhd.zip",
+    "items": [
+      "Zelda LADXHD.sh",
+      "zelda-ladxhd"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "The Legend of Zelda: Link's Awakening DX HD",
+      "porter": [
+        "Jeod"
+      ],
+      "desc": "Play Link's Awakening with modern QoL features!",
+      "desc_md": null,
+      "inst": "Place the original v1.0.0 zip file in the data folder. The port will extract and patch it automatically on first launch.",
+      "inst_md": null,
+      "genres": [
+        "action",
+        "adventure"
+      ],
+      "image": null,
+      "rtr": false,
+      "exp": false,
+      "runtime": [],
+      "store": [],
+      "availability": "free",
+      "reqs": [
+        "aarch64"
+      ],
+      "arch": [
+        "aarch64"
+      ],
+      "min_glibc": ""
+    },
+    "source": {
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-ladxhd/zelda-ladxhd/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-ladxhd/zelda-ladxhd/README.md",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-ladxhd.zip",
+      "date_updated": "2026-04-04T13:25",
+      "md5": "deba0ee486127ab9b181fa9b23f918a2",
+      "size": 257800,
+      "lifetime_downloads": 0,
+      "last_commit": "[RELEASE] Release LADXHD"
+    }
+  },
+  {
+    "version": 4,
     "name": "simpsons_hnr.zip",
     "items": [
       "The Simpsons Hit and Run.sh",
