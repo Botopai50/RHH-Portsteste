@@ -63,6 +63,7 @@ fi
 export LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/libs.aarch64:$GAMEDIR/data:$LD_LIBRARY_PATH"
 export BOX64_LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/gamedata:$LD_LIBRARY_PATH"
 export XDG_CONFIG_HOME="$GAMEDIR/config" && mkdir -p "$GAMEDIR/config"
+export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
 # Box64 optimizations -- see https://github.com/ptitSeb/box64/blob/main/docs/USAGE.md
 export BOX64_NOBANNER=1                # Hide Box64 startup banner (cleaner logs)

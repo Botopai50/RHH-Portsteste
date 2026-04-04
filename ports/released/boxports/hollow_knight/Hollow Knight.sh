@@ -77,6 +77,7 @@ chmod +x "$GAME"
 export LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/libs.aarch64:$GAMEDIR/data:$LD_LIBRARY_PATH"
 export BOX64_LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/gamedata:$LD_LIBRARY_PATH"
 export XDG_CONFIG_HOME="$GAMEDIR/config" && mkdir -p "$GAMEDIR/config"
+export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
 # Box64 optimizations -- see https://github.com/ptitSeb/box64/blob/main/docs/USAGE.md
 export BOX64_NOBANNER=1                # Hide Box64 startup banner (cleaner logs)
@@ -101,9 +102,12 @@ $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 30000 &
 # Use x11 for game but not for splash
 export SDL_VIDEODRIVER="x11"
 
+# Use custom gptokeyb to fix d-pad
+export GPTOKEYB="$GAMEDIR/tools/gptokeyb $ESUDOKILL"
+
 # Run it
-$GPTOKEYB $GAME xbox360 & 
-pm_platform_helper $GAME > /dev/null
+$GPTOKEYB "$GAME" -c "$GAMEDIR/hollowknight.gptk" & 
+pm_platform_helper "$GAME" > /dev/null
 $BOX64 $GAME -force-opengl -screen-fullscreen 1 -screen-width $DISPLAY_WIDTH -screen-height $DISPLAY_HEIGHT
 
 #Clean up after ourselves
