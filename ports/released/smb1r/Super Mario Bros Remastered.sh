@@ -194,10 +194,10 @@ update_check() {
     }
 
     # Check PCK
-    check_and_update_file "$remote_pck_url" "$local_pck" "$etag_pck_file" "update.png"
+    check_and_update_file "$remote_pck_url" "$local_pck" "$etag_pck_file"
 
     # Check ARM64 binary
-    check_and_update_file "$remote_bin_url" "$local_bin" "$etag_bin_file" "update.png"
+    check_and_update_file "$remote_bin_url" "$local_bin" "$etag_bin_file"
 }
 
 # Run update check
@@ -240,12 +240,14 @@ fi
 $ESUDO mount "$controlfolder/libs/${weston_runtime}.squashfs" "$weston_dir"
 
 # Disable gamepad for Knulli
-if [ "$CFW_NAME" = *"Knulli"* ]; then
-    export LD_PRELOAD="$GAMEDIR/libs/hacksdl.so"
-    export HACKSDL_NO_GAMECONTROLLER=1
-    export HACKSDL_VERBOSE=0
-    GPTK="$GAMEDIR/tools/mario-kb.gptk"
-fi
+case "$CFW_NAME" in
+    *Knulli*)
+        export LD_PRELOAD="$GAMEDIR/libs/hacksdl.so"
+        export HACKSDL_NO_GAMECONTROLLER=1
+        export HACKSDL_VERBOSE=0
+        GPTK="$GAMEDIR/tools/mario-kb.gptk"
+        ;;
+esac
 
 # Launch game
 $GPTOKEYB "SMB1R.arm64" -c "$GPTK" &
