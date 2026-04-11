@@ -21,7 +21,7 @@ GAMEDIR="/$directory/ports/zelda-ladxhd"
 GAME="$GAMEDIR/data/LADXHD"
 
 # CD and set logging
-cd "$GAMEDIR"
+cd "$GAMEDIR/data"
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
 # Patch if game binary doesn't exist yet
@@ -39,8 +39,6 @@ if [ ! -f "$GAME" ]; then
         pm_message "This port requires the latest version of PortMaster."
     fi
 fi
-
-cd "$GAMEDIR/data"
 
 # Permissions
 chmod +x "$GAME"

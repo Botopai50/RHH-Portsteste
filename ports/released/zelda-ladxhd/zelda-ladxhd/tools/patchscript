@@ -7,11 +7,11 @@ GAMEDIR="$PWD"
 LOGFILE="patchlog.txt"
 LOGERR="patcherr.txt"
 
-> "$GAMEDIR/$LOGFILE" && exec > >(tee "$GAMEDIR/$LOGFILE") 2>&1
+> "$GAMEDIR/../$LOGFILE" && exec > >(tee "$GAMEDIR/../$LOGFILE") 2>&1
 echo "GAMEDIR is set to: $GAMEDIR"
 
 # Paths
-DATADIR="$GAMEDIR/data"
+DATADIR="$GAMEDIR"
 TMPDIR="$GAMEDIR/tmp"
 PATCHES="$TMPDIR/patches"
 PATCHED="$TMPDIR/patchedFiles"
