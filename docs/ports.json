@@ -4350,11 +4350,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-ladxhd/zelda-ladxhd/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-ladxhd/zelda-ladxhd/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-ladxhd.zip",
-      "date_updated": "2026-04-12T11:10",
-      "md5": "9a60f161e8dfa5825ca0a254e211261b",
-      "size": 698625,
+      "date_updated": "2026-04-12T11:22",
+      "md5": "03ae258763b66a9c8445a0669b7e16ee",
+      "size": 701097,
       "lifetime_downloads": 0,
-      "last_commit": "Fix script run on Knulli."
+      "last_commit": "[LADXHD] Add float scaling mods thanks to BigHeadSMZ"
     }
   },
   {
