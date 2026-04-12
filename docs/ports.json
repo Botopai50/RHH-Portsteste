@@ -4350,11 +4350,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-ladxhd/zelda-ladxhd/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-ladxhd/zelda-ladxhd/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-ladxhd.zip",
-      "date_updated": "2026-04-11T14:13",
-      "md5": "2160860483d3549bbc633af8bca9c914",
-      "size": 698624,
+      "date_updated": "2026-04-12T11:10",
+      "md5": "9a60f161e8dfa5825ca0a254e211261b",
+      "size": 698625,
       "lifetime_downloads": 0,
-      "last_commit": "[ALDXHD] Ensure Mods folder lands in data folder"
+      "last_commit": "Fix script run on Knulli."
     }
   },
   {
