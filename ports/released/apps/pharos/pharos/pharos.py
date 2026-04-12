@@ -190,6 +190,7 @@ class Pharos:
         except Exception:
             pass
         raw_base = f"https://raw.githubusercontent.com/{owner}/{repo_name}/{branch}"
+        runtime_base = f"https://github.com/{owner}/{repo_name}/releases/download/runtimes-latest"
         for candidate in [f"{raw_base}/ports.json", f"{raw_base}/docs/ports.json"]:
             try:
                 raw = self._gh_request(candidate)
@@ -206,6 +207,8 @@ class Pharos:
                         download_url=src.get("download_url", ""),
                         size=src.get("size"),
                         date_updated=src.get("date_updated"),
+                        runtime=[r for r in p.get("attr", {}).get("runtime", []) if r.endswith(".squashfs")],
+                        runtime_base_url=runtime_base,
                     )
                     port.last_commit = src.get("last_commit", "")
                     port.md5 = src.get("md5")

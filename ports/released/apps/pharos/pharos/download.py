@@ -28,6 +28,11 @@ MANIFEST_PATH = BASE_DIR / "resources" / "manifest.json"
 AUTOINSTALL_DIR.mkdir(parents=True, exist_ok=True)
 MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
 
+# Runtime environment
+controlfolder = os.environ.get("controlfolder", "")
+LIBS_DIR = Path(controlfolder) / "libs" if controlfolder else None
+DEVICE_ARCH = os.environ.get("DEVICE_ARCH", "")
+
 # ----------------------------------------------------------------------
 # GitHub request
 # ----------------------------------------------------------------------
@@ -60,6 +65,7 @@ class Downloader:
                 break
 
             port, kind = item
+            self._download_runtimes(port)
             self._download_port(port, kind)
 
             if self.dl_queue.empty():
@@ -148,6 +154,111 @@ class Downloader:
             print(f"[ERROR] Image update failed for {repo.name}: {e}")
             with suppress(OSError):
                 img_zip.unlink()
+
+    # ------------------------------------------------------------------
+    # Runtime downloads
+    # ------------------------------------------------------------------
+    def _download_runtimes(self, port: Port) -> None:
+        if not port.runtime or not port.runtime_base_url:
+            return
+        if DEVICE_ARCH != "aarch64":
+            print(f"[RUNTIME] Skipping (arch={DEVICE_ARCH!r}, need aarch64)")
+            return
+        if not LIBS_DIR:
+            print("[RUNTIME] Skipping (controlfolder not set)")
+            return
+
+        LIBS_DIR.mkdir(parents=True, exist_ok=True)
+        manifest_runtimes = self._load_runtime_manifest()
+
+        for rt_name in port.runtime:
+            rt_path = LIBS_DIR / rt_name
+
+            if rt_path.exists():
+                if manifest_runtimes.get(rt_name, {}).get("md5"):
+                    print(f"[RUNTIME] {rt_name} present, skipping")
+                    continue
+                # On disk but not in manifest – record its md5 so we skip next time
+                print(f"[RUNTIME] {rt_name} found on disk, recording md5")
+                manifest_runtimes[rt_name] = {"md5": self._md5_file(rt_path)}
+                self._save_runtime_manifest(manifest_runtimes)
+                continue
+
+            url = f"{port.runtime_base_url}/{rt_name}"
+            print(f"[RUNTIME] Downloading {rt_name}")
+            self.progress_q.put((0, 1, f"Runtime: {rt_name}", "download"))
+            tmp_path = rt_path.with_suffix(".tmp")
+
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": "Pharos/1.0"})
+                with urllib.request.urlopen(req, timeout=60) as resp:
+                    total = int(resp.headers.get("Content-Length", 0))
+                    downloaded = 0
+                    chunk = 64 * 1024
+                    start = time.time()
+
+                    with open(tmp_path, "wb") as f:
+                        while True:
+                            data = resp.read(chunk)
+                            if not data:
+                                break
+                            f.write(data)
+                            downloaded += len(data)
+                            elapsed = time.time() - start
+                            speed = (downloaded / (1024 * 1024)) / elapsed if elapsed else 0
+                            pct = (downloaded / total * 100) if total else 0
+                            self.progress_q.put((
+                                downloaded, total or downloaded,
+                                f"Runtime: {rt_name} ({pct:.1f}%) \u2013 {speed:.2f} MB/s",
+                                "download",
+                            ))
+
+                os.replace(tmp_path, rt_path)
+                md5 = self._md5_file(rt_path)
+                manifest_runtimes[rt_name] = {"md5": md5}
+                self._save_runtime_manifest(manifest_runtimes)
+                self.progress_q.put((1, 1, f"Runtime installed: {rt_name}", "download"))
+                print(f"[RUNTIME] Installed {rt_name} (md5={md5[:8]}...)")
+
+            except Exception as e:
+                print(f"[RUNTIME ERROR] {rt_name}: {type(e).__name__}: {e}")
+                self.progress_q.put((0, 1, f"Runtime failed: {rt_name}", "download"))
+                with suppress(OSError):
+                    tmp_path.unlink()
+
+    def _load_runtime_manifest(self) -> dict:
+        if MANIFEST_PATH.exists():
+            with suppress(Exception):
+                with open(MANIFEST_PATH, "r", encoding="utf-8") as f:
+                    return json.load(f).get("runtimes", {})
+        return {}
+
+    def _save_runtime_manifest(self, runtimes: dict) -> None:
+        data = {}
+        if MANIFEST_PATH.exists():
+            with suppress(Exception):
+                with open(MANIFEST_PATH, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+        data["runtimes"] = runtimes
+        tmp = MANIFEST_PATH.with_suffix(".tmp")
+        try:
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp, MANIFEST_PATH)
+        except Exception as e:
+            print(f"[ERROR] Runtime manifest update failed: {e}")
+            with suppress(OSError):
+                tmp.unlink()
+
+    @staticmethod
+    def _md5_file(path: Path) -> str:
+        h = hashlib.md5()
+        with open(path, "rb") as f:
+            for chunk in iter(lambda: f.read(64 * 1024), b""):
+                h.update(chunk)
+        return h.hexdigest()
 
     # ------------------------------------------------------------------
     # Single-port download (streaming)

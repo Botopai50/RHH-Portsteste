@@ -79,6 +79,8 @@ class Port:
     date_updated: Optional[str] = None
     size: Optional[int] = None
     md5: Optional[str] = None
+    runtime: List[str] = field(default_factory=list)
+    runtime_base_url: str = ""
 
 @dataclass
 class Repository:

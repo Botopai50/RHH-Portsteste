@@ -29,6 +29,8 @@ export LOG_FILE="${LOG_DIR}/$(date +'%Y-%m-%d').log"
 export PYSDL2_DLL_PATH="/usr/lib"
 export LD_LIBRARY_PATH="${GAMEDIR}/libs:${LD_LIBRARY_PATH}"
 export SDL_GAMECONTROLLERCONFIG="${sdl_controllerconfig}"
+export controlfolder
+export DEVICE_ARCH
 
 compare() {
     v1="$1"
