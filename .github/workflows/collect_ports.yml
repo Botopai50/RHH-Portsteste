@@ -142,11 +142,15 @@ jobs:
               fi
               LIFE=$(jq -r '.source.lifetime_downloads // 0' <<< "$EXISTING")
 
-              # Capture current download_count before --clobber resets it to 0
-              if [[ -n "$RELEASE_ID" ]]; then
-                CURRENT_DL=$(gh api "repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets" \
-                  --jq ".[] | select(.name==\"$CANONICAL_NAME\") | .download_count" 2>/dev/null || echo 0)
-                LIFE=$((LIFE + ${CURRENT_DL:-0}))
+              # Only roll the live download_count into lifetime when the asset
+              # is about to be replaced (md5/size changed).  The frontend already
+              # shows lifetime + live count, so we must NOT accumulate on every run.
+              if [[ "$MD5" != "$OLD_MD5" || "$SIZE" != "$OLD_SIZE" ]]; then
+                if [[ -n "$RELEASE_ID" ]]; then
+                  CURRENT_DL=$(gh api "repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets" \
+                    --jq ".[] | select(.name==\"$CANONICAL_NAME\") | .download_count" 2>/dev/null || echo 0)
+                  LIFE=$((LIFE + ${CURRENT_DL:-0}))
+                fi
               fi
             else
               LIFE=0
