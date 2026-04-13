@@ -23,7 +23,8 @@
     "rtr": true,
     "exp": false,
     "runtime": [
-      "gmtoolkit.squashfs"
+      "gmtoolkit.squashfs",
+      "gmloadernext.squashfs"
     ],
     "store": [
       {

@@ -21,7 +21,9 @@
     "image": null,
     "rtr": true,
     "exp": false,
-    "runtime": [],
+    "runtime": [
+      "gmloadernext.squashfs"
+    ],
     "store": [],
     "availability": "full",
     "reqs": [],

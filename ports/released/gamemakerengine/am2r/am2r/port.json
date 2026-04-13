@@ -25,7 +25,8 @@
     "rtr": false,
     "exp": false,
     "runtime": [
-      "gmtoolkit.squashfs"
+      "gmtoolkit.squashfs",
+      "gmloadernext.squashfs"
     ],
     "store": [],
     "availability": "free",

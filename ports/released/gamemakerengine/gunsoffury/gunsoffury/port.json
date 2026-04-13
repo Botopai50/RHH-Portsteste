@@ -11,7 +11,7 @@
     "porter": [
       "Jeod"
     ],
-    "desc": "Guns of Fury is a retro-inspired action platformer that combines the run & gun and Metroidvania genres. Explore a vast interconnected world, gain new abilities and weapons, battle epic bosses and stop the plans of an evil corporation before it’s too late!",
+    "desc": "Guns of Fury is a retro-inspired action platformer that combines the run & gun and Metroidvania genres. Explore a vast interconnected world, gain new abilities and weapons, battle epic bosses and stop the plans of an evil corporation before it\u2019s too late!",
     "desc_md": null,
     "inst": "Buy the game on Steam and add the data to gunsoffury/assets",
     "inst_md": null,
@@ -24,7 +24,8 @@
     "exp": false,
     "runtime": [
       "dotnet-8.0.12.squashfs",
-      "gmtoolkit.squashfs"
+      "gmtoolkit.squashfs",
+      "gmloadernext.squashfs"
     ],
     "store": [
       {

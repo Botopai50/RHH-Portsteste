@@ -27,7 +27,8 @@
     "exp": false,
     "runtime": [
       "dotnet-8.0.12.squashfs",
-      "gmtoolkit.squashfs"
+      "gmtoolkit.squashfs",
+      "gmloadernext.squashfs"
     ],
     "store": [],
     "availability": "free",

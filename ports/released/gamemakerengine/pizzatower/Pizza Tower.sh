@@ -24,14 +24,27 @@ cd "$GAMEDIR"
 # Log execution
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
+# Mount gmloadernext runtime
+GMLOADER="$HOME/gmloadernext"
+GMLOADER_RUNTIME="$controlfolder/libs/gmloadernext.squashfs"
+if [ -f "$GMLOADER_RUNTIME" ]; then
+    $ESUDO mkdir -p "$GMLOADER"
+    $ESUDO umount "$GMLOADER" 2>/dev/null || true
+    $ESUDO mount "$GMLOADER_RUNTIME" "$GMLOADER"
+else
+    pm_message "This port requires the gmloadernext runtime. Please download it."
+    pm_finish
+    exit 1
+fi
+
+export GMLOADER_LIB_PATH="$GMLOADER/lib"
+
 # Setup other misc environment variables
-export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$GMLOADER/lib/arm64-v8a:$GAMEDIR/libs:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export controlfolder
 export DEVICE_ARCH
 
-# Ensure executable permissions
-$ESUDO chmod +x "$GAMEDIR/gmloadernext.aarch64"
 $ESUDO chmod +x "$GAMEDIR/tools/patchscript"
 
 # Check if we need to patch
@@ -51,11 +64,6 @@ if [ ! -f patchlog.txt ] || [ -f "$GAMEDIR/assets/data.win" ]; then
     fi
 fi
 
-# Display loading splash
-if [ -f "$GAMEDIR/patchlog.txt" ]; then
-    [ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 1 
-    $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 6000 &
-fi
 
 swapabxy() {
     # Update SDL_GAMECONTROLLERCONFIG to swap a/b and x/y button
@@ -74,7 +82,10 @@ if [ -f "$GAMEDIR/swapabxy.txt" ]; then
 fi
 
 $GPTOKEYB "gmloadernext.aarch64" -c "pizza.gptk" & 
-pm_platform_helper "$GAMEDIR/gmloadernext.aarch64" > /dev/null
-$TASKSET ./gmloadernext.aarch64 -c gmloader.json
+pm_platform_helper "$GMLOADER/gmloadernext.aarch64" > /dev/null
+$TASKSET "$GMLOADER/gmloadernext.aarch64" -c gmloader.json
+
+# Unmount gmloadernext runtime
+$ESUDO umount "$GMLOADER" 2>/dev/null || true
 
 pm_finish

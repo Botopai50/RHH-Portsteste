@@ -11,7 +11,7 @@
     "porter": [
       "Jeod"
     ],
-    "desc": "A Bomb Caterpillar's Big Adventure! \"Öoo\" is a charming yet mysterious exploration puzzle platformer where you discover creative ways to use bombs!",
+    "desc": "A Bomb Caterpillar's Big Adventure! \"\u00d6oo\" is a charming yet mysterious exploration puzzle platformer where you discover creative ways to use bombs!",
     "desc_md": null,
     "inst": "Copy game data to the assets folder.",
     "inst_md": null,
@@ -23,7 +23,8 @@
     "exp": false,
     "runtime": [
       "dotnet-8.0.12.squashfs",
-      "gmtoolkit.squashfs"
+      "gmtoolkit.squashfs",
+      "gmloadernext.squashfs"
     ],
     "store": [
       {

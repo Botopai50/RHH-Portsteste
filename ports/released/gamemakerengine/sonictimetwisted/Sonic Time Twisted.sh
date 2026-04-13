@@ -22,22 +22,34 @@ GAMEDIR="/$directory/ports/sonictimetwisted"
 # CD and set permissions
 cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
-chmod +x "$GAMEDIR/gmloadernext.aarch64"
+
+# Mount gmloadernext runtime
+GMLOADER="$HOME/gmloadernext"
+GMLOADER_RUNTIME="$controlfolder/libs/gmloadernext.squashfs"
+if [ -f "$GMLOADER_RUNTIME" ]; then
+    $ESUDO mkdir -p "$GMLOADER"
+    $ESUDO umount "$GMLOADER" 2>/dev/null || true
+    $ESUDO mount "$GMLOADER_RUNTIME" "$GMLOADER"
+else
+    pm_message "This port requires the gmloadernext runtime. Please download it."
+    pm_finish
+    exit 1
+fi
+
+export GMLOADER_LIB_PATH="$GMLOADER/lib"
 
 # Exports
-export LD_LIBRARY_PATH="$GAMEDIR/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$GMLOADER/lib/arm64-v8a:$GAMEDIR/lib:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
-# Display loading splash
-if [ -f "$GAMEDIR/patchlog.txt" ]; then
-    [ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 1
-    $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 8000 & 
-fi
 
 # Assign gptokeyb and load the game
 $GPTOKEYB "gmloadernext.aarch64" -c "sonic.gptk" &
-pm_platform_helper "$GAMEDIR/gmloadernext.aarch64" >/dev/null
-./gmloadernext.aarch64 -c gmloader.json
+pm_platform_helper "$GMLOADER/gmloadernext.aarch64" >/dev/null
+"$GMLOADER/gmloadernext.aarch64" -c gmloader.json
 
 # Cleanup
+# Unmount gmloadernext runtime
+$ESUDO umount "$GMLOADER" 2>/dev/null || true
+
 pm_finish

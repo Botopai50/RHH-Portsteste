@@ -26,10 +26,24 @@ SMALL_DELAY=16
 # CD and set permissions
 cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
-$ESUDO chmod +x "$GAMEDIR/gmloadernext.aarch64"
+
+# Mount gmloadernext runtime
+GMLOADER="$HOME/gmloadernext"
+GMLOADER_RUNTIME="$controlfolder/libs/gmloadernext.squashfs"
+if [ -f "$GMLOADER_RUNTIME" ]; then
+    $ESUDO mkdir -p "$GMLOADER"
+    $ESUDO umount "$GMLOADER" 2>/dev/null || true
+    $ESUDO mount "$GMLOADER_RUNTIME" "$GMLOADER"
+else
+    pm_message "This port requires the gmloadernext runtime. Please download it."
+    pm_finish
+    exit 1
+fi
+
+export GMLOADER_LIB_PATH="$GMLOADER/lib"
 
 # Exports
-export LD_LIBRARY_PATH="/usr/lib:$GAMEDIR/lib:$GAMEDIR/libs:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$GMLOADER/lib/arm64-v8a:/usr/lib:$GAMEDIR/lib:$GAMEDIR/libs:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
 # Apply mouse scaling according to screen size
@@ -41,14 +55,14 @@ else
     sed -i "s/^mouse_delay *= *[0-9]\+/mouse_delay = $SMALL_DELAY/" "$GAMEDIR/nubby.gptk"
 fi
 
-# Display loading splash
-[ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/splash" "$GAMEDIR/splash.png" 1
-$ESUDO "$GAMEDIR/splash" "$GAMEDIR/splash.png" 8000 & 
 
 # Assign gptokeyb and load the game
 $GPTOKEYB "gmloadernext.aarch64" -c "nubby.gptk" &
-pm_platform_helper "gmloadernext.aarch64" >/dev/null
-./gmloadernext.aarch64 -c "gmloader.json"
+pm_platform_helper "$GMLOADER/gmloadernext.aarch64" >/dev/null
+"$GMLOADER/gmloadernext.aarch64" -c "gmloader.json"
 
 # Cleanup
+# Unmount gmloadernext runtime
+$ESUDO umount "$GMLOADER" 2>/dev/null || true
+
 pm_finish
