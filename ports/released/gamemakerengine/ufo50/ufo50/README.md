@@ -2,7 +2,7 @@
 This is a wrapper and in-place scripts modification for vanilla UFO 50 that makes the game more manageable on retro handheld systems running linux arm64. If you are running android on a retro handheld system, you may be looking for the [unofficial android port](https://github.com/Skyline969/UFO50AndroidUnofficial) by Skyline969.
 
 ## Installation
-This wrapper is compatible with all UFO 50 versions up to 1.8.9, the latest. Purchase the game on Steam and copy all the data to `ports/ufo50/assets`. On first run the game will be patched.
+This wrapper is compatible with all UFO 50 versions up to 1.9.1, the latest. Purchase the game on Steam and copy all the data to `ports/ufo50/assets`. On first run the game will be patched.
 
 If you are updating a prepatched game, simply add your new `data.win` file to `assets` *in addition to any new data you want added*. This means you can add the `ext` folder for any language updates and the `Textures` folder.
 
