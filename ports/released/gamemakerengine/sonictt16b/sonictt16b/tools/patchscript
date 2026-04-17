@@ -10,32 +10,18 @@ echo "GAMEDIR is set to: $GAMEDIR"
 
 # Exports
 export DATADIR="$GAMEDIR/assets"
-export TOOLDIR="$GAMEDIR/tools"
 export DATAFILE="sonictt16b.port"
+export APKFILE="sonic-triple-trouble-16-bit-v1-2-8.apk"
 export TMPDIR="$GAMEDIR/tmp"
 
 prepare_system() {
-    # Test for python
-    PYTHON=$(command -v python3)
+    # Test for commands: python, zip
+    PYTHON=$(which python3)
     if [ -z "$PYTHON" ]; then
         echo "Missing Python!"
         return 1
     fi
-
-    # Test for zip
-    ZIP=$(command -v zip)
-    if [ -z "$ZIP" ]; then
-        echo "Missing zip!"
-        return 1
-    fi
-
-    # Test for unzip
-    UNZIP=$(command -v unzip)
-    if [ -z "$UNZIP" ]; then
-        echo "Missing unzip!"
-        return 1
-    fi
-
+    
     # Mount the GMToolkit runtime
     TOOLKIT="$HOME/gmtoolkit"
     RUNTIME="$controlfolder/libs/gmtoolkit.squashfs"
@@ -45,7 +31,6 @@ prepare_system() {
         $ESUDO mount "$RUNTIME" "$TOOLKIT"
     else
         echo "This port requires the GMToolkit runtime. Please download it."
-        sleep 2
         return 1
     fi
 
@@ -67,8 +52,10 @@ prepare_system() {
     else
         SAVEDIR="$GAMEDIR/saves"
     fi
-
-    # Path exports
+    
+    # Exports
+    export PYTHON
+    export SAVEDIR
     export PATH="$DOTNETDIR:$TOOLKIT/gmtools:$TOOLKIT/utmt-cli:$PATH"
     export LD_LIBRARY_PATH="/usr/lib:$TOOLKIT/libs:$LD_LIBRARY_PATH"
 
@@ -79,20 +66,54 @@ prepare_system() {
 }
 
 unzip_apk() {
-    if [ -f "$GAMEDIR/sonic-triple-trouble-16-bit-v1-2-8.apk" ]; then
+    if [ -f "$GAMEDIR/$APKFILE" ]; then
         echo "Extracting apk file..."
-        mkdir -p "$GAMEDIR/tmp"
-        if $UNZIP "$GAMEDIR/sonic-triple-trouble-16-bit-v1-2-8.apk" -d "$GAMEDIR/tmp"; then
-            (cd "$GAMEDIR/tmp" && $ZIP -r -0 "$GAMEDIR/$DATAFILE" lib)
-            mv "$GAMEDIR/tmp/assets" "$GAMEDIR" && rm -rf "$GAMEDIR/tmp"
-            rm -rf "$GAMEDIR/sonic-triple-trouble-16-bit-v1-2-8.apk"
-            rm -rf "$DATADIR"/*.exe "$DATADIR"/*.png "$DATADIR"/.txt "$DATADIR"/.gitkeep
+        mkdir -p "$TMPDIR"
+        if "$controlfolder/7zzs.${DEVICE_ARCH}" x -y "$GAMEDIR/$APKFILE" -o"$TMPDIR"; then
+            if [ -d "$TMPDIR/lib" ]; then
+                "$controlfolder/7zzs.${DEVICE_ARCH}" a -tzip -aoa -mx=0 \
+                    "$GAMEDIR/$DATAFILE" "$TMPDIR/lib" || {
+                    echo "Failed lib packaging"
+                    return 1
+                }
+            else
+                echo "lib directory not found in APK"
+                find "$TMPDIR" -maxdepth 2 -type d
+                return 1
+            fi
+
+            if [ -d "$TMPDIR/assets" ]; then
+                mkdir -p "$GAMEDIR/assets"
+                cp -R "$TMPDIR/assets/." "$GAMEDIR/assets/"
+            else
+                echo "assets missing in APK"
+                find "$TMPDIR" -maxdepth 2 -type d
+                return 1
+            fi
+
+            rm -rf "$TMPDIR" "$GAMEDIR/$APKFILE"
+
+            rm -f "$DATADIR"/*.exe "$DATADIR"/*.png "$DATADIR"/*.txt "$DATADIR"/.gitkeep
+
         else
             echo "Error unzipping apk!"
             return 1
         fi
     else
-        echo "Did not find $GAMEDIR/sonic-triple-trouble-16-bit-v1-2-8.apk!"
+        echo "Did not find $GAMEDIR/$APKFILE!"
+        return 1
+    fi
+}
+
+compress_audio() {
+    # Do audio compression
+    if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -vv -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/game.droid"; then
+        mv "$TMPDIR/"* "$DATADIR" && rmdir "$TMPDIR"
+        echo "Audio compression applied successfully."
+    else
+        # Failure
+        echo "Audio compression failed."
+        rmdir "$TMPDIR"
         return 1
     fi
 }
@@ -104,39 +125,29 @@ set_flags() {
     dotnet "$TOOLKIT/utmt-cli/UndertaleModCli.dll" \
         load "$DATADIR/data.win" \
         -s "$GAMEDIR/tools/toggleflags.csx" \
-        -o "$DATADIR/data2.win"
+        -o "$DATADIR/game2.droid"
 
     if [ $? -ne 0 ]; then
         echo "Failed to toggle info flags."
         return 1
     else
         echo "Successfully toggled info flags."
-        rm -f "$DATADIR/data.win"
-        mv "$DATADIR/data2.win" "$DATADIR/data.win"
+        rm -f "$DATADIR/game.droid"
+        mv "$DATADIR/game2.droid" "$DATADIR/game.droid"
         if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ]; then
             rm -rf "$TMPDIR"/*
         fi
     fi
 }
 
-compress_audio() {
-    # Do audio compression
-    if $PYTHON "$TOOLKIT/gmtools/gmKtool.py" -vv -m 1000 -r -b 64 -d "$TMPDIR" "$DATADIR/data.win"; then
-        mv "$TMPDIR/"* "$DATADIR" && rmdir "$TMPDIR"
-        echo "Audio compression applied successfully."
+# Zip it all into the .port file
+zip_archive() {
+    if "$controlfolder/7zzs.${DEVICE_ARCH}" a -tzip -aoa -mx=0 "$GAMEDIR/$DATAFILE" "$DATADIR"; then
+        rm -rf "$DATADIR"/*
     else
-        # Failure
-        echo "Audio compression failed."
-        rmdir "$TMPDIR"
+        echo "Failed to create $DATAFILE."
         return 1
     fi
-}
-
-zip_archive() {
-    [ -f "$DATADIR/data.win" ] && mv "$DATADIR/data.win" "$DATADIR/game.droid"
-    $ZIP -r -0 "$DATAFILE" ./assets/
-    echo "Zipped contents to $DATAFILE"
-    rm -rf "$DATADIR/"*
 }
 
 cleanup() {
