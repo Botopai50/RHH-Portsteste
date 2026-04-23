@@ -1,0 +1,33 @@
+# Build a newer SDL2 than focal ships
+git clone https://github.com/libsdl-org/SDL.git
+cd SDL
+git checkout release-2.32.0
+mkdir -p build-sonicmania && cd build-sonicmania
+cmake ..
+make -j$(nproc)
+make install
+cd ../..
+
+#### Sonic Mania Decompilation ####
+
+git clone --recursive https://github.com/RSDKModding/Sonic-Mania-Decompilation
+cd Sonic-Mania-Decompilation
+
+# Pin to current HEAD; the upstream has no release tags
+git log -1 --format='%H' > ../sonicmania.sha
+
+cmake -S . -B build \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
+  -DRETRO_REVISION=2 \
+  -DRETRO_SUBSYSTEM=SDL2 \
+  -DRETRO_DISABLE_PLUS=ON
+
+cmake --build build --config release -j$(nproc)
+
+# Stage shipped libraries (SDL2 was built into /usr/local)
+mkdir -p build/libs
+cp /usr/local/lib/libSDL2-2.0.so.[0-9]* ./build/libs/
+find ./build/libs/ -name "*.so.[0-9]*.[0-9]*" -delete
+
+cd ..
