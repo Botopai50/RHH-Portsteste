@@ -15,7 +15,10 @@ on:
     paths:
       - 'ports/released/**'
   workflow_run:
-    workflows: ["Update HM64 Port"]
+    # The push trigger above doesn't fire for pushes made by the default
+    # GITHUB_TOKEN (GitHub suppresses this to prevent workflow recursion),
+    # so any workflow that commits port payloads must be chained here.
+    workflows: ["Update HM64 Port", "Build Ports"]
     types: [completed]
 
 concurrency:
@@ -54,15 +57,51 @@ jobs:
           FORCE="${{ github.event_name == 'workflow_dispatch' && github.event.inputs.force || 'false' }}"
           PORT_DIRS=()
 
+          # Resolve the diff base. We need to find every port changed since
+          # this workflow last ran so we don't miss updates when multiple
+          # commits land between runs (e.g. a Build Ports run that updates
+          # several ports at once, each as its own commit).
+          #
+          # Strategy: diff HEAD against the commit that last modified
+          # docs/ports.json — that file is this workflow's output, so the
+          # commit that last touched it marks the previous successful run.
+          # For push events we can also trust github.event.before as a
+          # narrower and more accurate range.
+          resolve_base() {
+            case "${{ github.event_name }}" in
+              push)
+                local before="${{ github.event.before || '' }}"
+                # A fresh branch push has before=0000...; fall through.
+                if [[ -n "$before" && "$before" != "0000000000000000000000000000000000000000" ]]; then
+                  echo "$before"
+                  return
+                fi
+                ;;
+            esac
+            # Fall back to the last commit that touched docs/ports.json.
+            # If the file has never been committed, fall back to HEAD~1.
+            local last
+            last=$(git log -1 --format=%H -- docs/ports.json 2>/dev/null || true)
+            if [[ -n "$last" ]]; then
+              # We want the commit BEFORE that one so the diff includes the
+              # ports.json update itself (which matters for edge cases where
+              # a port dir was deleted alongside a ports.json update).
+              echo "${last}^"
+            else
+              echo "HEAD~1"
+            fi
+          }
+
           if [ "$FORCE" = "true" ]; then
             mapfile -t PORT_DIRS < <(
               find ports/released -name port.json -type f -print0 |
               xargs -0 -n1 dirname | sort -u
             )
           else
-            BASE="${{ github.event.before || '' }}"
+            BASE=$(resolve_base)
+            echo "Diff base: $BASE  HEAD: $(git rev-parse HEAD)"
             {
-              git diff --name-only "$BASE" "${{ github.sha }}" 2>/dev/null ||
+              git diff --name-only "$BASE" HEAD 2>/dev/null ||
               git diff --name-only HEAD~1 HEAD ||
               true
             } | while read -r file; do
@@ -139,6 +178,10 @@ jobs:
               OLD_SIZE=$(echo "$EXISTING" | jq -r '.source.size // empty')
               if [[ "$MD5" == "$OLD_MD5" && "$SIZE" == "$OLD_SIZE" ]]; then
                 DATE_UPDATED=$(echo "$EXISTING" | jq -r '.source.date_updated')
+                # Zip matches what's already on the release; drop it so the
+                # upload step doesn't re-clobber an identical asset.
+                echo "[$CANONICAL_NAME] md5 unchanged — skipping upload"
+                rm -f "$ZIP_PATH"
               fi
               LIFE=$(jq -r '.source.lifetime_downloads // 0' <<< "$EXISTING")
 
@@ -260,7 +303,13 @@ jobs:
       - name: Upload assets
         if: steps.ports.outputs.ports != ''
         run: |
-          for f in temp_ports/*.zip; do
+          shopt -s nullglob
+          zips=(temp_ports/*.zip)
+          if (( ${#zips[@]} == 0 )); then
+            echo "No changed zips to upload."
+            exit 0
+          fi
+          for f in "${zips[@]}"; do
             gh release upload ports-latest "$f" --clobber
           done
 
