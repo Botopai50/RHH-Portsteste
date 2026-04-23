@@ -55,38 +55,28 @@ else
   git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
 fi
 
-# Patch upstream bug: RSDKv4/Debug.cpp calls `sprintf(buffer, "%s\n", buffer)`
-# which appends '\n\0' past the end of a 256-byte buffer when a log message
-# fills it. Harmless on older glibc without -fstack-protector-strong (which
-# is why Debian buster builds ran fine), but modern focal GCC enables stack
-# protection by default and aborts with "stack smashing detected" on any
-# long log line that the engine logs at startup. Apply a tiny inline patch.
-patch -p1 <<'PATCH'
---- a/RSDKv4/Debug.cpp
-+++ b/RSDKv4/Debug.cpp
-@@ -18,11 +18,14 @@
-         vsprintf(buffer, msg, args);
-         if (endLine) {
-             printf("%s\n", buffer);
--            sprintf(buffer, "%s\n", buffer);
-+            size_t _L = strlen(buffer);
-+            if (_L < sizeof(buffer) - 1) {
-+                buffer[_L] = '\n';
-+                buffer[_L + 1] = 0;
-+            }
-         }
-         else {
-             printf("%s", buffer);
--            sprintf(buffer, "%s", buffer);
-         }
+# Patch upstream bug: RSDKv4/Debug.hpp's inline PrintLog calls
+# `sprintf(buffer, "%s\n", buffer)` which appends '\n\0' past the end of a
+# 256-byte buffer when a log message fills it. Harmless on older glibc
+# without -fstack-protector-strong (which is why Debian buster builds ran
+# fine), but modern focal GCC enables stack protection by default and
+# aborts with "stack smashing detected" on any long log line the engine
+# prints at startup. The sprintf-into-self is a no-op anyway since the
+# source and destination buffer are the same — we just need to tack on the
+# trailing newline safely for the endLine case.
+#
+# Use line-anchored sed rather than a context patch because upstream tweaks
+# the surrounding code between releases and diff context tends to drift.
+sed -i 's|sprintf(buffer, "%s\\n", buffer);|if (strlen(buffer) < sizeof(buffer) - 1) { size_t _L = strlen(buffer); buffer[_L] = 0x0a; buffer[_L + 1] = 0; }|' RSDKv4/Debug.hpp
+sed -i 's|sprintf(buffer, "%s", buffer);|(void)buffer;|' RSDKv4/Debug.hpp
 
-         if (engineDebugMode) {
-PATCH
-# Sanity: no `sprintf(buffer, ..., buffer)` should remain.
-if grep -E 'sprintf\(buffer,[^,]+,[[:space:]]*buffer\)' RSDKv4/Debug.cpp; then
-    echo "ERROR: sprintf-into-self pattern still present"; exit 1
-fi
-echo "Debug.cpp patch applied"
+# Sanity: no `sprintf(buffer, ..., buffer)` should remain in either file.
+for f in RSDKv4/Debug.hpp RSDKv4/Debug.cpp; do
+    if grep -E 'sprintf\(buffer,[^,]+,[[:space:]]*buffer\)' "$f"; then
+        echo "ERROR: sprintf-into-self pattern still present in $f"; exit 1
+    fi
+done
+echo "Debug sprintf-into-self patch applied"
 
 # Per RSDKv4/RetroEngine.hpp the RETRO_REVxx macros are ">=" checks, so a
 # REV=3 build includes all earlier revisions' code paths. At runtime the
