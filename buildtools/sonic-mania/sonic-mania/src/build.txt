@@ -78,13 +78,17 @@ mkdir -p build/libs
 cp -L /usr/lib/aarch64-linux-gnu/libogg.so.0 ./build/libs/libogg.so.0
 cp -L /usr/lib/aarch64-linux-gnu/libtheoradec.so.1 ./build/libs/libtheoradec.so.1
 
-# Verify: every staged lib must be in the binary's NEEDED list, and every
-# NEEDED lib we intend to ship must be staged. System libs (libc, libGLESv2,
-# libSDL2, etc.) are assumed present on the device and are NOT shipped.
+# Verify library coverage.
 needed=$(readelf -d build/dependencies/RSDKv5/RSDKv5 | awk -F'[][]' '/NEEDED/ {print $2}')
 echo "Binary NEEDED:"; echo "$needed"
 echo "Staged:"; ls build/libs/
-for lib in libogg.so.0 libtheoradec.so.1; do
+
+staged_libs="libogg.so.0 libtheoradec.so.1"
+system_libs="libSDL2-2.0.so.0 libGLESv2.so.2 \
+             libc.so.6 libm.so.6 libpthread.so.0 libdl.so.2 librt.so.1 \
+             libstdc++.so.6 libgcc_s.so.1"
+
+for lib in $staged_libs; do
     if ! echo "$needed" | grep -qx "$lib"; then
         echo "ERROR: staged $lib but binary does not NEED it"; exit 1
     fi
@@ -92,5 +96,13 @@ for lib in libogg.so.0 libtheoradec.so.1; do
         echo "ERROR: $lib missing from build/libs/"; exit 1
     fi
 done
+
+# Every NEEDED entry must be either staged or in the system allowlist.
+while read -r lib; do
+    [[ -z "$lib" ]] && continue
+    if ! echo " $staged_libs $system_libs " | grep -q " $lib "; then
+        echo "ERROR: binary NEEDs $lib but it is neither staged nor on the system allowlist"; exit 1
+    fi
+done <<< "$needed"
 
 cd ..

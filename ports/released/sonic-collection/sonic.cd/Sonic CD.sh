@@ -17,7 +17,7 @@ get_controls
 [ -f "${controlfolder}/mod_${CFW_NAME}.txt" ] && source "${controlfolder}/mod_${CFW_NAME}.txt"
 
 # Set variables
-GAMEDIR="/$directory/ports/sonic.cd"
+GAMEDIR="/$directory/ports/soniccd"
 
 # CD and set permissions
 cd $GAMEDIR
@@ -68,7 +68,7 @@ get_res
 
 # Run the game
 $GPTOKEYB "soniccd" -c "sonic.gptk" &
-pm_platform_helper "soniccd"
+pm_platform_helper "soniccd" > /dev/null
 ./soniccd
 
 # Cleanup
