@@ -12,7 +12,10 @@ RUN apt install -y --no-install-recommends \
         build-essential git make cmake \
         pkg-config ninja-build
 
-# SDL2 build dependencies (we build SDL2 from source; focal's package is too old)
+# SDL2 build dependencies — focal's libsdl2-dev is too old for the Mania decomp,
+# so build.txt builds SDL2 2.32 from source to link the game against. These
+# are the subsystem dev headers SDL2's own build needs. The built SDL2 is NOT
+# shipped in the port zip — devices provide libSDL2-2.0.so.0 at runtime.
 RUN apt install -y --no-install-recommends \
         libasound2-dev libpulse-dev \
         libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev \

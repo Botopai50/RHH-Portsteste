@@ -102,7 +102,23 @@ jobs:
           git add "$TARGET_DIR"
           if git diff --staged --quiet; then
             echo "No port-payload changes to commit"
-          else
-            git commit -m "[SONICMANIA] Update to ${UPSTREAM_SHORT}"
-            git push
+            exit 0
           fi
+          git commit -m "[SONICMANIA] Update to ${UPSTREAM_SHORT}"
+
+          for attempt in 1 2 3 4 5; do
+            git fetch origin "$GITHUB_REF_NAME"
+            git rebase "origin/$GITHUB_REF_NAME" || {
+              echo "Rebase failed on attempt $attempt"
+              git rebase --abort || true
+              exit 1
+            }
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then
+              echo "Pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; retrying..."
+            sleep $((attempt * 3))
+          done
+          echo "Push failed after 5 attempts"
+          exit 1

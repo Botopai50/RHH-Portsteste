@@ -1,9 +1,14 @@
-# Build a newer SDL2 than focal ships
+# We build SDL2 2.32 from source so the libs we ship later (none in Mania's
+# case, but keeping the pattern) can link against a fast modern SDL2 at build
+# time. We do NOT ship libSDL2-2.0.so.0 — devices provide their own, often
+# with device-specific patches (GL backend selection, touchscreen quirks).
+# Shipping ours would override the patched system copy via LD_LIBRARY_PATH
+# and could regress things that currently work.
 git clone https://github.com/libsdl-org/SDL.git
 cd SDL
 git checkout release-2.32.0
 mkdir -p build-sonicmania && cd build-sonicmania
-cmake ..
+cmake .. -DBUILD_SHARED_LIBS=ON
 make -j$(nproc)
 make install
 cd ../..
@@ -25,9 +30,30 @@ cmake -S . -B build \
 
 cmake --build build --config release -j$(nproc)
 
-# Stage shipped libraries (SDL2 was built into /usr/local)
+# Stage shipped libraries. Filenames MUST match the binary's DT_NEEDED entries
+# exactly (verify with `readelf -d <binary> | grep NEEDED`). We use `cp -L` to
+# follow symlinks so the destination is a real file with the right name —
+# otherwise `cp` may preserve a symlink that points to a file not in the zip,
+# producing a broken link, and the dynamic loader silently falls through to
+# the system library. Don't use wildcards here: multiple matching files
+# (SONAME symlink + versioned real file) cause duplicates or deleted targets.
 mkdir -p build/libs
-cp /usr/local/lib/libSDL2-2.0.so.[0-9]* ./build/libs/
-find ./build/libs/ -name "*.so.[0-9]*.[0-9]*" -delete
+cp -L /usr/lib/aarch64-linux-gnu/libogg.so.0 ./build/libs/libogg.so.0
+cp -L /usr/lib/aarch64-linux-gnu/libtheoradec.so.1 ./build/libs/libtheoradec.so.1
+
+# Verify: every staged lib must be in the binary's NEEDED list, and every
+# NEEDED lib we intend to ship must be staged. System libs (libc, libGLESv2,
+# libSDL2, etc.) are assumed present on the device and are NOT shipped.
+needed=$(readelf -d build/dependencies/RSDKv5/RSDKv5 | awk -F'[][]' '/NEEDED/ {print $2}')
+echo "Binary NEEDED:"; echo "$needed"
+echo "Staged:"; ls build/libs/
+for lib in libogg.so.0 libtheoradec.so.1; do
+    if ! echo "$needed" | grep -qx "$lib"; then
+        echo "ERROR: staged $lib but binary does not NEED it"; exit 1
+    fi
+    if [ ! -f "build/libs/$lib" ]; then
+        echo "ERROR: $lib missing from build/libs/"; exit 1
+    fi
+done
 
 cd ..
