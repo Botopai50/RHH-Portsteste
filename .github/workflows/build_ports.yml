@@ -172,6 +172,25 @@ jobs:
               continue
             fi
 
+            # Before touching target_dirs, verify every required artifact was
+            # produced. If any is missing, the build silently failed (e.g.
+            # docker exec exit code swallowed by build_port.sh, or a step in
+            # build.txt didn't fail-fast). Bailing here prevents committing a
+            # stale .upstream-sha that would make the next run think we're
+            # up-to-date when no binaries changed.
+            missing=()
+            while read -r a; do
+              [[ -z "$a" ]] && continue
+              if [[ ! -e "$port_dir/$a" ]]; then
+                missing+=("$a")
+              fi
+            done <<< "$artifacts"
+            if (( ${#missing[@]} > 0 )); then
+              echo "::error::[$id] build produced no output — missing artifacts: ${missing[*]}"
+              failures+=("$id")
+              continue
+            fi
+
             echo "::group::[$id] sync payload to ${target_dirs[*]}"
             for target_dir in "${target_dirs[@]}"; do
               mkdir -p "$target_dir"
@@ -182,8 +201,6 @@ jobs:
                   cp -r "$port_dir/$a" "$target_dir/$a"
                 elif [[ -f "$port_dir/$a" ]]; then
                   cp "$port_dir/$a" "$target_dir/$a"
-                else
-                  echo "::warning::[$id] artifact '$a' not produced — skipping copy to $target_dir"
                 fi
               done <<< "$artifacts"
               echo "$upstream_sha" > "$target_dir/.upstream-sha"

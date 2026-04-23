@@ -4,6 +4,8 @@
 # Usage: ./build_port.sh <portdir>
 # where <portdir> is e.g. buildtools/sonic-mania/sonic-mania
 
+set -e
+
 HOSTROOT=`pwd`
 DOCKERROOT=/root
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 SRCDIR=$1
 DESTDIR=$2
