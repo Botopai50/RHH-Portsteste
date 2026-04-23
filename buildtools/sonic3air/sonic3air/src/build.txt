@@ -85,10 +85,13 @@ cd ../../../../..
 mkdir -p Oxygen/sonic3air/build/_cmake/build/libs
 needed=$(readelf -d Oxygen/sonic3air/sonic3air_linux | awk -F'[][]' '/NEEDED/ {print $2}')
 echo "Binary NEEDED:"; echo "$needed"
-# Libs that are OK to not ship (device system provides them or they're stdlibs):
+# Libs that are OK to not ship (device system provides them or they're stdlibs).
+# ld-linux-aarch64.so.1 is the dynamic loader itself — part of glibc, always
+# present on aarch64 systems, referenced via DT_NEEDED on some toolchains.
 system_libs="libSDL2-2.0.so.0 libGLESv2.so.2 libcurl.so.4 \
              libc.so.6 libm.so.6 libpthread.so.0 libdl.so.2 librt.so.1 \
-             libstdc++.so.6 libgcc_s.so.1"
+             libstdc++.so.6 libgcc_s.so.1 \
+             ld-linux-aarch64.so.1"
 while read -r lib; do
   [[ -z "$lib" ]] && continue
   if ! echo " $system_libs " | grep -q " $lib "; then

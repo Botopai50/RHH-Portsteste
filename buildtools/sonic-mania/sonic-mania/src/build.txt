@@ -84,9 +84,12 @@ echo "Binary NEEDED:"; echo "$needed"
 echo "Staged:"; ls build/libs/
 
 staged_libs="libogg.so.0 libtheoradec.so.1"
+# ld-linux-aarch64.so.1 is the dynamic loader itself — part of glibc, always
+# present on aarch64 systems, referenced via DT_NEEDED on some toolchains.
 system_libs="libSDL2-2.0.so.0 libGLESv2.so.2 \
              libc.so.6 libm.so.6 libpthread.so.0 libdl.so.2 librt.so.1 \
-             libstdc++.so.6 libgcc_s.so.1"
+             libstdc++.so.6 libgcc_s.so.1 \
+             ld-linux-aarch64.so.1"
 
 for lib in $staged_libs; do
     if ! echo "$needed" | grep -qx "$lib"; then

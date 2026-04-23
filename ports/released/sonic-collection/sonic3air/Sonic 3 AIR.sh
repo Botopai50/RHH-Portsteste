@@ -30,6 +30,26 @@ export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 mkdir -p "config"
 bind_directories "$XDG_DATA_HOME/Sonic3AIR" "$GAMEDIR/config"
 
+# Engine data is shipped as data.zip to keep the port repo small and fast to
+# update. Presence of data.zip means the zip is newer than whatever's in
+# data/ (either first run or port update), so we purge and re-extract.
+# Uses PortMaster's bundled 7zzs — not regular unzip — for speed on device.
+if [ -f "$GAMEDIR/data.zip" ]; then
+  SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
+  if [ ! -x "$SEVENZIP" ]; then
+    echo "7zzs binary not found at $SEVENZIP; aborting data extraction."
+    pm_finish; exit 1
+  fi
+  echo "Extracting data.zip..."
+  rm -rf "$GAMEDIR/data"
+  if "$SEVENZIP" x -y "$GAMEDIR/data.zip" -o"$GAMEDIR" >/dev/null; then
+    rm -f "$GAMEDIR/data.zip"
+  else
+    echo "Unable to extract data.zip."
+    pm_finish; exit 1
+  fi
+fi
+
 # Run the game
 $GPTOKEYB "sonic3air_linux" -c "sonic.gptk" &
 ./sonic3air_linux
