@@ -23,6 +23,17 @@
       "track": "release",
       "commit_prefix": "SONIC3AIR",
       "artifacts": ["sonic3air_linux", "config.json", "doc/license.txt", "doc/license-thirdparty", "data", "audioremaster.7z.*"]
+    },
+    "sonic2013": {
+      "port_dir": "buildtools/sonic2013/sonic2013",
+      "target_dirs": [
+        "ports/released/sonic-collection/sonic.1/sonic.1",
+        "ports/released/sonic-collection/sonic.2/sonic.2"
+      ],
+      "upstream_repo": "RSDKModding/RSDKv4-Decompilation",
+      "track": "release",
+      "commit_prefix": "SONIC2013",
+      "artifacts": ["sonic2013", "libs"]
     }
   }
 }

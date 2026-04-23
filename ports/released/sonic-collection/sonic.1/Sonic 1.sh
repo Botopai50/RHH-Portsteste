@@ -77,7 +77,7 @@ fi
 
 # Run the game
 $GPTOKEYB $GAME -c "sonic.gptk" &
-pm_platform_helper "$GAME"
+pm_platform_helper "$GAME" > /dev/null
 ./$GAME
 
 # Cleanup

@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+SRCDIR=$1
+DESTDIR=$2
+
+cd "$DESTDIR" || { echo "DESTDIR not found: $DESTDIR"; exit 1; }
+
+cp "$SRCDIR/RSDKv4-Decompilation/build/sonic2013" "$DESTDIR/sonic2013"
+
+rm -rf ./libs
+cp -r "$SRCDIR/RSDKv4-Decompilation/build/libs" .
+
+echo "Packaging complete."
