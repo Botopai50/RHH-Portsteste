@@ -789,11 +789,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/dokimon.zip",
-      "date_updated": "2026-04-20T23:51",
-      "md5": "a05a8c720afabfb9217c544fadfb7b3d",
-      "size": 56271897,
-      "lifetime_downloads": 6,
-      "last_commit": "[DOKIMON] Remove duplicate demo files"
+      "date_updated": "2026-04-23T11:12",
+      "md5": "87fe43eea125ac5f2d1563f03fbcacc3",
+      "size": 56271918,
+      "lifetime_downloads": 7,
+      "last_commit": "[DOKIMON] Create needed config file at patch time"
     }
   },
   {
