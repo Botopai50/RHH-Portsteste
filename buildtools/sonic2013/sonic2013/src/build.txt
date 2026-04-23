@@ -55,6 +55,39 @@ else
   git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
 fi
 
+# Patch upstream bug: RSDKv4/Debug.cpp calls `sprintf(buffer, "%s\n", buffer)`
+# which appends '\n\0' past the end of a 256-byte buffer when a log message
+# fills it. Harmless on older glibc without -fstack-protector-strong (which
+# is why Debian buster builds ran fine), but modern focal GCC enables stack
+# protection by default and aborts with "stack smashing detected" on any
+# long log line that the engine logs at startup. Apply a tiny inline patch.
+patch -p1 <<'PATCH'
+--- a/RSDKv4/Debug.cpp
++++ b/RSDKv4/Debug.cpp
+@@ -18,11 +18,14 @@
+         vsprintf(buffer, msg, args);
+         if (endLine) {
+             printf("%s\n", buffer);
+-            sprintf(buffer, "%s\n", buffer);
++            size_t _L = strlen(buffer);
++            if (_L < sizeof(buffer) - 1) {
++                buffer[_L] = '\n';
++                buffer[_L + 1] = 0;
++            }
+         }
+         else {
+             printf("%s", buffer);
+-            sprintf(buffer, "%s", buffer);
+         }
+
+         if (engineDebugMode) {
+PATCH
+# Sanity: no `sprintf(buffer, ..., buffer)` should remain.
+if grep -E 'sprintf\(buffer,[^,]+,[[:space:]]*buffer\)' RSDKv4/Debug.cpp; then
+    echo "ERROR: sprintf-into-self pattern still present"; exit 1
+fi
+echo "Debug.cpp patch applied"
+
 # Per RSDKv4/RetroEngine.hpp the RETRO_REVxx macros are ">=" checks, so a
 # REV=3 build includes all earlier revisions' code paths. At runtime the
 # engine detects which data layout it was given (see Engine.usingOrigins in
@@ -118,7 +151,12 @@ while read -r lib; do
     fi
 done <<< "$needed"
 
-# Save the binary at a predictable path for retrieve-products to pick up.
-cp "$bin" build/sonic2013
+# Save the binary under both names. The same RSDKv4 build ships to sonic.1
+# and sonic.2 — their launchers expect per-game filenames (sonic1 / sonic2)
+# so the wrong-game binary is silently ignored in each port folder. Costs
+# ~500KB of duplication per port but avoids schema gymnastics in the
+# registry to rename artifacts per target_dir.
+cp "$bin" build/sonic1
+cp "$bin" build/sonic2
 
 cd ..

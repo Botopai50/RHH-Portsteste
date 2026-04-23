@@ -22,18 +22,11 @@ GAMEDIR="/$directory/ports/sonic.1"
 # CD and set permissions
 cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
-$ESUDO chmod +x -R $GAMEDIR/*
+$ESUDO chmod +x "$GAMEDIR/sonic1"
 
 # Exports
 export LD_LIBRARY_PATH="/usr/lib:$GAMEDIR/libs":$LD_LIBRARY_PATH
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
-
-# Setup gl4es environment
-if [ -f "${controlfolder}/libgl_${CFW_NAME}.txt" ]; then 
-  source "${controlfolder}/libgl_${CFW_NAME}.txt"
-else
-  source "${controlfolder}/libgl_default.txt"
-fi
 
 get_res() {
     # RSDK default resolution
@@ -66,19 +59,10 @@ get_res() {
 # Adjust game resolution
 get_res
 
-# Check if running Sonic Forever
-result=$(grep "^SonicForeverMod=true" "$GAMEDIR/mods/modconfig.ini")
-
-if [ -n "$result" ]; then
-    GAME=sonicforever
-else
-    GAME=sonic2013
-fi
-
 # Run the game
-$GPTOKEYB $GAME -c "sonic.gptk" &
-pm_platform_helper "$GAME" > /dev/null
-./$GAME
+$GPTOKEYB "sonic1" -c "sonic.gptk" &
+pm_platform_helper "sonic1" > /dev/null
+"$GAMEDIR/sonic1"
 
 # Cleanup
 pm_finish
