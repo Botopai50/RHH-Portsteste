@@ -68,6 +68,7 @@ prepare_system() {
 prepare_files() {
     rm -rf "$DATADIR"/*.exe "$DATADIR"/*.dll "$DATADIR"/.gitkeep \
            "$DATADIR"/GMLive
+    mkdir -p "$SAVEDIR" && touch "$SAVEDIR/config.ini"
     echo "Removed unnecessary files"
 }
 
