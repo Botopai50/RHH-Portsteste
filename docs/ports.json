@@ -2815,9 +2815,9 @@
         "Christian_Haitian",
         "Jeod"
       ],
-      "desc": "Sonic the Hedgehog 1 decompilation by Rubberduckycooly.",
+      "desc": "Sonic the Hedgehog 1 decompilation by Rubberduckycooly. Now works with Sonic Origins data!",
       "desc_md": null,
-      "inst": "Add your own Data.rsdk file to the ports/sonic1 folder.",
+      "inst": "Add your own Data.rsdk file to the ports/sonic.1 folder, or see the README to use Origins data and features.",
       "inst_md": null,
       "genres": [
         "platformer"
@@ -2835,14 +2835,14 @@
       "min_glibc": null
     },
     "source": {
-      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.1/sonic.1/screenshot.jpg",
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.1/sonic.1/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.1/sonic.1/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/sonic.1.zip",
-      "date_updated": "2026-04-23T23:59",
-      "md5": "b1bf4f823ed1a2235e9b67ab741c18f3",
-      "size": 2091996,
+      "date_updated": "2026-04-24T13:09",
+      "md5": "2f5f374a9b4e63725929da33bcdf417a",
+      "size": 3146032,
       "lifetime_downloads": 0,
-      "last_commit": "[SONIC2013] Update to f5f1e87"
+      "last_commit": "[SONIC] Sonic Origins compatibility"
     }
   },
   {
@@ -2859,9 +2859,9 @@
         "Christian_Haitian",
         "Jeod"
       ],
-      "desc": "Sonic the Hedgehog 2 decompilation by Rubberduckycooly.",
+      "desc": "Sonic the Hedgehog 2 decompilation by Rubberduckycooly. Now works with Sonic Origins data!",
       "desc_md": null,
-      "inst": "Add your own Data.rsdk file to the ports/sonic2 folder.",
+      "inst": "Add your own Data.rsdk file to the ports/sonic.2 folder, or see the README to use Origins data and features.",
       "inst_md": null,
       "genres": [
         "platformer"
@@ -2879,14 +2879,14 @@
       "min_glibc": null
     },
     "source": {
-      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.2/sonic.2/screenshot.jpg",
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.2/sonic.2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.2/sonic.2/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/sonic.2.zip",
-      "date_updated": "2026-04-24T00:00",
-      "md5": "f91f7b66aa41b6db06f653725cea69d9",
-      "size": 798534,
+      "date_updated": "2026-04-24T13:09",
+      "md5": "03620d57d1fb464c420e46021357f295",
+      "size": 3232881,
       "lifetime_downloads": 0,
-      "last_commit": "[SONIC2013] Update to f5f1e87"
+      "last_commit": "[SONIC] Sonic Origins compatibility"
     }
   },
   {
