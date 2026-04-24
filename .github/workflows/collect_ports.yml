@@ -229,7 +229,6 @@ jobs:
 
       # ────────────────────── SYNC DISK, JSON, AND RELEASE ──────────────────────
       - name: Purge deleted or invalid ports
-        if: steps.ports.outputs.ports != ''
         run: |
           set -euo pipefail
           PORTS_JSON="$GITHUB_WORKSPACE/docs/ports.json"
@@ -270,11 +269,13 @@ jobs:
 
           echo "ports.json synced (Valid ports: ${#VALID_NAMES[@]})"
 
-          # Prune release assets (mirror ports.json logic)
-          RELEASE_ID=$(gh api repos/${GITHUB_REPOSITORY}/releases/tags/ports-latest --jq '.id')
-          if [[ -z "$RELEASE_ID" ]]; then
-            echo "Error: Failed to retrieve release ID for ports-latest. Aborting."
-            exit 1
+          # Prune release assets (mirror ports.json logic).
+          # The release might not exist on the very first workflow run —
+          # don't fail in that case, just skip asset pruning.
+          RELEASE_ID=$(gh api repos/${GITHUB_REPOSITORY}/releases/tags/ports-latest --jq '.id' 2>/dev/null || true)
+          if [[ -z "$RELEASE_ID" || "$RELEASE_ID" == "null" ]]; then
+            echo "No ports-latest release yet; skipping asset pruning."
+            exit 0
           fi
 
           mapfile -t ASSETS < <(
