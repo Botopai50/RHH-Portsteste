@@ -94,7 +94,7 @@ if [ "$needs_patching" = "true" ]; then
     if [ -f "$controlfolder/utils/patcher.txt" ]; then
         export PATCHER_FILE="$GAMEDIR/tools/patchscript"
         export PATCHER_GAME="$(basename "${0%.*}")"
-        export PATCHER_TIME="a few seconds"
+        export PATCHER_TIME="2-10 minutes"
         export controlfolder
         export ESUDO
         export DEVICE_ARCH

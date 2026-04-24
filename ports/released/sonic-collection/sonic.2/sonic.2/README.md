@@ -32,6 +32,15 @@ On first launch the patcher will:
 
 The full patch takes around 30 seconds depending on device.
 
+### Alternate soundtracks (Ultrafix)
+
+The [Sonic Origins Ultrafix](https://www.sonichacking.org/entries/contest2024/981) mod ships alternate music packs with matching cue tables (drop-in compatible). If you prefer Genesis sound-chip emulation or remastered orchestration, substitute Ultrafix's `STH2_music.awb` for the Origins original:
+
+- `<Ultrafix>/ModConfig/S2OST/Hardware/raw/sound/STH2_music.awb` — Genesis-style
+- `<Ultrafix>/ModConfig/S2OST/Remastered/raw/sound/STH2_music.awb` — remastered
+
+Ultrafix's `STH2_sfx.acb` is a re-encode of the same 120 cues (no new content for Sonic 2). Drop-in compatible if you prefer the quality.
+
 ### Mobile Data.rsdk (legacy)
 
 Drop a mobile-format `Data.rsdk` (from the Android APK) into `ports/sonic.2/` and launch. The engine loads it directly; no patching or extraction runs. Drop Dash and Plus-roster features are **not** available on this path.

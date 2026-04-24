@@ -343,7 +343,8 @@ extract_music() {
     mkdir -p "$TMPDIR" "$MUSICDIR"
     rm -f "$TMPDIR"/*.wav 2>/dev/null
 
-    echo "Extracting STH2_music.awb..."
+    size=$(wc -c <"$MUSIC_AWB")
+    echo "Extracting STH2_music.awb ($((size / 1048576)) MB — larger Ultrafix variants can take several minutes)..."
     # -S -1 forces vgmstream to enumerate every subsong. STH2_music.awb has
     # 10 system tracks (ActComplete, GameOver, Titlescreen, etc.) that the
     # ACB's primary cue sheet hides from -S 0 — we lose them without -1.
@@ -356,7 +357,8 @@ extract_music() {
     fi
     rm -f "$GAMEDIR/STH2_music.hcakey"
 
-    echo "Encoding to OGG and placing in Music/..."
+    total=$(ls "$TMPDIR"/*.wav 2>/dev/null | wc -l)
+    echo "Encoding $total tracks to OGG and placing in Music/..."
     count=0
     skipped=0
     mkdir -p "$SFXDIR/Global" "$SFXDIR/Stage"
@@ -404,10 +406,12 @@ WingFortress.ogg|Invincibility.ogg)
                     fi
                     ;;
             esac
+            [ $((count % 5)) -eq 0 ] && printf "."
         else
             echo "WARNING: failed to encode $base -> $target"
         fi
     done
+    echo ""
     echo "Encoded $count tracks ($skipped unmapped)."
 
     rm -f "$MUSIC_AWB" "$MUSIC_ACB"

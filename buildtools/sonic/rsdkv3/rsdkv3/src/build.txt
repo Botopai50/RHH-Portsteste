@@ -63,14 +63,21 @@ git log -1 --format='%H' > ../soniccd.sha
 cmake -B build \
   -DCMAKE_BUILD_TYPE=Release \
   -DRETRO_USE_HW_RENDER=OFF \
+  -DRETRO_DISABLE_PLUS=ON \
   -DCMAKE_EXE_LINKER_FLAGS="-pthread"
 cmake --build build --config Release -j$(nproc)
 
 # Stage shipped libraries. Filenames MUST match DT_NEEDED entries exactly;
 # `cp -L` follows symlinks so the destination is a real file with the right
 # name. libSDL2 is NOT shipped (device provides it).
+#
+# libtheora.so.0 is a transitive dep of libtheoradec.so.1 — the binary's
+# DT_NEEDED only lists libtheoradec, but when libtheoradec loads it pulls
+# in libtheora too. Most PortMaster devices don't ship libtheora.so.0 in
+# /usr/lib, so we have to stage it or theora decoding breaks at runtime.
 mkdir -p build/libs
 cp -L /usr/lib/aarch64-linux-gnu/libogg.so.0 ./build/libs/libogg.so.0
+cp -L /usr/lib/aarch64-linux-gnu/libtheora.so.0 ./build/libs/libtheora.so.0
 cp -L /usr/lib/aarch64-linux-gnu/libtheoradec.so.1 ./build/libs/libtheoradec.so.1
 cp -L /usr/lib/aarch64-linux-gnu/libvorbis.so.0 ./build/libs/libvorbis.so.0
 cp -L /usr/lib/aarch64-linux-gnu/libvorbisfile.so.3 ./build/libs/libvorbisfile.so.3
@@ -85,8 +92,13 @@ needed=$(readelf -d "$bin" | awk -F'[][]' '/NEEDED/ {print $2}')
 echo "Binary NEEDED:"; echo "$needed"
 echo "Staged:"; ls build/libs/
 
-# Libs we expect to ship in libs/.
-staged_libs="libogg.so.0 libtheoradec.so.1 libvorbis.so.0 libvorbisfile.so.3"
+# Libs we expect to ship in libs/ that appear in the binary's DT_NEEDED.
+direct_staged_libs="libogg.so.0 libtheoradec.so.1 libvorbis.so.0 libvorbisfile.so.3"
+# Libs shipped because a direct dep needs them transitively — not in the
+# binary's own DT_NEEDED, so they skip the NEED check but still must exist
+# on disk.
+transitive_staged_libs="libtheora.so.0"
+staged_libs="$direct_staged_libs $transitive_staged_libs"
 # Libs that are provided by the device system and MUST NOT be shipped.
 # ld-linux-aarch64.so.1 is the dynamic loader itself — part of glibc, always
 # present on aarch64 systems, referenced via DT_NEEDED on some toolchains.
@@ -95,12 +107,17 @@ system_libs="libSDL2-2.0.so.0 libGLESv2.so.2 \
              libstdc++.so.6 libgcc_s.so.1 \
              ld-linux-aarch64.so.1"
 
-for lib in $staged_libs; do
+for lib in $direct_staged_libs; do
     if ! echo "$needed" | grep -qx "$lib"; then
         echo "ERROR: staged $lib but binary does not NEED it"; exit 1
     fi
     if [ ! -f "build/libs/$lib" ]; then
         echo "ERROR: $lib missing from build/libs/"; exit 1
+    fi
+done
+for lib in $transitive_staged_libs; do
+    if [ ! -f "build/libs/$lib" ]; then
+        echo "ERROR: transitive $lib missing from build/libs/"; exit 1
     fi
 done
 
@@ -114,7 +131,7 @@ while read -r lib; do
     fi
 done <<< "$needed"
 
-# Save the binary at a predictable path for retrieve-products to pick up.
-cp "$bin" build/soniccd
+# $bin is already build/RSDKv3 from CMakeLists' default OUTPUT_NAME;
+# retrieve-products copies it into each target_dir as-is.
 
 cd ..

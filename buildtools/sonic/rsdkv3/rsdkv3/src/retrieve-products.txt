@@ -6,7 +6,7 @@ DESTDIR=$2
 
 cd "$DESTDIR" || { echo "DESTDIR not found: $DESTDIR"; exit 1; }
 
-cp "$SRCDIR/RSDKv3-Decompilation/build/soniccd" "$DESTDIR/soniccd"
+cp "$SRCDIR/RSDKv3-Decompilation/build/soniccd" "$DESTDIR/RSDKv3"
 
 rm -rf ./libs
 cp -r "$SRCDIR/RSDKv3-Decompilation/build/libs" .

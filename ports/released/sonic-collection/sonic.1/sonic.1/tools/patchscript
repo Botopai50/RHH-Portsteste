@@ -261,7 +261,8 @@ extract_music() {
     mkdir -p "$TMPDIR" "$MUSICDIR"
     rm -f "$TMPDIR"/*.wav 2>/dev/null
 
-    echo "Extracting STH1_music.awb..."
+    size=$(wc -c <"$MUSIC_AWB")
+    echo "Extracting STH1_music.awb ($((size / 1048576)) MB — larger Ultrafix variants can take several minutes)..."
     if ! "$VGMSTREAM" -S 0 -o "$TMPDIR/?n.wav" "$MUSIC_AWB" >/dev/null; then
         echo "ERROR: vgmstream-cli failed on music."
         rm -f "$GAMEDIR/STH1_music.hcakey"
@@ -269,7 +270,8 @@ extract_music() {
     fi
     rm -f "$GAMEDIR/STH1_music.hcakey"
 
-    echo "Encoding to OGG and placing in Music/..."
+    total=$(ls "$TMPDIR"/*.wav 2>/dev/null | wc -l)
+    echo "Encoding $total tracks to OGG and placing in Music/..."
     count=0
     skipped=0
     mkdir -p "$SFXDIR/Global" "$SFXDIR/Stage"
@@ -294,10 +296,12 @@ extract_music() {
         fi
         if "$OGGENC" -Q -q 5 --discard-comments -o "$MUSICDIR/$target" "$wav"; then
             count=$((count + 1))
+            [ $((count % 5)) -eq 0 ] && printf "."
         else
             echo "WARNING: failed to encode $base -> $target"
         fi
     done
+    echo ""
     echo "Encoded $count tracks ($skipped unmapped)."
 
     rm -f "$MUSIC_AWB" "$MUSIC_ACB"

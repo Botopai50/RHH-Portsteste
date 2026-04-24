@@ -6,7 +6,7 @@
       "upstream_repo": "RSDKModding/RSDKv3-Decompilation",
       "upstream_branch": "master",
       "commit_prefix": "RSDKV3",
-      "artifacts": ["soniccd", "libs"]
+      "artifacts": ["RSDKv3", "libs"]
     },
     "rsdkv4": {
       "port_dir": "buildtools/sonic/rsdkv4/rsdkv4",

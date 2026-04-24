@@ -16,15 +16,20 @@ Copy these files from your Sonic Origins install (`image/x64/raw/` path:
 
 On first launch the patcher will extract the RSDK container, transcode the Origins CRIWARE audio to the engine-expected `.wav` / `.ogg` layout, flip the GameConfig into Anniversary mode (Drop Dash enabled), and delete the source files. Takes a few seconds.
 
+### Alternate soundtracks (Ultrafix)
+
+The [Sonic Origins Ultrafix](https://www.sonichacking.org/entries/contest2024/981) mod ships alternate music packs with matching cue tables (drop-in compatible). If you prefer the Genesis sound-chip emulation or the remastered orchestration, substitute Ultrafix's `STH1_music.awb` for the Origins original:
+
+- `<Ultrafix>/ModConfig/S1OST/Hardware/raw/sound/STH1_music.awb` — Genesis-style
+- `<Ultrafix>/ModConfig/S1OST/Remastered/raw/sound/STH1_music.awb` — remastered
+
+Ultrafix's `STH1_sfx.acb` is also a re-encode of the same 77 cues (no new content for Sonic 1, unlike its Sonic CD variant). Drop-in compatible if you prefer the quality.
+
 ### Mobile Data.rsdk (legacy)
 
-Drop a mobile-format `Data.rsdk` (from the Android APK) into
-`ports/sonic.1/` and launch. The engine loads it directly; no patching or
-extraction runs. Drop Dash and Plus-roster features are **not** available
-on this path (they require Origins scripts + Anniversary GameConfig).
+Drop a mobile-format `Data.rsdk` (from the Android APK) into `ports/sonic.1/` and launch. The engine loads it directly; no patching or extraction runs. Drop Dash and Plus-roster features are **not** available on this path (they require Origins scripts + Anniversary GameConfig).
 
-Guidance for extracting `Data.rsdk` from a legal source is
-[here](https://github.com/RSDKModding/RSDKv4-Decompilation?tab=readme-ov-file#support-the-official-release-of-sonic-1--2).
+Guidance for extracting `Data.rsdk` from a legal source is [here](https://github.com/RSDKModding/RSDKv4-Decompilation?tab=readme-ov-file#support-the-official-release-of-sonic-1--2).
 
 ## Default Controls
 | Button | Action |

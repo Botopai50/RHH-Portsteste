@@ -12,9 +12,9 @@
       "Christian_Haitian",
       "Jeod"
     ],
-    "desc": "Sonic CD decompilation by Rubberduckycooly.",
+    "desc": "Sonic CD decompilation by Rubberduckycooly. Now compatible with Origins data!",
     "desc_md": null,
-    "inst": "Add your own Data.rsdk file to the ports/soniccd folder.",
+    "inst": "Add your own Data.rsdk file to the ports/sonic.cd folder, or see the README to use Origins data and features.",
     "inst_md": null,
     "genres": [
       "platformer"
