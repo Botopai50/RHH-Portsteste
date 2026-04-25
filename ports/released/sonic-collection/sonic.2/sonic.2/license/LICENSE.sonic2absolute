@@ -6,10 +6,9 @@ Project pages:
   https://teamforeveronline.wixsite.com/home
   https://teamforeveronline.wixsite.com/home/sonic-2-absolute
 
-The binary is only invoked when a mobile-format `Data.rsdk` is present AND
-the user has enabled the Sonic 2 Absolute mod (set `Sonic2Absolute=true` in
-`mods/modconfig.ini`). With Origins data, the standard `RSDKv4` binary is
-used instead.
+The binary is only invoked when the user has enabled the Sonic 2 Absolute
+mod (set `Sonic2Absolute=true` in `mods/modconfig.ini`). It accepts either
+a mobile-format `Data.rsdk` or a loose Origins-extracted `Data/` tree.
 
 Team Forever's RSDKv4 fork (the source of spec58's builds) is released
 under the same RSDKv3/v4 Decompilation Source Code License v2 that governs

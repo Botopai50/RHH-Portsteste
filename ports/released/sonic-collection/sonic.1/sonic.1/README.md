@@ -47,16 +47,15 @@ The port ships with the Menu Recreation mod enabled by default so the full mobil
 
 To add more mods, drop them into the `mods/` folder. Enable/disable from the dev menu.
 
-### Sonic Forever (mobile data only)
+### Sonic Forever
 
 The port ships a `sonicforever` binary — a custom RSDKv4 build by spec58 that's compatible with the [Sonic Forever](https://teamforeveronline.wixsite.com/home) mod — but **not** the mod itself. To use it:
 
-1. You must be running on **mobile `Data.rsdk`** data. Origins data is not compatible with the Forever binary.
-2. Download the Sonic Forever `Mod Only` release from the project site above and drop the folder into `mods/`.
-3. Set `SonicForeverMod=true` under `[mods]` in `mods/modconfig.ini`.
-4. Launch. The port automatically switches to the `sonicforever` binary when all three conditions are met, disables the Menu Recreation mod (Forever brings its own menu), and sets `GameType=0` in settings.ini.
+1. Download the Sonic Forever `Mod Only` release from the project site above and drop the folder into `mods/`.
+2. Set `SonicForeverMod=true` under `[mods]` in `mods/modconfig.ini`.
+3. Launch. The port automatically switches to the `sonicforever` binary when both conditions are met, disables the Menu Recreation mod (Forever brings its own menu), and sets `GameType=0` in settings.ini.
 
-Turning the flag back off (or removing mobile Data.rsdk) returns to the standard `RSDKv4` binary + Menu Recreation automatically.
+Works on either mobile `Data.rsdk` or loose Origins-extracted data. Turning the flag back off returns to the standard `RSDKv4` binary + Menu Recreation automatically.
 
 ## Rebuilding
 

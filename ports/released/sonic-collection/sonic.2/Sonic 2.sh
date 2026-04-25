@@ -113,10 +113,10 @@ fi
 
 # Binary selection:
 #   sonic2absolute — spec58's custom RSDKv4 build for the Sonic 2 Absolute
-#                    mod, designed to run against mobile Data.rsdk. Doesn't
-#                    know about Origins data layouts, so only offer it when
-#                    a mobile Data.rsdk is present.
-#   RSDKv4         — everything else (Origins-extracted or no-data case).
+#                    mod. Reads either a mobile Data.rsdk or a loose
+#                    Origins-extracted Data/ tree. Selected when the
+#                    Absolute mod flag is on.
+#   RSDKv4         — everything else (Absolute flag off).
 #
 # GameType must match the chosen binary + data:
 #   Absolute + mobile      -> GameType=0 (Standalone scripts), DataFile=Data.rsdk
@@ -128,7 +128,7 @@ GAME=RSDKv4
 GAMETYPE=0
 DATAFILE=Data.rsdk
 MENU_RECREATION=true
-if [ -f "$GAMEDIR/sonic2absolute" ] && [ -f "$GAMEDIR/Data.rsdk" ] \
+if [ -f "$GAMEDIR/sonic2absolute" ] \
    && grep -q "^Sonic2Absolute=true" "$GAMEDIR/mods/modconfig.ini" 2>/dev/null; then
     GAME=sonic2absolute
     GAMETYPE=0

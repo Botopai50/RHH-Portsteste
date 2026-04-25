@@ -109,11 +109,11 @@ elif [ ! -f "$GAMEDIR/Data.rsdk" ] && [ ! -f "$GAMEDIR/Data/Game/GameConfig.bin"
 fi
 
 # Binary selection:
-#   sonicforever — spec58's custom RSDKv4 build for the Sonic Forever mod,
-#                  designed to run against mobile Data.rsdk. Doesn't know
-#                  about Origins data layouts (loose Data/ + Bytecode/),
-#                  so only offer it when a mobile Data.rsdk is present.
-#   RSDKv4       — everything else (Origins-extracted or no-data error case).
+#   sonicforever — spec58's custom RSDKv4 build for the Sonic Forever mod.
+#                  Reads either a mobile Data.rsdk or a loose Origins-
+#                  extracted Data/ tree. Selected when the Forever mod
+#                  flag is on.
+#   RSDKv4       — everything else (Forever flag off).
 #
 # GameType must match the chosen binary + data:
 #   Forever + mobile       -> GameType=0 (Standalone scripts), DataFile=Data.rsdk
@@ -127,7 +127,7 @@ GAME=RSDKv4
 GAMETYPE=0
 DATAFILE=Data.rsdk
 MENU_RECREATION=true   # default: on
-if [ -f "$GAMEDIR/sonicforever" ] && [ -f "$GAMEDIR/Data.rsdk" ] \
+if [ -f "$GAMEDIR/sonicforever" ] \
    && grep -q "^SonicForeverMod=true" "$GAMEDIR/mods/modconfig.ini" 2>/dev/null; then
     GAME=sonicforever
     GAMETYPE=0

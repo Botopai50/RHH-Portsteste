@@ -32,6 +32,7 @@ FILELIST="$TOOLSDIR/RSDKv5UFileList.txt"
 VGMSTREAM="$TOOLSDIR/vgmstream-cli"
 OGGENC="$TOOLSDIR/oggenc"
 NORMALIZE="$TOOLSDIR/wav-normalize"
+SPEED="$TOOLSDIR/wav-speed"
 GCPATCH="$TOOLSDIR/patch-gameconfig"
 
 # Origins SFX are mastered ~8dB quieter than mobile. Normalize to -3dBFS.
@@ -98,6 +99,7 @@ check_tools() {
     [ -f "$VGMSTREAM" ] && $ESUDO chmod +x "$VGMSTREAM" 2>/dev/null
     [ -f "$OGGENC" ]    && $ESUDO chmod +x "$OGGENC"    2>/dev/null
     [ -f "$NORMALIZE" ] && $ESUDO chmod +x "$NORMALIZE" 2>/dev/null
+    [ -f "$SPEED" ]     && $ESUDO chmod +x "$SPEED"     2>/dev/null
     [ -f "$GCPATCH" ]   && $ESUDO chmod +x "$GCPATCH"   2>/dev/null
 
     missing=""
@@ -106,6 +108,7 @@ check_tools() {
     [ -x "$VGMSTREAM" ] || missing="${missing}  tools/vgmstream-cli\n"
     [ -x "$OGGENC" ]    || missing="${missing}  tools/oggenc\n"
     [ -x "$NORMALIZE" ] || missing="${missing}  tools/wav-normalize\n"
+    [ -x "$SPEED" ]     || missing="${missing}  tools/wav-speed\n"
     [ -x "$GCPATCH" ]   || missing="${missing}  tools/patch-gameconfig\n"
     if [ -n "$missing" ]; then
         echo "ERROR: port is missing required helper tools:"
@@ -296,6 +299,22 @@ extract_music() {
         fi
         if "$OGGENC" -Q -q 5 --discard-comments -o "$MUSICDIR/$target" "$wav"; then
             count=$((count + 1))
+            # Generate the speed-shoes variant alongside the base for zones
+            # that have one in mobile S1. Origins doesn't ship these, so we
+            # synthesize by resampling the PCM 1.2x shorter at the original
+            # sample rate — preserves pitch but plays 1.2x faster, matching
+            # the tempo-only effect mobile's _F tracks have.
+            case "$target" in
+                GreenHill.ogg|Marble.ogg|SpringYard.ogg|Labyrinth.ogg|\
+Starlight.ogg|ScrapBrain.ogg|Invincibility.ogg)
+                    f_target="${target%.ogg}_F.ogg"
+                    if gen_fast_track "$wav" "$MUSICDIR/$f_target"; then
+                        count=$((count + 1))
+                    else
+                        echo "WARNING: failed to generate $f_target"
+                    fi
+                    ;;
+            esac
             [ $((count % 5)) -eq 0 ] && printf "."
         else
             echo "WARNING: failed to encode $base -> $target"
@@ -306,6 +325,24 @@ extract_music() {
 
     rm -f "$MUSIC_AWB" "$MUSIC_ACB"
     rm -f "$TMPDIR"/*.wav
+}
+
+# gen_fast_track <in.wav> <out.ogg>
+# Emits a 1.2x-speed OGG variant. wav-speed resamples the PCM data to be
+# 1.2x shorter at the original sample rate, so playback preserves pitch but
+# moves 1.2x faster — the tempo-only effect mobile's _F tracks have.
+gen_fast_track() {
+    in="$1"; out="$2"
+    [ -f "$in" ] || return 1
+    tmp="${in}.fast.wav"
+    if ! "$SPEED" 1.2 "$in" "$tmp" 2>/dev/null; then
+        rm -f "$tmp"
+        return 1
+    fi
+    "$OGGENC" -Q -q 5 --discard-comments -o "$out" "$tmp" 2>/dev/null
+    rv=$?
+    rm -f "$tmp"
+    return $rv
 }
 
 # place_sfx <tmp_wav> <relative_target>
