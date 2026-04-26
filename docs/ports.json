@@ -2921,11 +2921,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.cd/sonic.cd/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.cd/sonic.cd/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/sonic.cd.zip",
-      "date_updated": "2026-04-24T14:54",
-      "md5": "2517407571fa08d7edf20a93fd0fae97",
-      "size": 2924171,
+      "date_updated": "2026-04-26T12:21",
+      "md5": "20207200d7c35cb49610c754a20f838f",
+      "size": 2976835,
       "lifetime_downloads": 0,
-      "last_commit": "[SONIC] Add Origins support for 1 + 2 + CD"
+      "last_commit": "[RSDKV3] Update to 2f5fdb6"
     }
   },
   {
