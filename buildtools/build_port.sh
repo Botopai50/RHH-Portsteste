@@ -31,7 +31,7 @@ fi
 # Stop any prior container for this port, and clean the shared staging dir
 # so a previous port in the same run can't leak its src/* or build outputs.
 docker rm -f $CONTAINER 2>/dev/null || true
-rm -rf $HOSTROOT/$BUILDDIR
+sudo rm -rf $HOSTROOT/$BUILDDIR
 mkdir -p $HOSTROOT/$BUILDDIR
 cd $HOSTROOT/$BUILDDIR
 cp $HOSTROOT/$SRCDIR/* .
