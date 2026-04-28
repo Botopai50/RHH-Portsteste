@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Elementallis.sh</path>
+		<name>Elementallis</name>
+		<desc>Top-down action-adventure with elemental magic gameplay. Guided by guilt, you embark on a journey to restore the elements in a dying world. Harness and master elemental powers to fight enemies, solve puzzles, and explore a vast world filled with ancient temples.</desc>
+		<image>./elementallis/cover.png</image>
+		<thumbnail>./elementallis/thumb.png</thumbnail>
+		<releasedate>04282026</releasedate>
+		<developer>AnKae Games</developer>
+		<genre>Action, Adventure, RPG</genre>
+	</game>
+</gamelist>

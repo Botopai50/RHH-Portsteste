@@ -1,0 +1,45 @@
+{
+  "version": 4,
+  "name": "elementallis.zip",
+  "items": [
+    "Elementallis.sh",
+    "elementallis"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Elementallis",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "Top-down action-adventure with elemental magic gameplay. Guided by guilt, you embark on a journey to restore the elements in a dying world. Harness and master elemental powers to fight enemies, solve puzzles, and explore a vast world filled with ancient temples.",
+    "desc_md": null,
+    "inst": "This port uses the Linux game assets with Box64. Wine is not involved. Copy your game assets to the `data` folder. If you own the Steam version, you can use https://steamdb.info/depot/1304283/manifests/ to grab the latest depot download link. Copy it into the Steam console to download the Linux package.",
+    "inst_md": null,
+    "genres": [
+      "action",
+      "adventure",
+      "rpg"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [],
+    "store": [
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/1304280/Elementallis/",
+        "developerurl": ""
+      }
+    ],
+    "availability": "paid",
+    "reqs": [
+      "!lowres",
+      "2gb",
+      "opengl"
+    ],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": ""
+  }
+}
