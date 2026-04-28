@@ -36,12 +36,15 @@ if ! command -v glxinfo >/dev/null 2>&1; then
     exit 1
 fi
 
+# Display loading splash
+[ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 1 
+$ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 30000 &
+
 # Exports
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/libs.aarch64:$GAMEDIR/data:$LD_LIBRARY_PATH"
 export BOX64_LD_LIBRARY_PATH="$GAMEDIR/box64/x64:$GAMEDIR/data:$LD_LIBRARY_PATH"
 export XDG_CONFIG_HOME="$GAMEDIR/config" && mkdir -p "$GAMEDIR/config"
-
 export SDL_VIDEODRIVER=x11
 
 # Box64 settings
@@ -56,9 +59,16 @@ export BOX64_DYNAREC_FORWARD=128
 export BOX64_RDTSC_1GHZ=1
 export BOX64_VSYNC=0
 
-# Display loading splash
-[ "$CFW_NAME" == "muOS" ] && $ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 1 
-$ESUDO "$GAMEDIR/tools/splash" "$GAMEDIR/splash.png" 30000 &
+export BOX64_DYNAREC_STRONGMEM=0
+export BOX64_DYNAREC_WAIT=1
+export BOX64_DYNAREC_X87DOUBLE=0
+export BOX64_DYNAREC_FASTNAN=1
+export BOX64_PREFER_WRAPPED=1
+export BOX64_PREFER_EMULATED=0
+export BOX64_NOSIGSEGV=1
+
+export UNITY_DISABLE_PARTICLES=0
+export __GL_THREADED_OPTIMIZATIONS=1
 
 # Run it
 $GPTOKEYB "$GAME" xbox360 & 
