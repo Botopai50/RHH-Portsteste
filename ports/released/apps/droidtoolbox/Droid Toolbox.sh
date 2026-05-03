@@ -19,6 +19,7 @@ get_controls
 GAMEDIR="/${directory}/ports/droidtoolbox"
 
 cd "${GAMEDIR}" || exit 1
+chmod +x "${GAMEDIR}/SWGE_DroidToolbox"
 
 export LD_LIBRARY_PATH="${GAMEDIR}/libs:${LD_LIBRARY_PATH}"
 export SDL_GAMECONTROLLERCONFIG="${sdl_controllerconfig}"
