@@ -33,6 +33,6 @@
     "arch": [
       "aarch64"
     ],
-    "min_glibc": null
+    "min_glibc": "2.36"
   }
 }

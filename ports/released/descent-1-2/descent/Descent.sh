@@ -18,8 +18,7 @@ get_controls
 
 # Variables
 GAMEDIR="/$directory/ports/descent"
-DEVICE_ARCH="${DEVICE_ARCH:-aarch64}"
-GAME="d1x-rebirth"
+GAME="d1x-rebirth.aarch64"
 ASPECT_X=${ASPECT_X:-4}
 ASPECT_Y=${ASPECT_Y:-3}
 
@@ -27,8 +26,7 @@ ASPECT_Y=${ASPECT_Y:-3}
 cd $GAMEDIR
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 rm -rf "$GAMEDIR/config/gamelog.txt"
-$ESUDO chmod +x $GAME.compat
-$ESUDO chmod +x $GAME.aarch64
+$ESUDO chmod +x $GAME
 
 # Set config dir
 bind_directories ~/.$GAME $GAMEDIR/config
@@ -66,16 +64,9 @@ sed -i "s/^ResolutionY=[0-9]\{1,4\}/ResolutionY=$DISPLAY_HEIGHT/g" "$GAMEDIR/con
 sed -i "s/^AspectX=[0-9]\{1,2\}/AspectX=$ASPECT_Y/g" "$GAMEDIR/config/descent.cfg"
 sed -i "s/^AspectY=[0-9]\{1,2\}/AspectY=$ASPECT_X/g" "$GAMEDIR/config/descent.cfg"
 
-# Use compatibility binary if low glibc
-if [ $CFW_GLIBC -lt 234 ]; then
-	GAME="$GAME.compat"
-else
-    GAME="$GAME.$DEVICE_ARCH"
-fi
-
 # Run game
 $GPTOKEYB "$GAME" -c "config/joy.gptk" &
-pm_platform_helper "$GAMEDIR/$GAME" >/dev/null
+pm_platform_helper "$GAMEDIR/$GAME" > /dev/null
 ./$GAME -hogdir data
 
 # Cleanup
