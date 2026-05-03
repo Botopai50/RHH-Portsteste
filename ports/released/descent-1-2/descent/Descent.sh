@@ -49,6 +49,15 @@ export TEXTINPUTPRESET=$CHEATS
 export TEXTINPUTINTERACTIVE="Y"
 export TEXTINPUTNUMBERSONLY="Y"
 
+# Find split archives and join them
+for first in "$GAMEDIR"/data/*.001; do
+    [ -f "$first" ] || continue
+    base="${first%.001}"
+    if [ ! -f "$base" ]; then
+        cat "${base}".* > "$base" && rm "${base}".[0-9][0-9][0-9]
+    fi
+done
+
 # Edit .cfg file with updated resolution and aspect ratio
 sed -i "s/^ResolutionX=[0-9]\{1,4\}/ResolutionX=$DISPLAY_WIDTH/g" "$GAMEDIR/config/descent.cfg"
 sed -i "s/^ResolutionY=[0-9]\{1,4\}/ResolutionY=$DISPLAY_HEIGHT/g" "$GAMEDIR/config/descent.cfg"
