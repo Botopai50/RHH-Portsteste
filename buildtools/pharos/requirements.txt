@@ -2,14 +2,17 @@
 #
 # Runtime:
 #   PySDL2       - Python ctypes bindings for SDL2 (used in ui.py, etc.)
-#   PySDL2-dll   - Bundled native SDL2/SDL2_image/SDL2_ttf libs that
-#                  PyInstaller's --collect-all sdl2 picks up at build time.
-#                  On Linux ARM64 the system libsdl2-* packages are also
-#                  needed (build.sh apt-installs them).
+#   PySDL2-dll   - On arm64 this is source-only and ignored at runtime;
+#                  Pharos relies on the CFW's /usr/lib/libSDL2 (path set by
+#                  the launchscript via PYSDL2_DLL_PATH).
+#   certifi      - CA bundle. Minimal CFWs (Knulli) ship Python without
+#                  ssl certs in the standard paths, so we bundle our own
+#                  and point urllib at it from main.py.
 #
 # Build:
 #   pyinstaller  - --onefile bundler.
 
 PySDL2
 PySDL2-dll
+certifi
 pyinstaller

@@ -31,6 +31,13 @@ from pathlib import Path
 from typing import Iterable
 from urllib.error import HTTPError, URLError
 
+# Minimal CFWs (Knulli) ship Python without CA certs in OpenSSL's default
+# search path, so HTTPS requests fail with CERTIFICATE_VERIFY_FAILED. Point
+# urllib + ssl at our bundled certifi store before anything tries to fetch.
+import certifi
+os.environ.setdefault("SSL_CERT_FILE", certifi.where())
+os.environ.setdefault("REQUESTS_CA_BUNDLE", certifi.where())
+
 # ----------------------------------------------------------------------
 # Paths
 # ----------------------------------------------------------------------
