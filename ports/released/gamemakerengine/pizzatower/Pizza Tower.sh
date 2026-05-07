@@ -24,28 +24,17 @@ cd "$GAMEDIR"
 # Log execution
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
-# Mount gmloadernext runtime
-GMLOADER="$HOME/gmloadernext"
-GMLOADER_RUNTIME="$controlfolder/libs/gmloadernext.squashfs"
-if [ -f "$GMLOADER_RUNTIME" ]; then
-    $ESUDO mkdir -p "$GMLOADER"
-    $ESUDO umount "$GMLOADER" 2>/dev/null || true
-    $ESUDO mount "$GMLOADER_RUNTIME" "$GMLOADER"
-else
-    pm_message "This port requires the gmloadernext runtime. Please download it."
-    pm_finish
-    exit 1
-fi
+# Custom gmloadernext used, no runtime
 
-export GMLOADER_LIB_PATH="$GMLOADER/lib"
-
-# Setup other misc environment variables
-export LD_LIBRARY_PATH="$GMLOADER/lib/arm64-v8a:$GAMEDIR/libs:$LD_LIBRARY_PATH"
+# Exports
+export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export controlfolder
 export DEVICE_ARCH
 
+# Permissions
 $ESUDO chmod +x "$GAMEDIR/tools/patchscript"
+$ESUDO chmod +x "$GAMEDIR/gmloadernext.aarch64"
 
 # Check if we need to patch
 if [ ! -f patchlog.txt ] || [ -f "$GAMEDIR/assets/data.win" ]; then
@@ -81,11 +70,10 @@ if [ -f "$GAMEDIR/swapabxy.txt" ]; then
     swapabxy
 fi
 
+# Run
 $GPTOKEYB "gmloadernext.aarch64" -c "pizza.gptk" & 
-pm_platform_helper "$GMLOADER/gmloadernext.aarch64" > /dev/null
-$TASKSET "$GMLOADER/gmloadernext.aarch64" -c gmloader.json
+pm_platform_helper "$GAMEDIR/gmloadernext.aarch64" > /dev/null
+$TASKSET "$GAMEDIR/gmloadernext.aarch64" -c gmloader.json
 
-# Unmount gmloadernext runtime
-$ESUDO umount "$GMLOADER" 2>/dev/null || true
-
+# Cleanup
 pm_finish
