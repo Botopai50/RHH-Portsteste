@@ -20,7 +20,7 @@ from urllib.request import Request, urlopen
 import sdl2
 
 import __version__
-from paths import DATA_DIR
+from config import DATA_DIR
 
 # ----------------------------------------------------------------------
 # Where Pharos publishes from. Hardcoded because the upgrade source is

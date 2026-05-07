@@ -19,7 +19,7 @@ import sdl2.ext
 # Manifest MD5 cache. Manifest + image cache live in DATA_DIR (the install
 # dir, set by the launchscript via XDG_DATA_HOME).
 # ----------------------------------------------------------------------
-from paths import DATA_DIR
+from config import DATA_DIR
 MANIFEST_PATH = os.path.join(DATA_DIR, "resources", "manifest.json")
 local_md5s: dict[str, str] = {}
 muted_ports: set[str] = set()
@@ -50,7 +50,7 @@ from ui import (
 )
 from download import Downloader
 from update import Update
-from service import Service, toggle_muted_port, toggle_muted_port
+from service import Service, toggle_muted_port
 
 # ----------------------------------------------------------------------
 # Safe background task runner
@@ -94,6 +94,7 @@ class Pharos:
         self.current_view = "repos"
         self.running = True
         self.download_active = False
+        self.filter_installed = False
 
         self.updater = Update(self.ui)
         self.self_update_available = False
@@ -365,18 +366,21 @@ class Pharos:
             {"key": self.layout["a"]["btn"], "label": "Open", "color": self.layout["a"]["color"]},
             {"key": self.layout["b"]["btn"], "label": "Exit", "color": self.layout["b"]["color"]},
             {"key": self.layout["x"]["btn"], "label": "Pharos Service", "color": self.layout["x"]["color"]},
+            {"key": self.layout["l1"]["btn"], "label": "Page Up", "color": self.layout["l1"]["color"]},
+            {"key": self.layout["r1"]["btn"], "label": "Page Down", "color": self.layout["r1"]["color"]},
         ]
         self._draw_button_bar(btns)
 
     def _render_ports(self) -> None:
         repo = self.repositories[self.repo_idx]
-        items = getattr(repo, "ports", None) or getattr(repo, "bottles", None)
+        all_items = getattr(repo, "ports", None) or getattr(repo, "bottles", None) or []
+        items = [i for i in all_items if i.name in local_md5s] if self.filter_installed else all_items
         owner = repo.url.split("github.com/")[1].split("/")[0]
-        header_text = f"{len(items)} items in {owner}/{repo.name}"
+        label = "installed" if self.filter_installed else "items"
+        header_text = f"{len(items)} {label} in {owner}/{repo.name}"
         self.ui.draw_header(header_text, color_text)
         
         is_bottle_repo = bool(getattr(repo, "bottles", None))
-        windows_exists = WINDOWS_DIR.exists()
         can_download = (not is_bottle_repo) or WINDOWS_DIR.exists()
 
         max_vis = 12
@@ -461,9 +465,13 @@ class Pharos:
             if not can_download:
                 bottom_log = f"ERROR: {WINDOWS_DIR} not found!"
             elif selected and selected.md5 and local_md5 and selected.md5 != local_md5:
-                bottom_log = f"{selected.title} – Update available!"
-            else:
+                bottom_log = f"{selected.title} - Update available!"
+            elif selected:
                 bottom_log = f"{selected.last_commit}"
+            elif self.filter_installed:
+                bottom_log = "No installed ports in this repository."
+            else:
+                bottom_log = ""
 
         self.ui.draw_log(text=bottom_log, background=True)
 
@@ -481,8 +489,9 @@ class Pharos:
             btns.append({"key": self.layout["x"]["btn"], "label": x_label,
                          "color": self.layout["x"]["color"]})
 
-        if can_download:
-            btns.append({"key": self.layout["y"]["btn"], "label": "All", "color": self.layout["y"]["color"]})
+        btns.append({"key": self.layout["y"]["btn"], "label": "Filter", "color": self.layout["y"]["color"]})
+        btns.append({"key": self.layout["l1"]["btn"], "label": "Page Up", "color": self.layout["l1"]["color"]})
+        btns.append({"key": self.layout["r1"]["btn"], "label": "Page Down", "color": self.layout["r1"]["color"]})
 
         self._draw_button_bar(btns)
 
@@ -512,35 +521,16 @@ class Pharos:
 
     def _update_ports(self) -> None:
         repo = self.repositories[self.repo_idx]
-        items = getattr(repo, "ports", None) or getattr(repo, "bottles", None)
-        if not items:
-            return
+        all_items = getattr(repo, "ports", None) or getattr(repo, "bottles", None) or []
+        items = [i for i in all_items if i.name in local_md5s] if self.filter_installed else all_items
 
         is_bottle_repo = bool(getattr(repo, "bottles", None))
         can_download = (not is_bottle_repo) or WINDOWS_DIR.exists()
 
-        if self.input.key(self.layout["a"]["key"]) and can_download:
-            self.dl_queue.put((items[self.port_idx], "port" if not is_bottle_repo else "bottle"))
-            self._ensure_worker()
-
-        elif self.input.key(self.layout["y"]["key"]) and can_download:
-            for item in items:
-                self.dl_queue.put((item, "port" if not is_bottle_repo else "bottle"))
-            self._ensure_worker()
-
-        elif self.input.key(self.layout["x"]["key"]):
-            # Toggle mute on the currently selected port. Only acts on ports
-            # that have a manifest entry — there's nothing to mute otherwise.
-            sel_item = items[self.port_idx] if items else None
-            if sel_item is not None and sel_item.name in local_md5s:
-                new_state = toggle_muted_port(sel_item.name)
-                if new_state is True:
-                    muted_ports.add(sel_item.name)
-                elif new_state is False:
-                    muted_ports.discard(sel_item.name)
-
+        # B (back) and Y (filter toggle) must work even when the filtered list
+        # is empty — otherwise the user is stuck.
         if self.input.key(self.layout["b"]["key"]):
-            for item in items:
+            for item in all_items:
                 item.image_path = None
             self.current_view = "repos"
             while not self.dl_queue.empty():
@@ -548,6 +538,31 @@ class Pharos:
                     self.dl_queue.get_nowait()
                 except queue.Empty:
                     break
+            return
+
+        if self.input.key(self.layout["y"]["key"]):
+            self.filter_installed = not self.filter_installed
+            self.port_idx = 0
+            return
+
+        if not items:
+            return
+
+        if self.input.key(self.layout["a"]["key"]) and can_download:
+            self.dl_queue.put((items[self.port_idx], "port" if not is_bottle_repo else "bottle"))
+            self._ensure_worker()
+
+        elif self.input.key(self.layout["x"]["key"]):
+            # Toggle mute on the currently selected port. Only acts on ports
+            # that have a manifest entry — there's nothing to mute otherwise.
+            sel_item = items[self.port_idx]
+            if sel_item.name in local_md5s:
+                new_state = toggle_muted_port(sel_item.name)
+                if new_state is True:
+                    muted_ports.add(sel_item.name)
+                elif new_state is False:
+                    muted_ports.discard(sel_item.name)
+
         else:
             self.port_idx = self.input.handle_navigation(self.port_idx, 10, len(items))
 
@@ -590,7 +605,7 @@ class Pharos:
                 for ev in sdl2.ext.get_events():
                     self.input.check_event(ev)
                     if ev.type == sdl2.SDL_QUIT:
-                        continue
+                        self.running = False
             except Exception as e:
                 print(f"[INPUT THREAD ERROR] {e}")
                 self.running = False
@@ -615,7 +630,7 @@ class Pharos:
     # Pharos Service view
     # ------------------------------------------------------------------
     def _render_service(self) -> None:
-        sw, sh = self.ui.screen_width, self.ui.screen_height
+        sw = self.ui.screen_width
         self.ui.draw_header("Pharos Service", color_text)
 
         installed = self.service.installed

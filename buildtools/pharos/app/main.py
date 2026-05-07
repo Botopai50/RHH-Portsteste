@@ -9,7 +9,7 @@ import os
 import sys
 import zipfile
 
-from paths import DATA_DIR, INSTALL_DIR
+from config import DATA_DIR, INSTALL_DIR
 
 def apply_pending_update() -> None:
     update_zip = os.path.join(DATA_DIR, ".pending_update.zip")

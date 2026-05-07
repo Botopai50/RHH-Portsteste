@@ -40,7 +40,6 @@ MANIFEST_PATH = INSTALL_DIR / "resources" / "manifest.json"
 
 PID_FILE = INSTALL_DIR / "resources" / "daemon.pid"
 LOG_FILE = INSTALL_DIR / "logs" / "daemon.log"
-STATE_FILE = INSTALL_DIR / "resources" / "daemon.state.json"
 
 PID_FILE.parent.mkdir(parents=True, exist_ok=True)
 LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -162,12 +161,22 @@ def load_local_manifest() -> tuple[
             name = entry.get("name")
             md5 = entry.get("md5")
             if not (name and md5):
+                log("INFO", f"manifest entry skipped (missing name/md5): {entry!r}")
                 continue
             md5s[name] = md5
             titles[name] = entry.get("title") or name
             repos[name] = entry.get("repo") or ""
-            if entry.get("muted"):
+            muted_field = entry.get("muted")
+            log(
+                "INFO",
+                f"manifest: name={name!r} md5={md5[:8]} muted={muted_field!r}",
+            )
+            if muted_field:
                 muted.add(name)
+        log(
+            "INFO",
+            f"manifest summary: {len(md5s)} tracked, {len(muted)} muted -> {sorted(muted)}",
+        )
         return md5s, titles, repos, muted
     except (OSError, json.JSONDecodeError) as e:
         log("WARN", f"manifest parse failed: {e}")
@@ -279,15 +288,6 @@ def _outdated_hash(items: Iterable[str]) -> str:
 
 _state_cache: dict = {}
 
-def _save_state_debug(state: dict) -> None:
-    """Disk copy is debug-only; load_state never reads it back."""
-    try:
-        tmp = STATE_FILE.with_suffix(".tmp")
-        tmp.write_text(json.dumps(state, indent=2), encoding="utf-8")
-        os.replace(tmp, STATE_FILE)
-    except OSError as e:
-        log("WARN", f"save_state debug write failed: {e}")
-
 # ----------------------------------------------------------------------
 # Main check
 # ----------------------------------------------------------------------
@@ -327,9 +327,6 @@ def run_check() -> bool:
     for attempt in range(1, 7):
         if notify(cfw, msg):
             _state_cache["last_outdated_hash"] = h
-            _state_cache["last_notified_at"] = int(time.time())
-            _state_cache["last_outdated"] = outdated
-            _save_state_debug(_state_cache)
             return True
         time.sleep(backoff)
         backoff = min(backoff * 2, RETRY_BACKOFF_MAX)

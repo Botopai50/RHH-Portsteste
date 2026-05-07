@@ -1,16 +1,5 @@
 #!/bin/bash
 # Pharos PyInstaller build.
-#
-# For broad device compatibility (ArkOS-era glibc 2.31 and up), invoke this
-# script inside python:3.11-slim-bullseye rather than on the host. The CI
-# workflow does this; locally:
-#
-#   docker run --rm --platform linux/arm64 \
-#       -v "$(pwd):/work" -w /work/buildtools/pharos \
-#       python:3.11-slim-bullseye bash build.sh
-#
-# Run on the host directly (not in docker) only if you accept that the
-# resulting binary inherits the host's glibc and may fail on older devices.
 
 set -e
 
@@ -42,28 +31,6 @@ fi
 PYTHON_VER=$($PYTHON_BIN -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
 echo "Using Python $PYTHON_VER at $PYTHON_BIN"
 
-# ---- System build deps -----------------------------------------------------
-if command -v apt-get >/dev/null 2>&1; then
-    sudoer=""
-    if [ "$(id -u)" -ne 0 ]; then
-        if command -v sudo >/dev/null 2>&1; then
-            sudoer="sudo"
-        else
-            echo "Need apt-get install but not root and sudo missing — skipping." >&2
-        fi
-    fi
-    need_install=()
-    command -v objdump >/dev/null 2>&1 || need_install+=(binutils)
-    dpkg -s libsdl2-2.0-0 >/dev/null 2>&1 || need_install+=(libsdl2-2.0-0)
-    dpkg -s libsdl2-image-2.0-0 >/dev/null 2>&1 || need_install+=(libsdl2-image-2.0-0)
-    dpkg -s libsdl2-ttf-2.0-0 >/dev/null 2>&1 || need_install+=(libsdl2-ttf-2.0-0)
-    if [ "${#need_install[@]}" -gt 0 ]; then
-        echo "Installing system build deps: ${need_install[*]}"
-        $sudoer apt-get update -qq
-        $sudoer env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq "${need_install[@]}" >/dev/null
-    fi
-fi
-
 # ---- Python deps -----------------------------------------------------------
 $PYTHON_BIN -m pip install --upgrade pip
 $PYTHON_BIN -m pip install --upgrade -r "$SCRIPT_DIR/requirements.txt"
@@ -87,7 +54,9 @@ pyinstaller \
     "$SOURCE_DIR/daemon.py"
 
 # Build Pharos, embedding the daemon binary as a bundled resource. The
-# Service module copies it out to INSTALL_DIR on user opt-in.
+# Service module copies it out to INSTALL_DIR on user opt-in. SDL2 itself
+# is provided by the target CFW at /usr/lib (set by the launchscript via
+# PYSDL2_DLL_PATH) — we don't bundle it.
 pyinstaller \
     --onefile \
     --clean \

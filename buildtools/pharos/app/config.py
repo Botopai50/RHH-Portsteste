@@ -3,7 +3,21 @@
 Controller layout → button mapping
 """
 import os
+import sys
 from typing import TypedDict
+
+# ----------------------------------------------------------------------
+# Runtime paths
+#   BASE_PATH    is sys._MEIPASS, where bundled resources (fonts/) extract.
+#   DATA_DIR     comes from XDG_DATA_HOME, set by the launchscript to the
+#                install dir so writable state (manifest, logs, .sources,
+#                .pending_update.zip) lands alongside the binary.
+#   INSTALL_DIR  is where the binary itself lives on disk; used to derive
+#                the extract target for self-update apply.
+# ----------------------------------------------------------------------
+BASE_PATH = sys._MEIPASS
+DATA_DIR = os.environ["XDG_DATA_HOME"]
+INSTALL_DIR = os.path.dirname(os.path.abspath(sys.executable))
 
 # ----------------------------------------------------------------------
 # Button colours (used by UI)
@@ -55,13 +69,22 @@ BUTTON_CONFIGS: dict[str, ButtonConfig] = {
 # ----------------------------------------------------------------------
 # Public API – only the function that Pharos actually calls
 # ----------------------------------------------------------------------
-CONTROLLER_LAYOUT = os.getenv("CONTROLLER_LAYOUT", "nintendo").lower()
+def _detect_layout_from_mapping() -> str:
+    """Pick layout from SDL_GAMECONTROLLERCONFIG (set by the launchscript).
+    The mapping's `a:bN`/`b:bN` segments tell us which SDL button raw joystick
+    button 0 is bound to."""
+    mapping = os.getenv("SDL_GAMECONTROLLERCONFIG", "")
+    first_line = mapping.splitlines()[0] if mapping else ""
+    for part in first_line.split(","):
+        k, _, v = part.partition(":")
+        if v.strip() == "b0" and k.strip() in ("a", "b"):
+            return "nintendo" if k.strip() == "b" else "xbox"
+    return "nintendo"
+
 
 def get_controller_layout() -> ButtonConfig:
-    """Return the button mapping for the current layout."""
-    if CONTROLLER_LAYOUT not in BUTTON_CONFIGS:
-        raise ValueError(f"Invalid controller layout: {CONTROLLER_LAYOUT}")
-    return BUTTON_CONFIGS[CONTROLLER_LAYOUT]
+    """Return the button mapping for the detected layout."""
+    return BUTTON_CONFIGS[_detect_layout_from_mapping()]
 
 # ----------------------------------------------------------------------
 # Data containers – only the fields that are used elsewhere

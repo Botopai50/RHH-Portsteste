@@ -22,7 +22,7 @@ from autoinstall import AutoInstaller
 # ----------------------------------------------------------------------
 # Paths
 # ----------------------------------------------------------------------
-from paths import DATA_DIR
+from config import DATA_DIR
 BASE_DIR = Path(DATA_DIR)
 AUTOINSTALL_DIR = BASE_DIR / "autoinstall"
 MANIFEST_PATH = BASE_DIR / "resources" / "manifest.json"
@@ -306,9 +306,7 @@ class Downloader:
             ))
 
             # Manifest update
-            with open(zip_path, "rb") as f:
-                md5_hash = hashlib.md5(f.read()).hexdigest()
-            port.md5 = md5_hash
+            port.md5 = self._md5_file(zip_path)
             port.size = zip_path.stat().st_size
             self._update_manifest(port, kind)
             
@@ -337,11 +335,21 @@ class Downloader:
         key = "ports" if kind == "port" else "bottles"
         other_key = "bottles" if kind == "port" else "ports"
 
+        # Preserve user-set fields that don't come from remote ports.json
+        # (currently just `muted`) so a re-download doesn't wipe them.
+        existing = next(
+            (d for d in data.get(key, [])
+             if d.get("name", "").lower() == port.name.lower()),
+            None,
+        )
         data[key] = [
             d for d in data.get(key, [])
             if d.get("name", "").lower() != port.name.lower()
         ]
-        data[key].append(asdict(port))
+        new_entry = asdict(port)
+        if existing is not None and "muted" in existing:
+            new_entry["muted"] = existing["muted"]
+        data[key].append(new_entry)
         data[other_key] = data.get(other_key, [])
 
         tmp = MANIFEST_PATH.with_suffix(".tmp")

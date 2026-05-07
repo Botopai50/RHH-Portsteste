@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 # DATA_DIR holds the autoinstall queue. INSTALL_DIR is the binary's install
 # dir on disk; PORTS_DIR / WINDOWS_DIR derive from its siblings (where
 # PortMaster keeps the ports/ and windows/ trees).
-from paths import DATA_DIR as _DATA_DIR_STR, INSTALL_DIR as _INSTALL_DIR_STR
+from config import DATA_DIR as _DATA_DIR_STR, INSTALL_DIR as _INSTALL_DIR_STR
 DATA_DIR = Path(_DATA_DIR_STR)
 AUTOINSTALL_DIR = DATA_DIR / "autoinstall"
 INSTALL_DIR = Path(_INSTALL_DIR_STR)

@@ -4,7 +4,7 @@ Pharos UI
 """
 import ctypes
 import os
-from typing import List, Optional, Tuple, Any
+from typing import Optional, Tuple, Any
 import collections
 
 import sdl2
@@ -27,14 +27,6 @@ color_text = "#ffffff"
 # Hex to SDL_Color
 # ----------------------------------------------------------------------
 def hex_to_sdl(hex_str: str) -> sdl2.SDL_Color:
-    named = {
-        "black": "#000000", "white": "#ffffff", "red": "#ff0000",
-        "green": "#00ff00", "blue": "#0000ff", "gray": "#808080",
-        "darkgray": "#404040",
-    }
-    hex_str = hex_str.lower().strip()
-    if hex_str in named:
-        hex_str = named[hex_str]
     hex_str = hex_str.lstrip("#")
     if len(hex_str) != 6:
         return sdl2.SDL_Color(255, 255, 255, 255)
@@ -57,7 +49,7 @@ c_text = hex_to_sdl(color_text)
 c_btn_a = hex_to_sdl(color_btn_a)
 c_btn_b = hex_to_sdl(color_btn_b)
 
-from paths import BASE_PATH
+from config import BASE_PATH
 FONT_PATH = os.path.join(BASE_PATH, "fonts", "romm.ttf")
 FONT_SIZE = 12
 HEADER_HEIGHT = 25
@@ -74,7 +66,6 @@ class UserInterface:
 
     screen_width = 640
     screen_height = 480
-    layout_name = os.getenv("CONTROLLER_LAYOUT", "nintendo")
 
     def __new__(cls):
         if not cls._instance:
@@ -86,17 +77,11 @@ class UserInterface:
         if getattr(self, "_initialized", False):
             return
 
-        # Track what this instance initialized so cleanup is safe
-        self._inited_sdl_video = False
+        # Track what this instance initialized so cleanup is safe.
+        # main.py inits SDL_INIT_VIDEO before constructing this class, so we
+        # never have to init it ourselves.
         self._inited_ttf = False
         self._inited_img_flags = 0
-
-        # --- SDL video init: only if not already initialized ---
-        was = sdl2.SDL_WasInit(0)
-        if not (was & sdl2.SDL_INIT_VIDEO):
-            if sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO) < 0:
-                raise RuntimeError(f"SDL_Init failed: {sdl2.SDL_GetError().decode()}")
-            self._inited_sdl_video = True
 
         # --- SDL_image init: ensure PNG/JPG available ---
         desired_img_flags = img.IMG_INIT_PNG | img.IMG_INIT_JPG
@@ -150,9 +135,6 @@ class UserInterface:
                 print("[UI] Warning: exception opening font.")
 
         # state
-        self.download_percent = 0
-        self.opt_stretch = True
-        self._initialized = True
         self.draw_clear()
 
         self._scroll_speed = 1
@@ -160,7 +142,6 @@ class UserInterface:
         self._desc_scroll_state = {}
         self._scroll_start_delay = 60
         self._scroll_end_delay = 60
-        self._desc_max_height = 200
 
         # LRU texture cache: path -> texture
         self.texture_cache = collections.OrderedDict()
@@ -403,16 +384,16 @@ class UserInterface:
     def button_circle(self, pos: Tuple[float, float], button: str, label: str,
                       color: Optional[sdl2.SDL_Color] = None):
         if color is None:
-            color = c_btn_a if self.layout_name == "nintendo" else c_btn_b
+            color = c_btn_a
         radius = 8
         padding = 8
         self.draw_circle((int(pos[0]), int(pos[1])), radius, fill=color)
+        btn_w = self.get_text_width(button)
+        text_x = int(pos[0] - btn_w // 2)
         text_y = int(pos[1] - FONT_SIZE // 2)
-        text_x = int(pos[0] - FONT_SIZE // 4)
         self.draw_text((text_x, text_y), button, c_text)
         label_x = int(pos[0] + radius + padding)
-        label_y = text_y
-        self.draw_text((label_x, label_y), label, c_text)
+        self.draw_text((label_x, text_y), label, c_text)
 
     def get_text_width(self, text: str) -> int:
         if not getattr(self, "font", None):
@@ -424,17 +405,6 @@ class UserInterface:
             return w.value
         except Exception:
             return 0
-
-    def draw_buttons(self):
-        pos_y = self.screen_height - FOOTER_HEIGHT - BUTTON_AREA_HEIGHT//2
-        pos_x = 20
-        radius = 8
-        padding = 10
-        for config in getattr(self, "buttons_config", []):
-            self.button_circle((pos_x, pos_y), config["key"], config["label"], color=config.get("color"))
-            text_width = self.get_text_width(config["label"])
-            total_width = radius*2 + padding + text_width
-            pos_x += total_width + padding
 
     def draw_log(self, text: str = "",
                  text_color: str = color_text, background: bool = True):
@@ -461,20 +431,6 @@ class UserInterface:
         color_sdl = hex_to_sdl(color)
         self.draw_rectangle((0, 0, self.screen_width, HEADER_HEIGHT), fill=c_menu_bg)
         self.draw_text((self.screen_width // 2 - self.get_text_width(title)//2, 8), title, color_sdl)
-
-    def draw_menu_background(self, pos: List[float], width: int, n_options: int,
-                             option_height: int, gap: int, padding: int,
-                             extra_top: int = 0, extra_bottom: int = 0):
-        outline_color = c_btn_a if self.layout_name == "nintendo" else c_btn_b
-        total_height = n_options*(option_height + gap) + padding*2 - gap + extra_top + extra_bottom
-        self.draw_rectangle(
-            (int(pos[0]), int(pos[1] - extra_top), width + padding*2, total_height),
-            fill=c_menu_bg
-        )
-        self.draw_rectangle_outline(
-            (int(pos[0]), int(pos[1] - extra_top), width + padding*2, total_height),
-            color=outline_color
-        )
 
     # ------------------------------------------------------------------
     # Image loading with LRU cache
@@ -536,19 +492,20 @@ class UserInterface:
         if tex_w == 0 or tex_h == 0:
             return
 
-        # Right pane bounds
-        desc_center_x = self.screen_width * 3 // 4 - 40
-        desc_max_width = self.screen_width // 2
-        desc_left_x = desc_center_x - desc_max_width // 2
+        # Anchor on the same center the description text uses (pharos.py
+        # passes screen_width*3//4 - 20). Clamp max_w symmetrically so the
+        # image stays within the screen on both sides.
+        desc_center_x = self.screen_width * 3 // 4 - 20
         right_margin = 10
-        max_w = min(max_w, self.screen_width - desc_left_x - right_margin)
+        left_margin = 10
+        max_half = min(desc_center_x - left_margin,
+                       self.screen_width - right_margin - desc_center_x)
+        max_w = min(max_w, 2 * max_half)
 
-        # Compute scale while preserving aspect ratio
         scale = min(max_w / tex_w, max_h / tex_h, 1.0)
         dw, dh = int(tex_w * scale), int(tex_h * scale)
 
-        # Center in the allocated area
-        x = desc_left_x + (max_w - dw) // 2
+        x = desc_center_x - dw // 2
         y = 40 + (max_h - dh) // 2
 
         dst_rect = sdl2.SDL_Rect(x, y, dw, dh)

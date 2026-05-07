@@ -26,6 +26,8 @@ cd "${GAMEDIR}" || exit 1
 export XDG_DATA_HOME="${GAMEDIR}"
 export LOG_FILE="${LOG_DIR}/$(date +'%Y-%m-%d').log"
 export SDL_GAMECONTROLLERCONFIG="${sdl_controllerconfig}"
+export PYSDL2_DLL_PATH="/usr/lib"
+export LD_LIBRARY_PATH="${GAMEDIR}/libs:${LD_LIBRARY_PATH}"
 export controlfolder
 export DEVICE_ARCH
 

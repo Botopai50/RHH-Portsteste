@@ -19,13 +19,14 @@ the per-CFW service so the new code takes over without user intervention.
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import shutil
 import signal
 import subprocess
 from pathlib import Path
 
-from paths import BASE_PATH, INSTALL_DIR
+from config import BASE_PATH, INSTALL_DIR
 
 DAEMON_NAME = "pharos-daemon"
 
@@ -42,7 +43,6 @@ def toggle_muted_port(name: str) -> bool | None:
     """Flip the "muted" flag on the manifest entry matching `name`. Returns
     the new state (True if now muted), or None if no matching entry exists.
     Atomic write via tmp + rename so a partial save can't corrupt manifest."""
-    import json
     if not MANIFEST_PATH.exists():
         return None
     try:
@@ -209,6 +209,22 @@ def _hash_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def _cleanup_runtime_files() -> None:
+    """Remove pid / state / log files left behind by the daemon. The
+    daemon's SIGTERM handler normally clears its own pidfile, but we do it
+    here too so an `Uninstall` after a wedged or already-dead daemon leaves
+    no trace."""
+    for f in (
+        Path(INSTALL_DIR) / "resources" / "daemon.pid",
+        Path(INSTALL_DIR) / "resources" / "daemon.state.json",
+        Path(INSTALL_DIR) / "logs" / "daemon.log",
+    ):
+        try:
+            f.unlink(missing_ok=True)
+        except OSError:
+            pass
+
+
 # ----------------------------------------------------------------------
 # Service class
 # ----------------------------------------------------------------------
@@ -224,14 +240,18 @@ class Service:
         Idempotent: if the file is already in place, leave it. Returns True
         on success (or if already present)."""
         if DAEMON_EXTRACTED_PATH.exists():
+            print(f"[Service] daemon already at {DAEMON_EXTRACTED_PATH}; skipping extract")
             return True
         if not DAEMON_BUNDLED_PATH.exists():
+            print(f"[Service] ERROR: bundled daemon missing at {DAEMON_BUNDLED_PATH}")
             return False
         try:
             shutil.copy2(DAEMON_BUNDLED_PATH, DAEMON_EXTRACTED_PATH)
             DAEMON_EXTRACTED_PATH.chmod(0o755)
+            print(f"[Service] extracted daemon: {DAEMON_BUNDLED_PATH} -> {DAEMON_EXTRACTED_PATH}")
             return True
-        except OSError:
+        except OSError as e:
+            print(f"[Service] ERROR: extract failed: {e}")
             return False
 
     @property
@@ -320,29 +340,58 @@ class Service:
 
     # ---- ROCKNIX (systemd) ------------------------------------------
     def _install_rocknix(self) -> tuple[bool, str]:
+        # Defensive: kill any stale daemon + state files left behind by a
+        # previous run (e.g. user updated Pharos manually so the old daemon
+        # keeps running and its pidfile blocks the new one from starting).
+        rc, msg = _safe_run(["systemctl", "stop", "pharos-daemon.service"])
+        print(f"[Service] pre-install stop (rc={rc}) {msg}")
+        _cleanup_runtime_files()
+        print("[Service] cleaned stale runtime files")
+
+        print(f"[Service] writing systemd unit -> {ROCKNIX_UNIT_PATH}")
         _write_executable(ROCKNIX_UNIT_PATH, _systemd_unit(self.daemon_path))
-        # systemd in user-config dir requires daemon-reload then enable+start.
-        _safe_run(["systemctl", "daemon-reload"])
-        _safe_run(["systemctl", "enable", "pharos-daemon.service"])
+        rc, msg = _safe_run(["systemctl", "daemon-reload"])
+        print(f"[Service] systemctl daemon-reload (rc={rc}) {msg}")
+        rc, msg = _safe_run(["systemctl", "enable", "pharos-daemon.service"])
+        print(f"[Service] systemctl enable (rc={rc}) {msg}")
         rc, msg = _safe_run(["systemctl", "start", "pharos-daemon.service"])
+        print(f"[Service] systemctl start (rc={rc}) {msg}")
         if rc != 0:
             return False, f"systemctl start failed: {msg}"
+        print(f"[Service] writing ES event script -> {ROCKNIX_ES_SCRIPT}")
         _write_executable(ROCKNIX_ES_SCRIPT, _es_event_script())
         return True, "Installed (systemd unit enabled + ES hook)"
 
     def _uninstall_rocknix(self) -> tuple[bool, str]:
-        _safe_run(["systemctl", "stop", "pharos-daemon.service"])
-        _safe_run(["systemctl", "disable", "pharos-daemon.service"])
+        rc, msg = _safe_run(["systemctl", "stop", "pharos-daemon.service"])
+        print(f"[Service] systemctl stop (rc={rc}) {msg}")
+        rc, msg = _safe_run(["systemctl", "disable", "pharos-daemon.service"])
+        print(f"[Service] systemctl disable (rc={rc}) {msg}")
+        existed = ROCKNIX_UNIT_PATH.exists()
         ROCKNIX_UNIT_PATH.unlink(missing_ok=True)
+        print(f"[Service] removed unit file {ROCKNIX_UNIT_PATH} (existed={existed})")
+        existed = ROCKNIX_ES_SCRIPT.exists()
         ROCKNIX_ES_SCRIPT.unlink(missing_ok=True)
+        print(f"[Service] removed ES script {ROCKNIX_ES_SCRIPT} (existed={existed})")
         _safe_run(["systemctl", "daemon-reload"])
+        existed = DAEMON_EXTRACTED_PATH.exists()
         DAEMON_EXTRACTED_PATH.unlink(missing_ok=True)
+        print(f"[Service] removed daemon binary {DAEMON_EXTRACTED_PATH} (existed={existed})")
+        _cleanup_runtime_files()
+        print("[Service] cleaned up runtime files (pid/state/log)")
         return True, "Uninstalled"
 
     # ---- Knulli (Batocera user-service) ------------------------------
     def _install_knulli(self) -> tuple[bool, str]:
+        # Defensive: stop any stale daemon + clear pid/state files first.
+        if KNULLI_SERVICE_PATH.exists():
+            _safe_run([str(KNULLI_SERVICE_PATH), "stop"])
+        _kill_pid_file(Path("/var/run/pharos-daemon.pid"))
+        _cleanup_runtime_files()
+        print("[Service] cleaned stale runtime files")
+
         _write_executable(KNULLI_SERVICE_PATH, _knulli_service(self.daemon_path))
-        rc, _ = _safe_run([
+        _safe_run([
             "batocera-settings-set", "system.services.pharos-daemon", "enabled"
         ])
         # Start it now too, so the user doesn't have to reboot.
@@ -359,10 +408,17 @@ class Service:
         KNULLI_SERVICE_PATH.unlink(missing_ok=True)
         KNULLI_ES_SCRIPT.unlink(missing_ok=True)
         _kill_pid_file(Path("/var/run/pharos-daemon.pid"))
+        DAEMON_EXTRACTED_PATH.unlink(missing_ok=True)
+        _cleanup_runtime_files()
         return True, "Uninstalled"
 
     # ---- MuOS (init.d) -----------------------------------------------
     def _install_muos(self) -> tuple[bool, str]:
+        # Defensive: kill any stale daemon + clear pid/state files first.
+        _kill_pid_file(Path("/run/pharos-daemon.pid"))
+        _cleanup_runtime_files()
+        print("[Service] cleaned stale runtime files")
+
         _write_executable(MUOS_INIT_PATH, _muos_init(self.daemon_path))
         # Run it now so the user gets a daemon without a reboot.
         _safe_run([str(MUOS_INIT_PATH)])
@@ -372,4 +428,6 @@ class Service:
         _kill_pid_file(Path("/run/pharos-daemon.pid"))
         _kill_pid_file(DAEMON_PID_FILE)
         MUOS_INIT_PATH.unlink(missing_ok=True)
+        DAEMON_EXTRACTED_PATH.unlink(missing_ok=True)
+        _cleanup_runtime_files()
         return True, "Uninstalled"
