@@ -193,6 +193,7 @@ class UserInterface:
         dst_rect = sdl2.SDL_Rect(0, 0, w.value, h.value)
         sdl2.SDL_RenderCopy(self.renderer, self.screen_texture, None, dst_rect)
         sdl2.SDL_RenderPresent(self.renderer)
+        sdl2.SDL_SetRenderTarget(self.renderer, self.screen_texture)
 
     # ------------------------------------------------------------------
     # Cleanup Does NOT call SDL_Quit().
