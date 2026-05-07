@@ -190,7 +190,11 @@ jobs:
               # shows lifetime + live count, so we must NOT accumulate on every run.
               if [[ "$MD5" != "$OLD_MD5" || "$SIZE" != "$OLD_SIZE" ]]; then
                 if [[ -n "$RELEASE_ID" ]]; then
-                  CURRENT_DL=$(gh api "repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets" \
+                  # --paginate is required: the assets endpoint defaults to 30
+                  # items per page, so without it any port past the first
+                  # alphabetical page silently returns 0 and lifetime never
+                  # accumulates.
+                  CURRENT_DL=$(gh api --paginate "repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets" \
                     --jq ".[] | select(.name==\"$CANONICAL_NAME\") | .download_count" 2>/dev/null || echo 0)
                   LIFE=$((LIFE + ${CURRENT_DL:-0}))
                 fi
@@ -279,7 +283,7 @@ jobs:
           fi
 
           mapfile -t ASSETS < <(
-            gh api repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets \
+            gh api --paginate repos/${GITHUB_REPOSITORY}/releases/$RELEASE_ID/assets \
               --jq '.[] | "\(.name):\(.id)"'
           )
 
