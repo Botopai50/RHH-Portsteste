@@ -42,6 +42,7 @@ apply_pending_update() {
         echo "[Update] Applying pending update from ${zip}..."
         if "$controlfolder/7zzs.${DEVICE_ARCH}" x -y "${zip}" -o"${parent}" >/dev/null; then
             rm -f "${zip}"
+            chmod +x "/{directory}/ports/Pharos App.sh"
             echo "[Update] Applied; re-launching."
             export _PHAROS_UPDATE_APPLIED=1
             exec "$0" "$@"
