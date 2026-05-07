@@ -34,7 +34,7 @@ PHAROS_VERSION_RAW = (
 PHAROS_PORTS_JSON_RAW = (
     f"https://raw.githubusercontent.com/{PHAROS_REPO}/main/docs/ports.json"
 )
-PHAROS_PORT_NAME = "pharos.zip"  # matches port.json "name"
+PHAROS_PORT_NAME = "pharos.zip"
 
 PENDING_ZIP = os.path.join(DATA_DIR, ".pending_update.zip")
 VERSION_RE = re.compile(r"version\s*=\s*['\"]([^'\"]+)['\"]")
@@ -138,6 +138,8 @@ class Update:
                         self.ui.render_to_screen()
                         sdl2.SDL_Delay(16)
 
+            print(f"[Update] Saved pending update to {PENDING_ZIP} "
+                  f"({downloaded} bytes).")
             return True
         except (HTTPError, URLError, OSError) as e:
             # OSError covers disk-full / permission failures mid-write — without
