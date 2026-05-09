@@ -316,14 +316,19 @@ class Service:
 
     def _extract_daemon(self) -> bool:
         """Copy the bundled daemon out of _MEIPASS to a persistent location.
-        Idempotent: if the file is already in place, leave it. Returns True
-        on success (or if already present)."""
-        if DAEMON_EXTRACTED_PATH.exists():
-            print(f"[Service] daemon already at {DAEMON_EXTRACTED_PATH}; skipping extract")
-            return True
+        Idempotent on hash, not just on existence — a previous extraction
+        that was truncated, corrupted, or left over from a different Pharos
+        version is detected and replaced rather than silently kept. Returns
+        True on success (fresh copy, replacement, or hash-matching no-op)."""
         if not DAEMON_BUNDLED_PATH.exists():
             print(f"[Service] ERROR: bundled daemon missing at {DAEMON_BUNDLED_PATH}")
             return False
+        if (
+            DAEMON_EXTRACTED_PATH.exists()
+            and _hash_file(DAEMON_EXTRACTED_PATH) == _hash_file(DAEMON_BUNDLED_PATH)
+        ):
+            print(f"[Service] daemon already at {DAEMON_EXTRACTED_PATH} (hash matches); skipping extract")
+            return True
         try:
             shutil.copy2(DAEMON_BUNDLED_PATH, DAEMON_EXTRACTED_PATH)
             DAEMON_EXTRACTED_PATH.chmod(0o755)

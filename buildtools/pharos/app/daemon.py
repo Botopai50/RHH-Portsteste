@@ -403,8 +403,12 @@ def run_check() -> bool:
 # Daemon loop + signals
 # ----------------------------------------------------------------------
 _woken = False
+_pending = False
 
-def _on_sighup(_signum, _frame) -> None:
+def _on_wake(_signum, _frame) -> None:
+    """Shared handler for SIGHUP and SIGALRM — both just wake daemon_loop;
+    the loop body decides whether to fetch, defer, or absorb based on
+    _pending and the rate-limit window."""
     global _woken
     _woken = True
 
@@ -430,22 +434,29 @@ def remove_pidfile() -> None:
         pass
 
 def daemon_loop() -> None:
-    """Initial check on startup, then idle until SIGHUP. Each wake re-runs the
-    check pass, gated by MIN_FETCH_INTERVAL_S to keep SIGHUP storms from
-    hammering GitHub. SIGTERM / Ctrl+C exit cleanly via the handler."""
-    global _woken
+    """Initial check on startup, then idle until SIGHUP. Each wake re-runs
+    the check pass, gated by MIN_FETCH_INTERVAL_S to keep SIGHUP storms
+    from hammering GitHub. A SIGHUP arriving inside the rate-limit window
+    sets _pending and schedules a SIGALRM at window-clear so the deferred
+    check still fires when the window expires — events aren't dropped.
+    SIGTERM / Ctrl+C exit cleanly via the handler."""
+    global _woken, _pending
     write_pidfile()
     try:
-        signal.signal(signal.SIGHUP, _on_sighup)
+        signal.signal(signal.SIGHUP, _on_wake)
+        signal.signal(signal.SIGALRM, _on_wake)
         signal.signal(signal.SIGTERM, _on_sigterm)
         signal.signal(signal.SIGINT, _on_sigterm)
 
         # Initial check: covers boot-time notification once ES is up.
-        last_fetch = time.time()
+        # last_fetch left at 0.0 so the first post-boot SIGHUP isn't
+        # rate-limited against the boot check — that SIGHUP is the user's
+        # first chance to retry if the boot check ran before network was up.
+        last_fetch = 0.0
         run_check()
 
         while True:
-            # Drain a SIGHUP that arrived between the last iteration and now.
+            # Drain a wake that arrived between the last iteration and now.
             # Without this check, signal.pause() would block forever on the
             # second handler invocation if it raced before we entered pause.
             if not _woken:
@@ -455,10 +466,22 @@ def daemon_loop() -> None:
             now = time.time()
             since = now - last_fetch
             if since < MIN_FETCH_INTERVAL_S:
-                log("INFO", f"woken; rate-limited ({int(MIN_FETCH_INTERVAL_S - since)}s remaining)")
+                remaining = MIN_FETCH_INTERVAL_S - since
+                if not _pending:
+                    _pending = True
+                    # +1s slack so the alarm fires just past the window edge.
+                    signal.alarm(int(remaining) + 1)
+                    log("INFO", f"woken; rate-limited ({int(remaining)}s remaining); deferred")
+                else:
+                    log("INFO", f"woken; rate-limited ({int(remaining)}s remaining); already deferred")
                 continue
 
-            log("INFO", "woken (SIGHUP)")
+            if _pending:
+                log("INFO", "woken (deferred check after rate-limit window)")
+                _pending = False
+                signal.alarm(0)
+            else:
+                log("INFO", "woken (SIGHUP)")
             run_check()
             last_fetch = time.time()
     finally:
