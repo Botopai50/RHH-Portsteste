@@ -2214,11 +2214,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pharos.zip",
-      "date_updated": "2026-05-07T23:02",
-      "md5": "f0d1b907eefccc5e938b015b9b2d6171",
-      "size": 21661688,
-      "lifetime_downloads": 180,
-      "last_commit": "[Pharos] Update to v1.0.3"
+      "date_updated": "2026-05-09T20:19",
+      "md5": "f2aa1481ad2ac74b134afe3a8f1458ce",
+      "size": 21663298,
+      "lifetime_downloads": 211,
+      "last_commit": "[Pharos] Update to v1.0.4"
     }
   },
   {
