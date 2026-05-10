@@ -4177,6 +4177,52 @@
   },
   {
     "version": 4,
+    "name": "zelda-dusk.zip",
+    "items": [
+      "Zelda-Dusk.sh",
+      "zelda-dusk"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "The Legend of Zelda : Twilight Princess (Dusk)",
+      "porter": [
+        "Jeod"
+      ],
+      "desc": "Dusk is an unofficial PC port of The Legend of Zelda: Twilight Princess produced through reverse-engineered reimplementation, powered by the Aurora framework. You must provide your own copy of the game.",
+      "desc_md": null,
+      "inst": "Put your iso file in ports/zelda-dusk/.",
+      "inst_md": null,
+      "genres": [
+        "action",
+        "adventure"
+      ],
+      "image": null,
+      "rtr": false,
+      "exp": true,
+      "runtime": [],
+      "store": [],
+      "availability": "paid",
+      "reqs": [
+        "vulkan"
+      ],
+      "arch": [
+        "aarch64"
+      ],
+      "min_glibc": "2.41"
+    },
+    "source": {
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/README.md",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-dusk.zip",
+      "date_updated": "2026-05-10T02:07",
+      "md5": "3d105d477f298efc0213ed10c16abb62",
+      "size": 19074741,
+      "lifetime_downloads": 0,
+      "last_commit": "[DUSK] v1.0.0"
+    }
+  },
+  {
+    "version": 4,
     "name": "zeldoschallenge.zip",
     "items": [
       "The Legend of Zelda - Zeldo's Challenge.sh",
