@@ -4216,11 +4216,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-dusk.zip",
-      "date_updated": "2026-05-11T10:49",
-      "md5": "7748aabf26d372155950ae5552ab6f3e",
-      "size": 19074746,
-      "lifetime_downloads": 61,
-      "last_commit": "Add vulkan requirement to filter and tag ports that need it"
+      "date_updated": "2026-05-11T13:23",
+      "md5": "05628097b882ef0e0c8ee0372fa4bfea",
+      "size": 19075667,
+      "lifetime_downloads": 64,
+      "last_commit": "[DUSK] Find user provided iso dynamically to show Dusk main menu instead of direct booting into game"
     }
   },
   {
