@@ -544,11 +544,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/deltarune.zip",
-      "date_updated": "2026-04-13T02:12",
-      "md5": "d08fbe47c19da6a7ee49fd748c802ab6",
-      "size": 4198520,
-      "lifetime_downloads": 45,
-      "last_commit": "[GMS] Switch to gmloadernext runtime"
+      "date_updated": "2026-05-11T10:09",
+      "md5": "589dfde8ba1cbb775039b7e5c38fe9d7",
+      "size": 10084930,
+      "lifetime_downloads": 78,
+      "last_commit": "[DELTARUNE] Add library for darkos"
     }
   },
   {
