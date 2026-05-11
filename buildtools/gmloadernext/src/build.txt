@@ -28,21 +28,15 @@ git_clone_retry() {
 }
 
 #### Minimal FFmpeg ####
-# Pinned to n4.4.5 because gmloader-next is built against the FFmpeg 4.x ABI
-# (libavformat.so.58, libavcodec.so.58, libavutil.so.56, libswresample.so.3,
-# libswscale.so.5). 5.x bumped to .so.59 and breaks the link contract.
-#
-# --disable-everything zeros the codec/demuxer/parser tables; we then
-# re-enable only what GameMaker video cutscenes actually use. External
-# libraries (libbluray, libgme, libopenmpt, libxml2, vaapi, vdpau, libsoxr,
-# etc.) are off because we don't pass --enable-libxxx — that's what keeps
-# DT_NEEDED minimal and saves us from bundling a sprawling subdep closure.
-FFMPEG_PREFIX="$PWD/ffmpeg-install"
+FFMPEG_LIBDIR=/usr/lib/aarch64-linux-gnu
 git_clone_retry --depth 1 --branch n4.4.5 https://git.ffmpeg.org/ffmpeg.git
 (
     cd ffmpeg
     ./configure \
-        --prefix="$FFMPEG_PREFIX" \
+        --prefix=/usr \
+        --libdir="$FFMPEG_LIBDIR" \
+        --shlibdir="$FFMPEG_LIBDIR" \
+        --pkgconfigdir="$FFMPEG_LIBDIR/pkgconfig" \
         --target-os=linux --arch=aarch64 \
         --enable-cross-compile --cross-prefix=aarch64-linux-gnu- \
         --disable-everything --disable-doc --disable-programs \
@@ -62,22 +56,11 @@ git_clone_retry --depth 1 --branch n4.4.5 https://git.ffmpeg.org/ffmpeg.git
 # Upstream has no release tags — always build from master HEAD.
 git_clone_retry --recursive https://github.com/JohnnyonFlame/gmloader-next.git
 
-# pkg-config: scope to aarch64 multiarch so sdl2.pc / libzip.pc resolve
-# (Makefile.gmloader queries pkg-config for those two only — not FFmpeg).
+# Scope pkg-config to aarch64 multiarch so sdl2.pc / libzip.pc resolve.
 # Use regular pkg-config + PKG_CONFIG=pkg-config below so we don't depend
 # on aarch64-linux-gnu-pkg-config existing (it's a separate Debian package
 # not in our Bullseye base).
 export PKG_CONFIG_LIBDIR="/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
-
-# FFmpeg headers + libs: Makefile.gmloader assumes FFmpeg lives in the
-# cross-compiler's default include/library paths (which is true when
-# you've apt-installed libavcodec-dev:arm64 — Debian puts it in
-# /usr/include/aarch64-linux-gnu/ and /usr/lib/aarch64-linux-gnu/).
-# Our minimal FFmpeg is in $FFMPEG_PREFIX, so we tell gcc/ld about it via
-# CPATH + LIBRARY_PATH (both honored directly by the cross-compiler driver
-# without needing to touch the Makefile's CFLAGS/LIBS handling).
-export CPATH="$FFMPEG_PREFIX/include"
-export LIBRARY_PATH="$FFMPEG_PREFIX/lib"
 
 (
     cd gmloader-next
@@ -107,12 +90,10 @@ rm -rf lib
 mkdir -p lib
 
 resolve_lib_path() {
-    # FFmpeg install prefix first so we pick OUR build, not anything that
-    # might exist in /usr/lib/aarch64-linux-gnu/ from an apt accident.
+    # FFmpeg now lives at /usr/lib/aarch64-linux-gnu (installed there by
+    # the configure step above) — same path Debian's apt would have used,
+    # so no special-case lookup needed.
     local lib="$1"
-    if [[ -f "$FFMPEG_PREFIX/lib/$lib" ]]; then
-        echo "$FFMPEG_PREFIX/lib/$lib"; return
-    fi
     for d in \
         /usr/lib/aarch64-linux-gnu \
         /usr/aarch64-linux-gnu/lib \

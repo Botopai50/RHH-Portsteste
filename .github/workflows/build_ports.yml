@@ -83,11 +83,15 @@ jobs:
                   upstream_sha=$(echo "$ref" | jq -r .object.sha)
                 fi
                 source="$repo@$tag"
+                # Human label for the commit message — tag name conveys
+                # release version more clearly than a 7-char SHA.
+                label="$tag"
                 ;;
               branch|*)
                 branch=$(jq -r --arg id "$id" '.ports[$id].upstream_branch' buildtools/registry.json)
                 upstream_sha=$(curl -sf "https://api.github.com/repos/$repo/commits/$branch" | jq -r .sha)
                 source="$repo@$branch"
+                label="${upstream_sha:0:7}"
                 ;;
             esac
 
@@ -105,7 +109,7 @@ jobs:
 
             if [[ "$FORCE" == "true" ]] || [[ "$upstream_sha" != "$origin_sha" ]]; then
               echo "[$id] needs build (source=$source origin=${origin_sha:-none} upstream=$upstream_sha)"
-              to_build+=("$id:$upstream_sha")
+              to_build+=("$id:$upstream_sha:$label")
             else
               echo "[$id] up to date at $upstream_sha — skipping"
             fi
@@ -134,9 +138,11 @@ jobs:
 
           failures=()
 
-          while IFS=: read -r id upstream_sha; do
+          while IFS=: read -r id upstream_sha label; do
             [[ -z "$id" ]] && continue
             short="${upstream_sha:0:7}"
+            # Fallback for legacy two-field entries (no label).
+            [[ -z "$label" ]] && label="$short"
             port_dir=$(jq -r --arg id "$id" '.ports[$id].port_dir' buildtools/registry.json)
             # target_dirs is a JSON array; mapfile into a bash array so one
             # build can fan out to multiple payload dirs (e.g. sonic.1/sonic.2
@@ -251,7 +257,7 @@ jobs:
               echo "::endgroup::"
               continue
             fi
-            git commit -m "[$commit_prefix] Update to $short"
+            git commit -m "[$commit_prefix] Update to $label"
 
             # Retry fetch+rebase+push to absorb concurrent pushes from other
             # workflows hitting the same branch (e.g. collect_ports.yml) and
