@@ -5,6 +5,7 @@ LOGFILE="$GAMEDIR/patchlog.txt"
 LOGERR="$GAMEDIR/patchlog_error.txt"
 
 # Redirect output and error to the log file
+rm -f "$LOGERR"
 exec > >(tee -a "$LOGFILE") 2>&1
 echo "GAMEDIR is set to: $GAMEDIR"
 

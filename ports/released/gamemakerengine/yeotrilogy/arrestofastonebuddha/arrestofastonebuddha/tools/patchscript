@@ -3,6 +3,7 @@ GAMEDIR="$PWD"
 LOGFILE="patchlog.txt"
 LOGERR="patcherr.txt"
 
+rm -f "$GAMEDIR/$LOGERR"
 > "$GAMEDIR/$LOGFILE" && exec > >(tee "$GAMEDIR/$LOGFILE") 2>&1
 echo "GAMEDIR is set to: $GAMEDIR"
 
