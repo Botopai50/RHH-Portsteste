@@ -17,6 +17,7 @@ async function loadPorts() {
         { keys: ['2gb'], value: 'Needs 2GB RAM' },
         { keys: ['4gb', 'ultra'], value: 'Needs > 2GB RAM' },
         { keys: ['opengl'], value: 'Requires mainline OpenGL' },
+        { keys: ['vulkan'], value: 'Requires Vulkan' },
         { keys: ['wide'], value: 'Requires widescreen' },
         { keys: ['analog_1', 'analog_2', 'analog_1|analog_2'], value: 'Requires analog sticks' },
         { keys: ['!arkos'], value: 'Won’t run on ArkOS' }

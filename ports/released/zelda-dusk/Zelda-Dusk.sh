@@ -82,5 +82,5 @@ pm_platform_helper "$GAME" >/dev/null
 "$GAME" --backend vulkan --dvd "$DVD"
 
 # Cleanup -- we already have log.txt, purge the rest to prevent bloat
-rm -rf "$GAMEDIR/config/TwilitRealm/Dusk/logs/*"
+rm -rf "$GAMEDIR/config/TwilitRealm/Dusk/logs/"*
 pm_finish

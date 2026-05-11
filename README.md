@@ -32,6 +32,7 @@ Some of the ports in this repository have minimum requirements. Be sure to check
 - `!lowres`: The port will work best with a screen resolution that is at minimum `640x480`.
 - `power`: The port will perform best with a device with more power than the `rk3326` cpu.
 - `opengl`: The port requires OpenGL (not OpenGLES). This means a mainline custom firmware.
+- `vulkan`: The port requires Vulkan. This typically pairs with Ultra requirements.
 - `wide`: The port demands an aspect ratio above 4:3.
 - `analog_#`: The port requires analog sticks.
 - `!arkos`: The port will not run on ArkOS (GLIBC too old).
