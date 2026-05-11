@@ -36,8 +36,8 @@ export VCPKG_ROOT="$PWD/vcpkg"
 
 #### Dusk (Twilight Princess Reimplementation) ####
 
-git_clone_retry --recursive https://github.com/TwilitRealm/dusk.git
-cd dusk
+git_clone_retry --recursive https://github.com/TwilitRealm/dusk.git dusk-src
+cd dusk-src
 
 # Latest release tag, or HEAD if FORCE_HEAD=true.
 git fetch --tags
@@ -145,7 +145,8 @@ done <<< "$needed"
 echo "Final ../libs/ contents:"; ls -la ../libs/
 
 # Copy artifacts up so retrieve-products.txt finds them at stable paths.
-cp "$bin" ./dusk
+# Binary lands at $SRCDIR/dusk (a file, sibling of dusk-src/).
+cp "$bin" ../dusk
 
 # res/ — fonts, icons, RML stylesheets. cmake --install put them in
 # build/install/res/. Mirror via cp -a so the directory tree (including any

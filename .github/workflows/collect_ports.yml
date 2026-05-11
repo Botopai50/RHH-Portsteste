@@ -106,10 +106,31 @@ jobs:
               true
             } | while read -r file; do
               [[ "$file" == ports/released/* ]] || continue
+              # First: the file is somewhere inside the port_dir. Walk up
+              # until we hit a dir containing port.json.
               dir="$(dirname "$file")"
+              found=""
               while [[ "$dir" != "." && "$dir" != "/" ]]; do
-                [[ -f "$dir/port.json" ]] && echo "$dir" && break
+                if [[ -f "$dir/port.json" ]]; then
+                  found="$dir"; break
+                fi
                 dir="$(dirname "$dir")"
+              done
+              if [[ -n "$found" ]]; then
+                echo "$found"
+                continue
+              fi
+              # Second: the file is a launcher (.sh) sitting in the staging
+              # dir as a sibling of the port_dir — e.g. zelda-dusk/Zelda-Dusk.sh
+              # next to zelda-dusk/zelda-dusk/port.json. Check immediate
+              # children of the file's parent for port.json. Category-level
+              # dirs (which contain staging dirs, not port_dirs) won't match.
+              parent="$(dirname "$file")"
+              for child in "$parent"/*/; do
+                if [[ -f "${child}port.json" ]]; then
+                  echo "${child%/}"
+                  break
+                fi
               done
             done | sort -u > /tmp/ports.txt
 

@@ -62,11 +62,22 @@ git_clone_retry --depth 1 --branch n4.4.5 https://git.ffmpeg.org/ffmpeg.git
 # Upstream has no release tags — always build from master HEAD.
 git_clone_retry --recursive https://github.com/JohnnyonFlame/gmloader-next.git
 
-# Force regular pkg-config + arch-scoped LIBDIR rather than depending on
-# aarch64-linux-gnu-pkg-config being installed (it's a separate Debian
-# package and isn't present in our Bullseye base). LIBDIR scopes the
-# search to aarch64 multiarch so host x86_64 .pc files can't leak in.
-export PKG_CONFIG_LIBDIR="/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig:$FFMPEG_PREFIX/lib/pkgconfig"
+# pkg-config: scope to aarch64 multiarch so sdl2.pc / libzip.pc resolve
+# (Makefile.gmloader queries pkg-config for those two only — not FFmpeg).
+# Use regular pkg-config + PKG_CONFIG=pkg-config below so we don't depend
+# on aarch64-linux-gnu-pkg-config existing (it's a separate Debian package
+# not in our Bullseye base).
+export PKG_CONFIG_LIBDIR="/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
+
+# FFmpeg headers + libs: Makefile.gmloader assumes FFmpeg lives in the
+# cross-compiler's default include/library paths (which is true when
+# you've apt-installed libavcodec-dev:arm64 — Debian puts it in
+# /usr/include/aarch64-linux-gnu/ and /usr/lib/aarch64-linux-gnu/).
+# Our minimal FFmpeg is in $FFMPEG_PREFIX, so we tell gcc/ld about it via
+# CPATH + LIBRARY_PATH (both honored directly by the cross-compiler driver
+# without needing to touch the Makefile's CFLAGS/LIBS handling).
+export CPATH="$FFMPEG_PREFIX/include"
+export LIBRARY_PATH="$FFMPEG_PREFIX/lib"
 
 (
     cd gmloader-next
