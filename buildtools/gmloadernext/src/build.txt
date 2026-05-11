@@ -53,8 +53,7 @@ git_clone_retry --depth 1 --branch n4.4.5 https://git.ffmpeg.org/ffmpeg.git
 )
 
 #### GMLoader-next ####
-# Upstream has no release tags — always build from master HEAD.
-git_clone_retry --recursive https://github.com/JohnnyonFlame/gmloader-next.git
+git_clone_retry --recursive https://github.com/JeodC/gmloader-next.git
 
 # Scope pkg-config to aarch64 multiarch so sdl2.pc / libzip.pc resolve.
 # Use regular pkg-config + PKG_CONFIG=pkg-config below so we don't depend
@@ -135,6 +134,20 @@ done <<< "$needed"
 
 mkdir -p lib/arm64-v8a
 cp -L gmloader-next/lib/arm64-v8a/*.so lib/arm64-v8a/
+
+# Older GameMaker runners (e.g. AM2R 1.6b2's libyoyo.so) DT_NEEDED a
+# libstdc++.so — the Android Bionic C++ stub. They don't actually use any
+# C++ STL; the only symbols they reference are __cxa_atexit / __cxa_finalize,
+# both of which gmloader-next resolves via its libc thunks. So an empty .so
+# with the right SONAME is enough to satisfy the loader's prerequisite
+# check without shipping a real Android system library.
+cat > /tmp/libstdcxx_stub.c <<'STUB'
+void _gmloader_stub_libstdcxx(void) {}
+STUB
+aarch64-linux-gnu-gcc -shared -nostdlib -fPIC \
+    -Wl,-soname,libstdc++.so \
+    -o lib/arm64-v8a/libstdc++.so \
+    /tmp/libstdcxx_stub.c
 
 echo "Final lib/ contents:"
 find lib -type f -printf '  %p\n'
