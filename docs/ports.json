@@ -237,7 +237,7 @@
       "store": [],
       "availability": "paid",
       "reqs": [
-        "opengl"
+        "vulkan"
       ],
       "arch": [
         "aarch64"
@@ -248,11 +248,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/retro64/banjorecompiled/banjorecompiled/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/retro64/banjorecompiled/banjorecompiled/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/banjorecompiled.zip",
-      "date_updated": "2026-02-24T00:39",
-      "md5": "7e51b21f0ab69063ba806bee4201a004",
-      "size": 8708338,
-      "lifetime_downloads": 0,
-      "last_commit": "Normalize all port.json files for version 4"
+      "date_updated": "2026-05-11T10:49",
+      "md5": "cb74d98c21c9a0e95e05cd1b3b535d7d",
+      "size": 8708339,
+      "lifetime_downloads": 129,
+      "last_commit": "Add vulkan requirement to filter and tag ports that need it"
     }
   },
   {
@@ -3151,7 +3151,8 @@
       "store": [],
       "availability": "paid",
       "reqs": [
-        "ultra"
+        "ultra",
+        "vulkan"
       ],
       "arch": [
         "aarch64"
@@ -3162,11 +3163,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/unleashedrecomp/unleashedrecomp/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/unleashedrecomp/unleashedrecomp/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/unleashedrecomp.zip",
-      "date_updated": "2026-02-24T00:39",
-      "md5": "baa62d158cba702acb340fc824edd0ec",
-      "size": 1167541,
-      "lifetime_downloads": 0,
-      "last_commit": "Normalize all port.json files for version 4"
+      "date_updated": "2026-05-11T10:49",
+      "md5": "937ac5e8ae5cd0266a7a70e60dd1f217",
+      "size": 1167547,
+      "lifetime_downloads": 66,
+      "last_commit": "Add vulkan requirement to filter and tag ports that need it"
     }
   },
   {
@@ -4203,6 +4204,7 @@
       "store": [],
       "availability": "paid",
       "reqs": [
+        "ultra",
         "vulkan"
       ],
       "arch": [
@@ -4214,11 +4216,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-dusk.zip",
-      "date_updated": "2026-05-10T02:07",
-      "md5": "3d105d477f298efc0213ed10c16abb62",
-      "size": 19074741,
-      "lifetime_downloads": 0,
-      "last_commit": "[DUSK] v1.0.0"
+      "date_updated": "2026-05-11T10:49",
+      "md5": "7748aabf26d372155950ae5552ab6f3e",
+      "size": 19074746,
+      "lifetime_downloads": 61,
+      "last_commit": "Add vulkan requirement to filter and tag ports that need it"
     }
   },
   {
