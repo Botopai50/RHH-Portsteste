@@ -2974,11 +2974,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.cd/sonic.cd/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.cd/sonic.cd/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/sonic.cd.zip",
-      "date_updated": "2026-05-11T10:55",
-      "md5": "091b976777e7f5750720246cffad2f35",
+      "date_updated": "2026-05-12T05:55",
+      "md5": "d2ea53e79144f0674870724147ba553a",
       "size": 2976843,
-      "lifetime_downloads": 23,
-      "last_commit": "Clear stale patcherr.txt files on start of re-patching"
+      "lifetime_downloads": 25,
+      "last_commit": "[RSDKV3] Update to d142b0b"
     }
   },
   {
@@ -3018,11 +3018,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.mania/sonic.mania/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/sonic-collection/sonic.mania/sonic.mania/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/sonic.mania.zip",
-      "date_updated": "2026-04-23T15:08",
-      "md5": "05ecd6b491c15c8fffc596a72fcb0799",
+      "date_updated": "2026-05-12T05:55",
+      "md5": "127d58c2adcd31964f4f1d909d5eaf2b",
       "size": 2658405,
-      "lifetime_downloads": 0,
-      "last_commit": "[SONICMANIA] Update to ca19403"
+      "lifetime_downloads": 21,
+      "last_commit": "[RSDKV5] Update to 9dc6994"
     }
   },
   {
