@@ -4216,11 +4216,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-dusk.zip",
-      "date_updated": "2026-05-11T15:25",
-      "md5": "353cf0f83c27cfb7f9c72eb1deca50b7",
-      "size": 24713187,
-      "lifetime_downloads": 65,
-      "last_commit": "[DUSK] Update to v1.0.1"
+      "date_updated": "2026-05-12T23:26",
+      "md5": "05d912d8c3dff736adc35085f35bcf26",
+      "size": 24713065,
+      "lifetime_downloads": 131,
+      "last_commit": "[DUSK] Optimize autobuild"
     }
   },
   {
