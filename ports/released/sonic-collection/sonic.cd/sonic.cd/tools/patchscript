@@ -6,7 +6,19 @@ LOGERR="patcherr.txt"
 
 # Logging
 rm -f "$GAMEDIR/$LOGERR"
+# Save the patcher pipe (original stdout) on fd 3 before redirecting stdout
+# through tee. This lets emit_fail_msg send dialog overrides straight to the
+# patcher GUI without them appearing in patchlog.txt.
+exec 3>&1
 > "$GAMEDIR/$LOGFILE" && exec > >(tee "$GAMEDIR/$LOGFILE") 2>&1
+
+emit_fail_msg() {
+    echo "PATCH_FAIL_MSG:$1" >&3
+    echo "$1"
+}
+
+# Default failure-dialog message; overridden at specific failure points below.
+emit_fail_msg "Patching failed. Report on the RHH-Ports GitHub with patcherr.txt."
 echo "GAMEDIR is set to: $GAMEDIR"
 
 TARGET="$GAMEDIR/Data.rsdk"
@@ -55,14 +67,11 @@ check_inputs() {
                 return 0
                 ;;
             RSDKv3|RSDKv4|RSDKv5)
-                echo "ERROR: Data.rsdk has Origins/decomp signature '$sig'."
-                echo "       Rename to SonicCDu.rsdk so the extractor picks it up,"
-                echo "       then also provide the Origins audio files:"
-                echo "         SCD_music.acb, SCD_music.awb, SCD_sfx.acb, HITE_sfx.acb"
+                emit_fail_msg "Data.rsdk has Origins/decomp signature '$sig'. Rename to SonicCDu.rsdk and also provide SCD_music.acb, SCD_music.awb, SCD_sfx.acb, HITE_sfx.acb."
                 return 1
                 ;;
             *)
-                echo "ERROR: Data.rsdk has unrecognized signature: '$sig'"
+                emit_fail_msg "ERROR: Data.rsdk has unrecognized signature: '$sig'"
                 return 1
                 ;;
         esac
@@ -85,7 +94,7 @@ check_inputs() {
         echo "  SCD_sfx.acb      — image/x64/raw/sound/SCD_sfx.acb"
         echo "  HITE_sfx.acb     — image/x64/raw/sound/HITE_sfx.acb"
         echo ""
-        echo "Drop all five into this folder and relaunch."
+        emit_fail_msg "Missing required files from Sonic Origins. See patcherr.txt for the list, then drop them into this folder and relaunch."
         return 1
     fi
     return 0
@@ -106,7 +115,7 @@ check_tools() {
     if [ -n "$missing" ]; then
         echo "ERROR: port is missing required helper tools:"
         printf "$missing"
-        echo "Reinstall the port."
+        emit_fail_msg "Reinstall the port."
         return 1
     fi
     return 0
@@ -117,11 +126,11 @@ extract_rsdk() {
 
     echo "Extracting Origins SonicCDu.rsdk..."
     if ! "$EXTRACTOR" "$ORIGINS" "$FILELIST" "$GAMEDIR"; then
-        echo "ERROR: SonicCDu.rsdk extraction failed."
+        emit_fail_msg "ERROR: SonicCDu.rsdk extraction failed."
         return 1
     fi
     if [ ! -f "$DATADIR/Game/GameConfig.bin" ]; then
-        echo "ERROR: extraction produced no GameConfig.bin."
+        emit_fail_msg "ERROR: extraction produced no GameConfig.bin."
         return 1
     fi
     rm -f "$ORIGINS" "$TARGET"
@@ -352,7 +361,7 @@ extract_music() {
     size=$(wc -c <"$MUSIC_AWB")
     echo "Extracting SCD_music.awb ($((size / 1048576)) MB — larger Remastered/Hardware variants can take several minutes)..."
     if ! "$VGMSTREAM" -S -1 -o "$TMPDIR/?s_?n.wav" "$MUSIC_AWB" >/dev/null; then
-        echo "ERROR: vgmstream-cli failed on music."
+        emit_fail_msg "ERROR: vgmstream-cli failed on music."
         rm -f "$GAMEDIR/SCD_music.hcakey"
         return 1
     fi
@@ -397,7 +406,7 @@ extract_sfx() {
     # (the extra 7 include the P03/P06/P07 Amy cues). Filenames come out as
     # "<subsong>_<cue>.wav" — our *_CueName globs below still match.
     if ! "$VGMSTREAM" -S -1 -o "$TMPDIR/?s_?n.wav" "$SFX_ACB" >/dev/null; then
-        echo "ERROR: vgmstream-cli failed on SFX."
+        emit_fail_msg "ERROR: vgmstream-cli failed on SFX."
         rm -f "$GAMEDIR/SCD_sfx.hcakey"
         return 1
     fi
@@ -472,7 +481,7 @@ extract_hite() {
 
     echo "Extracting HITE_sfx.acb..."
     if ! "$VGMSTREAM" -S 0 -o "$TMPDIR/?n.wav" "$HITE_ACB" >/dev/null; then
-        echo "ERROR: vgmstream-cli failed on HITE SFX."
+        emit_fail_msg "ERROR: vgmstream-cli failed on HITE SFX."
         rm -f "$GAMEDIR/HITE_sfx.hcakey"
         return 1
     fi

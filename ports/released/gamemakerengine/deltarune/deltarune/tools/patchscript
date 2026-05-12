@@ -6,7 +6,19 @@ LOGERR="patcherr.txt"
 
 # Redirect output and error to the log file
 rm -f "$GAMEDIR/$LOGERR"
+# Save the patcher pipe (original stdout) on fd 3 before redirecting stdout
+# through tee. This lets emit_fail_msg send dialog overrides straight to the
+# patcher GUI without them appearing in patchlog.txt.
+exec 3>&1
 > "$GAMEDIR/$LOGFILE" && exec > >(tee "$GAMEDIR/$LOGFILE") 2>&1
+
+emit_fail_msg() {
+    echo "PATCH_FAIL_MSG:$1" >&3
+    echo "$1"
+}
+
+# Default failure-dialog message; overridden at specific failure points below.
+emit_fail_msg "Patching failed. Report on the RHH-Ports GitHub with patcherr.txt."
 echo "GAMEDIR is set to: $GAMEDIR"
 
 # Exports
@@ -19,7 +31,7 @@ prepare_system() {
     # Test for commands: python, zip
     PYTHON=$(command -v python3)
     if [ -z "$PYTHON" ]; then
-        echo "Missing Python!"
+        emit_fail_msg "Missing Python!"
         return 1
     fi
     
@@ -31,7 +43,7 @@ prepare_system() {
         $ESUDO umount "$TOOLKIT" 2>/dev/null || true
         $ESUDO mount "$RUNTIME" "$TOOLKIT"
     else
-        echo "This port requires the GMToolkit runtime. Please download it."
+        emit_fail_msg "This port requires the GMToolkit runtime. Please download it."
         return 1
     fi
 
@@ -43,7 +55,7 @@ prepare_system() {
         $ESUDO umount "$DOTNETDIR" 2>/dev/null || true
         $ESUDO mount "$DOTNETFILE" "$DOTNETDIR"
     else
-        echo "This port requires the Dotnet runtime. Please download it."
+        emit_fail_msg "This port requires the Dotnet runtime. Please download it."
         return 1
     fi
     
@@ -77,13 +89,13 @@ sanitize() {
     elif [ -f "$INSTALLDIR/data.win" ] || find "$INSTALLDIR" -maxdepth 2 -type f -name "data.win" -print -quit | grep -q .; then
         echo "Found game assets, continuing."
     else
-        echo "Unable to find game data! Cannot patch!"
+        emit_fail_msg "Unable to find game data! Cannot patch!"
         return 1
     fi
     
     # Check if base.port exists in $INSTALLDIR
     if [ ! -e "$INSTALLDIR/base.port" ]; then
-        echo "Error: base.port not found in $INSTALLDIR!"
+        emit_fail_msg "Error: base.port not found in $INSTALLDIR!"
         return 1
     fi
 }
@@ -163,7 +175,7 @@ dump_textures() {
         -e "$INSTALLDIR/assets/textures" "$INSTALLDIR/assets/data2.win"
 
     if [ $? -ne 0 ]; then
-        echo "[DOTNET]: Patch failed to apply."
+        emit_fail_msg "[DOTNET]: Patch failed to apply."
         return 1
     else
         rm -f "$INSTALLDIR/assets/data.win" && mv "$INSTALLDIR/assets/data2.win" "$INSTALLDIR/assets/data.win"
@@ -204,7 +216,7 @@ process_assets() {
         rm -rf "$INSTALLDIR/assets"  # Clean up temporary assets folder
         echo "Finished processing $GAMEFILE!"
     else
-        echo "ERROR: No data.win file in $INSTALLDIR/$GAMEFILE"
+        emit_fail_msg "ERROR: No data.win file in $INSTALLDIR/$GAMEFILE"
         rm -rf "$INSTALLDIR/assets"
         return 1
     fi
@@ -225,12 +237,12 @@ apply_xdelta() {
             echo "$output"
             rm -f "$INSTALLDIR/assets/data.win" && mv "$INSTALLDIR/assets/data2.win" "$INSTALLDIR/assets/data.win"
         else
-            echo "Failed to apply patch for $GAMEFILE"
+            emit_fail_msg "Failed to apply patch for $GAMEFILE"
             echo "$output"
             return 1
         fi
     else
-        echo "No data.win file found to patch for $GAMEFILE!"
+        emit_fail_msg "No data.win file found to patch for $GAMEFILE!"
         return 1
     fi
 }
@@ -246,7 +258,7 @@ compress_audio() {
         echo "Audio compression applied successfully for $GAMEFILE."
     else
         # Failure
-        echo "Audio compression failed for $GAMEFILE."
+        emit_fail_msg "Audio compression failed for $GAMEFILE."
         rm -rf "$TMPDIR"
         return 1
     fi

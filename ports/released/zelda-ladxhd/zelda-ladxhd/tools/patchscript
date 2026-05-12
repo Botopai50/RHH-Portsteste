@@ -1,12 +1,24 @@
 #!/bin/bash
 
 GAMEDIR="$PWD"
-LOGFILE="patchlog.txt"
-LOGERR="patcherr.txt"
+LOGFILE="$GAMEDIR/../patchlog.txt"
+LOGERR="$GAMEDIR/../patcherr.txt"
 
-rm -f "$GAMEDIR/../$LOGERR"
-> "$GAMEDIR/../$LOGFILE" && exec > >(tee "$GAMEDIR/../$LOGFILE") 2>&1
+rm -f "$LOGERR"
+# Save the patcher's pipe (original stdout) on fd 3 before redirecting stdout
+# through tee. This lets emit_fail_msg send dialog overrides straight to the
+# patcher GUI without them appearing in patchlog.txt.
+exec 3>&1
+> "$LOGFILE" && exec > >(tee "$LOGFILE") 2>&1
 echo "GAMEDIR is set to: $GAMEDIR"
+
+emit_fail_msg() {
+    echo "PATCH_FAIL_MSG:$1" >&3
+    echo "$1"
+}
+
+# Default failure-dialog message; overridden at specific failure points below.
+emit_fail_msg "Patching failed. See patcherr.txt in the port folder for details."
 
 # Variables
 DATADIR="$GAMEDIR"
@@ -67,6 +79,7 @@ prepare_system() {
         SEVENZIP="$(command -v 7zzs 2>/dev/null || command -v 7z 2>/dev/null)"
     fi
     if [ -z "$SEVENZIP" ]; then
+        emit_fail_msg "Patching failed: 7zip is missing on this device."
         echo "Missing 7zip!"
         return 1
     fi
@@ -77,6 +90,7 @@ prepare_system() {
         VCDIFF="$(command -v vcdiff 2>/dev/null)"
     fi
     if [ -z "$VCDIFF" ] || [ ! -x "$VCDIFF" ]; then
+        emit_fail_msg "Patching failed: vcdiff tool missing. Try reinstalling the port."
         echo "Missing vcdiff!"
         return 1
     fi
@@ -88,6 +102,7 @@ prepare_system() {
     elif command -v wget >/dev/null 2>&1; then
         FETCH="wget -q -O"
     else
+        emit_fail_msg "Patching failed: no download tool (curl or wget) found."
         echo "Missing curl or wget!"
         return 1
     fi
@@ -113,6 +128,7 @@ extract_game() {
     fi
 
     if [ -z "$ZIPFILE" ] || [ ! -f "$ZIPFILE" ]; then
+        emit_fail_msg "No game zip found. Place the v1.0.0 source zip in the port's data folder."
         echo "ERROR: No zip file found in $DATADIR"
         return 1
     fi
@@ -122,6 +138,7 @@ extract_game() {
     # The zip has everything under a top-level folder
     "$SEVENZIP" x -aoa -o"$TMPDIR/game_extract" "$ZIPFILE"
     if [ $? -ne 0 ]; then
+        emit_fail_msg "Could not extract the game zip - the file may be corrupted."
         echo "Failed to extract zip."
         return 1
     fi
@@ -151,12 +168,14 @@ extract_game() {
     fi
 
     if [ -z "$EXECUTABLE" ]; then
+        emit_fail_msg "Game executable missing after extraction. Wrong zip file?"
         echo "ERROR: Executable not found after extraction."
         return 1
     fi
 
     hash=$(md5sum "$EXECUTABLE" | awk '{print $1}')
     if [ "$hash" != "$GOOD_HASH" ]; then
+        emit_fail_msg "Wrong game version. The original v1.0.0 source zip is required - see the port's readme."
         echo "ERROR: Executable hash mismatch. Expected v1.0.0 original."
         echo "  Expected: $GOOD_HASH"
         echo "  Got:      $hash"
@@ -186,6 +205,7 @@ download_patches() {
         echo "Downloading patches..."
         $FETCH "$PATCHES_ZIP" "$PATCHES_URL"
         if [ $? -ne 0 ]; then
+            emit_fail_msg "Patch download failed. Check internet, or drop patches_linux_arm64.zip into data/ for offline install."
             echo "Failed to download patches."
             return 1
         fi
@@ -367,11 +387,13 @@ patch_game_files() {
     if [ "$TOTAL_PATCHED" -eq 0 ]; then
         local patch_count
         patch_count=$(find "$PATCHES" -maxdepth 1 -type f | wc -l)
+        emit_fail_msg "No patches were applied - patch files may be missing or incompatible."
         echo "ERROR: 0 patches applied across all passes, but $patch_count file(s) exist in $PATCHES."
         return 1
     fi
 
     if [ "$FAILED_PATCHES" -gt 0 ]; then
+        emit_fail_msg "Some patches failed to apply. See patcherr.txt for details."
         echo "ERROR: $FAILED_PATCHES patch(es) failed to decode — game would be incomplete."
         return 1
     fi

@@ -6,7 +6,19 @@ LOGERR="patcherr.txt"
 
 # Redirect output and error to the log file
 rm -f "$GAMEDIR/$LOGERR"
+# Save the patcher pipe (original stdout) on fd 3 before redirecting stdout
+# through tee. This lets emit_fail_msg send dialog overrides straight to the
+# patcher GUI without them appearing in patchlog.txt.
+exec 3>&1
 > "$GAMEDIR/$LOGFILE" && exec > >(tee "$GAMEDIR/$LOGFILE") 2>&1
+
+emit_fail_msg() {
+    echo "PATCH_FAIL_MSG:$1" >&3
+    echo "$1"
+}
+
+# Default failure-dialog message; overridden at specific failure points below.
+emit_fail_msg "Patching failed. Report on the RHH-Ports GitHub with patcherr.txt."
 echo "GAMEDIR is set to: $GAMEDIR"
 
 # Exports
@@ -19,7 +31,7 @@ prepare_system() {
     # Test for python
     PYTHON=$(command -v python3)
     if [ -z "$PYTHON" ]; then
-        echo "Missing Python!"
+        emit_fail_msg "Missing Python!"
         return 1
     fi
 
@@ -31,7 +43,7 @@ prepare_system() {
         $ESUDO umount "$TOOLKIT" 2>/dev/null || true
         $ESUDO mount "$RUNTIME" "$TOOLKIT"
     else
-        echo "This port requires the GMToolkit runtime. Please download it."
+        emit_fail_msg "This port requires the GMToolkit runtime. Please download it."
         sleep 2
         return 1
     fi
@@ -44,7 +56,7 @@ prepare_system() {
         $ESUDO umount "$DOTNETDIR" 2>/dev/null || true
         $ESUDO mount "$DOTNETFILE" "$DOTNETDIR"
     else
-        echo "This port requires the Dotnet runtime. Please download it."
+        emit_fail_msg "This port requires the Dotnet runtime. Please download it."
         sleep 2
         return 1
     fi
@@ -83,7 +95,7 @@ prepare_assets() {
     if [ -z "$MOD_ZIP" ]; then
         echo "Error: Could not find Undertale Red & Yellow zip file. Checking for unzipped assets."
         if [ ! -f "$DATADIR/utry/UNDERTALE.exe" ]; then
-            echo "Couldn't find unzipped assets! Please copy the ut-red-yellow-zip file to the assets folder."
+            emit_fail_msg "Couldn't find unzipped assets! Please copy the ut-red-yellow-zip file to the assets folder."
             return 1
         fi
     else
@@ -115,7 +127,7 @@ prepare_assets() {
     # Pull the vanilla-to-utry patch
     BASEPATCH=$(find "$DATADIR/utry" -maxdepth 1 -type f -name "Undertale*1.08*to*UTRY*.xdelta" | head -n 1)
     if [ ! -f "$BASEPATCH" ]; then
-        echo "Did not find base patch file! Please notify the port creator."
+        emit_fail_msg "Did not find base patch file! Please notify the port creator."
         return 1
     else
         mv "$BASEPATCH" "$TOOLDIR/patches/utry_steam.xdelta"
@@ -131,7 +143,7 @@ prepare_assets() {
 apply_xdelta() {
     # Check if the data.win file exists
     if [ ! -f "$DATADIR/data.win" ]; then
-        echo "No data.win file found! Did you copy your Undertale Steam or GOG data to the assets folder?"
+        emit_fail_msg "No data.win file found! Did you copy your Undertale Steam or GOG data to the assets folder?"
         return 1
     fi
 
@@ -142,7 +154,7 @@ apply_xdelta() {
 
     # Game version doesn't match GOG or Steam v1.08
     if [ "$FILESUM" != "$STEAMSUM" ] && [ "$FILESUM" != "$GOGSUM" ]; then
-        echo "MD5 doesn't match Steam or GOG! UTRY is not compatible with this version!"
+        emit_fail_msg "MD5 doesn't match Steam or GOG! UTRY is not compatible with this version!"
         return 1
     fi
 
@@ -153,7 +165,7 @@ apply_xdelta() {
             echo "GOG to Steam patch applied successfully."
             mv -f "$DATADIR/data2.win" "$DATADIR/data.win"
         else
-            echo "Failed to apply GOG to Steam patch!"
+            emit_fail_msg "Failed to apply GOG to Steam patch!"
             return 1
         fi
     fi
@@ -165,7 +177,7 @@ apply_xdelta() {
         # Remove original after success
         rm -f "$DATADIR/data.win" && mv "$DATADIR/data2.win" "$DATADIR/data.win"
     else
-        echo "Failed to apply Undertale Red & Yellow patch!"
+        emit_fail_msg "Failed to apply Undertale Red & Yellow patch!"
         return 1
     fi
 }
@@ -189,7 +201,7 @@ replace_code() {
             rm -rf "$TMPDIR"/*
         fi
     else
-        echo "Failed to replace gml scripts."
+        emit_fail_msg "Failed to replace gml scripts."
         return 1
     fi
 }
@@ -200,7 +212,7 @@ compress_audio() {
         echo "Audio compression applied successfully."
     else
         # Failure
-        echo "Audio compression failed."
+        emit_fail_msg "Audio compression failed."
         rmdir "$TMPDIR"
         return 1
     fi

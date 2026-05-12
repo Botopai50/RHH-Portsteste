@@ -6,7 +6,19 @@ LOGERR="$GAMEDIR/patchlog_error.txt"
 
 # Redirect output and error to the log file
 rm -f "$LOGERR"
+# Save the patcher pipe (original stdout) on fd 3 before redirecting stdout
+# through tee. This lets emit_fail_msg send dialog overrides straight to the
+# patcher GUI without them appearing in patchlog.txt.
+exec 3>&1
 exec > >(tee -a "$LOGFILE") 2>&1
+
+emit_fail_msg() {
+    echo "PATCH_FAIL_MSG:$1" >&3
+    echo "$1"
+}
+
+# Default failure-dialog message; overridden at specific failure points below.
+emit_fail_msg "Patching failed. Report on the RHH-Ports GitHub with patcherr.txt."
 echo "GAMEDIR is set to: $GAMEDIR"
 
 # Patch failure function
@@ -14,7 +26,7 @@ patch_failure() {
     mv "$LOGFILE" "$LOGERR"
     $ESUDO umount "$DOTNETDIR"
     $ESUDO umount "$TOOLKIT"
-    echo "Patching process failed."
+    emit_fail_msg "Patching process failed."
     exit 1
 }
 
@@ -26,7 +38,7 @@ if [ -f "$RUNTIME" ]; then
     $ESUDO umount "$RUNTIME" || true
     $ESUDO mount "$RUNTIME" "$TOOLKIT"
 else
-    echo "This port requires the GMToolkit runtime. Please download it."
+    emit_fail_msg "This port requires the GMToolkit runtime. Please download it."
     sleep 2
     patch_failure
 fi
@@ -39,7 +51,7 @@ if [ -f "$DOTNETFILE" ]; then
     $ESUDO umount "$DOTNETFILE" || true
     $ESUDO mount "$DOTNETFILE" "$DOTNETDIR"
 else
-    echo "This port requires the Dotnet runtime. Please download it."
+    emit_fail_msg "This port requires the Dotnet runtime. Please download it."
     sleep 2
     patch_failure
 fi
@@ -68,13 +80,13 @@ fi
 # Test for commands: python, zip
 PYTHON=$(which python3)
 if [ -z "$PYTHON" ]; then
-    echo "Missing Python!"
+    emit_fail_msg "Missing Python!"
     patch_failure
 fi
 
 ZIP=$(which zip)
 if [ -z "$ZIP" ]; then
-    echo "Missing zip!"
+    emit_fail_msg "Missing zip!"
     patch_failure
 fi
 
@@ -109,7 +121,7 @@ dump_textures() {
         -e "$DATADIR/textures" "$DATADIR/game.droid"
 
     if [ $? -ne 0 ]; then
-        echo "[DOTNET]: Texture dumping failed to apply."
+        emit_fail_msg "[DOTNET]: Texture dumping failed to apply."
         patch_failure
     else
         rm -f "$DATADIR/data.win"
@@ -126,7 +138,7 @@ compress_audio() {
         echo "Audio compression applied successfully."
     else
         # Failure
-        echo "Audio compression failed for $GAMEFILE."
+        emit_fail_msg "Audio compression failed for $GAMEFILE."
         rmdir "$TMPDIR"
         patch_failure
     fi
