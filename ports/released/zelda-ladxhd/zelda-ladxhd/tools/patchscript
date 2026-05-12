@@ -15,10 +15,9 @@ echo "GAMEDIR is set to: $GAMEDIR"
 emit_fail_msg() {
     echo "PATCH_FAIL_MSG:$1" >&3
     echo "$1"
+    FAIL_MSG_SET=1
 }
 
-# Default failure-dialog message; overridden at specific failure points below.
-emit_fail_msg "Patching failed. See patcherr.txt in the port folder for details."
 
 # Variables
 DATADIR="$GAMEDIR"
@@ -472,6 +471,7 @@ process_game() {
 
 # Main
 if ! process_game; then
+    [ -z "$FAIL_MSG_SET" ] && emit_fail_msg "Patching failed. See patcherr.txt in the port folder for details."
     echo "Patching process failed!"
     mv "$LOGFILE" "$LOGERR"
 else
