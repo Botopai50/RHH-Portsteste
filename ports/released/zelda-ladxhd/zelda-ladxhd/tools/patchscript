@@ -23,10 +23,12 @@ UPDATE_CHECK_FILE="$GAMEDIR/.update_check"
 BACKUP_ZIP="$GAMEDIR/.backup/source.zip"
 GOOD_HASH="f4adfba864b852908705ea6a18a48f18"
 
-# File-based tracking of which .xdelta patches have been applied. Using a file
+# File-based tracking of which .vcdiff patches have been applied. Using a file
 # (rather than a shell variable) keeps state across `find | while` pipelines —
 # those run in a subshell.
 CONSUMED_FILE="$TMPDIR/consumed_patches.txt"
+TOTAL_PATCHED=0
+FAILED_PATCHES=0
 
 mark_consumed() {
     echo "$1" >> "$CONSUMED_FILE"
@@ -45,6 +47,19 @@ get_derived_files() {
     awk -F'\t' -v s="$1" '$1==s {print $2; exit}' "$TARGETS_FILE"
 }
 
+# Compute a target-size cap for vcdiff decode. open-vcdiff defaults to 64 MiB
+# which the main executable patch (small .NET launcher -> ~100 MB self-contained
+# Linux binary) blows past. The patch file's ADD-literal sections cap how much
+# new content the target can contain, so source_size + patch_size * K is a
+# reasonable upper bound for legitimate patches. K=50 covers heavy COPY
+# repetition; 64 MiB floor handles tiny derived patches.
+vcdiff_max_size() {
+    local src_size patch_size
+    src_size=$(stat -c%s "$1" 2>/dev/null) || src_size=0
+    patch_size=$(stat -c%s "$2" 2>/dev/null) || patch_size=0
+    echo $(( src_size + patch_size * 50 + 67108864 ))
+}
+
 prepare_system() {
     # Locate 7zip
     SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
@@ -56,15 +71,16 @@ prepare_system() {
         return 1
     fi
 
-    # Locate xdelta3
-    XDELTA3="$controlfolder/xdelta3"
-    if [ ! -x "$XDELTA3" ]; then
-        XDELTA3="$(command -v xdelta3 2>/dev/null)"
+    # Ensure we have vcdiff
+    VCDIFF="$GAMEDIR/../tools/vcdiff"
+    if [ ! -x "$VCDIFF" ]; then
+        VCDIFF="$(command -v vcdiff 2>/dev/null)"
     fi
-    if [ -z "$XDELTA3" ]; then
-        echo "Missing xdelta3!"
+    if [ -z "$VCDIFF" ] || [ ! -x "$VCDIFF" ]; then
+        echo "Missing vcdiff!"
         return 1
     fi
+    chmod +x "$VCDIFF" 2>/dev/null || true
 
     # Locate a download tool.
     if command -v curl >/dev/null 2>&1; then
@@ -181,10 +197,7 @@ download_patches() {
 }
 
 download_file_targets() {
-    # Pull the upstream derived-files mapping from Functions.cs and parse it
-    # into TARGETS_FILE. If anything fails, get_derived_files returns nothing
-    # and the auto-match pass takes over — slower and slightly riskier, but
-    # it means the port doesn't break when upstream adds new derivatives.
+    # Pull the upstream derived-files mapping from Functions.cs
     local cs_file="$TMPDIR/Functions.cs"
     local manual_cs="$DATADIR/Functions.cs"
 
@@ -193,12 +206,12 @@ download_file_targets() {
         echo "Using manually-placed Functions.cs from data/."
         cp -f "$manual_cs" "$cs_file"
     elif ! $FETCH "$cs_file" "$FUNCTIONS_CS_URL"; then
-        echo "WARN: could not download Functions.cs; auto-match will handle all derivatives."
+        echo "ERROR: could not download Functions.cs; derived patches will be skipped."
         return
     fi
 
     if ! awk -f "$PARSE_TARGETS_AWK" "$cs_file" > "$TARGETS_FILE" 2>&1; then
-        echo "WARN: failed to parse Functions.cs; auto-match will handle all derivatives."
+        echo "ERROR: failed to parse Functions.cs; derived patches will be skipped."
         rm -f "$TARGETS_FILE"
         return
     fi
@@ -232,110 +245,33 @@ prepare_linux_files() {
     done
 }
 
-get_patch_source_size() {
-    # Read the expected source segment size from the xdelta3 patch header.
-    # Empty output means the size hint is unavailable; caller should fall back
-    # to brute-force matching.
-    "$XDELTA3" printhdr "$1" 2>/dev/null \
-        | awk '
-            /[Ss]ource segment size/ {
-                for (i=1; i<=NF; i++) if ($i ~ /^[0-9]+$/) { print $i; exit }
-            }'
-}
-
-auto_match_patches() {
-    # Catch xdelta patches that no static mapping covered (new derived files
-    # added by upstream patcher releases). xdelta3 patches carry an Adler32
-    # checksum of the source content, so we can pick the right source by
-    # trying same-extension candidates and letting xdelta3 reject mismatches.
-    # MUST run before any 1:1 patches mutate the source files.
-    local found=0
-    local unmatched=0
-    local unmapped_file="$TMPDIR/unmapped_patches.txt"
-    local candidates_file="$TMPDIR/auto_match_candidates.txt"
-    : > "$unmapped_file"
-
-    for patch in "$PATCHES"/*.xdelta; do
+report_unmapped_patches() {
+    local count=0
+    for patch in "$PATCHES"/*.vcdiff; do
         [ -f "$patch" ] || continue
         local pname out_name
         pname=$(basename "$patch")
         is_consumed "$pname" && continue
 
-        out_name="${pname%.xdelta}"
-        # Skip 1:1 patches (output filename exists as a v1.0.0 source) — the main loop handles those.
+        out_name="${pname%.vcdiff}"
+        # 1:1 patches (output filename exists as a v1.0.0 source) are handled
+        # by the main loop — they're not "unmapped."
         if [ -n "$(find "$DATADIR" -type f -name "$out_name" ! -path "*/tmp/*" ! -path "*/Mods/*" -print -quit 2>/dev/null)" ]; then
             continue
         fi
 
-        echo "$patch" >> "$unmapped_file"
+        if [ "$count" -eq 0 ]; then
+            echo "WARN: patches with no static mapping found — upstream may have added new derivatives:"
+        fi
+        echo "  - $pname"
+        count=$((count + 1))
     done
 
-    local count
-    count=$(wc -l < "$unmapped_file" 2>/dev/null)
-    count=${count:-0}
     if [ "$count" -eq 0 ]; then
-        echo "All patches accounted for; no auto-match needed."
-        return
+        echo "All patches accounted for by static mapping."
+    else
+        echo "($count unmapped patch(es) skipped — auto-match disabled without checksums.)"
     fi
-
-    echo "Found $count unmapped patch(es); attempting auto-match by source checksum..."
-
-    while IFS= read -r patch; do
-        [ -z "$patch" ] && continue
-        local pname out_name ext find_pattern
-        pname=$(basename "$patch")
-        out_name="${pname%.xdelta}"
-        case "$out_name" in
-            *.*) ext="${out_name##*.}" ;;
-            *)   ext="" ;;
-        esac
-
-        local expected_size
-        expected_size=$(get_patch_source_size "$patch")
-
-        find_pattern="*"
-        [ -n "$ext" ] && find_pattern="*.$ext"
-
-        find "$DATADIR" -type f -name "$find_pattern" \
-            ! -path "*/tmp/*" ! -path "*/Mods/*" ! -path "*/Content/Editor/*" \
-            > "$candidates_file"
-
-        local matched=""
-        while IFS= read -r src; do
-            [ -z "$src" ] && continue
-
-            if [ -n "$expected_size" ]; then
-                local src_size
-                src_size=$(stat -c%s "$src" 2>/dev/null) || continue
-                [ "$src_size" = "$expected_size" ] || continue
-            fi
-
-            local out_dir tmp_out out_path
-            out_dir=$(dirname "$src")
-            out_path="$out_dir/$out_name"
-            tmp_out="$PATCHED/$out_name"
-
-            if "$XDELTA3" -d -f -s "$src" "$patch" "$tmp_out" 2>/dev/null; then
-                mv -f "$tmp_out" "$out_path"
-                matched="$src"
-                break
-            fi
-        done < "$candidates_file"
-
-        if [ -n "$matched" ]; then
-            local rel_src=${matched#$DATADIR/}
-            echo "  Auto-matched: $pname  (from: $rel_src)"
-            mark_consumed "$pname"
-            found=$((found + 1))
-        else
-            local size_info=""
-            [ -n "$expected_size" ] && size_info=" (size $expected_size)"
-            echo "  WARN: no matching source for $pname$size_info"
-            unmatched=$((unmatched + 1))
-        fi
-    done < "$unmapped_file"
-
-    echo "Auto-match summary: $found matched, $unmatched unmatched."
 }
 
 handle_multi_file_patches() {
@@ -350,16 +286,23 @@ handle_multi_file_patches() {
     [ -n "$derived" ] || return
 
     for d in $derived; do
-        local xdelta_file="$PATCHES/$d.xdelta"
-        [ -f "$xdelta_file" ] || continue
-        is_consumed "$d.xdelta" && continue
+        local vcdiff_file="$PATCHES/$d.vcdiff"
+        [ -f "$vcdiff_file" ] || continue
+        is_consumed "$d.vcdiff" && continue
 
         local patched_file="$PATCHED/$d"
         local target_file="$source_dir/$d"
+        local max_size
+        max_size=$(vcdiff_max_size "$source_file" "$vcdiff_file")
 
-        "$XDELTA3" -d -f -s "$source_file" "$xdelta_file" "$patched_file"
+        if ! "$VCDIFF" decode -max_target_file_size="$max_size" -max_target_window_size="$max_size" -dictionary "$source_file" -delta "$vcdiff_file" -target "$patched_file" 2>&1; then
+            echo "  ERROR: vcdiff decode failed for $d (source: $source_name)"
+            FAILED_PATCHES=$((FAILED_PATCHES + 1))
+            continue
+        fi
         mv -f "$patched_file" "$target_file"
-        mark_consumed "$d.xdelta"
+        mark_consumed "$d.vcdiff"
+        TOTAL_PATCHED=$((TOTAL_PATCHED + 1))
         echo "  Derived: $d (from $source_name)"
     done
 }
@@ -369,9 +312,6 @@ patch_game_files() {
     prepare_linux_files
 
     # Pass 1: derived files via the live upstream mapping. Sources still v1.0.0.
-    # Static mapping wins because it knows the *correct* source — auto-match's
-    # weak Adler32 verification is fooled by similar-size files (fonts, menu
-    # backgrounds, map data) and would pick wrong sources for some derivatives.
     local files_list="$TMPDIR/datadir_files.txt"
     find "$DATADIR" -type f > "$files_list"
 
@@ -381,18 +321,18 @@ patch_game_files() {
             */~temp/*|*/tmp/*|*/Mods/*) continue ;;
         esac
         filename=$(basename "$file")
-        [ "$filename" = "xdelta3" ] && continue
 
         derived=$(get_derived_files "$filename")
         [ -n "$derived" ] && handle_multi_file_patches "$file"
     done < "$files_list"
 
-    # Pass 2: catch any patches the static mapping didn't cover (new derivatives
-    # not yet reflected in upstream, or upstream parse failed). Sources still v1.0.0.
-    auto_match_patches
+    # Pass 2: log any patches the static mapping didn't cover. We can't safely
+    # auto-match them (upstream encodes without checksums; vcdiff won't reject
+    # wrong sources) — surface them so Functions.cs parsing can be updated.
+    report_unmapped_patches
 
-    # Pass 3: 1:1 patches. Now we mutate sources. Re-run find since auto-match
-    # and the derived pass may have written new files we don't want to iterate.
+    # Pass 3: 1:1 patches. Now we mutate sources. Re-run find since the derived
+    # pass may have written new files we don't want to iterate.
     find "$DATADIR" -type f > "$files_list"
 
     echo "Applying 1:1 patches..."
@@ -402,21 +342,40 @@ patch_game_files() {
             */~temp/*|*/tmp/*|*/Mods/*) continue ;;
         esac
         filename=$(basename "$file")
-        [ "$filename" = "xdelta3" ] && continue
 
-        xdelta_file="$PATCHES/$filename.xdelta"
-        [ -f "$xdelta_file" ] || continue
-        is_consumed "$filename.xdelta" && continue
+        vcdiff_file="$PATCHES/$filename.vcdiff"
+        [ -f "$vcdiff_file" ] || continue
+        is_consumed "$filename.vcdiff" && continue
 
         patched_file="$PATCHED/$filename"
-        "$XDELTA3" -d -f -s "$file" "$xdelta_file" "$patched_file"
+        max_size=$(vcdiff_max_size "$file" "$vcdiff_file")
+        if ! "$VCDIFF" decode -max_target_file_size="$max_size" -max_target_window_size="$max_size" -dictionary "$file" -delta "$vcdiff_file" -target "$patched_file" 2>&1; then
+            echo "  ERROR: vcdiff decode failed for $filename"
+            FAILED_PATCHES=$((FAILED_PATCHES + 1))
+            continue
+        fi
         mv -f "$patched_file" "$file"
-        mark_consumed "$filename.xdelta"
+        mark_consumed "$filename.vcdiff"
         applied=$((applied + 1))
+        TOTAL_PATCHED=$((TOTAL_PATCHED + 1))
         echo "  [$applied] $filename"
     done < "$files_list"
 
     echo "Applied $applied 1:1 patches."
+
+    # Sanity checks
+    if [ "$TOTAL_PATCHED" -eq 0 ]; then
+        local patch_count
+        patch_count=$(find "$PATCHES" -maxdepth 1 -type f | wc -l)
+        echo "ERROR: 0 patches applied across all passes, but $patch_count file(s) exist in $PATCHES."
+        return 1
+    fi
+
+    if [ "$FAILED_PATCHES" -gt 0 ]; then
+        echo "ERROR: $FAILED_PATCHES patch(es) failed to decode — game would be incomplete."
+        return 1
+    fi
+
     echo "Patching complete."
     post_patch
 }

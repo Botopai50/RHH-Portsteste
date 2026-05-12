@@ -59,7 +59,7 @@ fi
 if [ ! -f "$GAME" ]; then
     if [ -f "$controlfolder/utils/patcher.txt" ]; then
         export PATCHER_FILE="$GAMEDIR/tools/patchscript"
-        export PATCHER_QUESTIONS="$GAMEDIR/tools/questions.lua"
+        [ -f "$UPDATE_CHECK_FILE" ] || export PATCHER_QUESTIONS="$GAMEDIR/tools/questions.lua"
         export PATCHER_GAME="$(basename "${0%.*}")" # This gets the current script filename without the extension
         export PATCHER_TIME="2 to 5 minutes"
         export controlfolder
