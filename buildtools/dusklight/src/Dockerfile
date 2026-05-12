@@ -11,10 +11,16 @@ ENV DEBIAN_FRONTEND=noninteractive
 # subsystem and fails configure when any is missing rather than skipping.
 # This list mirrors upstream Dusklight's CI install step so we surface the same
 # set of capabilities.
+#
+# llvm-19 supplies llvm-ar-19 / llvm-ranlib-19 — required when
+# CMAKE_INTERPROCEDURAL_OPTIMIZATION=ON (build.txt) because regular `ar`
+# can't index LLVM bitcode .o files produced by ThinLTO. Without it,
+# CMake leaves CMAKE_CXX_COMPILER_AR=NOTFOUND and the abseil static-lib
+# link step fails with `CMAKE_CXX_COMPILER_AR-NOTFOUND: not found`.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates wget curl git zip unzip pkg-config \
         build-essential cmake ninja-build make \
-        clang-19 lld-19 clang-tools-19 \
+        clang-19 lld-19 llvm-19 clang-tools-19 \
         libvulkan-dev \
         libcurl4-openssl-dev libpng-dev libfreetype-dev libjpeg-dev \
         libgtk-3-dev \
