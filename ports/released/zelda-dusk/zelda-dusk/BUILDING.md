@@ -25,32 +25,26 @@ Plus a **Rust toolchain** (Aurora's `nod` is built from source via Corrosion on 
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
 ```
 
-And **vcpkg** at a stable path:
-
-```bash
-git clone --depth 1 https://github.com/microsoft/vcpkg.git ~/vcpkg
-VCPKG_FORCE_SYSTEM_BINARIES=1 ~/vcpkg/bootstrap-vcpkg.sh
-export VCPKG_ROOT=~/vcpkg
-```
-
 ## 2. Clone & build
 
 ```bash
 git clone --recurse-submodules https://github.com/TwilitRealm/dusk.git
 cd dusk
-git checkout v1.0.0   # or whatever the latest release tag is
+git checkout v1.0.1   # or whatever the latest release tag is
 
-cmake --preset linux-clang-relwithdebinfo \
-  -DVCPKG_TARGET_TRIPLET=arm64-linux \
+cmake --preset linux-clang \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
   -DCMAKE_C_COMPILER=clang-19 -DCMAKE_CXX_COMPILER=clang++-19 \
-  -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld-19" \
+  -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld-19 -static-libstdc++ -static-libgcc" \
   -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld-19" \
   -DDUSK_ENABLE_DISCORD=OFF \
   -DDUSK_ENABLE_UPDATE_CHECKER=OFF \
   -DDUSK_ENABLE_SENTRY_NATIVE=OFF
 
-cmake --build build/linux-clang-relwithdebinfo --parallel "$(nproc)"
-cmake --install build/linux-clang-relwithdebinfo
+cmake --build build/linux-clang --parallel "$(nproc)"
+cmake --install build/linux-clang
+strip --strip-unneeded build/install/dusk
 ```
 
 The install step lands the `dusk` binary and `res/` (fonts, ImGui assets, RML stylesheets) under `build/install/`.

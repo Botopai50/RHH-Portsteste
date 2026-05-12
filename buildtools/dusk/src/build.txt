@@ -27,13 +27,6 @@ git_clone_retry() {
     return 1
 }
 
-#### vcpkg ####
-
-git_clone_retry --depth 1 https://github.com/microsoft/vcpkg.git
-export VCPKG_FORCE_SYSTEM_BINARIES=1
-(cd vcpkg && ./bootstrap-vcpkg.sh -disableMetrics)
-export VCPKG_ROOT="$PWD/vcpkg"
-
 #### Dusk (Twilight Princess Reimplementation) ####
 
 git_clone_retry --recursive https://github.com/TwilitRealm/dusk.git dusk-src
@@ -52,37 +45,34 @@ else
   git checkout "$DUSK_TAG"
 fi
 
-# Submodule init can hit transient HTTP 500s — retry.
+# Submodule init can hit transient HTTP 500s — retry. --jobs parallelises
+# across Aurora's many small submodules (SDL3, magic_enum, abseil, fmt, ...)
+# which otherwise serialise and dominate clone time on a cold runner.
 for attempt in 1 2 3 4 5; do
-  if git submodule update --init --recursive; then break; fi
+  if git submodule update --init --recursive --jobs "$(nproc)"; then break; fi
   echo "submodule update failed (attempt $attempt); retrying in $((attempt * 5))s..." >&2
   sleep $((attempt * 5))
   [[ $attempt -eq 5 ]] && { echo "submodule update failed after 5 attempts"; exit 1; }
 done
 
-# Configure with the linux-clang-relwithdebinfo preset (real preset name —
-# upstream has no "linux-release"). The preset chains debug-info build type
-# + clang/clang++ compilers + ${sourceDir}/build/${presetName} binary dir
-# + ${sourceDir}/build/install for CMAKE_INSTALL_PREFIX.
 export CC=clang-19
 export CXX=clang++-19
 
-cmake --preset linux-clang-relwithdebinfo \
-  -DVCPKG_TARGET_TRIPLET=arm64-linux \
+cmake --preset linux-clang \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
   -DCMAKE_C_COMPILER=clang-19 \
   -DCMAKE_CXX_COMPILER=clang++-19 \
-  -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld-19" \
+  -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld-19 -static-libstdc++ -static-libgcc" \
   -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld-19" \
   -DDUSK_ENABLE_DISCORD=OFF \
   -DDUSK_ENABLE_UPDATE_CHECKER=OFF \
   -DDUSK_ENABLE_SENTRY_NATIVE=OFF
 
-# Build, then install — install copies dusk + res/ + (Aurora runtime DLLs on
-# Windows; nothing extra on Linux) into build/install/. The post-install
-# step in CMakeLists.txt strips debug info into a sibling .dbg file so the
-# installed binary stays a sane size.
-cmake --build build/linux-clang-relwithdebinfo --parallel "$(nproc)"
-cmake --install build/linux-clang-relwithdebinfo
+cmake --build build/linux-clang --parallel "$(nproc)"
+cmake --install build/linux-clang
+
+strip --strip-unneeded build/install/dusk
 
 # Locate the installed binary.
 bin="build/install/dusk"

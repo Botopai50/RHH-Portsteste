@@ -58,9 +58,6 @@ export XDG_DATA_HOME="$GAMEDIR/config"
 export LD_LIBRARY_PATH="$GAMEDIR/libs:$LD_LIBRARY_PATH"
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
-# Vulkan / Mesa hints (kept lean; tweak per device if needed)
-export MESA_VK_WSI_PRESENT_MODE=mailbox
-
 # Locate the disc image directly in the port folder
 DVD=""
 for ext in ciso iso gcm rvz nkit.iso; do
