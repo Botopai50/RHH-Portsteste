@@ -4178,20 +4178,20 @@
   },
   {
     "version": 4,
-    "name": "zelda-dusk.zip",
+    "name": "zelda-dusklight.zip",
     "items": [
-      "Zelda-Dusk.sh",
-      "zelda-dusk"
+      "Zelda-Dusklight.sh",
+      "zelda-dusklight"
     ],
     "items_opt": [],
     "attr": {
-      "title": "The Legend of Zelda : Twilight Princess (Dusk)",
+      "title": "The Legend of Zelda : Twilight Princess (Dusklight)",
       "porter": [
         "Jeod"
       ],
-      "desc": "Dusk is an unofficial PC port of The Legend of Zelda: Twilight Princess produced through reverse-engineered reimplementation, powered by the Aurora framework. You must provide your own copy of the game.",
+      "desc": "Dusklight is an unofficial PC port of The Legend of Zelda: Twilight Princess produced through reverse-engineered reimplementation, powered by the Aurora framework. You must provide your own copy of the game.",
       "desc_md": null,
-      "inst": "Put your iso file in ports/zelda-dusk/.",
+      "inst": "Put your iso file in ports/zelda-dusklight/.",
       "inst_md": null,
       "genres": [
         "action",
@@ -4213,14 +4213,14 @@
       "min_glibc": "2.41"
     },
     "source": {
-      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/screenshot.png",
-      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusk/zelda-dusk/README.md",
-      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-dusk.zip",
-      "date_updated": "2026-05-12T23:26",
-      "md5": "05d912d8c3dff736adc35085f35bcf26",
-      "size": 24713065,
-      "lifetime_downloads": 131,
-      "last_commit": "[DUSK] Optimize autobuild"
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusklight/zelda-dusklight/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusklight/zelda-dusklight/README.md",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-dusklight.zip",
+      "date_updated": "2026-05-12T23:51",
+      "md5": "5ab20d27a0d2ceee6a555418e2f04059",
+      "size": 25036290,
+      "lifetime_downloads": 0,
+      "last_commit": "[DUSKLIGHT] Rename to match upstream branding change"
     }
   },
   {
