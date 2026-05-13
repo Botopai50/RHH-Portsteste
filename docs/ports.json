@@ -3662,11 +3662,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/steamlink/steamlink/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/steamlink/steamlink/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/steamlink.zip",
-      "date_updated": "2026-05-12T14:44",
-      "md5": "06139c19eab6cb37111c70f3d9ed86da",
-      "size": 21555316,
-      "lifetime_downloads": 49,
-      "last_commit": "Update all patchscripts in prep for new patcher gui commands"
+      "date_updated": "2026-05-13T20:59",
+      "md5": "b6901071284549883762244f74d6f05b",
+      "size": 21555882,
+      "lifetime_downloads": 51,
+      "last_commit": "Integrate suckbluefrog's appimage to satisfy #39"
     }
   },
   {
