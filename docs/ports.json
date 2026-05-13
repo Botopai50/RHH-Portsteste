@@ -2295,7 +2295,9 @@
       "image": null,
       "rtr": true,
       "exp": false,
-      "runtime": [],
+      "runtime": [
+        "python_3.11.squashfs"
+      ],
       "store": [],
       "availability": "full",
       "reqs": [],
@@ -2308,11 +2310,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pharos.zip",
-      "date_updated": "2026-05-13T13:08",
-      "md5": "c0c07b239dfbc8d16074104ec4cec5db",
-      "size": 21669484,
-      "lifetime_downloads": 282,
-      "last_commit": "[Pharos] Update to v1.0.7"
+      "date_updated": "2026-05-13T19:58",
+      "md5": "37dae025dc556a8b6af8246a93bda44a",
+      "size": 21669504,
+      "lifetime_downloads": 285,
+      "last_commit": "[PHAROS] Add missing runtime dep"
     }
   },
   {
