@@ -1,0 +1,35 @@
+{
+  "version": 4,
+  "name": ".zip",
+  "items": [
+    ".sh",
+    ""
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "",
+    "desc_md": null,
+    "inst": "",
+    "inst_md": null,
+    "genres": [],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [],
+    "store": [],
+    "availability": "paid",
+    "reqs": [
+      "!lowres",
+      "2gb",
+      "opengl"
+    ],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": ""
+  }
+}
