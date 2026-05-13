@@ -4133,7 +4133,7 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        ""
+        "solarus-1.6.5.squashfs"
       ],
       "store": [],
       "availability": "free",
@@ -4145,11 +4145,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-mercurischest/zelda-mercurischest/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/zelda-mercurischest/zelda-mercurischest/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-mercurischest.zip",
-      "date_updated": "2026-02-24T00:39",
-      "md5": "08c2ce90050c0e6492ae8066cff32753",
-      "size": 2634921,
-      "lifetime_downloads": 0,
-      "last_commit": "Convert older port.json runtime strings to arrays"
+      "date_updated": "2026-05-13T19:46",
+      "md5": "61dce63b2957617b78b03ebbda8b29e4",
+      "size": 2634937,
+      "lifetime_downloads": 4,
+      "last_commit": "Fix runtime tag missing in port.json"
     }
   },
   {
