@@ -835,11 +835,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/doomengines/doomengines/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/doomengines/doomengines/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/doomengines.zip",
-      "date_updated": "2026-02-24T00:37",
-      "md5": "221c462896cf0decfe35e41dbb9b1309",
-      "size": 94871329,
-      "lifetime_downloads": 0,
-      "last_commit": "[DOOMENGINES] Add Shrine mod"
+      "date_updated": "2026-05-13T20:52",
+      "md5": "83a7cd5127dcaef96e05d53b035e18a6",
+      "size": 94871379,
+      "lifetime_downloads": 24,
+      "last_commit": "[DOOMENGINES] Adjust launchscript to add mapped buffer args and align gzdoom/uzdoom"
     }
   },
   {
