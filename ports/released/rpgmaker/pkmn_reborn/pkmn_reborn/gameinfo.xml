@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Pokemon Reborn.sh</path>
+		<name>Pokémon : Reborn</name>
+		<desc>Reborn is a free 3rd-gen style downloadable game featuring all content through Generation 7. Experience a never-before-seen layer of strategy with the all-original Field Effects, using the terrain to outplay and overwhelm your opponent! Collect, train and battle with all 807 species available in-game and take on Gym Leaders of all 18 types as you fight to restore Reborn to prosperity!</desc>
+		<image>./pkmn_reborn/cover.png</image>
+		<thumbnail>./pkmn_reborn/thumb.png</thumbnail>
+		<releasedate>20230117</releasedate>
+		<developer>Amethyst and Chasing Selene</developer>
+		<publisher>Reborn Team</publisher>
+		<genre>Adventure</genre>
+		<players>1</players>
+	</game>
+</gamelist>

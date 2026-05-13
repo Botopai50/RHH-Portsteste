@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Impostor Factory.sh</path>
+		<name>Impostor Factory</name>
+		<desc>A bonkers time-loop tragicomedy murder mystery thriller featuring multiple casualties and a suspicious cat, from the creator of To the Moon & Finding Paradise.</desc>
+		<image>./impostorfactory/cover.png</image>
+		<thumbnail>./impostorfactory/thumb.png</thumbnail>
+		<releasedate>20211014</releasedate>
+		<developer>Freebird Games</developer>
+		<publisher>Freebird Games</publisher>
+		<genre>Adventure</genre>
+		<players>1</players>
+	</game>
+</gamelist>

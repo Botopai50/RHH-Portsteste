@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Pokemon Rejuvenation.sh</path>
+		<name>Pokémon : Rejuvenation</name>
+		<desc>Rejuvenation is a free heavily story driven Generation 3 styled game. It features content all the way through Generation 8. Battle your way through countless trainers and rise to the top! Travel through the Aevium region while also fighting to protect it from the evil forces that vow to cut down Aevium's reign of prosperity and peace.</desc>
+		<image>./pkmn_rejuvenation/cover.png</image>
+		<thumbnail>./pkmn_rejuvenation/thumb.png</thumbnail>
+		<releasedate>20231030</releasedate>
+		<developer>Jan and Rejuvenation Team</developer>
+		<publisher>Reborn Team</publisher>
+		<genre>Adventure</genre>
+		<players>1</players>
+	</game>
+</gamelist>

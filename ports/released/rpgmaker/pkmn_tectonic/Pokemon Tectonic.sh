@@ -19,29 +19,40 @@ get_controls
 # Variables
 GAMEDIR="/$directory/ports/pkmn_tectonic"
 SEVEN_ZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
+MKXPZ_RUNTIME="$controlfolder/libs/mkxp-z.squashfs"
+MKXPZ="$HOME/mkxp-z"
 
 # CD and set logging
 cd "$GAMEDIR" || exit 1
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
-# Setup permissions
-$ESUDO chmod +x "$GAMEDIR/mkxp-z.aarch64"
+# Mount the mkxp-z runtime (squashfs ships mkxp-z + libs + stdlib)
+if [ -f "$MKXPZ_RUNTIME" ]; then
+    $ESUDO mkdir -p "$MKXPZ"
+    $ESUDO umount "$MKXPZ" 2>/dev/null || true
+    $ESUDO mount "$MKXPZ_RUNTIME" "$MKXPZ"
+else
+    pm_message "mkxp-z runtime missing. Install it via PortMaster."
+    sleep 5
+    pm_finish
+    exit 1
+fi
 
 # Make directories
 mkdir -p "$GAMEDIR/config"
 
-# Exports
+# stdlib lives inside the runtime. Drop any pre-runtime extracted copy
+# first so the bind mount lands cleanly, then bind into $GAMEDIR.
+[ -e "$GAMEDIR/stdlib" ] && [ ! -L "$GAMEDIR/stdlib" ] && rm -rf "$GAMEDIR/stdlib"
+bind_directories "$GAMEDIR/stdlib" "$MKXPZ/stdlib"
+
+# Exports — LD_LIBRARY_PATH is deferred until just before mkxp-z runs.
+# Backgrounded gptokeyb inherits its env at fork time, and runtime libs
+# in its LD path confuse gptokeyb's dependency chain.
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 export XDG_DATA_HOME="$GAMEDIR/config"
 export LC_ALL=C
 export LANG=C
-
-# Unzip stdlib
-if [ -f "$GAMEDIR/stdlib.zip" ]; then
-    if "$SEVEN_ZIP" x -y -bso0 -bsp0 "$GAMEDIR/stdlib.zip" -o"$GAMEDIR"; then
-        rm -f "$GAMEDIR/stdlib.zip"
-    fi
-fi
 
 unzip_data() {
     pm_message "Unzipping game data. This could take a while..."
@@ -115,13 +126,16 @@ MENU_FILE="$GAMEDIR/Plugins/Tectonic Graphics and UI/Menus/Options/PokemonOption
 [ -f "$MENU_FILE" ] && sed -i '/optionsCommands\[cmdControlsMapping = optionsCommands\.length\]/d' "$MENU_FILE"
 
 # Gptk — launched with stock LD path so its hotkey/kill logic isn't
-# broken by our shipped libs
+# broken by our runtime libs
 $GPTOKEYB "mkxp-z.aarch64" -c "$GAMEDIR/tectonic.gptk" &
 
-# Now wire our libs in for mkxp-z and run it
-export LD_LIBRARY_PATH="$GAMEDIR/libs.${DEVICE_ARCH}:$LD_LIBRARY_PATH"
-pm_platform_helper "$GAMEDIR/mkxp-z.aarch64" >/dev/null
-./mkxp-z.aarch64
+# Now wire the runtime libs in for mkxp-z and run it.
+export LD_LIBRARY_PATH="$MKXPZ/libs:$LD_LIBRARY_PATH"
+export SRCDIR="$GAMEDIR"
+pm_platform_helper "$MKXPZ/mkxp-z.aarch64" >/dev/null
+"$MKXPZ/mkxp-z.aarch64"
 
 # Cleanup
+$ESUDO umount "$GAMEDIR/stdlib" 2>/dev/null || true
+$ESUDO umount "$MKXPZ" 2>/dev/null || true
 pm_finish

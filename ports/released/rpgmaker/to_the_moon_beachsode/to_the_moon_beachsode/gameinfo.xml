@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./To the Moon Beach Episode.sh</path>
+		<name>To the Moon: Beach Episode</name>
+		<desc>The Beach Episode™ of To the Moon, Finding Paradise, and Impostor Factory. But something's off.</desc>
+		<image>./to_the_moon_beachsode/cover.png</image>
+		<thumbnail>./to_the_moon_beachsode/thumb.png</thumbnail>
+		<releasedate>20200824</releasedate>
+		<developer>Freebird Games</developer>
+		<publisher>Freebird Games</publisher>
+		<genre>Adventure</genre>
+		<players>1</players>
+	</game>
+</gamelist>

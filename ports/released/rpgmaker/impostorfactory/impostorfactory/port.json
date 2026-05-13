@@ -1,0 +1,37 @@
+{
+  "version": 4,
+  "name": "impostorfactory.zip",
+  "items": [
+    "Impostor Factory.sh",
+    "impostorfactory"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Impostor Factory",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "A bonkers time-loop tragicomedy murder mystery thriller featuring multiple casualties and a suspicious cat, from the creator of To the Moon & Finding Paradise.",
+    "desc_md": null,
+    "inst": "Copy the entire contents of your Steam install (`steamapps/common/Impostor Factory/Impostor Factory/`) into the `impostorfactory` folder. Required files: Game.rgssad, Game.ini, Audio/, Fonts/, preload/.",
+    "inst_md": null,
+    "genres": [
+      "adventure"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [
+      "mkxp-z.squashfs"
+    ],
+    "store": [
+      "https://store.steampowered.com/app/1471700/"
+    ],
+    "availability": "paid",
+    "reqs": [],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": ""
+  }
+}

@@ -22,7 +22,9 @@
     "image": null,
     "rtr": false,
     "exp": false,
-    "runtime": [],
+    "runtime": [
+      "mkxp-z.squashfs"
+    ],
     "store": [],
     "availability": "free",
     "reqs": [],

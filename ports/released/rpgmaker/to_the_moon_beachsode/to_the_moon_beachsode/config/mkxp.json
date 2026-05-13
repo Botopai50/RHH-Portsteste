@@ -1,0 +1,22 @@
+{
+    "fullscreen": true,
+    "winResizable": false,
+    "anyAltToggleFS": true,
+    "smoothScaling": 1,
+    "vsync": true,
+    "frameSkip": false,
+    "fixedAspectRatio": false,
+    "subImageFix": true,
+    "enableBlitting": false,
+    "enableReset": false,
+    "useScriptNames": true,
+    "allowSymlinks": true,
+    "iconPath": "icon.png",
+    "dataPathOrg": "freebirdgames",
+    "dataPathApp": "beachepisode",
+    "preloadScript": [
+        "preload/mkxp_compat.rb",
+        "preload/ruby18_comp.rb",
+        "preload/win32_wrap.rb"
+    ]
+}

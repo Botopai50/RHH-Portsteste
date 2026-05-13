@@ -1,0 +1,33 @@
+# Installation
+
+Copy the entire contents of your Steam install directory into the `to_the_moon_beachsode` folder. On Windows that's typically:
+
+```
+SteamLibrary/steamapps/common/To the Moon Beachsode/To the Moon Beachsode/*
+```
+
+The Windows binaries (`Game.exe`, `Player-*.exe`, `RGSS104E.dll`, `steam_api*.dll`, `steamshim_*.exe`) are unused but harmless. The launcher only needs:
+
+- `Game.rgssad`
+- `Game.ini`
+- `Audio/`
+- `Fonts/`
+- `preload/` (ships with the Steam install)
+
+# Controls
+
+| Button | Action |
+|--------|--------|
+| D-Pad / Left Stick | Move cursor |
+| Right Stick | Mouse (WASD emulation) |
+| A / Start | Confirm |
+| B / Select | Cancel |
+| Select + Start | Quit |
+
+# Saves
+
+Saves persist under `to_the_moon_beachsode/config/freebirdgames/beachepisode/Saves/` on the SD card.
+
+## Thanks
+Freebird Games for the original game  
+[Dokoma](https://github.com/dokoma) for compiling mkxp-z 

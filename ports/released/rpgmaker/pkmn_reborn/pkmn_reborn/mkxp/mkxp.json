@@ -1,0 +1,29 @@
+{
+    "fullscreen": true,
+    "winResizable": false,
+    "anyAltToggleFS": true,
+    "smoothScaling": 1,
+    "vsync": false,
+    "frameSkip": false,
+    "fixedAspectRatio": false,
+    "subImageFix": true,
+    "enableBlitting": false,
+    "midiSoundFont": "soundfont.sf2",
+    "preloadScript": [
+        "scripts/preload/ruby_classic_wrap.rb",
+        "scripts/preload/mkxp_wrap.rb",
+        "scripts/preload/win32_wrap.rb"
+    ],
+    "JITEnable": true,
+    "JITMinCalls": 5000,
+    "bindingNames": {
+        "c": "Use/Interact",
+        "b": "Back/Menu",
+        "a": "Run",
+        "x": "Scroll Up",
+        "y": "Scroll Down",
+        "z": "Registered",
+        "l": "Save/Sort Bag",
+        "r": "Speed Up"
+    }
+}

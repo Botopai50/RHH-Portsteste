@@ -1,0 +1,37 @@
+{
+  "version": 4,
+  "name": "to_the_moon_beachsode.zip",
+  "items": [
+    "To the Moon Beach Episode.sh",
+    "to_the_moon_beachsode"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Just a To the Moon Series Beach Episode",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "The Beach Episode™ of To the Moon, Finding Paradise, and Impostor Factory. But something's off.",
+    "desc_md": null,
+    "inst": "Copy the entire contents of your Steam install (`steamapps/common/To the Moon Beachsode/To the Moon Beachsode/`) into the `to_the_moon_beachsode` folder. Required files: Game.rgssad, Game.ini, Audio/, Fonts/, preload/.",
+    "inst_md": null,
+    "genres": [
+      "adventure"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [
+      "mkxp-z.squashfs"
+    ],
+    "store": [
+      "https://store.steampowered.com/app/1416700/"
+    ],
+    "availability": "paid",
+    "reqs": [],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": ""
+  }
+}
