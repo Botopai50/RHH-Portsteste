@@ -2156,7 +2156,7 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "solarus-run"
+        "solarus-1.6.5.squashfs"
       ],
       "store": [],
       "availability": "free",
@@ -2168,11 +2168,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/osanasrevenge/osanasrevenge/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/solarus/osanasrevenge/osanasrevenge/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/osanasrevenge.zip",
-      "date_updated": "2026-02-24T00:39",
-      "md5": "e0bce3fe8d95b237245e0328e1c9659f",
-      "size": 372851,
-      "lifetime_downloads": 0,
-      "last_commit": "Convert older port.json runtime strings to arrays"
+      "date_updated": "2026-05-13T19:49",
+      "md5": "c7b1059b0e50e26c8c0e3d21ded12f53",
+      "size": 372863,
+      "lifetime_downloads": 10,
+      "last_commit": "Fix incorrect runtime tag in port.json"
     }
   },
   {
