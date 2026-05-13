@@ -4216,11 +4216,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusklight/zelda-dusklight/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-dusklight/zelda-dusklight/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-dusklight.zip",
-      "date_updated": "2026-05-12T23:51",
-      "md5": "5ab20d27a0d2ceee6a555418e2f04059",
-      "size": 25036290,
-      "lifetime_downloads": 131,
-      "last_commit": "[DUSKLIGHT] Rename to match upstream branding change"
+      "date_updated": "2026-05-13T00:28",
+      "md5": "c2bbeccb24ced7c08a2b27232de0a879",
+      "size": 26594664,
+      "lifetime_downloads": 132,
+      "last_commit": "[DUSK] Optimize build"
     }
   },
   {
