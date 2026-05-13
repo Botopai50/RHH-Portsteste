@@ -7,8 +7,12 @@ async function loadPorts() {
     const requirementsDropdown = document.getElementById('requirements-filter');
     const runtimeDropdown = document.getElementById('runtime-filter');
     const sortDropdown = document.getElementById('sort-select');
+    const recentStrip = document.getElementById('recent-strip');
+    const devlogContent = document.getElementById('devlog-content');
     const GITHUB_REPO_OWNER = 'JeodC';
     const GITHUB_REPO_NAME = 'RHH-Ports';
+    const RECENT_COUNT = 6;
+    const DEVLOG_COUNT = 3;
 
     const runtimeNames = {
         'dotnet-8.0.12.squashfs': '.NET 8',
@@ -88,12 +92,98 @@ async function loadPorts() {
         const runtimeSet = new Set(ports.flatMap(p => p.attr?.runtime || []));
         populateDropdown(runtimeDropdown, Array.from(runtimeSet).sort(), r => runtimeNames[r] || r);
 
-        if (![...sortDropdown.options].some(o => o.value === 'most_downloaded')) {
-            const opt = document.createElement('option');
-            opt.value = 'most_downloaded';
-            opt.textContent = 'Most Downloaded';
-            sortDropdown.appendChild(opt);
-        }
+        // --- Recently Updated Carousel ---
+        const renderRecentStrip = () => {
+            if (!recentStrip) return;
+            const recent = [...ports]
+                .filter(p => p.source?.date_updated)
+                .sort((a, b) => new Date(b.source.date_updated) - new Date(a.source.date_updated))
+                .slice(0, RECENT_COUNT);
+
+            const escAttr = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            recentStrip.innerHTML = recent.map(p => {
+                const title = p.attr?.title || p.name;
+                const screenshot = p.source?.screenshot_url || '';
+                const date = (p.source?.date_updated || '').split('T')[0];
+                const href = p.source?.download_url || '#';
+                const filename = href ? href.split('/').pop() : '';
+                const dlSinceUpdate = downloadCounts?.[filename] ?? 0;
+                const lastCommit = p.source?.last_commit;
+                const meaningfulCommit = (lastCommit && !lastCommit.includes('Update ports.json')) ? lastCommit : '';
+                const tooltip = meaningfulCommit || title;
+                return `
+                    <a class="recent-tile" href="${href}" target="_blank" rel="noopener noreferrer" title="${escAttr(tooltip)}">
+                        <img src="${screenshot}" alt="${title} screenshot" loading="lazy">
+                        <div class="recent-tile-info">
+                            <div class="recent-tile-title">${title}</div>
+                            <div class="recent-tile-date">${date} · ${dlSinceUpdate} ↓ since update</div>
+                            ${meaningfulCommit ? `<div class="recent-tile-commit">${escAttr(meaningfulCommit)}</div>` : ''}
+                        </div>
+                    </a>`;
+            }).join('');
+        };
+
+        // --- Devlog ---
+        const renderDevlog = async () => {
+            if (!devlogContent) return;
+            try {
+                const res = await fetch('devlog/index.json', { cache: 'no-cache' });
+                if (!res.ok) throw new Error('manifest missing');
+                const data = await res.json();
+                const allPosts = (data.posts || [])
+                    .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+                const posts = allPosts.slice(0, DEVLOG_COUNT);
+
+                if (posts.length === 0) {
+                    devlogContent.innerHTML = '<p class="devlog-empty">No devlog posts yet.</p>';
+                    return;
+                }
+
+                const postsHtml = posts.map(p => `
+                    <article class="devlog-post">
+                        <header>
+                            <h3>${p.title}</h3>
+                            <time>${p.date}</time>
+                        </header>
+                        ${p.excerpt ? `<p class="devlog-excerpt">${p.excerpt}</p>` : ''}
+                        <details class="devlog-body" data-slug="${p.slug}">
+                            <summary>Read more →</summary>
+                            <div class="devlog-rendered">Loading…</div>
+                        </details>
+                    </article>
+                `).join('');
+
+                const olderHtml = `<p class="devlog-older"><a href="https://github.com/JeodC/RHH-Ports/tree/main/docs/devlog" target="_blank" rel="noopener noreferrer">Older posts →</a></p>`;
+
+                devlogContent.innerHTML = postsHtml + olderHtml;
+
+                // Lazy-fetch + render markdown when expanded
+                devlogContent.querySelectorAll('.devlog-body').forEach(details => {
+                    details.addEventListener('toggle', async () => {
+                        if (!details.open) return;
+                        const rendered = details.querySelector('.devlog-rendered');
+                        if (rendered.dataset.loaded === 'true') return;
+                        const slug = details.dataset.slug;
+                        try {
+                            const mdRes = await fetch(`devlog/${slug}.md`, { cache: 'no-cache' });
+                            if (!mdRes.ok) throw new Error('post missing');
+                            const md = await mdRes.text();
+                            rendered.innerHTML = (typeof marked !== 'undefined')
+                                ? marked.parse(md, { gfm: true, breaks: true })
+                                : `<pre>${md.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</pre>`;
+                            rendered.dataset.loaded = 'true';
+                        } catch (err) {
+                            rendered.innerHTML = '<p>Could not load this post.</p>';
+                        }
+                    });
+                });
+            } catch (err) {
+                devlogContent.innerHTML = '<p class="devlog-empty">Devlog unavailable.</p>';
+            }
+        };
+
+        renderRecentStrip();
+        renderDevlog();
 
         // --- Core Functions ---
         const renderPorts = (filtered) => {

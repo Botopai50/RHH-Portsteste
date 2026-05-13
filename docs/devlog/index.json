@@ -1,0 +1,22 @@
+{
+  "posts": [
+    {
+      "slug": "2026-05-13-engine-runtimes",
+      "title": "Game engines as shared runtimes",
+      "date": "2026-05-13",
+      "excerpt": "47 GameMaker and 6 RPG Maker ports moved off per-port bundled engines onto shared squashfs runtimes. A few hundred MB of duplicate binaries that aren't being redownloaded any more, plus why I'm hosting Reborn and Rejuvenation ports and how they deviate from PortMaster's versions."
+    },
+    {
+      "slug": "2026-05-12-dusklight",
+      "title": "Dusklight: porting Twilight Princess to ARM64 handhelds",
+      "date": "2026-05-12",
+      "excerpt": "An unofficial Twilight Princess port built on the Aurora framework — Vulkan-only, so most handhelds can't run it. Plus a side-detour into an upstream Dawn copy-paste bug, and a heads-up on Courage Reborn for non-Vulkan devices."
+    },
+    {
+      "slug": "2026-05-11-buildtools-automation",
+      "title": "Automating open-source port builds",
+      "date": "2026-05-11",
+      "excerpt": "Reproducible builds were the primary motivation: every port's binary is pinned to a specific upstream commit via .upstream-sha, every recipe is public, and anyone can re-run the workflow and diff the result. Six ports and one runtime rebuild themselves via a daily cron as the labor-saving bonus."
+    }
+  ]
+}

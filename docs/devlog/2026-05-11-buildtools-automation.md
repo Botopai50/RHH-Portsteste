@@ -1,0 +1,15 @@
+Six ports and one runtime in this repo rebuild themselves now. RSDKv5 (Sonic Mania), RSDKv4 (Sonic 1 + Sonic 2, same recipe), RSDKv3 (Sonic CD), Sonic 3 AIR, Dusklight, and the GMLoader-Next runtime. A daily cron checks each upstream; if HEAD moved, it rebuilds, commits, and pushes. Before this I was doing all of it by hand every few weeks — clone, configure, build in WSL2, copy artifacts, verify libs, commit, push. Repetitive, easy to forget, easy to mess up.
+
+The setup lives in [`buildtools/`](https://github.com/JeodC/RHH-Ports/tree/main/buildtools). A central [`registry.json`](https://github.com/JeodC/RHH-Ports/blob/main/buildtools/registry.json) lists every automated port with its upstream repo, target directory in `ports/released/`, and what artifacts to copy. Each port has its own Dockerfile that extends a shared `rhh-base` image (Ubuntu focal + SDL2 dev deps + CMake), so per-port Dockerfiles only carry their unique apt deps. Docker's layer cache makes a full rebuild-all run take minutes.
+
+What makes this work is the **`.upstream-sha`** marker. Each automated port has a tiny committed file inside its port directory holding the upstream commit SHA its current binaries were built from. The cron's first step is one API call per port — *"is upstream's HEAD still this SHA?"* Yes -> skip. No -> rebuild and write the new SHA back in the same commit. No timestamps, no "days since last build" fuzziness, no rebuilding things that haven't changed.
+
+Fan-out saves duplication too. RSDKv4 is one decomp producing a binary used by both Sonic 1 and Sonic 2 — `target_dirs` is a list, both targets get the same binary copied in and the same `.upstream-sha` written so they stay locked in step. One build, two commits.
+
+The library-staging discipline matters more than it looks. Each recipe ends with explicit `cp -L /usr/lib/.../libfoo.so.N ./libs/libfoo.so.N` lines — exact filenames, dereferenced. The recipes fail the build loudly on any mismatch. This guarantees no missing libraries or falling back to system variants that may not perform as well.
+
+`workflow_dispatch` also has a `force-build: true` mode that runs the pipeline but skips the commit — outputs land in a workflow artifact zip instead. That's how I smoke-test recipe changes before letting the scheduled run commit anything real.
+
+There's a side-benefit to all this that isn't about saving time. Every automated port in this repo has a public recipe — Dockerfile, build script, library staging — and a `.upstream-sha` that pins exactly which upstream commit produced the binary sitting in `ports/released/`. If you don't trust a binary I built, you can read the recipe, re-run the workflow yourself, and diff the result against what's in the repo. That's not how every binary in the retro handheld scene gets distributed; I've written about the security gap on closed-source ROM downloaders before, and reproducible builds are the opposite end of the same spectrum.
+
+Full conventions and the "adding a new port" walkthrough live in [`buildtools/README.md`](https://github.com/JeodC/RHH-Ports/blob/main/buildtools/README.md).

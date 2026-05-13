@@ -25,7 +25,7 @@ body {
 	padding: 1rem;
 	background: var(--bg);
 	color: var(--text);
-	max-width: 1200px;
+	max-width: 2200px;
 	line-height: 1.5;
 }
 
@@ -163,6 +163,281 @@ details[open] summary {
 }
 
 /* =========================
+	Recently Updated Carousel
+========================= */
+.recent-updates {
+	margin: 2rem auto;
+	max-width: 1200px;
+}
+
+.recent-updates h2 {
+	margin: 0 0 0.8rem;
+	font-size: 1.4rem;
+	text-align: center;
+}
+
+.recent-strip {
+	display: flex;
+	gap: 1rem;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	padding-bottom: 0.6rem;
+	-webkit-overflow-scrolling: touch;
+}
+
+.recent-strip::-webkit-scrollbar {
+	height: 8px;
+}
+
+.recent-strip::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: 4px;
+}
+
+.recent-tile {
+	flex: 0 0 260px;
+	scroll-snap-align: start;
+	background: var(--card-bg);
+	border: 1px solid #232323;
+	border-radius: var(--radius);
+	overflow: hidden;
+	text-decoration: none;
+	color: var(--text);
+	box-shadow: var(--shadow-sm);
+	transition: transform 0.12s ease, box-shadow 0.12s ease;
+	display: flex;
+	flex-direction: column;
+}
+
+.recent-tile:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-md);
+}
+
+.recent-tile img {
+	width: 100%;
+	height: 150px;
+	object-fit: cover;
+	display: block;
+}
+
+.recent-tile-info {
+	padding: 0.75rem 0.9rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+}
+
+.recent-tile-title {
+	font-weight: 600;
+	font-size: 1rem;
+	line-height: 1.25;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.recent-tile-date {
+	font-size: 0.82rem;
+	color: #444;
+}
+
+.recent-tile-commit {
+	margin-top: 0.3rem;
+	padding: 0.3rem 0.5rem;
+	background: rgba(0, 0, 0, 0.08);
+	border-radius: var(--radius);
+	border-left: 3px solid var(--primary);
+	font-size: 0.78rem;
+	font-style: italic;
+	color: #333;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* =========================
+	Devlog
+========================= */
+.devlog {
+	margin: 2rem auto;
+	max-width: 800px;
+	background: var(--accent-bg);
+	border: 2px solid #666;
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-md);
+	overflow: hidden;
+	position: relative;
+}
+
+.devlog::before {
+	content: "";
+	position: absolute;
+	inset: 0 auto 0 0;
+	width: 6px;
+	background: var(--primary);
+	z-index: 1;
+}
+
+.devlog summary {
+	padding: 1rem;
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	user-select: none;
+}
+
+.devlog summary::-webkit-details-marker {
+	display: none;
+}
+
+.devlog summary h2 {
+	margin: 0;
+	display: inline-block;
+}
+
+.devlog summary h2 small {
+	font-size: 0.9rem;
+	font-weight: normal;
+	color: var(--primary);
+	margin-left: 10px;
+}
+
+.devlog details[open] > summary {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	margin-bottom: 0.5rem;
+}
+
+.devlog-content {
+	padding: 0 1.5rem 1.5rem 2rem;
+}
+
+.devlog-empty {
+	margin: 0;
+	color: #555;
+	text-align: center;
+	font-style: italic;
+}
+
+.devlog-post {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 1rem 0;
+}
+
+.devlog-post:last-child {
+	border-bottom: none;
+}
+
+.devlog-post header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 0.6rem;
+	flex-wrap: wrap;
+	margin-bottom: 0.3rem;
+}
+
+.devlog-post h3 {
+	margin: 0;
+	font-size: 1.15rem;
+}
+
+.devlog-post time {
+	color: #555;
+	font-size: 0.82rem;
+	white-space: nowrap;
+}
+
+.devlog-excerpt {
+	margin: 0.2rem 0 0.5rem;
+	color: #333;
+}
+
+.devlog-body > summary {
+	padding: 0;
+	justify-content: flex-start;
+	color: var(--primary);
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+.devlog-body[open] > summary {
+	margin-bottom: 0.6rem;
+}
+
+.devlog-rendered {
+	line-height: 1.6;
+}
+
+.devlog-rendered h2,
+.devlog-rendered h3,
+.devlog-rendered h4 {
+	margin: 1rem 0 0.4rem;
+}
+
+.devlog-rendered p {
+	margin: 0.5rem 0;
+}
+
+.devlog-rendered code {
+	background: rgba(0, 0, 0, 0.07);
+	padding: 0.1rem 0.35rem;
+	border-radius: 3px;
+	font-family: ui-monospace, monospace;
+	font-size: 0.88em;
+}
+
+.devlog-rendered pre {
+	background: rgba(0, 0, 0, 0.07);
+	padding: 0.8rem;
+	border-radius: var(--radius);
+	overflow-x: auto;
+}
+
+.devlog-rendered pre code {
+	background: none;
+	padding: 0;
+}
+
+.devlog-rendered table {
+	border-collapse: collapse;
+	margin: 0.6rem 0;
+}
+
+.devlog-rendered th,
+.devlog-rendered td {
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 0.3rem 0.6rem;
+}
+
+.devlog-rendered blockquote {
+	border-left: 4px solid var(--primary);
+	margin: 0.6rem 0;
+	padding: 0.2rem 0.8rem;
+	color: #333;
+}
+
+.devlog-older {
+	margin: 1rem 0 0;
+	padding-top: 0.8rem;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	text-align: right;
+	font-size: 0.9rem;
+}
+
+.devlog-older a {
+	color: var(--primary);
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.devlog-older a:hover {
+	text-decoration: underline;
+}
+
+/* =========================
 	Search & Filters
 ========================= */
 .search-section {
@@ -198,7 +473,7 @@ details[open] summary {
 ========================= */
 #ports-container {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
 	gap: 1.5rem;
 }
 
@@ -351,4 +626,213 @@ details[open] summary {
     text-overflow: ellipsis;
     text-align: left;
     width: 100%;
+}
+
+/* =========================
+   3-Column Page Layout
+   ========================= */
+.page-layout {
+	display: grid;
+	grid-template-columns: 320px minmax(0, 1fr) 460px;
+	gap: 1.5rem;
+	margin-top: 1.5rem;
+	align-items: start;
+}
+
+.page-left,
+.page-right {
+	position: sticky;
+	top: 1rem;
+	max-height: calc(100vh - 2rem);
+	overflow-y: auto;
+}
+
+.page-left {
+	padding-right: 0.25rem;
+}
+
+.page-right {
+	padding-left: 0.25rem;
+}
+
+.page-center {
+	min-width: 0;
+}
+
+/* Subtle scrollbar styling on the rails */
+.page-left::-webkit-scrollbar,
+.page-right::-webkit-scrollbar {
+	width: 6px;
+}
+.page-left::-webkit-scrollbar-thumb,
+.page-right::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.25);
+	border-radius: 3px;
+}
+
+/* ---------- Left rail: filters panel (matches right-rail node style) ---------- */
+.filters-panel {
+	background: var(--accent-bg);
+	border: 2px solid #666;
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-md);
+	overflow: hidden;
+	position: relative;
+	margin: 0 0 1rem;
+}
+
+.filters-panel::before {
+	content: "";
+	position: absolute;
+	inset: 0 auto 0 0;
+	width: 6px;
+	background: var(--primary);
+	z-index: 1;
+}
+
+.filters-panel-header {
+	padding: 0.7rem 1rem;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.filters-panel-header h2 {
+	margin: 0;
+	font-size: 1.1rem;
+}
+
+.filters-panel-body {
+	padding: 0.8rem 1rem 1rem 1.25rem;
+}
+
+/* ---------- Left rail inner controls ---------- */
+.page-left .search-section {
+	margin: 0 0 1rem;
+	text-align: left;
+}
+
+.page-left #search-bar {
+	width: 100%;
+	max-width: none;
+}
+
+.page-left .filters-container {
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: flex-start;
+	gap: 0.3rem;
+	margin-bottom: 1rem;
+}
+
+.page-left .filters-container label {
+	margin-top: 0.5rem;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #222;
+}
+
+.page-left .filters-container label:first-child {
+	margin-top: 0;
+}
+
+.page-left .filters-container select {
+	width: 100%;
+}
+
+/* ---------- Right rail: devlog + install ---------- */
+.page-right .devlog,
+.page-right .instructions-accordion {
+	max-width: none;
+	margin: 0 0 1rem;
+}
+
+/* Tighten devlog inner padding for the narrower column */
+.page-right .devlog-content {
+	padding: 0 1rem 1rem 1.25rem;
+}
+
+.page-right .devlog summary {
+	padding: 0.7rem 1rem;
+}
+
+.page-right .devlog summary h2 {
+	font-size: 1.1rem;
+}
+
+.page-right .instructions-accordion summary {
+	padding: 0.7rem 1rem;
+}
+
+.page-right .instructions-accordion summary h2 {
+	font-size: 1.05rem;
+}
+
+.page-right .instructions-content {
+	padding: 0 1rem 1rem 1.25rem;
+	text-align: left;
+	font-size: 0.9rem;
+}
+
+/* Long autoinstall path lines: scroll horizontally rather than wrap-and-break */
+.page-right .path-list {
+	overflow-x: auto;
+	white-space: nowrap;
+	margin: 0.5rem 0;
+	line-height: 1.6;
+	display: block;
+	font-size: 0.85rem;
+}
+
+/* ---------- Above-grid stack: mirrors page-layout grid so its contents
+              (carousel, port count) sit only in the center column. ---------- */
+.above-grid {
+	display: grid;
+	grid-template-columns: 320px minmax(0, 1fr) 460px;
+	gap: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+.above-grid > * {
+	grid-column: 2;
+}
+
+.above-grid > .recent-updates {
+	max-width: none;
+	margin: 0;
+}
+
+#port-count {
+	margin: 1rem 0 0;
+}
+
+
+/* ---------- Mobile / narrow: stack the three columns ---------- */
+@media (max-width: 1000px) {
+	.above-grid {
+		grid-template-columns: 1fr;
+	}
+	.above-grid > * {
+		grid-column: 1;
+	}
+	.page-layout {
+		grid-template-columns: 1fr;
+	}
+	.page-left,
+	.page-right {
+		position: static;
+		max-height: none;
+		overflow: visible;
+		padding: 0;
+	}
+	/* Filters go back to horizontal/wrapping on narrow widths */
+	.page-left .filters-container {
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	.page-left .filters-container label {
+		margin-top: 0;
+	}
 }
