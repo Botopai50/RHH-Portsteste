@@ -24,7 +24,7 @@
     "rtr": false,
     "exp": false,
     "runtime": [
-      "solarus-run"
+      "solarus-1.6.5.squashfs"
     ],
     "store": [],
     "availability": "free",
