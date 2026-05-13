@@ -17,7 +17,9 @@ async function loadPorts() {
         'mkxp-z.squashfs': 'MKXP-Z',
         'python_3.11.squashfs': 'Python 3.11',
         'rlvm.squashfs': 'RLVM',
-        'solarus-1.6.5.squashfs': 'Solarus'
+        'solarus-1.6.5.squashfs': 'Solarus',
+        'weston_pkg_0.2.squashfs': 'Westonpack',
+        'zulu17.54.21-ca-jre17.0.13-linux.aarch64.squashfs': 'Java 17'
     };
 
     const mappings = [
@@ -31,7 +33,7 @@ async function loadPorts() {
         { keys: ['vulkan'], value: 'Requires Vulkan' },
         { keys: ['wide'], value: 'Requires widescreen' },
         { keys: ['analog_1', 'analog_2', 'analog_1|analog_2'], value: 'Requires analog sticks' },
-        { keys: ['!arkos'], value: 'Won’t run on ArkOS' }
+        { keys: ['!arkos'], value: 'Won\'t run on ArkOS' }
     ];
 
     try {
