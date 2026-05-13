@@ -151,13 +151,13 @@ elif [ "$ENGINE" = "uzdoom" ]; then
 fi
 
 # Switch INI if it's empty
-if [ -z "$INI" ] && [ "$ENGINE_BASE" = "gzdoom" ]; then
-    INI="configs/gzdoom/$ENGINE_BASE.ini"
+if [ -z "$INI" ] && { [ "$ENGINE_BASE" = "gzdoom" ] || [ "$ENGINE_BASE" = "uzdoom" ]; }; then
+    INI="configs/$ENGINE_BASE/$ENGINE_BASE.ini"
 fi
 
-# Add supplemental arguments for gzdoom
-if [ "$ENGINE_BASE" = "gzdoom" ]; then
-    ARGS="$ARGS -config $INI +gl_es 1 +vid_preferbackend 3 +cl_capfps 0 +vid_fps 0"
+# Add supplemental arguments for gzdoom/uzdoom (shared GLES2 backend)
+if [ "$ENGINE_BASE" = "gzdoom" ] || [ "$ENGINE_BASE" = "uzdoom" ]; then
+    ARGS="$ARGS -config $INI +gl_es 1 +vid_preferbackend 3 +gles_use_mapped_buffer true +cl_capfps 0 +vid_fps 0"
 fi
 
 # Determine analog sticks available and start gptokeyb
