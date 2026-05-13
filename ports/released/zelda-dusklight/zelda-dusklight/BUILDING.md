@@ -72,3 +72,18 @@ Then drop your Twilight Princess game files directly into the `ports/zelda-duskl
 The buildtool ships `libfreetype.so.6` plus its transitive deps (`libpng16`, `libz`, `libbz2`, `libbrotlidec`, `libbrotlicommon`) under `ports/zelda-dusklight/libs/` because not every handheld OS provides them. **Do not bundle `libvulkan.so.1` or any GPU driver** — those must come from the device.
 
 If you build manually and the port complains about missing `.so` files at runtime, copy the missing libraries from `/usr/lib/aarch64-linux-gnu/` on your build host into `ports/zelda-dusklight/libs/`. The launch script adds `libs/` to `LD_LIBRARY_PATH`.
+
+## 5. Known issue: Wayland-only devices (S922X / OGU on ROCKNIX)
+
+Dusklight currently fails at startup on Wayland-only S922X devices (notably ODROID-GO-Ultra on ROCKNIX) with:
+
+```
+Error: Unsupported surface type (WaylandSurface) for Vulkan.
+    at CreateVulkanSurface (.../dawn/native/vulkan/SwapChainVk.cpp:735)
+```
+
+The S922X Mali-G52 driver supports Vulkan 1.0 including `VK_KHR_wayland_surface`, and Aurora's prebuilt Dawn (consumed via `AURORA_DAWN_PROVIDER=package`) is compiled with `DAWN_USE_WAYLAND=ON`, so the Wayland case is in the binary. The blocker is an upstream Dawn bug: in [`SwapChainVk.cpp`](https://github.com/google/dawn/blob/v20260423.175430/src/dawn/native/vulkan/SwapChainVk.cpp#L668-L685) the `Surface::Type::WaylandSurface` case body checks `info.HasExt(InstanceExt::XlibSurface)` (a copy-paste from the neighbouring X11 case) instead of `InstanceExt::WaylandSurface`. On a Wayland-only system with no `VK_KHR_xlib_surface` exposed the guard fails, the case `break`s, execution falls through to `default:`, and the error above is returned.
+
+Upstream fix: [google/dawn@`7fd46625`](https://github.com/google/dawn/commit/7fd466253b15deb117b23b8b68f6e7d1d897cc4d) — landed in `main`, not yet in any tagged release. We will pick it up automatically once Google cuts a new Dawn tag past that commit and Aurora bumps `AURORA_DAWN_VERSION` past it. Both are upstream-driven, no action needed on this side.
+
+We intentionally do **not** carry a local patch to fix this — it would silently no-op (or conflict) once upstream advances, and we'd have to remember to drop it. If you need Dusklight running on a Wayland-only S922X device sooner, build with `-DAURORA_DAWN_PROVIDER=vendor` and apply the one-line fix from `7fd46625` to the `FetchContent`-ed Dawn tree manually.
