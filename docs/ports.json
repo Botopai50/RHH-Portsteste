@@ -1373,6 +1373,53 @@
   },
   {
     "version": 4,
+    "name": "impostorfactory.zip",
+    "items": [
+      "Impostor Factory.sh",
+      "impostorfactory"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "Impostor Factory",
+      "porter": [
+        "Jeod"
+      ],
+      "desc": "A bonkers time-loop tragicomedy murder mystery thriller featuring multiple casualties and a suspicious cat, from the creator of To the Moon & Finding Paradise.",
+      "desc_md": null,
+      "inst": "Copy the entire contents of your Steam install (`steamapps/common/Impostor Factory/Impostor Factory/`) into the `impostorfactory` folder. Required files: Game.rgssad, Game.ini, Audio/, Fonts/, preload/.",
+      "inst_md": null,
+      "genres": [
+        "adventure"
+      ],
+      "image": null,
+      "rtr": false,
+      "exp": false,
+      "runtime": [
+        "mkxp-z.squashfs"
+      ],
+      "store": [
+        "https://store.steampowered.com/app/1471700/"
+      ],
+      "availability": "paid",
+      "reqs": [],
+      "arch": [
+        "aarch64"
+      ],
+      "min_glibc": ""
+    },
+    "source": {
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/impostorfactory/impostorfactory/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/impostorfactory/impostorfactory/README.md",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/impostorfactory.zip",
+      "date_updated": "2026-05-13T19:11",
+      "md5": "00f5d29de99863c396bfa4cf579a710c",
+      "size": 393072,
+      "lifetime_downloads": 0,
+      "last_commit": "MKXP-Z becomes a runtime, add rpgmaker ports"
+    }
+  },
+  {
+    "version": 4,
     "name": "iosas.zip",
     "items": [
       "Isles of Sea and Sky.sh",
@@ -1429,6 +1476,53 @@
       "size": 5659153,
       "lifetime_downloads": 33,
       "last_commit": "Update all patchscripts in prep for new patcher gui commands"
+    }
+  },
+  {
+    "version": 4,
+    "name": "to_the_moon_beachsode.zip",
+    "items": [
+      "To the Moon Beach Episode.sh",
+      "to_the_moon_beachsode"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "Just a To the Moon Series Beach Episode",
+      "porter": [
+        "Jeod"
+      ],
+      "desc": "The Beach Episode™ of To the Moon, Finding Paradise, and Impostor Factory. But something's off.",
+      "desc_md": null,
+      "inst": "Copy the entire contents of your Steam install (`steamapps/common/To the Moon Beachsode/To the Moon Beachsode/`) into the `to_the_moon_beachsode` folder. Required files: Game.rgssad, Game.ini, Audio/, Fonts/, preload/.",
+      "inst_md": null,
+      "genres": [
+        "adventure"
+      ],
+      "image": null,
+      "rtr": false,
+      "exp": false,
+      "runtime": [
+        "mkxp-z.squashfs"
+      ],
+      "store": [
+        "https://store.steampowered.com/app/1416700/"
+      ],
+      "availability": "paid",
+      "reqs": [],
+      "arch": [
+        "aarch64"
+      ],
+      "min_glibc": ""
+    },
+    "source": {
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/to_the_moon_beachsode/to_the_moon_beachsode/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/to_the_moon_beachsode/to_the_moon_beachsode/README.md",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/to_the_moon_beachsode.zip",
+      "date_updated": "2026-05-13T19:11",
+      "md5": "1c095338e8d4a79b779cb337d7c8e545",
+      "size": 217376,
+      "lifetime_downloads": 0,
+      "last_commit": "MKXP-Z becomes a runtime, add rpgmaker ports"
     }
   },
   {
@@ -2440,7 +2534,9 @@
       "image": null,
       "rtr": false,
       "exp": false,
-      "runtime": [],
+      "runtime": [
+        "mkxp-z.squashfs"
+      ],
       "store": [],
       "availability": "free",
       "reqs": [],
@@ -2453,11 +2549,109 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_fireash/pkmn_fireash/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_fireash/pkmn_fireash/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pkmn_fireash.zip",
-      "date_updated": "2026-05-13T17:43",
-      "md5": "af4e976f7b0a32fbb13b456215339a15",
-      "size": 12542169,
+      "date_updated": "2026-05-13T19:11",
+      "md5": "4c8d562a33bfc478176121ac912861d5",
+      "size": 170810,
       "lifetime_downloads": 43,
-      "last_commit": "[PKMN] Fix gptokeyb hotkey for quit"
+      "last_commit": "MKXP-Z becomes a runtime, add rpgmaker ports"
+    }
+  },
+  {
+    "version": 4,
+    "name": "pkmn_reborn.zip",
+    "items": [
+      "Pokemon Reborn.sh",
+      "pkmn_reborn"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "Pokemon Reborn",
+      "porter": [
+        "Jeod",
+        "JanTrueno"
+      ],
+      "desc": "Reborn is a free 3rd-gen style downloadable game featuring all content through Generation 7. Experience a never-before-seen layer of strategy with the all-original Field Effects, using the terrain to outplay and overwhelm your opponent! Collect, train and battle with all 807 species available in-game and take on Gym Leaders of all 18 types as you fight to restore Reborn to prosperity!\n\nAre you ready?",
+      "desc_md": null,
+      "inst": "Download the legacy Windows version of the game here: https://www.rebornevo.com/pr/download/. Install the game and copy all assets within the `Pokemon Reborn` folder to the `pkmn_reborn` portfolder. The version has to be 19.16 or 19.17.",
+      "inst_md": null,
+      "genres": [
+        "adventure",
+        "rpg"
+      ],
+      "image": null,
+      "rtr": false,
+      "exp": false,
+      "runtime": [
+        "mkxp-z.squashfs"
+      ],
+      "store": [],
+      "availability": "free",
+      "reqs": [
+        "power"
+      ],
+      "arch": [
+        "aarch64"
+      ],
+      "min_glibc": ""
+    },
+    "source": {
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_reborn/pkmn_reborn/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_reborn/pkmn_reborn/README.md",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pkmn_reborn.zip",
+      "date_updated": "2026-05-13T19:11",
+      "md5": "cabc40ea5a019f150501aa26839e9be4",
+      "size": 90250,
+      "lifetime_downloads": 0,
+      "last_commit": "MKXP-Z becomes a runtime, add rpgmaker ports"
+    }
+  },
+  {
+    "version": 4,
+    "name": "pkmn_rejuvenation.zip",
+    "items": [
+      "Pokemon Rejuvenation.sh",
+      "pkmn_rejuvenation"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "Pokemon Rejuvenation",
+      "porter": [
+        "Jeod",
+        "JanTrueno"
+      ],
+      "desc": "Many decades ago, Aevium was once a united and strong blossoming region. However, the calamity known as Storm-9 tore the region apart.\n\nThe Aevium Region has lived a time of peace since then. People and the creatures inhabiting the lands band together to create a region worth living in. However, the dark and sinister organization, Team Xen, rises from the shadows to destroy what little peace the region has left.\n\nExplore the Aevium Region while also defending the land from Team Xen. Discover the dark secrets this world has kept hidden under the cracks that separate Aevium and shakes it to its very core.\n\nThis world needs you. Will you lend us your strength?",
+      "desc_md": null,
+      "inst": "Download the Windows version of the game here: https://www.rebornevo.com/rejuvdown/. Install the game and copy all assets within the `Pokemon Rejuvenation` folder to the `pkmn_rejuvenation` portfolder. Version 13.5.0 is known to work; future updates may be incompatible.",
+      "inst_md": null,
+      "genres": [
+        "adventure",
+        "rpg"
+      ],
+      "image": null,
+      "rtr": false,
+      "exp": false,
+      "runtime": [
+        "mkxp-z.squashfs"
+      ],
+      "store": [],
+      "availability": "free",
+      "reqs": [
+        "power"
+      ],
+      "arch": [
+        "aarch64"
+      ],
+      "min_glibc": ""
+    },
+    "source": {
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_rejuvenation/pkmn_rejuvenation/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_rejuvenation/pkmn_rejuvenation/README.md",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pkmn_rejuvenation.zip",
+      "date_updated": "2026-05-13T19:11",
+      "md5": "934223e363f63d0bdc4e685749bf10c4",
+      "size": 7434250,
+      "lifetime_downloads": 0,
+      "last_commit": "MKXP-Z becomes a runtime, add rpgmaker ports"
     }
   },
   {
@@ -2484,7 +2678,9 @@
       "image": null,
       "rtr": false,
       "exp": false,
-      "runtime": [],
+      "runtime": [
+        "mkxp-z.squashfs"
+      ],
       "store": [],
       "availability": "free",
       "reqs": [],
@@ -2497,11 +2693,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_tectonic/pkmn_tectonic/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/pkmn_tectonic/pkmn_tectonic/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pkmn_tectonic.zip",
-      "date_updated": "2026-05-13T17:43",
-      "md5": "b1b7eddf0733da8eea869de078dcb57c",
-      "size": 12692341,
+      "date_updated": "2026-05-13T19:11",
+      "md5": "cc6e0ae360a96254a8b6c2c863cb5a2f",
+      "size": 321032,
       "lifetime_downloads": 31,
-      "last_commit": "[PKMN] Fix gptokeyb hotkey for quit"
+      "last_commit": "MKXP-Z becomes a runtime, add rpgmaker ports"
     }
   },
   {
