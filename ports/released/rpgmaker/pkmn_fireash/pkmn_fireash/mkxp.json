@@ -1,0 +1,17 @@
+{
+    "fullscreen": true,
+    "smoothScaling": true,
+    "subImageFix": true,
+    "enableBlitting": false,
+    "midiSoundFont": "soundfont.sf2",
+    "bindingNames": {
+        "c": "Use/Interact",
+        "b": "Back/Menu",
+        "a": "Run",
+        "x": "Scroll Up",
+        "y": "Scroll Down",
+        "z": "Registered",
+        "l": "Save/Sort Bag",
+        "r": "Speed Up"
+    }
+}

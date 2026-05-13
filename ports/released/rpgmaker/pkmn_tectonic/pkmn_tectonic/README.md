@@ -1,16 +1,23 @@
 # Installation
 Use the direct download option from https://www.tectonic-game.com and add the zip file to the `pkmn_tectonic` folder. On first launch the game will be unzipped for you.
 
-# Modifications
-The following edits to `mkxp.json` may enhance the experience:
+# Controls
 
-```
-"fullscreen": true,
-"smoothScaling": true,
-"subImageFix": true,
-"enableBlitting": false,
-"midiSoundFont": "soundfont.sf2",
-```
+Buttons follow Xbox-style labeling: **A** = bottom, **B** = right, **X** = top, **Y** = left. If your device uses Nintendo-style labels, the positions are what counts, not the printed letter.
+
+| Button | Action |
+|--------|--------|
+| D-Pad | Move |
+| A | Use / Interact |
+| B | Back / Menu |
+| X | Run (hold) |
+| Y | Registered Item |
+| Start | Open Menu |
+| Select + Start | Quit |
+| L1 | Save / Sort Bag |
+| R1 | Speed Up (dialogue) |
+| L2 | Scroll Up (Pokédex etc.) |
+| R2 | Scroll Down |
 
 ## Thanks
 [Dokoma](https://github.com/dokoma) for compiling mkxp-z (taken from [Pokemon Reborn](https://portmaster.games/detail.html?name=reborn))  

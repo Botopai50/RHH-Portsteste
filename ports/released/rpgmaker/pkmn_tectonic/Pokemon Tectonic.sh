@@ -108,6 +108,14 @@ fi
 TE_FILE="$GAMEDIR/Plugins/Tectonic Graphics and UI/Objects and windows/Text Entry/PokemonEntryScene.rb"
 [ -f "$TE_FILE" ] && sed -i 's/^\(\s*USEKEYBOARD\s*=\s*\).*/\1false/' "$TE_FILE"
 
+# Disable Screen Size resize (SDL window resize crashes under fullscreen mkxp-z)
+SCENE_FILE="$GAMEDIR/Plugins/Tectonic Graphics and UI/Menus/Options/OptionScenes.rb"
+[ -f "$SCENE_FILE" ] && sed -i 's|pbSetResizeFactor(\$Options\.screensize)|nil|' "$SCENE_FILE"
+
+# Hide Controls menu entry (System.show_settings crashes under fullscreen mkxp-z)
+MENU_FILE="$GAMEDIR/Plugins/Tectonic Graphics and UI/Menus/Options/PokemonOptionsMenu.rb"
+[ -f "$MENU_FILE" ] && sed -i '/optionsCommands\[cmdControlsMapping = optionsCommands\.length\]/d' "$MENU_FILE"
+
 # Gptk and run port
 $GPTOKEYB "mkxp-z.aarch64" -c "$GAMEDIR/tectonic.gptk" &
 pm_platform_helper "$GAMEDIR/mkxp-z.aarch64" >/dev/null

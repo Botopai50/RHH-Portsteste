@@ -46,7 +46,7 @@
     // always be toggled with Alt-Enter at runtime)
     // (default: disabled)
     //
-    // "fullscreen": false,
+    "fullscreen": true,
 
 
     // Preserve game screen aspect ratio,
@@ -60,7 +60,7 @@
     // is upscaled
     // (default: disabled)
     //
-    // "smoothScaling": false,
+    "smoothScaling": true,
 
 
     // Sync screen redraws to the monitor refresh rate
