@@ -2171,11 +2171,11 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pksinew/pksinew/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pksinew/pksinew/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pksinew.zip",
-      "date_updated": "2026-03-01T20:13",
-      "md5": "69b66c5cc7c43eb07d4f6a39e6e379a1",
-      "size": 64627042,
-      "lifetime_downloads": 0,
-      "last_commit": "[PKSINEW] More bug fixes"
+      "date_updated": "2026-05-13T16:58",
+      "md5": "aa6e998580ebd06d2e93afe9a18e0b18",
+      "size": 64818991,
+      "lifetime_downloads": 18,
+      "last_commit": "[PKSINEW] v1.3.9"
     }
   },
   {
