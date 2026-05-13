@@ -18,6 +18,7 @@ get_controls
 
 # Variables
 GAMEDIR="/$directory/ports/pkmn_fireash"
+SEVEN_ZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
 
 # CD and set logging
 cd "$GAMEDIR" || exit 1
@@ -38,45 +39,46 @@ export LANG=C
 
 # Unzip stdlib
 if [ -f "$GAMEDIR/stdlib.zip" ]; then
-    if unzip -q -o "$GAMEDIR/stdlib.zip" -d "$GAMEDIR"; then 
+    if "$SEVEN_ZIP" x -y -bso0 -bsp0 "$GAMEDIR/stdlib.zip" -o"$GAMEDIR"; then
         rm -f "$GAMEDIR/stdlib.zip"
     fi
 fi
 
 unzip_data() {
     pm_message "Unzipping game data. This could take a while..."
-    local zipfile tmpdir found
-    found=0
+    local zipfile ini_path gdir entry name
 
-    # Find the first ZIP
     zipfile=$(find "$GAMEDIR" -maxdepth 1 -type f -name "*.zip" | head -n1)
     [ -n "$zipfile" ] || return 0
 
-    tmpdir=$(mktemp -d) || return 1
+    "$SEVEN_ZIP" x -y -bso0 -bsp0 "$zipfile" -o"$GAMEDIR" || return 1
 
-    # -o: overwrite files during extraction to tmp
-    unzip -q -o "$zipfile" -d "$tmpdir" || { rm -rf "$tmpdir"; return 1; }
+    ini_path=$(find "$GAMEDIR" -mindepth 2 -type f -iname "Game.ini" -print -quit)
+    [ -z "$ini_path" ] && \
+        ini_path=$(find "$GAMEDIR" -maxdepth 1 -type f -iname "Game.ini" -print -quit)
 
-    # Find the folder containing Game.ini
-    gdir=$(find "$tmpdir" -type d \( -name Game -o -name game \) -print -quit)
-
-    if [ -d "$gdir" ] && [ -f "$gdir/Game.ini" ]; then
-        echo "Moving files to $GAMEDIR..."
-        # -r: recursive, -f: force, -p: preserve permissions
-        # This effectively overwrites existing files within those directories
-        cp -rfp "$gdir"/* "$GAMEDIR/"
-        found=1
-    fi
-
-    rm -rf "$tmpdir"
-
-    if [ "$found" -eq 1 ]; then
-        rm -f "$zipfile"
-        return 0
-    else
+    if [ -z "$ini_path" ]; then
         echo "Error: Game.ini not found inside the zip structure."
         return 1
     fi
+
+    gdir=$(dirname "$ini_path")
+    if [ "$gdir" != "$GAMEDIR" ]; then
+        echo "Lifting game files from $gdir to $GAMEDIR..."
+        find "$gdir" -mindepth 1 -maxdepth 1 -print0 | \
+            while IFS= read -r -d '' entry; do
+                name="${entry##*/}"
+                if [ -d "$entry" ] && [ -d "$GAMEDIR/$name" ]; then
+                    cp -rfp "$entry/." "$GAMEDIR/$name/" && rm -rf "$entry"
+                else
+                    mv -f "$entry" "$GAMEDIR/$name"
+                fi
+            done
+        rmdir "$gdir" 2>/dev/null || true
+    fi
+
+    rm -f "$zipfile"
+    return 0
 }
 
 # Run only if a zip exists
