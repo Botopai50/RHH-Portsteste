@@ -94,7 +94,7 @@ class Pharos:
         self.current_view = "repos"
         self.running = True
         self.download_active = False
-        self.filter_installed = False
+        self.view_mode = "all"
 
         self.updater = Update(self.ui)
         self.self_update_available = False
@@ -242,6 +242,7 @@ class Pharos:
                         download_url=src.get("download_url", ""),
                         size=src.get("size"),
                         date_updated=src.get("date_updated"),
+                        first_seen=src.get("first_seen"),
                         runtime=[r for r in p.get("attr", {}).get("runtime", []) if r.endswith(".squashfs")],
                         runtime_base_url=runtime_base,
                         repo=f"{owner}/{repo_name}",
@@ -282,6 +283,7 @@ class Pharos:
                         download_url=src.get("download_url", ""),
                         size=src.get("size"),
                         date_updated=src.get("date_updated"),
+                        first_seen=src.get("first_seen"),
                         repo=f"{owner}/{repo_name}",
                     )
                     bottle.last_commit = src.get("last_commit", "")
@@ -371,13 +373,41 @@ class Pharos:
         ]
         self._draw_button_bar(btns)
 
+    VIEW_MODES = ("all", "updated", "new", "installed")
+    _VIEW_MODE_BTN_LABEL = {
+        "all": "All",
+        "updated": "Updated",
+        "new": "New",
+        "installed": "Installed",
+    }
+    _VIEW_MODE_HEADER_SUFFIX = {
+        "all": "",
+        "updated": " — by last update",
+        "new": " — newest first",
+        "installed": "",
+    }
+
+    def _items_for_current_view(self, all_items):
+        """Apply the active view_mode's filter+sort to the repo's items."""
+        if self.view_mode == "installed":
+            items = [i for i in all_items if i.name in local_md5s]
+        else:
+            items = list(all_items)
+
+        if self.view_mode == "updated":
+            items.sort(key=lambda p: p.date_updated or "", reverse=True)
+        elif self.view_mode == "new":
+            items.sort(key=lambda p: (getattr(p, "first_seen", None) or ""), reverse=True)
+        return items
+
     def _render_ports(self) -> None:
         repo = self.repositories[self.repo_idx]
         all_items = getattr(repo, "ports", None) or getattr(repo, "bottles", None) or []
-        items = [i for i in all_items if i.name in local_md5s] if self.filter_installed else all_items
+        items = self._items_for_current_view(all_items)
         owner = repo.url.split("github.com/")[1].split("/")[0]
-        label = "installed" if self.filter_installed else "items"
-        header_text = f"{len(items)} {label} in {owner}/{repo.name}"
+        label = "installed" if self.view_mode == "installed" else "items"
+        suffix = self._VIEW_MODE_HEADER_SUFFIX[self.view_mode]
+        header_text = f"{len(items)} {label} in {owner}/{repo.name}{suffix}"
         self.ui.draw_header(header_text, color_text)
         
         is_bottle_repo = bool(getattr(repo, "bottles", None))
@@ -468,7 +498,7 @@ class Pharos:
                 bottom_log = f"{selected.title} - Update available!"
             elif selected:
                 bottom_log = f"{selected.last_commit}"
-            elif self.filter_installed:
+            elif self.view_mode == "installed":
                 bottom_log = "No installed ports in this repository."
             else:
                 bottom_log = ""
@@ -489,7 +519,9 @@ class Pharos:
             btns.append({"key": self.layout["x"]["btn"], "label": x_label,
                          "color": self.layout["x"]["color"]})
 
-        btns.append({"key": self.layout["y"]["btn"], "label": "Filter", "color": self.layout["y"]["color"]})
+        btns.append({"key": self.layout["y"]["btn"],
+                     "label": self._VIEW_MODE_BTN_LABEL[self.view_mode],
+                     "color": self.layout["y"]["color"]})
         btns.append({"key": self.layout["l1"]["btn"], "label": "Page Up", "color": self.layout["l1"]["color"]})
         btns.append({"key": self.layout["r1"]["btn"], "label": "Page Down", "color": self.layout["r1"]["color"]})
 
@@ -522,13 +554,14 @@ class Pharos:
     def _update_ports(self) -> None:
         repo = self.repositories[self.repo_idx]
         all_items = getattr(repo, "ports", None) or getattr(repo, "bottles", None) or []
-        items = [i for i in all_items if i.name in local_md5s] if self.filter_installed else all_items
+        items = self._items_for_current_view(all_items)
 
         is_bottle_repo = bool(getattr(repo, "bottles", None))
         can_download = (not is_bottle_repo) or WINDOWS_DIR.exists()
 
-        # B (back) and Y (filter toggle) must work even when the filtered list
-        # is empty — otherwise the user is stuck.
+        # B (back) and Y (cycle view mode) must work even when the filtered
+        # list is empty — otherwise the user is stuck in e.g. an empty
+        # "installed" view with no way to get back to "all".
         if self.input.key(self.layout["b"]["key"]):
             for item in all_items:
                 item.image_path = None
@@ -541,7 +574,8 @@ class Pharos:
             return
 
         if self.input.key(self.layout["y"]["key"]):
-            self.filter_installed = not self.filter_installed
+            i = self.VIEW_MODES.index(self.view_mode)
+            self.view_mode = self.VIEW_MODES[(i + 1) % len(self.VIEW_MODES)]
             self.port_idx = 0
             return
 
