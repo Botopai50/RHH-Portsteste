@@ -100,6 +100,14 @@
       "upstream_branch": "master",
       "commit_prefix": "GMLOADER",
       "artifact": "gmloadernext.squashfs"
+    },
+    "rlvm": {
+      "build_dir": "buildtools/rlvm",
+      "target_dir": "runtimes",
+      "upstream_repo": "JeodC/SuperEngine",
+      "upstream_branch": "feat/sdl2",
+      "commit_prefix": "RLVM",
+      "artifact": "rlvm.squashfs"
     }
   }
 }

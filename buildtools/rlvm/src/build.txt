@@ -1,0 +1,205 @@
+set -e
+
+# SuperEngine (rlvm successor) runtime build.
+#
+# Source: JeodC/SuperEngine fork (which tracks upstream Mickey-snow/SuperEngine
+#   plus the SDL2 + GLEW removal + Boost.Locale → iconv + dep trim work).
+# Output: rlvm.squashfs containing:
+#   - rlvm binary (statically linked where possible, transitive lib closure
+#     in libs/)
+#   - fonts/ (sazanami-gothic + DejaVuSans, copied from the existing committed
+#     runtimes/rlvm.squashfs — they don't change build-to-build and shouldn't
+#     be re-shipped as separate binary blobs in the source tree)
+#   - gl4es/ (libGL.so.1 fixed-function emulation shim, also copied from the
+#     existing squashfs — needed by the launcher when LIBGL_FB is set on
+#     Mali-only devices, since SE's renderer uses GL 1.x fixed-function calls
+#     that don't exist in pure GLES)
+
+# Retry git clone on transient HTTP 500s (lifted from gmloadernext recipe).
+git_clone_retry() {
+    local url target attempt
+    for arg in "$@"; do
+        case "$arg" in
+            http*|git@*|ssh://*|git://*) url="$arg" ;;
+            -*) ;;
+            *) [[ -n "$url" ]] && target="$arg" ;;
+        esac
+    done
+    if [[ -z "$target" && -n "$url" ]]; then
+        target="${url##*/}"
+        target="${target%.git}"
+    fi
+    for attempt in 1 2 3 4 5; do
+        if git clone "$@"; then
+            return 0
+        fi
+        [[ -n "$target" && -d "$target" ]] && rm -rf "$target"
+        local delay=$((attempt * 5))
+        echo "git clone failed (attempt $attempt); retrying in ${delay}s..." >&2
+        sleep "$delay"
+    done
+    echo "git clone failed after 5 attempts" >&2
+    return 1
+}
+
+# ---------------------------------------------------------------------------
+# Clone + build SuperEngine
+# ---------------------------------------------------------------------------
+# feat/sdl2 is the working branch in JeodC's fork; switch to master once the
+# SDL2 / GLEW-removal / Boost.Locale-removal PRs land upstream and merge back.
+SE_BRANCH="${SE_BRANCH:-feat/sdl2}"
+SE_REPO="${SE_REPO:-https://github.com/JeodC/SuperEngine.git}"
+
+git_clone_retry --recursive --branch "$SE_BRANCH" "$SE_REPO" rlvm-src
+
+(
+    cd rlvm-src
+    cmake -S . -B build -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DRLVM_BUILD_TESTS=OFF
+    cmake --build build --parallel
+)
+
+BIN="rlvm-src/build/rlvm"
+[[ -f "$BIN" ]] || { echo "ERROR: rlvm binary not built at $BIN"; exit 1; }
+file "$BIN"
+
+# ---------------------------------------------------------------------------
+# Stage transitive lib closure
+# ---------------------------------------------------------------------------
+# Same pattern as gmloadernext: walk DT_NEEDED recursively, copy every lib
+# the binary depends on EXCEPT system libs that every device guarantees
+# (libc, libstdc++, ld-linux, gl/sdl2 satellites the device provides).
+#
+# Anything not in SYSTEM_LIBS gets bundled. The SDL2 + SDL2_image/mixer/ttf
+# are device-provided on every modern handheld CFW so they stay in the system
+# list. libGL.so.1 stays system because either the device has Mesa or the
+# launcher swaps in gl4es as the libGL via SDL_VIDEO_GL_DRIVER.
+declare -A STAGED
+declare -A SYSTEM_LIBS=(
+    [libc.so.6]=1 [libm.so.6]=1 [libpthread.so.0]=1 [libdl.so.2]=1
+    [librt.so.1]=1 [libresolv.so.2]=1 [libutil.so.1]=1
+    [libstdc++.so.6]=1 [libgcc_s.so.1]=1
+    [ld-linux-aarch64.so.1]=1
+    [libSDL2-2.0.so.0]=1
+    [libSDL2_image-2.0.so.0]=1
+    [libSDL2_mixer-2.0.so.0]=1
+    [libSDL2_ttf-2.0.so.0]=1
+    [libGL.so.1]=1
+    [libEGL.so.1]=1
+    [libGLESv2.so.2]=1
+    [libGLESv1_CM.so.1]=1
+    [libz.so.1]=1
+)
+
+resolve_lib_path() {
+    local lib="$1"
+    for d in \
+        /usr/lib/aarch64-linux-gnu \
+        /lib/aarch64-linux-gnu \
+        /usr/lib \
+        /lib; do
+        if [[ -f "$d/$lib" ]]; then
+            echo "$d/$lib"; return
+        fi
+    done
+    echo ""
+}
+
+stage_lib_recursive() {
+    local lib="$1"
+    [[ -n "${STAGED[$lib]:-}" ]] && return 0
+    [[ -n "${SYSTEM_LIBS[$lib]:-}" ]] && return 0
+    STAGED[$lib]=1
+
+    local src
+    src=$(resolve_lib_path "$lib")
+    if [[ -z "$src" || ! -f "$src" ]]; then
+        echo "ERROR: cannot resolve $lib on build host"; exit 1
+    fi
+    cp -L "$src" "squashfs-stage/libs/$lib"
+    echo "  staged: $lib  ($src)"
+    local dep
+    while read -r dep; do
+        [[ -z "$dep" ]] && continue
+        stage_lib_recursive "$dep"
+    done < <(readelf -d "$src" 2>/dev/null | awk -F'[][]' '/NEEDED/ {print $2}')
+}
+
+# ---------------------------------------------------------------------------
+# Build squashfs staging tree
+# ---------------------------------------------------------------------------
+rm -rf squashfs-stage
+mkdir -p squashfs-stage/libs
+
+cp "$BIN" squashfs-stage/rlvm
+strip --strip-unneeded squashfs-stage/rlvm
+
+echo "Walking dependency closure from rlvm binary..."
+needed=$(readelf -d squashfs-stage/rlvm | awk -F'[][]' '/NEEDED/ {print $2}')
+echo "Binary NEEDED:"; echo "$needed"
+while read -r lib; do
+    [[ -z "$lib" ]] && continue
+    stage_lib_recursive "$lib"
+done <<< "$needed"
+
+# Strip staged libs to shave a couple MB off the squashfs.
+for f in squashfs-stage/libs/*.so*; do
+    [[ -f "$f" ]] && strip --strip-unneeded "$f" 2>/dev/null || true
+done
+
+# ---------------------------------------------------------------------------
+# Pull fonts/ and gl4es/ from the existing committed runtimes/rlvm.squashfs.
+# These are stable across rebuilds (we put them there ourselves) and aren't
+# worth re-shipping as standalone binary blobs in the source tree.
+# ---------------------------------------------------------------------------
+EXISTING_SQUASHFS="/root/runtimes/rlvm.squashfs"
+if [[ ! -f "$EXISTING_SQUASHFS" ]]; then
+    echo "ERROR: $EXISTING_SQUASHFS not found — needed for fonts/ and gl4es/"
+    echo "First-time bootstrap: copy fonts/ and gl4es/ into squashfs-stage/"
+    echo "manually and rerun, or seed runtimes/rlvm.squashfs with the kloptops"
+    echo "build before invoking the workflow."
+    exit 1
+fi
+
+rm -rf existing-extract
+unsquashfs -d existing-extract "$EXISTING_SQUASHFS"
+[[ -d existing-extract/fonts ]] || { echo "ERROR: existing squashfs has no fonts/"; exit 1; }
+[[ -d existing-extract/gl4es ]] || { echo "ERROR: existing squashfs has no gl4es/"; exit 1; }
+cp -a existing-extract/fonts squashfs-stage/
+cp -a existing-extract/gl4es squashfs-stage/
+rm -rf existing-extract
+
+# ---------------------------------------------------------------------------
+# Verify final layout matches what the launcher expects
+# ---------------------------------------------------------------------------
+echo
+echo "Final squashfs-stage/ layout:"
+find squashfs-stage -maxdepth 2 -printf '  %p\n' | head -40
+
+# Sanity: launcher refers to $rlvm_dir/{rlvm, libs/, fonts/sazanami-gothic.ttf,
+# gl4es/libGL.so.1}. Make sure each is present.
+for required in \
+    squashfs-stage/rlvm \
+    squashfs-stage/libs \
+    squashfs-stage/fonts/sazanami-gothic.ttf \
+    squashfs-stage/gl4es/libGL.so.1; do
+    if [[ ! -e "$required" ]]; then
+        echo "ERROR: missing required artifact: $required"
+        exit 1
+    fi
+done
+
+# ---------------------------------------------------------------------------
+# Package squashfs (gzip + 128 KB blocks + all-root, matches existing runtimes)
+# ---------------------------------------------------------------------------
+rm -f rlvm.squashfs
+mksquashfs squashfs-stage rlvm.squashfs \
+    -comp gzip -b 131072 -all-root -no-progress -noappend
+
+echo
+echo "Built artifact:"
+ls -la rlvm.squashfs
+echo
+echo "DT_NEEDED for the rlvm binary inside the squashfs:"
+readelf -d squashfs-stage/rlvm | grep NEEDED
