@@ -30,6 +30,16 @@
         "name": "Steam",
         "gameurl": "https://store.steampowered.com/app/2280/DOOM__DOOM_II/",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/doom-doom-ii",
+        "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/doom-and-doom-ii",
+        "developerurl": ""
       }
     ],
     "availability": "demo",

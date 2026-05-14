@@ -449,6 +449,16 @@
           "name": "GOG",
           "gameurl": "https://www.gog.com/en/game/dark_deity_complete_edition",
           "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/dark-deity",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/dark-deity",
+          "developerurl": ""
         }
       ],
       "availability": "paid",
@@ -509,6 +519,16 @@
         {
           "name": "GOG",
           "gameurl": "https://www.gog.com/en/game/dark_deity_2",
+          "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/dark-deity-2",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/dark-deity-2",
           "developerurl": ""
         }
       ],
@@ -912,6 +932,16 @@
         {
           "name": "Steam",
           "gameurl": "https://store.steampowered.com/app/2280/DOOM__DOOM_II/",
+          "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/doom-doom-ii",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/doom-and-doom-ii",
           "developerurl": ""
         }
       ],
@@ -1387,6 +1417,11 @@
           "name": "GOG",
           "gameurl": "https://www.gog.com/en/game/hollow_knight",
           "developerurl": "https://www.gog.com/en/games?developers=team-cherry"
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/hollow-knight",
+          "developerurl": ""
         }
       ],
       "availability": "paid",
@@ -1448,6 +1483,11 @@
           "name": "GOG",
           "gameurl": "https://www.gog.com/en/game/hollow_knight_silksong",
           "developerurl": "https://www.gog.com/en/games?developers=team-cherry"
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/hollow-knight-silksong",
+          "developerurl": ""
         }
       ],
       "availability": "paid",
@@ -1508,6 +1548,16 @@
         {
           "name": "GOG",
           "gameurl": "https://www.gog.com/en/game/impostor_factory",
+          "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/impostor-factory",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/impostor-factory",
           "developerurl": ""
         }
       ],
@@ -1621,6 +1671,11 @@
         {
           "name": "Steam",
           "gameurl": "https://store.steampowered.com/app/2159210/Just_a_To_the_Moon_Series_Beach_Episode/",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/just-a-to-the-moon-series-beach-episode",
           "developerurl": ""
         }
       ],
@@ -1826,6 +1881,16 @@
           "name": "Itch.io",
           "gameurl": "https://cosmicnobab.itch.io/lunarlux",
           "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/lunarlux",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/lunarlux",
+          "developerurl": ""
         }
       ],
       "availability": "paid",
@@ -1989,6 +2054,11 @@
         {
           "name": "GOG",
           "gameurl": "https://www.gog.com/en/game/momodora_reverie_under_the_moonlight",
+          "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/momodora-reverie-under-the-moonlight",
           "developerurl": ""
         }
       ],
@@ -3115,6 +3185,16 @@
           "name": "Epic Games",
           "gameurl": "https://store.epicgames.com/en-US/p/shrines-legacy-909af2",
           "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/shrines-legacy",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/shrines-legacy",
+          "developerurl": ""
         }
       ],
       "availability": "paid",
@@ -3314,6 +3394,16 @@
           "name": "Steam",
           "gameurl": "https://store.steampowered.com/app/1794960/Sonic_Origins/",
           "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/sonic-origins",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/sonic-origins",
+          "developerurl": ""
         }
       ],
       "availability": "paid",
@@ -3364,6 +3454,16 @@
         {
           "name": "Steam",
           "gameurl": "https://store.steampowered.com/app/584400/Sonic_Mania/",
+          "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/sonic-mania",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/sonic-mania",
           "developerurl": ""
         }
       ],
@@ -3670,6 +3770,11 @@
         {
           "name": "GOG",
           "gameurl": "https://www.gog.com/en/game/star_wars_dark_forces_remaster",
+          "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/star-wars-dark-forces-remaster",
           "developerurl": ""
         }
       ],
@@ -5158,6 +5263,11 @@
           "name": "GOG",
           "gameurl": "https://www.gog.com/en/game/undertale",
           "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/undertale",
+          "developerurl": ""
         }
       ],
       "availability": "free",
@@ -5222,6 +5332,11 @@
           "name": "GOG",
           "gameurl": "https://www.gog.com/en/game/va11_halla",
           "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/va11-halla-cyberpunk-bartender-action",
+          "developerurl": ""
         }
       ],
       "availability": "paid",
@@ -5276,6 +5391,16 @@
         {
           "name": "Steam",
           "gameurl": "https://store.steampowered.com/app/1594060/Victory_Heat_Rally/",
+          "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/victory-heat-rally",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/victory-heat-rally",
           "developerurl": ""
         }
       ],
@@ -5339,6 +5464,16 @@
         {
           "name": "Itch.io",
           "gameurl": "https://wisdomtree.itch.io/s3dna",
+          "developerurl": ""
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/wolfenstein-3d",
+          "developerurl": ""
+        },
+        {
+          "name": "Fanatical",
+          "gameurl": "https://www.fanatical.com/en/game/wolfenstein-3-d-gog",
           "developerurl": ""
         }
       ],

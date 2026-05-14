@@ -41,6 +41,16 @@
         "name": "Epic Games",
         "gameurl": "https://store.epicgames.com/en-US/p/shrines-legacy-909af2",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/shrines-legacy",
+        "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/shrines-legacy",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

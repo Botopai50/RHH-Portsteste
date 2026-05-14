@@ -83,8 +83,66 @@ async function loadPorts() {
                 if (!TAG) return url;
                 return url + (url.includes('?') ? '&' : '?') + 'creatorTag=' + encodeURIComponent(TAG);
             }
+        },
+        'Humble Store': {
+            priority: 5,
+            modifier: 'humble',
+            icon: '',
+            short: 'Humble',
+            addAffiliate: (url) => {
+                const TAG = '';
+                if (!TAG) return url;
+                return url + (url.includes('?') ? '&' : '?') + 'partner=' + encodeURIComponent(TAG);
+            }
+        },
+        'Fanatical': {
+            priority: 6,
+            modifier: 'fanatical',
+            icon: '',
+            short: 'Fanatical',
+            addAffiliate: (url) => url
         }
     };
+
+    // === Discount integration (via Cloudflare Worker proxy) ===
+    const DISCOUNT_API_URL = 'https://rhh-ports-discounts.jeodc.workers.dev/';
+    const DISCOUNT_COUNTRY = 'US';
+    const DISCOUNT_CACHE_KEY = 'rhh:discounts:v2';
+    const DISCOUNT_CACHE_TTL_MS = 60 * 60 * 1000;     // 1 hour (Worker also caches 15m on its CDN)
+
+    const readCachedDiscounts = () => {
+        try {
+            const raw = localStorage.getItem(DISCOUNT_CACHE_KEY);
+            if (!raw) return null;
+            const cached = JSON.parse(raw);
+            if (cached && (Date.now() - cached.ts) < DISCOUNT_CACHE_TTL_MS) return cached.data;
+        } catch (_) { /* corrupt cache; ignore */ }
+        return null;
+    };
+    const writeCachedDiscounts = (data) => {
+        try { localStorage.setItem(DISCOUNT_CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
+    };
+
+    // Returns { appid: { shopName: cutPct, ... }, ... } — empty on any failure.
+    const fetchDiscounts = async (steamAppids) => {
+        if (!steamAppids.length) return {};
+        const cached = readCachedDiscounts();
+        if (cached) return cached;
+        try {
+            const url = `${DISCOUNT_API_URL}?appids=${steamAppids.join(',')}&country=${DISCOUNT_COUNTRY}`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('discount proxy ' + res.status);
+            const data = await res.json();
+            writeCachedDiscounts(data);
+            return data;
+        } catch (err) {
+            console.warn('[discounts] fetch failed:', err);
+            return {};
+        }
+    };
+
+    // Populated post-fetch; renderStores reads from it at render time.
+    let discountsByAppid = {};
 
     try {
         // Fetch data concurrently for speed
@@ -147,13 +205,29 @@ async function loadPorts() {
                 .map(s => ({ s, cfg: STORE_CONFIG[s.name] || { priority: 99, modifier: 'other', icon: '', short: s.name || 'Buy', addAffiliate: (u) => u } }));
             // Canonical store ordering: Steam, GOG, Itch.io, Epic, then everything else.
             valid.sort((a, b) => (a.cfg.priority ?? 99) - (b.cfg.priority ?? 99));
+
+            // The ITAD discount map is keyed by Steam appid. Find this port's
+            // appid (if any) so every store button on the port can pick up its
+            // shop-specific discount from the same lookup.
+            const steamEntry = valid.find(({ s }) => /store\.steampowered\.com\/app\//.test(s.gameurl));
+            const appidMatch = steamEntry && steamEntry.s.gameurl.match(/store\.steampowered\.com\/app\/(\d+)/);
+            const portDiscounts = appidMatch ? discountsByAppid[appidMatch[1]] : null;
+
             const buttons = valid
                 .map(({ s, cfg }) => {
                     const url = cfg.addAffiliate(s.gameurl);
                     const label = cfg.short || s.name || 'Buy';
                     const iconHtml = cfg.icon ? `<i class="${cfg.icon}" aria-hidden="true"></i>` : '';
                     const labelHtml = `<span class="port-store-label">${escAttr(label)}</span>`;
-                    const discount = s.discount ? `<span class="port-store-discount">${escAttr(s.discount)}</span>` : '<span class="port-store-discount"></span>';
+                    // Discount precedence: explicit s.discount > ITAD lookup > empty
+                    // ITAD entries are { cut: number, url: string } since the Worker
+                    // started returning full listings + URLs. Only render a badge
+                    // when there's an actual discount (cut > 0).
+                    const explicit = s.discount;
+                    const itadEntry = portDiscounts ? portDiscounts[s.name] : null;
+                    const itadCut = itadEntry && itadEntry.cut > 0 ? itadEntry.cut : null;
+                    const pct = explicit || (itadCut ? `-${itadCut}%` : '');
+                    const discount = pct ? `<span class="port-store-discount">${escAttr(pct)}</span>` : '<span class="port-store-discount"></span>';
                     const tooltip = s.name ? `Buy on ${s.name}` : 'Buy';
                     return `<a class="port-store port-store--${cfg.modifier}" href="${escAttr(url)}" target="_blank" rel="noopener noreferrer sponsored" title="${escAttr(tooltip)}" data-store-name="${escAttr(s.name || '')}">${iconHtml}${labelHtml}${discount}</a>`;
                 })
@@ -349,6 +423,24 @@ async function loadPorts() {
                 return true;
             });
 
+            // Helper: deepest active discount across all of a port's stores.
+            // Returns 0 when nothing is on sale (so ports without discounts
+            // naturally fall to the bottom of the "biggest discount" sort).
+            const bestDiscountForPort = (port) => {
+                const stores = port.attr?.store || [];
+                const steamEntry = stores.find(s => s && /store\.steampowered\.com\/app\//.test(s.gameurl || ''));
+                const m = steamEntry && steamEntry.gameurl.match(/store\.steampowered\.com\/app\/(\d+)/);
+                const shops = m ? discountsByAppid[m[1]] : null;
+                if (!shops) return 0;
+                let best = 0;
+                for (const s of stores) {
+                    const entry = shops[s.name];
+                    const cut = entry && typeof entry === 'object' ? entry.cut : entry;
+                    if (cut && cut > best) best = cut;
+                }
+                return best;
+            };
+
             // Sorting
             const method = sortDropdown.value;
             const sorted = [...filtered].sort((a, b) => {
@@ -357,9 +449,15 @@ async function loadPorts() {
                 } else if (method === 'most_downloaded') {
                     const keyA = a.source?.download_url?.split('/').pop();
                     const keyB = b.source?.download_url?.split('/').pop();
-                    const countA = (a.source?.lifetime_downloads ?? 0) + (downloadCounts?.[keyA] ?? 0); 
+                    const countA = (a.source?.lifetime_downloads ?? 0) + (downloadCounts?.[keyA] ?? 0);
                     const countB = (b.source?.lifetime_downloads ?? 0) + (downloadCounts?.[keyB] ?? 0);
                     return countB - countA;
+                } else if (method === 'biggest_discount') {
+                    const diffA = bestDiscountForPort(a);
+                    const diffB = bestDiscountForPort(b);
+                    if (diffA !== diffB) return diffB - diffA;
+                    // Tie-break on title so the order is deterministic
+                    return (a.attr?.title || '').localeCompare(b.attr?.title || '');
                 }
                 return (a.attr?.title || '').localeCompare(b.attr?.title || '');
             });
@@ -372,6 +470,22 @@ async function loadPorts() {
             .forEach(el => el.addEventListener('input', updateDisplay));
 
         updateDisplay();
+
+        // Kick off ITAD discount fetch in the background. When it returns,
+        // re-render once so the discount badges populate. No-op if the key
+        // is empty or the fetch fails — site stays fully usable.
+        (async () => {
+            const appids = new Set();
+            ports.forEach(p => {
+                (p.attr?.store || []).forEach(s => {
+                    const m = s && s.gameurl && s.gameurl.match(/store\.steampowered\.com\/app\/(\d+)/);
+                    if (m) appids.add(m[1]);
+                });
+            });
+            if (!appids.size) return;
+            discountsByAppid = await fetchDiscounts([...appids]);
+            if (Object.keys(discountsByAppid).length) updateDisplay();
+        })();
 
         // --- README Modal ---
         const readmeModal = document.getElementById('readme-modal');

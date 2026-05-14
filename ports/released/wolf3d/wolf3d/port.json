@@ -38,6 +38,16 @@
         "name": "Itch.io",
         "gameurl": "https://wisdomtree.itch.io/s3dna",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/wolfenstein-3d",
+        "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/wolfenstein-3-d-gog",
+        "developerurl": ""
       }
     ],
     "availability": "demo",

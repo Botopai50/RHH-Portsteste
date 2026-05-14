@@ -36,6 +36,11 @@
         "name": "GOG",
         "gameurl": "https://www.gog.com/en/game/momodora_reverie_under_the_moonlight",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/momodora-reverie-under-the-moonlight",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

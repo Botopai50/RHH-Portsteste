@@ -36,6 +36,11 @@
         "name": "GOG",
         "gameurl": "https://www.gog.com/en/game/undertale",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/undertale",
+        "developerurl": ""
       }
     ],
     "availability": "free",

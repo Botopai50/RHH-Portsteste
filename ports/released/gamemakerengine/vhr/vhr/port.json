@@ -32,6 +32,16 @@
         "name": "Steam",
         "gameurl": "https://store.steampowered.com/app/1594060/Victory_Heat_Rally/",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/victory-heat-rally",
+        "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/victory-heat-rally",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

@@ -28,6 +28,16 @@
         "name": "Steam",
         "gameurl": "https://store.steampowered.com/app/1794960/Sonic_Origins/",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/sonic-origins",
+        "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/sonic-origins",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

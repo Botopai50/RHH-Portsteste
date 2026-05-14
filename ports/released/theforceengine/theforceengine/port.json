@@ -32,6 +32,11 @@
         "name": "GOG",
         "gameurl": "https://www.gog.com/en/game/star_wars_dark_forces_remaster",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/star-wars-dark-forces-remaster",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

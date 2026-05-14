@@ -29,6 +29,11 @@
         "name": "Steam",
         "gameurl": "https://store.steampowered.com/app/2159210/Just_a_To_the_Moon_Series_Beach_Episode/",
         "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/just-a-to-the-moon-series-beach-episode",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

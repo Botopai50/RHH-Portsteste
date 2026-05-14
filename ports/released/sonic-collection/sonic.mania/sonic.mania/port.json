@@ -28,6 +28,16 @@
         "name": "Steam",
         "gameurl": "https://store.steampowered.com/app/584400/Sonic_Mania/",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/sonic-mania",
+        "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/sonic-mania",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

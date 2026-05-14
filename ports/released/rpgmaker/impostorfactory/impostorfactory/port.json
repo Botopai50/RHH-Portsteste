@@ -34,6 +34,16 @@
         "name": "GOG",
         "gameurl": "https://www.gog.com/en/game/impostor_factory",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/impostor-factory",
+        "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/impostor-factory",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

@@ -41,6 +41,11 @@
         "name": "GOG",
         "gameurl": "https://www.gog.com/en/game/va11_halla",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/va11-halla-cyberpunk-bartender-action",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

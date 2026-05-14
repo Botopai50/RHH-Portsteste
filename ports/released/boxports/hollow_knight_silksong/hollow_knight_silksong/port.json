@@ -34,6 +34,11 @@
         "name": "GOG",
         "gameurl": "https://www.gog.com/en/game/hollow_knight_silksong",
         "developerurl": "https://www.gog.com/en/games?developers=team-cherry"
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/hollow-knight-silksong",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

@@ -36,6 +36,16 @@
         "name": "GOG",
         "gameurl": "https://www.gog.com/en/game/dark_deity_complete_edition",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/dark-deity",
+        "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/dark-deity",
+        "developerurl": ""
       }
     ],
     "availability": "paid",

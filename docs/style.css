@@ -618,8 +618,8 @@ details[open] summary {
 }
 
 .port-store {
-	flex: 1;
-	min-width: 5rem;
+	flex: 1 1 6.5rem;
+	min-width: 6.5rem;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -708,6 +708,20 @@ details[open] summary {
 }
 .port-store--epic:hover {
 	background: #4a4a4a;
+}
+
+.port-store--humble {
+	background: #cc2929;
+}
+.port-store--humble:hover {
+	background: #e34141;
+}
+
+.port-store--fanatical {
+	background: #e63946;
+}
+.port-store--fanatical:hover {
+	background: #f25461;
 }
 
 /* =========================

@@ -43,6 +43,16 @@
         "name": "Itch.io",
         "gameurl": "https://cosmicnobab.itch.io/lunarlux",
         "developerurl": ""
+      },
+      {
+        "name": "Humble Store",
+        "gameurl": "https://www.humblebundle.com/store/lunarlux",
+        "developerurl": ""
+      },
+      {
+        "name": "Fanatical",
+        "gameurl": "https://www.fanatical.com/en/game/lunarlux",
+        "developerurl": ""
       }
     ],
     "availability": "paid",
