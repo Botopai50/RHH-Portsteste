@@ -9,6 +9,10 @@ https://store.steampowered.com/app/2019300/Dokimon_Quest/
 
 https://yanako-rpgs.itch.io/dokimon-quest
 
+## Using DLC
+
+GMLoader-Next correctly claims that we do not have access to Steam and can't verify DLC licensure. If you own the Dokimon DLC content, you can transfer your save back to a PC or Steam Deck and begin the DLC. Once you get to the new area, you can save and transfer your save back to continue.
+
 ## Runtime
 
 This game requires my GMToolkit runtime. Download it from the repository root's runtimes folder and add it to `PortMaster/libs`. Replace the one inside if you get a message about it.
