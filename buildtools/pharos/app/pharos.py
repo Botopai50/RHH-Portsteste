@@ -381,7 +381,7 @@ class Pharos:
     def _draw_button_bar(self, buttons: List[dict]) -> None:
         x = 20
         for b in buttons:
-            self.ui.button_circle((x, self.ui.screen_height - 60), b["key"], b["label"], color=b["color"])
+            self.ui.button_circle((x, self.ui.screen_height - 50), b["key"], b["label"], color=b["color"])
             x += 50 + len(b["label"]) * 7
 
     def _map_port_images(self, repo: Repository) -> None:

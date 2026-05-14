@@ -147,4 +147,5 @@ if [ -f "${PENDING_ZIP}" ]; then
 fi
 
 # Cleanup
+rm -rf "${tmpdir}"
 pm_finish
