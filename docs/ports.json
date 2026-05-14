@@ -1500,7 +1500,16 @@
         "mkxp-z.squashfs"
       ],
       "store": [
-        "https://store.steampowered.com/app/1471700/"
+        {
+          "name": "Steam",
+          "gameurl": "https://store.steampowered.com/app/1182620/Impostor_Factory/",
+          "developerurl": ""
+        },
+        {
+          "name": "GOG",
+          "gameurl": "https://www.gog.com/en/game/impostor_factory",
+          "developerurl": ""
+        }
       ],
       "availability": "paid",
       "reqs": [],
@@ -1513,12 +1522,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/impostorfactory/impostorfactory/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/impostorfactory/impostorfactory/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/impostorfactory.zip",
-      "date_updated": "2026-05-14T13:39",
+      "date_updated": "2026-05-14T16:55",
       "first_seen": "2026-05-13",
-      "md5": "615e71a4856bcfa83d0979d150bcc516",
-      "size": 393283,
+      "md5": "98c9480abd8a0008003cbcac21b86082",
+      "size": 393350,
       "lifetime_downloads": 2,
-      "last_commit": "Update readmes to add runtime requirements"
+      "last_commit": "Add store links for new rpgmaker additions"
     }
   },
   {
@@ -1609,7 +1618,11 @@
         "mkxp-z.squashfs"
       ],
       "store": [
-        "https://store.steampowered.com/app/1416700/"
+        {
+          "name": "Steam",
+          "gameurl": "https://store.steampowered.com/app/2159210/Just_a_To_the_Moon_Series_Beach_Episode/",
+          "developerurl": ""
+        }
       ],
       "availability": "paid",
       "reqs": [],
@@ -1622,12 +1635,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/to_the_moon_beachsode/to_the_moon_beachsode/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/rpgmaker/to_the_moon_beachsode/to_the_moon_beachsode/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/to_the_moon_beachsode.zip",
-      "date_updated": "2026-05-14T13:39",
+      "date_updated": "2026-05-14T16:55",
       "first_seen": "2026-05-13",
-      "md5": "d8e2869b7bf05c81d4a1cbf0c378287b",
-      "size": 217588,
+      "md5": "6c141176448815da88a6b444ff134293",
+      "size": 217637,
       "lifetime_downloads": 3,
-      "last_commit": "Update readmes to add runtime requirements"
+      "last_commit": "Add store links for new rpgmaker additions"
     }
   },
   {
