@@ -18,6 +18,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: build-ports
@@ -132,6 +133,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Build each port
+        id: build
         if: steps.discover.outputs.to_build != ''
         run: |
           set -uo pipefail
@@ -296,6 +298,17 @@ jobs:
             echo "::endgroup::"
           done <<< "${{ steps.discover.outputs.to_build }}"
 
+          # Expose the failure list so the issue-tracking step (which only runs
+          # on scheduled failures) can open one issue per failed port instead
+          # of a single generic issue. The label_for entries pair each port id
+          # with its commit label (release tag or short SHA) so issue bodies
+          # show which upstream version the build was targeting.
+          {
+            echo "failed_ports<<EOF"
+            printf '%s\n' "${failures[@]}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
           if (( ${#failures[@]} > 0 )); then
             echo "::error::Failures: ${failures[*]}"
             exit 1
@@ -309,3 +322,133 @@ jobs:
           path: ${{ runner.temp }}/force-build-outputs
           retention-days: 14
           if-no-files-found: ignore
+
+      # On scheduled (cron) failures, open or comment on a per-port tracking
+      # issue so that silent breakage gets noticed. Skipped for
+      # workflow_dispatch — manual runs are interactive and any failure is
+      # already visible to the operator.
+      #
+      # The build step records which ports failed via failed_ports output.
+      # For each failed port, we look up an existing open issue by title
+      # prefix (one rolling issue per port across consecutive failed runs)
+      # and either comment on it or create a new one. The body includes the
+      # tail of the build step's log filtered to that port's ::group:: block
+      # so the issue is self-contained for triage.
+      #
+      # If failed_ports is empty (e.g. the discover step failed before any
+      # port-specific build ran), we fall back to a single generic issue.
+      - name: Open or update failure issues
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        env:
+          FAILED_PORTS: ${{ steps.build.outputs.failed_ports }}
+        with:
+          script: |
+            const TAIL_LINES = 40;
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const failedPorts = (process.env.FAILED_PORTS || '')
+              .split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+
+            // Fetch the build job's log once and parse out the per-port
+            // ::group:: blocks so each issue gets a focused tail.
+            const { data: jobsData } = await github.rest.actions.listJobsForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId,
+              per_page: 100,
+            });
+            const failedJob = jobsData.jobs.find(j =>
+              j.status === 'completed' && j.conclusion === 'failure'
+            );
+
+            let fullLog = '';
+            if (failedJob) {
+              try {
+                const logResp = await github.rest.actions.downloadJobLogsForWorkflowRun({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  job_id: failedJob.id,
+                });
+                fullLog = Buffer.from(logResp.data).toString('utf8');
+              } catch (e) {
+                core.warning(`Failed to fetch job log: ${e.message}`);
+              }
+            }
+
+            // The build step emits `::group::[<id>] build` ... `::endgroup::`
+            // around each port's build_port.sh invocation; isolate that
+            // window so the tail isn't polluted by other ports' output.
+            // The log lines are prefixed with a timestamp by the runner,
+            // so match the group marker anywhere on the line.
+            function tailForPort(portId) {
+              if (!fullLog) return '(log unavailable)';
+              const lines = fullLog.split(/\r?\n/);
+              const startRe = new RegExp(`::group::\\[${portId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\] build`);
+              const endRe   = /::endgroup::/;
+              let start = -1, end = -1;
+              for (let i = 0; i < lines.length; i++) {
+                if (start < 0 && startRe.test(lines[i])) { start = i; continue; }
+                if (start >= 0 && endRe.test(lines[i])) { end = i; break; }
+              }
+              if (start < 0) return '(no group block found in log)';
+              const slice = lines.slice(start, end > 0 ? end + 1 : lines.length);
+              while (slice.length && slice[slice.length - 1] === '') slice.pop();
+              return slice.slice(-TAIL_LINES).join('\n');
+            }
+
+            async function openOrComment(titlePrefix, body) {
+              const { data: openIssues } = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'auto-build-failure',
+                per_page: 100,
+              });
+              const existing = openIssues.find(i => i.title.startsWith(titlePrefix));
+              if (existing) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: existing.number,
+                  body,
+                });
+                core.info(`Commented on existing issue #${existing.number}`);
+              } else {
+                const { data: created } = await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: titlePrefix,
+                  body,
+                  labels: ['auto-build-failure'],
+                });
+                core.info(`Created new issue #${created.number}`);
+              }
+            }
+
+            if (failedPorts.length === 0) {
+              // No port-specific failures recorded — the build step never
+              // got far enough to populate the failure list, or something
+              // earlier (e.g. discover) failed. Open a single generic issue.
+              const body = [
+                `Scheduled Build Ports run failed before any port-specific build completed.`,
+                ``,
+                `- Workflow run: ${runUrl}`,
+              ].join('\n');
+              await openOrComment('[auto] Build Ports scheduled run failure', body);
+              return;
+            }
+
+            for (const port of failedPorts) {
+              const tail = tailForPort(port);
+              const body = [
+                `Scheduled build of **${port}** failed.`,
+                ``,
+                `- Workflow run: ${runUrl}`,
+                ``,
+                `Last ${TAIL_LINES} lines of this port's build section:`,
+                '```',
+                tail,
+                '```',
+              ].join('\n');
+              await openOrComment(`[auto] ${port} build failure`, body);
+            }

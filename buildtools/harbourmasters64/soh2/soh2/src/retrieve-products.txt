@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../../lib_retrieve.sh"
+
+retrieve_init "$1" "$2"
+
+# 2s2h's build can produce multiple ELF binaries under build/mm/ (mods,
+# tooling, etc.). Ship all of them.
+for elf_file in "$PROJECT_BUILD/mm/"*.elf; do
+    [[ -f "$elf_file" ]] && cp "$elf_file" "$DESTDIR/"
+done
+
+copy_o2r mm/2ship.o2r
+replace_libs
+package_2ship_extractor_zip mm/assets/extractor mm/assets/xml ZAPD/ZAPD.out
+
+echo "Packaging complete."

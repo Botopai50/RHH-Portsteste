@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../../lib_retrieve.sh"
+
+retrieve_init "$1" "$2"
+
+copy_binary Spaghettify
+# Upstream cmake may or may not produce .pdb depending on toolchain config.
+copy_binary_opt Spaghettify.pdb
+copy_o2r spaghetti.o2r
+
+# SpaghettiKart's build doesn't produce gamecontrollerdb.txt; fetch upstream.
+curl -sfL -o "$DESTDIR/gamecontrollerdb.txt" \
+    "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt"
+
+replace_libs
+package_torch_assets yamls/ meta/ include/
+
+echo "Packaging complete."
