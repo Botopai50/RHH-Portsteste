@@ -25,7 +25,11 @@
       "mkxp-z.squashfs"
     ],
     "store": [
-      "https://store.steampowered.com/app/1416700/"
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/2159210/Just_a_To_the_Moon_Series_Beach_Episode/",
+        "developerurl": ""
+      }
     ],
     "availability": "paid",
     "reqs": [],

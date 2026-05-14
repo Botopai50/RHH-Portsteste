@@ -25,7 +25,16 @@
       "mkxp-z.squashfs"
     ],
     "store": [
-      "https://store.steampowered.com/app/1471700/"
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/1182620/Impostor_Factory/",
+        "developerurl": ""
+      },
+      {
+        "name": "GOG",
+        "gameurl": "https://www.gog.com/en/game/impostor_factory",
+        "developerurl": ""
+      }
     ],
     "availability": "paid",
     "reqs": [],
