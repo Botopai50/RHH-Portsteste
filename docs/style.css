@@ -633,7 +633,15 @@ details[open] summary {
    ========================= */
 .page-layout {
 	display: grid;
-	grid-template-columns: 320px minmax(0, 1fr) 460px;
+	/* Fluid rails: scale with viewport. On wide screens they max out at
+	   320 / 460 (the values the user picked for the ultrawide layout); on
+	   narrower screens they shrink down to 180 / 220 so the center column
+	   still has room for at least one full card before the mobile
+	   breakpoint kicks in. */
+	grid-template-columns:
+		clamp(180px, 16%, 320px)
+		minmax(0, 1fr)
+		clamp(220px, 22%, 460px);
 	gap: 1.5rem;
 	margin-top: 1.5rem;
 	align-items: start;
@@ -789,7 +797,12 @@ details[open] summary {
               (carousel, port count) sit only in the center column. ---------- */
 .above-grid {
 	display: grid;
-	grid-template-columns: 320px minmax(0, 1fr) 460px;
+	/* Mirror the page-layout's fluid template so the carousel + port count
+	   stay column-2-aligned with the grid below at every viewport width. */
+	grid-template-columns:
+		clamp(180px, 16%, 320px)
+		minmax(0, 1fr)
+		clamp(220px, 22%, 460px);
 	gap: 1.5rem;
 	margin-top: 1.5rem;
 }
