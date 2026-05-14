@@ -804,12 +804,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/dokimon.zip",
-      "date_updated": "2026-05-12T14:45",
+      "date_updated": "2026-05-14T13:13",
       "first_seen": "2025-11-11",
-      "md5": "c4d1f1886c976723bc99435a2c33326c",
-      "size": 56272120,
+      "md5": "62652f26420618bfc6129ad9aaa23e2b",
+      "size": 56272258,
       "lifetime_downloads": 14,
-      "last_commit": "Update all patchscripts in prep for new patcher gui commands"
+      "last_commit": "[DOKIMON] Add a section in README about using DLC"
     }
   },
   {
