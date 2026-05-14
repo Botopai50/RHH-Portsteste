@@ -57,11 +57,11 @@ from service import Service, toggle_muted_port
 # ----------------------------------------------------------------------
 # Safe background task runner
 # ----------------------------------------------------------------------
-def _safe_bg(func, arg):
+def _safe_bg(func, *args):
     def wrapper():
         thread_name = threading.current_thread().name
         try:
-            func(arg)
+            func(*args)
         except Exception as e:
             import traceback
             print(f"[{thread_name}] CRASHED: {e}\n{traceback.format_exc()}")
@@ -308,7 +308,7 @@ class Pharos:
         for r in self.repositories:
             threading.Thread(target=_safe_bg(self._fetch_ports_json, r), name=f"PortsFetcher-{r.name}", daemon=True).start()
             threading.Thread(target=_safe_bg(self._fetch_winecask_json, r), name=f"WineCaskFetcher-{r.name}", daemon=True).start()
-        threading.Thread(target=_safe_bg(self._fetch_discounts, self.repositories), name="DiscountFetcher", daemon=True).start()
+        threading.Thread(target=_safe_bg(self._fetch_discounts), name="DiscountFetcher", daemon=True).start()
 
     # Pulls current ITAD-tracked discounts from the RHH-Ports Cloudflare Worker
     # for every Steam appid present in the catalog. Stored in self.discounts_by_appid
