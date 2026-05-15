@@ -10,11 +10,8 @@ build_sdl2
 
 build_libzip
 build_json
-
-# spdlog static-linked into the binary; build current version from source.
+build_tinyxml2
 build_spdlog
-
-# GSL is header-only but find_package'd; install to make headers discoverable.
 build_gsl
 
 project_configure_and_build GeneratePortO2R \
