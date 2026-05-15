@@ -11,7 +11,7 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        ca-certificates curl wget git \
+        ca-certificates curl wget git file \
         build-essential pkg-config make cmake ninja-build \
         libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
         libboost-program-options-dev libboost-serialization-dev \
