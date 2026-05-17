@@ -59,9 +59,6 @@ prepare_system() {
     export PATH="$TOOLKIT/gmtools:$TOOLKIT/utmt-cli:$PATH"
     export LD_LIBRARY_PATH="$TOOLKIT/libs:$LD_LIBRARY_PATH"
     export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
-
-    # Permissions
-    chmod 666 /dev/uinput
 }
 
 prepare_files() {
