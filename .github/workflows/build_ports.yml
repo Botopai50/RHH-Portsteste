@@ -382,13 +382,17 @@ jobs:
             // The build step emits `::group::[<id>] build` ... `::endgroup::`
             // around each port's build_port.sh invocation; isolate that
             // window so the tail isn't polluted by other ports' output.
+            // Note: the runner rewrites workflow commands when persisting the
+            // log, so the downloaded text contains `##[group]` / `##[endgroup]`
+            // rather than the `::group::` form the script emits. Match either.
             // The log lines are prefixed with a timestamp by the runner,
             // so match the group marker anywhere on the line.
             function tailForPort(portId) {
               if (!fullLog) return '(log unavailable)';
               const lines = fullLog.split(/\r?\n/);
-              const startRe = new RegExp(`::group::\\[${portId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\] build`);
-              const endRe   = /::endgroup::/;
+              const idEsc = portId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              const startRe = new RegExp(`(?:::group::|##\\[group\\])\\[${idEsc}\\] build`);
+              const endRe   = /(?:::endgroup::|##\[endgroup\])/;
               let start = -1, end = -1;
               for (let i = 0; i < lines.length; i++) {
                 if (start < 0 && startRe.test(lines[i])) { start = i; continue; }
