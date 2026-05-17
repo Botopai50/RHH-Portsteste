@@ -5633,12 +5633,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda2enhanced/zelda2enhanced/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda2enhanced/zelda2enhanced/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda2enhanced.zip",
-      "date_updated": "2026-05-14T17:17",
+      "date_updated": "2026-05-17T10:16",
       "first_seen": "2026-05-14",
-      "md5": "85c958bc96c4e099482a26396d6bbd7c",
-      "size": 2824277,
-      "lifetime_downloads": 0,
-      "last_commit": "Update port.json"
+      "md5": "09d64b823b2ff4d250c564e1fa9b15d0",
+      "size": 2824254,
+      "lifetime_downloads": 3,
+      "last_commit": "[ZELDA2] don't chmod permissions inside patchscript"
     }
   }
 ]
