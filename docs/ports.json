@@ -143,12 +143,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/arrestofastonebuddha/arrestofastonebuddha/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/arrestofastonebuddha/arrestofastonebuddha/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/arrestofastonebuddha.zip",
-      "date_updated": "2026-05-14T13:39",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-07-02",
-      "md5": "24c9375cc85405f370bbe1d4dd258e45",
-      "size": 2622364,
-      "lifetime_downloads": 37,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "add8b8e2f47d1bdec6dfe7d06f34fc08",
+      "size": 2622330,
+      "lifetime_downloads": 38,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -205,12 +205,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/aurascope/aurascope/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/aurascope/aurascope/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/aurascope.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2025-05-18",
-      "md5": "09863311d08e779ba9f7b1778617cd2c",
-      "size": 2750999,
-      "lifetime_downloads": 18,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "d292b639f7f926c207d1dd11859bb677",
+      "size": 2750963,
+      "lifetime_downloads": 19,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -526,12 +526,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity.zip",
-      "date_updated": "2026-05-14T18:18",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2025-05-18",
-      "md5": "f6a358d7cfbfcacb0cc9fe710ac900b0",
-      "size": 6232910,
-      "lifetime_downloads": 7,
-      "last_commit": "Add discounts and more stores"
+      "md5": "96e5b97ebaa7355f92ada9ad94618dcd",
+      "size": 6232876,
+      "lifetime_downloads": 9,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -597,12 +597,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity2.zip",
-      "date_updated": "2026-05-14T18:18",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2025-05-18",
-      "md5": "8f0db9fc6bb87e75d800d0bd71fea20e",
-      "size": 6132216,
+      "md5": "327503a54faa56f53934d9d8e1135e0c",
+      "size": 6132178,
       "lifetime_downloads": 7,
-      "last_commit": "Add discounts and more stores"
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -1214,12 +1214,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/fadingafternoon/fadingafternoon/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/fadingafternoon/fadingafternoon/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/fadingafternoon.zip",
-      "date_updated": "2026-05-14T13:39",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-07-02",
-      "md5": "80012be11c24be553bfe4ddc98856d66",
-      "size": 4083854,
-      "lifetime_downloads": 32,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "0bb55ed39958ec66cbf2be60c103358e",
+      "size": 4083816,
+      "lifetime_downloads": 35,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -1269,12 +1269,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gunsoffury/gunsoffury/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gunsoffury/gunsoffury/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/gunsoffury.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2025-05-18",
-      "md5": "a17e5d70d43e3b5c03ab9106691505c1",
-      "size": 5218404,
-      "lifetime_downloads": 26,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "62a90b006a63a55e4c5cd8f4f93c916a",
+      "size": 5218366,
+      "lifetime_downloads": 29,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -1685,12 +1685,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/iosas/iosas/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/iosas/iosas/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/iosas.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2025-11-11",
-      "md5": "975624d3c6081053b3f4cf1a7ab159bd",
-      "size": 5659418,
-      "lifetime_downloads": 33,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "eb22ff12ae3fc60eb8736ba347074afc",
+      "size": 5659381,
+      "lifetime_downloads": 35,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -1958,12 +1958,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/lunarlux/lunarlux/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/lunarlux/lunarlux/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/lunarlux.zip",
-      "date_updated": "2026-05-14T18:18",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2025-05-18",
-      "md5": "d89cc98e1e21436c0e878a76bdb1e795",
-      "size": 5325386,
-      "lifetime_downloads": 6,
-      "last_commit": "Add discounts and more stores"
+      "md5": "9857e2369517365c57d0c73bdc2fe406",
+      "size": 5325345,
+      "lifetime_downloads": 8,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -2189,12 +2189,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mystikbelle/mystikbelle/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mystikbelle/mystikbelle/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/mystikbelle.zip",
-      "date_updated": "2026-05-14T16:48",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2025-05-18",
-      "md5": "5d013a685c512aa9960fe694daabca4b",
-      "size": 3048570,
-      "lifetime_downloads": 11,
-      "last_commit": "Remove old ports and fix all storefronts in port.json files"
+      "md5": "64ee089feea277ab081a98ac386e9036",
+      "size": 3048538,
+      "lifetime_downloads": 14,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -2355,12 +2355,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ooo/ooo/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ooo/ooo/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/ooo.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2026-01-01",
-      "md5": "f8a9e185063f527ec364344e33c05620",
-      "size": 4803472,
-      "lifetime_downloads": 7,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "eb6278c4b898d4f2d691a899945365c5",
+      "size": 4803433,
+      "lifetime_downloads": 9,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -2457,12 +2457,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/outridermako/outridermako/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/outridermako/outridermako/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/outridermako.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2025-07-01",
-      "md5": "2f36aecb32dd61affef4563c49f46290",
-      "size": 4906556,
-      "lifetime_downloads": 10,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "7c1e52f01dea78e561c33ae0b49c797b",
+      "size": 4906518,
+      "lifetime_downloads": 12,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -2601,12 +2601,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/picayunedreams/picayune/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/picayunedreams/picayune/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/picayune.zip",
-      "date_updated": "2026-05-14T16:48",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2026-01-01",
-      "md5": "2c3088e1e87392dcbe840269dfd50f79",
-      "size": 5228345,
+      "md5": "69b0f2eb3f85458b61cffeece01ad171",
+      "size": 5228306,
       "lifetime_downloads": 2,
-      "last_commit": "Remove old ports and fix all storefronts in port.json files"
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -3050,12 +3050,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/rolusoutskirts/rolusoutskirts/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/rolusoutskirts/rolusoutskirts/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/rolusoutskirts.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2026-01-01",
-      "md5": "a46e401b6f7fd973c7ffb21ac8643404",
-      "size": 5247139,
-      "lifetime_downloads": 2,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "e4d92b1b57d56708e438bbd3ccaa4f49",
+      "size": 5247104,
+      "lifetime_downloads": 3,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -3262,12 +3262,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/shrineslegacy/shrineslegacy/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/shrineslegacy/shrineslegacy/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/shrineslegacy.zip",
-      "date_updated": "2026-05-14T18:18",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-10-07",
-      "md5": "cde87baaa8686f927e2961ee896a6bb4",
-      "size": 5424503,
+      "md5": "7183a1cd1590a955609db869591978b9",
+      "size": 5424463,
       "lifetime_downloads": 20,
-      "last_commit": "Add discounts and more stores"
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -3781,12 +3781,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/spinelasher/spinelasher/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/spinelasher/spinelasher/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/spinelasher.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-08-11",
-      "md5": "3fb44fd65a526116b08e5af34ff145bb",
-      "size": 5134445,
-      "lifetime_downloads": 8,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "165cc0a7674fb974563993fcd86645b0",
+      "size": 5134409,
+      "lifetime_downloads": 10,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -4087,12 +4087,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mariokartzx/mariokartzx/screenshot.png",
       "readme_url": "",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/mariokartzx.zip",
-      "date_updated": "2026-05-12T14:45",
+      "date_updated": "2026-05-18T11:11",
       "first_seen": "2026-02-08",
-      "md5": "e18eff1a1b3118e37d48c2a3d5337dc5",
-      "size": 2744901,
-      "lifetime_downloads": 25,
-      "last_commit": "Update all patchscripts in prep for new patcher gui commands"
+      "md5": "12d1c3a6638c242b479d8577451f9792",
+      "size": 2744861,
+      "lifetime_downloads": 32,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -4240,12 +4240,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/friendsofringo/friendsofringo/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/friendsofringo/friendsofringo/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/friendsofringo.zip",
-      "date_updated": "2026-05-14T13:39",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-07-02",
-      "md5": "5eeabdc8457ebe85baca39c2dcba4ca1",
-      "size": 3987194,
-      "lifetime_downloads": 28,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "d4c1270d00b38678efbfa8f129f2283a",
+      "size": 3987157,
+      "lifetime_downloads": 31,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -4345,12 +4345,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-foer/zelda-foer/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-foer/zelda-foer/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-foer.zip",
-      "date_updated": "2026-05-14T13:39",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-11-07",
-      "md5": "7315e82a8c27dcbf4c24a608e2613386",
-      "size": 324979,
-      "lifetime_downloads": 36,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "12f3eedf64ed407b5c856cc8d1606c69",
+      "size": 324938,
+      "lifetime_downloads": 42,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -4394,12 +4394,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-wogr/zelda-wogr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-wogr/zelda-wogr/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-wogr.zip",
-      "date_updated": "2026-05-14T13:39",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-11-07",
-      "md5": "575a898b0b171a9bcff840d34d8a89b8",
-      "size": 403678,
-      "lifetime_downloads": 26,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "e8d82ede2728b0fd1de9349338d3e7dd",
+      "size": 403636,
+      "lifetime_downloads": 30,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -5052,12 +5052,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/triga/triga/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/triga/triga/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/triga.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-07-09",
-      "md5": "4381832da5622b4d681b43b4e724d3ca",
-      "size": 3622801,
-      "lifetime_downloads": 5,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "178b52593efaf26846dcf709171778b6",
+      "size": 3622762,
+      "lifetime_downloads": 6,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -5210,12 +5210,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertale/undertale/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertale/undertale/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/undertale.zip",
-      "date_updated": "2026-05-14T16:48",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-05-18",
-      "md5": "7c3d6597cc7979520c163cf762ddda0f",
-      "size": 9540072,
-      "lifetime_downloads": 33,
-      "last_commit": "Remove old ports and fix all storefronts in port.json files"
+      "md5": "a71520cf17a3b3b3406db24acfa1b4de",
+      "size": 9540028,
+      "lifetime_downloads": 38,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -5333,12 +5333,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/utyellow/utyellow/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/utyellow/utyellow/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/utyellow.zip",
-      "date_updated": "2026-05-14T18:18",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-11-11",
-      "md5": "43e43d74ff5bc3441c01852a448bcf84",
-      "size": 3940237,
-      "lifetime_downloads": 15,
-      "last_commit": "Add discounts and more stores"
+      "md5": "b5464eb97dc8c6b4aee01750ff711e9a",
+      "size": 3940202,
+      "lifetime_downloads": 16,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -5402,12 +5402,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/valhalla/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/valhalla/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/valhalla.zip",
-      "date_updated": "2026-05-14T18:18",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-08-25",
-      "md5": "7f040be8a08670f8a7f5ab8360f43367",
-      "size": 2433398,
-      "lifetime_downloads": 20,
-      "last_commit": "Add discounts and more stores"
+      "md5": "0e9a274805f955749e477b25388c82b8",
+      "size": 2433362,
+      "lifetime_downloads": 21,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
@@ -5469,12 +5469,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/vhr/vhr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/vhr/vhr/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/vhr.zip",
-      "date_updated": "2026-05-14T18:18",
+      "date_updated": "2026-05-18T11:12",
       "first_seen": "2025-11-11",
-      "md5": "efc03cb313a80caf4575d93666310b29",
-      "size": 5559676,
-      "lifetime_downloads": 35,
-      "last_commit": "Add discounts and more stores"
+      "md5": "bead26dc9209a39d1a96c2a7d54f890c",
+      "size": 5559640,
+      "lifetime_downloads": 40,
+      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
     }
   },
   {
