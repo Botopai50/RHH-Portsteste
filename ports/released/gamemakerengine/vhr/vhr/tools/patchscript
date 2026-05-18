@@ -102,11 +102,6 @@ prepare_files() {
     # Also remove __MACOSX directories if they slipped in
     find "$DATADIR" -type d -name "__MACOSX" -exec rm -rf {} +
 
-    # Move splash file if it exists
-    if [ -f "$DATADIR/splash.png" ]; then
-        mv "$DATADIR/splash.png" "$GAMEDIR/splash.png"
-    fi
-
     # Move data folder and mp4 file(s)
     mkdir -p "$SAVEDIR" && mv "$DATADIR"/*.mp4 "$SAVEDIR"
 

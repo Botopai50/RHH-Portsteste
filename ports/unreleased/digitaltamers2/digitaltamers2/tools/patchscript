@@ -97,11 +97,6 @@ prepare_files() {
     rm -rf "${DATADIR}/\$PLUGINSDIR"
     rm -rf "${DATADIR}/\$TEMP"
 
-    # Move splash file if it exists
-    if [ -f "$DATADIR/splash.png" ]; then
-        mv "$DATADIR/splash.png" "$GAMEDIR/splash.png"
-    fi
-    
     # Rename data.win
     if [ -f "$DATADIR/data.win" ]; then
         mv "$DATADIR/data.win" "$DATADIR/game.droid"

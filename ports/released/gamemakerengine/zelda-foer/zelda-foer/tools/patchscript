@@ -111,11 +111,6 @@ prepare_files() {
     rm -rf "$DATADIR/tmp/res"
     rm -rf "$DATADIR/tmp/META-INF"
 
-    # Move splash file if it exists
-    if [ -f "$DATADIR/tmp/assets/splash.png" ]; then
-        mv "$DATADIR/tmp/assets/splash.png" "$GAMEDIR/splash.png"
-    fi
-    
     # Compress audio
     compress_audio || return 1
     

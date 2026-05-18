@@ -90,10 +90,6 @@ prepare_files() {
     [ -d "$DATADIR/Scenes" ] && mv "$DATADIR/Scenes" "$SAVEDIR/Scenes"
     [ -d "$DATADIR/Stories" ] && mv "$DATADIR/Stories" "$SAVEDIR/Stories"
 
-    # Move splash file if it exists
-    if [ -f "$DATADIR/splash.png" ]; then
-        mv "$DATADIR/splash.png" "$GAMEDIR/splash.png"
-    fi
 }
 
 # Externalize game textures with compression

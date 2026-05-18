@@ -85,11 +85,6 @@ prepare_files() {
         -name "*.ico" -o -name "*.lnk" -o -name "*.msg" -o -name "*.zip" \
     \) -exec rm -f {} \;
 
-    # Move splash file if it exists
-    if [ -f "$DATADIR/splash.png" ]; then
-        mv "$DATADIR/splash.png" "$GAMEDIR/splash.png"
-    fi
-
     # Check if we're using a prepatched game
     if unzip -l "$DATAFILE" "assets/*" | grep -q "assets/.*\.dat"; then
         echo "Prepatched game detected."

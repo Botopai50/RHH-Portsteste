@@ -120,11 +120,6 @@ prepare_files() {
         -name "*.ico" -o -name "*.lnk" -o -name "*.msg" -o -name "*.zip" \
     \) -exec rm -f {} \;
 
-    # Move splash file if it exists
-    if [ -f "$DATADIR/splash.png" ]; then
-        mv "$DATADIR/splash.png" "$GAMEDIR/splash.png"
-    fi
-
     # Handle DB@ files
     mkdir -p "$DATADIR/DB"
     for f in "$DATADIR"/DB@*; do
