@@ -42,3 +42,5 @@ sleep 5
 docker exec -e FORCE_HEAD=${FORCE_HEAD:-false} $CONTAINER /bin/bash -c "cd $BUILDDIR && bash $DOCKERROOT/$BUILDSCRIPT"
 
 bash $HOSTROOT/$PRODUCTSCRIPT $HOSTROOT/$BUILDDIR $HOSTROOT/$PORTDIR
+
+docker rm -f $CONTAINER >/dev/null 2>&1 || true

@@ -21,6 +21,6 @@ if tty -s; then
     ${NAME}
 else
   echo NONINTERACTIVE
-  docker run -v `realpath ..`:/root --name=${NAME} --hostname=${NAME} \
-    ${NAME} /bin/bash -c "sleep infinity" &
+  docker run -d -v `realpath ..`:/root --name=${NAME} --hostname=${NAME} \
+    ${NAME} sleep infinity
 fi
