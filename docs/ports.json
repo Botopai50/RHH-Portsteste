@@ -1224,6 +1224,65 @@
   },
   {
     "version": 4,
+    "name": "grappledog.zip",
+    "items": [
+      "Grapple Dog.sh",
+      "grappledog"
+    ],
+    "items_opt": [],
+    "attr": {
+      "title": "Grapple Dog",
+      "porter": [
+        "Jeod"
+      ],
+      "desc": "Jump, Swing and Zip your way through colourful worlds and exciting challenges in this unique 2D action-platformer! Master the power of the Grapple on your adventure to save the world!.",
+      "desc_md": null,
+      "inst": "Purchase the game on Steam and copy all game data to `grappledog/assets`.",
+      "inst_md": null,
+      "genres": [
+        "action"
+      ],
+      "image": null,
+      "rtr": false,
+      "exp": false,
+      "runtime": [
+        "gmloadernext.squashfs"
+      ],
+      "store": [
+        {
+          "name": "Steam",
+          "gameurl": "https://store.steampowered.com/app/1444480/Grapple_Dog/",
+          "developerurl": "https://store.steampowered.com/developer/medallion"
+        },
+        {
+          "name": "Humble Store",
+          "gameurl": "https://www.humblebundle.com/store/grapple-dog",
+          "developerurl": null
+        }
+      ],
+      "availability": "paid",
+      "reqs": [
+        "2gb"
+      ],
+      "arch": [
+        "aarch64"
+      ],
+      "min_glibc": ""
+    },
+    "source": {
+      "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/grappledog/grappledog/screenshot.png",
+      "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/grappledog/grappledog/README.md",
+      "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/grappledog.zip",
+      "date_updated": "2026-05-20T02:44",
+      "first_seen": "2026-05-20",
+      "md5": "7e7c0cbe6bbadf1b9843f431a41acf5d",
+      "size": 5275270,
+      "lifetime_downloads": 0,
+      "last_commit": "[GRAPPLEDOG] Release port"
+    }
+  },
+  {
+    "version": 4,
     "name": "gunsoffury.zip",
     "items": [
       "Guns of Fury.sh",
