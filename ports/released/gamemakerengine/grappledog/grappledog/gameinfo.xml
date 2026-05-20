@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Grapple Dog.sh</path>
+		<name>Grapple Dog</name>
+		<image>./grappledog/cover.png</image>
+		<thumbnail>./grappledog/thumb.png</thumbnail>
+        <desc>Jump, Swing and Zip your way through colourful worlds and exciting challenges in this unique 2D action-platformer! Master the power of the Grapple on your adventure to save the world!</desc>
+        <developer>Medallion Games</developer>
+        <releasedate>20220310</releasedate>
+        <genre>Action, Platformer</genre>
+	</game>
+</gamelist>
