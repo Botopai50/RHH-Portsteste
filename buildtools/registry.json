@@ -97,7 +97,7 @@
     "gmloadernext": {
       "build_dir": "buildtools/gmloadernext",
       "target_dir": "runtimes",
-      "upstream_repo": "JohnnyonFlame/gmloader-next",
+      "upstream_repo": "JeodC/gmloader-next",
       "upstream_branch": "master",
       "commit_prefix": "GMLOADER",
       "artifact": "gmloadernext.squashfs"
