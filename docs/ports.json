@@ -2658,12 +2658,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pizzatower/pizzatower/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pizzatower/pizzatower/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pizzatower.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-20T01:45",
       "first_seen": "2025-05-18",
-      "md5": "4ce520af5ff4c37e6168b5066bad86b5",
-      "size": 11534584,
-      "lifetime_downloads": 37,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "b7dfe9505282ff08f45734febcc38a76",
+      "size": 10896899,
+      "lifetime_downloads": 42,
+      "last_commit": "[PIZZATOWER] Use gmloader fmod plugin lib and runtime"
     }
   },
   {
