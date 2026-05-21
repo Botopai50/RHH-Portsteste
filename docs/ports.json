@@ -5459,12 +5459,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/valhalla/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/valhalla/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/valhalla.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-21T16:24",
       "first_seen": "2025-08-25",
-      "md5": "0e9a274805f955749e477b25388c82b8",
+      "md5": "8c80d57f4a9ed0d0f4dde82d51778376",
       "size": 2433362,
-      "lifetime_downloads": 21,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "lifetime_downloads": 22,
+      "last_commit": "[VALHALLA] Fix typo in launchscript"
     }
   },
   {
