@@ -1742,12 +1742,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/iosas/iosas/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/iosas/iosas/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/iosas.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-24T01:40",
       "first_seen": "2025-11-11",
-      "md5": "eb22ff12ae3fc60eb8736ba347074afc",
-      "size": 5659381,
-      "lifetime_downloads": 35,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "73eb085e6727c94cfb83d73481666d60",
+      "size": 5653410,
+      "lifetime_downloads": 36,
+      "last_commit": "[IOSAS] Bump .port version"
     }
   },
   {
