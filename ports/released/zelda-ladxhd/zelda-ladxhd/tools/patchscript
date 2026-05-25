@@ -5,9 +5,6 @@ LOGFILE="$GAMEDIR/../patchlog.txt"
 LOGERR="$GAMEDIR/../patcherr.txt"
 
 rm -f "$LOGERR"
-# Save the patcher's pipe (original stdout) on fd 3 before redirecting stdout
-# through tee. This lets emit_fail_msg send dialog overrides straight to the
-# patcher GUI without them appearing in patchlog.txt.
 exec 3>&1
 > "$LOGFILE" && exec > >(tee "$LOGFILE") 2>&1
 echo "GAMEDIR is set to: $GAMEDIR"
@@ -33,10 +30,6 @@ PATCH_VERSION_FILE="$GAMEDIR/.patch_version"
 UPDATE_CHECK_FILE="$GAMEDIR/.update_check"
 BACKUP_ZIP="$GAMEDIR/.backup/source.zip"
 GOOD_HASH="f4adfba864b852908705ea6a18a48f18"
-
-# File-based tracking of which .vcdiff patches have been applied. Using a file
-# (rather than a shell variable) keeps state across `find | while` pipelines —
-# those run in a subshell.
 CONSUMED_FILE="$TMPDIR/consumed_patches.txt"
 TOTAL_PATCHED=0
 FAILED_PATCHES=0
@@ -58,17 +51,14 @@ get_derived_files() {
     awk -F'\t' -v s="$1" '$1==s {print $2; exit}' "$TARGETS_FILE"
 }
 
-# Compute a target-size cap for vcdiff decode. open-vcdiff defaults to 64 MiB
-# which the main executable patch (small .NET launcher -> ~100 MB self-contained
-# Linux binary) blows past. The patch file's ADD-literal sections cap how much
-# new content the target can contain, so source_size + patch_size * K is a
-# reasonable upper bound for legitimate patches. K=50 covers heavy COPY
-# repetition; 64 MiB floor handles tiny derived patches.
+# Compute a target-size cap for vcdiff decode, capped at INT32_MAX.
 vcdiff_max_size() {
-    local src_size patch_size
+    local src_size patch_size sum
     src_size=$(stat -c%s "$1" 2>/dev/null) || src_size=0
     patch_size=$(stat -c%s "$2" 2>/dev/null) || patch_size=0
-    echo $(( src_size + patch_size * 50 + 67108864 ))
+    sum=$(( src_size + patch_size * 50 + 67108864 ))
+    [ "$sum" -gt 2147483647 ] && sum=2147483647
+    echo "$sum"
 }
 
 prepare_system() {
@@ -118,11 +108,12 @@ extract_game() {
     fi
 
     # Fall back to a previously-preserved backup zip (used for re-patching after an update).
+    FROM_BACKUP=0
     if [ -z "$ZIPFILE" ] || [ ! -f "$ZIPFILE" ]; then
         if [ -f "$BACKUP_ZIP" ]; then
-            echo "Restoring v1.0.0 zip from backup for re-patching."
             mv "$BACKUP_ZIP" "$DATADIR/source.zip"
             ZIPFILE="$DATADIR/source.zip"
+            FROM_BACKUP=1
         fi
     fi
 
@@ -132,10 +123,13 @@ extract_game() {
         return 1
     fi
 
-    echo "Extracting game from zip..."
-
-    # The zip has everything under a top-level folder
-    "$SEVENZIP" x -aoa -o"$TMPDIR/game_extract" "$ZIPFILE"
+    # The zip has everything under a top-level folder.
+    if [ "$FROM_BACKUP" = 1 ]; then
+        "$SEVENZIP" x -aoa -bso0 -bsp0 -o"$TMPDIR/game_extract" "$ZIPFILE"
+    else
+        echo "Extracting game from zip..."
+        "$SEVENZIP" x -aoa -o"$TMPDIR/game_extract" "$ZIPFILE"
+    fi
     if [ $? -ne 0 ]; then
         emit_fail_msg "Could not extract the game zip - the file may be corrupted."
         echo "Failed to extract zip."
@@ -444,9 +438,6 @@ record_patch_version() {
 }
 
 record_update_preference() {
-    # Persist the user's answer to the patcher's update-check question. The
-    # launch script reads this on every launch to decide whether to query
-    # the GitHub releases API. Default (no file) is "yes, check."
     if [ -n "$UPDATE_CHECK" ]; then
         echo "$UPDATE_CHECK" > "$UPDATE_CHECK_FILE"
         echo "Recorded update-check preference: $UPDATE_CHECK"
