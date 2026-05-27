@@ -26,7 +26,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [],
@@ -41,12 +40,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/am2r/am2r/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/am2r/am2r/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/am2r.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-27T23:15",
       "first_seen": "2025-05-18",
-      "md5": "08fbc988f0731eb5c6c1448e1dbcf071",
-      "size": 2974652,
+      "md5": "0563d8596919b21d10e9a1df91040e1e",
+      "size": 2974456,
       "lifetime_downloads": 100,
-      "last_commit": "Update readmes to add runtime requirements"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -121,8 +120,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -143,12 +140,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/arrestofastonebuddha/arrestofastonebuddha/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/arrestofastonebuddha/arrestofastonebuddha/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/arrestofastonebuddha.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-07-02",
-      "md5": "add8b8e2f47d1bdec6dfe7d06f34fc08",
-      "size": 2622330,
+      "md5": "b792ae6d5ab4db983fdf73d41389edc2",
+      "size": 2620758,
       "lifetime_downloads": 38,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -176,8 +173,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -205,12 +200,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/aurascope/aurascope/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/aurascope/aurascope/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/aurascope.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:15",
       "first_seen": "2025-05-18",
-      "md5": "d292b639f7f926c207d1dd11859bb677",
-      "size": 2750963,
+      "md5": "7823042fc73e52307d908d5ef435de13",
+      "size": 2750649,
       "lifetime_downloads": 19,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -487,8 +482,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -526,12 +519,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:15",
       "first_seen": "2025-05-18",
-      "md5": "96e5b97ebaa7355f92ada9ad94618dcd",
-      "size": 6232876,
+      "md5": "f680e7bae539541f242fe55bb4bd1d8f",
+      "size": 6231735,
       "lifetime_downloads": 9,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -558,8 +551,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -597,12 +588,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity2.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:15",
       "first_seen": "2025-05-18",
-      "md5": "327503a54faa56f53934d9d8e1135e0c",
-      "size": 6132178,
+      "md5": "ccb08840de87755720a7e248c2136ca2",
+      "size": 6131073,
       "lifetime_downloads": 7,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -633,8 +624,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -660,12 +649,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/deltarune.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-27T23:15",
       "first_seen": "2025-05-18",
-      "md5": "bfdf78c5a0d243c17fc43846b48ba01a",
-      "size": 4198965,
+      "md5": "727d4e30b482200d6c56aa05cd10dc7f",
+      "size": 4198139,
       "lifetime_downloads": 83,
-      "last_commit": "Update readmes to add runtime requirements"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -870,7 +859,7 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs"
+        "gmloadernext.squashfs"
       ],
       "store": [],
       "availability": "free",
@@ -886,12 +875,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/digitaltamersreborn/digitaltamersreborn/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/digitaltamersreborn/digitaltamersreborn/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/digitaltamersreborn.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-18",
-      "md5": "eeff5d62a4604310aec5785ecbba52f3",
-      "size": 220690348,
+      "md5": "9f53b6c30bd4f9a98c936b228c80019e",
+      "size": 220690784,
       "lifetime_downloads": 14,
-      "last_commit": "Update readmes to add runtime requirements"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -919,7 +908,6 @@
       "rtr": true,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -945,12 +933,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/dokimon/dokimon/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/dokimon.zip",
-      "date_updated": "2026-05-14T16:48",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-11-11",
-      "md5": "e34c82c402f3efa6d34c5adbe3196f01",
-      "size": 56272411,
+      "md5": "25eb0e18bf8f3a030768cc2700487096",
+      "size": 56272560,
       "lifetime_downloads": 14,
-      "last_commit": "Remove old ports and fix all storefronts in port.json files"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -1192,8 +1180,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -1214,12 +1200,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/fadingafternoon/fadingafternoon/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/fadingafternoon/fadingafternoon/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/fadingafternoon.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-07-02",
-      "md5": "0bb55ed39958ec66cbf2be60c103358e",
-      "size": 4083816,
+      "md5": "4f73cc80126f506a63b3f53b4794916c",
+      "size": 4082333,
       "lifetime_downloads": 35,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -1271,12 +1257,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/grappledog/grappledog/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/grappledog/grappledog/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/grappledog.zip",
-      "date_updated": "2026-05-20T21:14",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2026-05-20",
-      "md5": "0f198b5973c4c4907f9fa22444520f23",
-      "size": 6032008,
-      "lifetime_downloads": 2,
-      "last_commit": "[GRAPPLEDOGS] Refactor to support more devices"
+      "md5": "25e22ff926ba0b44258a40998efce993",
+      "size": 5271760,
+      "lifetime_downloads": 9,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -1304,8 +1290,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -1326,12 +1310,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gunsoffury/gunsoffury/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gunsoffury/gunsoffury/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/gunsoffury.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-18",
-      "md5": "62a90b006a63a55e4c5cd8f4f93c916a",
-      "size": 5218366,
-      "lifetime_downloads": 29,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "cb12e0cb9e40a369f2d688a06820fe2c",
+      "size": 5217126,
+      "lifetime_downloads": 43,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -1372,12 +1356,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gyakutenlive/gyakutenlive/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gyakutenlive/gyakutenlive/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/gyakutenlive.zip",
-      "date_updated": "2026-05-14T16:48",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-07-09",
-      "md5": "de874b242d8605d6e6ac0370d69c7146",
-      "size": 3216335,
+      "md5": "fe22a1c023f60a6cbb2380c28f4362e4",
+      "size": 3216314,
       "lifetime_downloads": 15,
-      "last_commit": "Remove old ports and fix all storefronts in port.json files"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -1457,7 +1441,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -1483,12 +1466,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/haque/haque/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/haque/haque/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/haque.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-18",
-      "md5": "1865c5a5723a9e978284d417e2d41e0c",
-      "size": 2735124,
-      "lifetime_downloads": 11,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "b702a6011d920d2f672c78e6c9b91063",
+      "size": 2735404,
+      "lifetime_downloads": 13,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -1715,8 +1698,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -1742,12 +1723,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/iosas/iosas/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/iosas/iosas/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/iosas.zip",
-      "date_updated": "2026-05-24T01:40",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-11-11",
-      "md5": "73eb085e6727c94cfb83d73481666d60",
-      "size": 5653410,
-      "lifetime_downloads": 36,
-      "last_commit": "[IOSAS] Bump .port version"
+      "md5": "252028433850773917571d99140dff1c",
+      "size": 5653485,
+      "lifetime_downloads": 40,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -1971,8 +1952,6 @@
       "rtr": true,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -2015,12 +1994,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/lunarlux/lunarlux/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/lunarlux/lunarlux/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/lunarlux.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-18",
-      "md5": "9857e2369517365c57d0c73bdc2fe406",
-      "size": 5325345,
-      "lifetime_downloads": 8,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "7769012056810702cdb29f09e0fa3b5e",
+      "size": 5324875,
+      "lifetime_downloads": 9,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -2048,8 +2027,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -2072,12 +2049,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/madhouse/madhouse/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/madhouse/madhouse/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/madhouse.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-28",
-      "md5": "f0f77a5560a0a6a935778ad37a5edd61",
-      "size": 5117761,
-      "lifetime_downloads": 11,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "c83a745bd67e5e4201aba913a709b616",
+      "size": 5116578,
+      "lifetime_downloads": 14,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -2219,8 +2196,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -2246,12 +2221,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mystikbelle/mystikbelle/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mystikbelle/mystikbelle/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/mystikbelle.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-18",
-      "md5": "64ee089feea277ab081a98ac386e9036",
-      "size": 3048538,
-      "lifetime_downloads": 14,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "dea8120515b0d7c49ea3192ec24d72be",
+      "size": 3045384,
+      "lifetime_downloads": 16,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -2388,8 +2363,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -2412,12 +2385,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ooo/ooo/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ooo/ooo/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/ooo.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2026-01-01",
-      "md5": "eb6278c4b898d4f2d691a899945365c5",
-      "size": 4803433,
-      "lifetime_downloads": 9,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "3b2e4afb925a8fa2680c06aa910f47de",
+      "size": 4803452,
+      "lifetime_downloads": 10,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -2491,7 +2464,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -2514,12 +2486,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/outridermako/outridermako/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/outridermako/outridermako/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/outridermako.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-07-01",
-      "md5": "7c1e52f01dea78e561c33ae0b49c797b",
-      "size": 4906518,
-      "lifetime_downloads": 12,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "b9c5981b55cb63c069d85d1d5c046fd9",
+      "size": 4906994,
+      "lifetime_downloads": 14,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -2603,12 +2575,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/apps/pharos/pharos/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pharos.zip",
-      "date_updated": "2026-05-14T20:01",
+      "date_updated": "2026-05-27T23:15",
       "first_seen": "2026-01-29",
-      "md5": "e67675ed9d8bf512e37ed8a3f1154a13",
-      "size": 21663422,
-      "lifetime_downloads": 291,
-      "last_commit": "[PHAROS] Swap screenshot"
+      "md5": "9a86b288281de9f592a6fa87357dd87e",
+      "size": 21661500,
+      "lifetime_downloads": 456,
+      "last_commit": "[Pharos] Update to v1.1.2"
     }
   },
   {
@@ -2658,12 +2630,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/picayunedreams/picayune/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/picayunedreams/picayune/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/picayune.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:15",
       "first_seen": "2026-01-01",
-      "md5": "69b0f2eb3f85458b61cffeece01ad171",
-      "size": 5228306,
-      "lifetime_downloads": 2,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "fceea897038dfa08dbd7dc69ed9ffbe9",
+      "size": 5228344,
+      "lifetime_downloads": 3,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -2693,7 +2665,7 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs"
+        "gmloadernext.squashfs"
       ],
       "store": [
         {
@@ -2715,12 +2687,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pizzatower/pizzatower/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pizzatower/pizzatower/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pizzatower.zip",
-      "date_updated": "2026-05-20T01:45",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-18",
-      "md5": "b7dfe9505282ff08f45734febcc38a76",
-      "size": 10896899,
-      "lifetime_downloads": 42,
-      "last_commit": "[PIZZATOWER] Use gmloader fmod plugin lib and runtime"
+      "md5": "bb886659e45f92bb0d79b76b98c07e6b",
+      "size": 7119572,
+      "lifetime_downloads": 47,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -3083,8 +3055,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -3107,12 +3077,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/rolusoutskirts/rolusoutskirts/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/rolusoutskirts/rolusoutskirts/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/rolusoutskirts.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:15",
       "first_seen": "2026-01-01",
-      "md5": "e4d92b1b57d56708e438bbd3ccaa4f49",
-      "size": 5247104,
-      "lifetime_downloads": 3,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "f2abec0514637071c74c12c1b06cb398",
+      "size": 5247121,
+      "lifetime_downloads": 4,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -3275,8 +3245,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -3319,12 +3287,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/shrineslegacy/shrineslegacy/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/shrineslegacy/shrineslegacy/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/shrineslegacy.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-10-07",
-      "md5": "7183a1cd1590a955609db869591978b9",
-      "size": 5424463,
-      "lifetime_downloads": 20,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "272e95ae9106f88a4b8e75fe5eed568a",
+      "size": 5423395,
+      "lifetime_downloads": 21,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -3670,8 +3638,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [],
@@ -3686,12 +3652,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/sonictt16b/sonictt16b/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/sonictt16b/sonictt16b/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/sonictt16b.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-18",
-      "md5": "c6dcb7de0f389bc3f185d57d42e8ed41",
-      "size": 14962357,
-      "lifetime_downloads": 33,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "d03381d753a8f4e9b4e8f88fb3cdfde4",
+      "size": 14962548,
+      "lifetime_downloads": 44,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -3812,7 +3778,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -3838,12 +3803,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/spinelasher/spinelasher/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/spinelasher/spinelasher/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/spinelasher.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-08-11",
-      "md5": "165cc0a7674fb974563993fcd86645b0",
-      "size": 5134409,
-      "lifetime_downloads": 10,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "60ee079e23af989f14a310f4ab075da7",
+      "size": 5133707,
+      "lifetime_downloads": 12,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -4128,8 +4093,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [],
@@ -4144,12 +4107,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mariokartzx/mariokartzx/screenshot.png",
       "readme_url": "",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/mariokartzx.zip",
-      "date_updated": "2026-05-18T11:11",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2026-02-08",
-      "md5": "12d1c3a6638c242b479d8577451f9792",
-      "size": 2744861,
-      "lifetime_downloads": 32,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "267d1844a6c8ad9161fefac26be40840",
+      "size": 2743644,
+      "lifetime_downloads": 43,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -4270,8 +4233,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -4297,12 +4258,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/friendsofringo/friendsofringo/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/friendsofringo/friendsofringo/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/friendsofringo.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-07-02",
-      "md5": "d4c1270d00b38678efbfa8f129f2283a",
-      "size": 3987157,
+      "md5": "1e452ec9b3ce1787c700dd87573bb20b",
+      "size": 3985788,
       "lifetime_downloads": 31,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -4387,7 +4348,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [],
@@ -4402,12 +4362,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-foer/zelda-foer/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-foer/zelda-foer/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-foer.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-11-07",
-      "md5": "12f3eedf64ed407b5c856cc8d1606c69",
-      "size": 324938,
-      "lifetime_downloads": 42,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "18f37a006f69f99b41af0b14e1f16af7",
+      "size": 325273,
+      "lifetime_downloads": 47,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -4436,7 +4396,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [],
@@ -4451,12 +4410,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-wogr/zelda-wogr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-wogr/zelda-wogr/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-wogr.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-11-07",
-      "md5": "e8d82ede2728b0fd1de9349338d3e7dd",
-      "size": 403636,
-      "lifetime_downloads": 30,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "23e5e0825cab0b892b60b0de34a55736",
+      "size": 403906,
+      "lifetime_downloads": 36,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -5003,12 +4962,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-ladxhd/zelda-ladxhd/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/zelda-ladxhd/zelda-ladxhd/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-ladxhd.zip",
-      "date_updated": "2026-05-26T13:07",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2026-04-04",
-      "md5": "1b21f9828776e20b1f5d6c3c349733a8",
-      "size": 1761630,
-      "lifetime_downloads": 263,
-      "last_commit": "[LADXHD] Don't compute vcdiff max size, just use the ceiling"
+      "md5": "ee26f394e52f5ab382631462d416d007",
+      "size": 1761660,
+      "lifetime_downloads": 283,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -5082,8 +5041,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -5109,12 +5066,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/triga/triga/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/triga/triga/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/triga.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-07-09",
-      "md5": "178b52593efaf26846dcf709171778b6",
-      "size": 3622762,
-      "lifetime_downloads": 6,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "fcde91c8d8ec155c6ff83ecdb8e0343a",
+      "size": 3621678,
+      "lifetime_downloads": 7,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -5186,7 +5143,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -5207,12 +5163,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ufo50/ufo50/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ufo50/ufo50/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/ufo50.zip",
-      "date_updated": "2026-05-14T16:48",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-18",
-      "md5": "23b0eae04a19b1284b730e37bb96b15e",
-      "size": 5327110,
-      "lifetime_downloads": 42,
-      "last_commit": "Remove old ports and fix all storefronts in port.json files"
+      "md5": "e28fadfbb98ae39ee1bd844514d59c5f",
+      "size": 5327048,
+      "lifetime_downloads": 64,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -5267,12 +5223,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertale/undertale/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertale/undertale/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/undertale.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-18",
-      "md5": "a71520cf17a3b3b3406db24acfa1b4de",
-      "size": 9540028,
-      "lifetime_downloads": 38,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "6a2e7eb183d51f6e256d81350d132102",
+      "size": 9540037,
+      "lifetime_downloads": 41,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -5299,8 +5255,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -5326,12 +5280,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertaleredyellow/undertaleredyellow/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertaleredyellow/undertaleredyellow/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/undertaleredyellow.zip",
-      "date_updated": "2026-05-14T16:48",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-05-19",
-      "md5": "cc91ae081b40b408af75e57d74fe82b0",
-      "size": 9965865,
-      "lifetime_downloads": 16,
-      "last_commit": "Remove old ports and fix all storefronts in port.json files"
+      "md5": "e3a8b08ac05fdefa1499f8129a6d1059",
+      "size": 9965900,
+      "lifetime_downloads": 18,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -5358,8 +5312,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -5390,12 +5342,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/utyellow/utyellow/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/utyellow/utyellow/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/utyellow.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-11-11",
-      "md5": "b5464eb97dc8c6b4aee01750ff711e9a",
-      "size": 3940202,
-      "lifetime_downloads": 16,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "becf259100d8905817e006732c7d3507",
+      "size": 3939215,
+      "lifetime_downloads": 17,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -5422,8 +5374,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -5459,12 +5409,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/valhalla/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/valhalla/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/valhalla.zip",
-      "date_updated": "2026-05-21T16:24",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-08-25",
-      "md5": "8c80d57f4a9ed0d0f4dde82d51778376",
-      "size": 2433362,
-      "lifetime_downloads": 22,
-      "last_commit": "[VALHALLA] Fix typo in launchscript"
+      "md5": "7c100b3131d25d076c9e62e75b656a42",
+      "size": 2431448,
+      "lifetime_downloads": 26,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -5492,8 +5442,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "dotnet-8.0.12.squashfs",
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [
@@ -5526,12 +5474,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/vhr/vhr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/vhr/vhr/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/vhr.zip",
-      "date_updated": "2026-05-18T11:12",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2025-11-11",
-      "md5": "bead26dc9209a39d1a96c2a7d54f890c",
-      "size": 5559640,
-      "lifetime_downloads": 40,
-      "last_commit": "Fix some more gms ports still using the legacy splash block in patchscript"
+      "md5": "4ef7a406c30173d3bbdd289bbdfe9b7d",
+      "size": 5561514,
+      "lifetime_downloads": 61,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   },
   {
@@ -5675,7 +5623,6 @@
       "rtr": false,
       "exp": false,
       "runtime": [
-        "gmtoolkit.squashfs",
         "gmloadernext.squashfs"
       ],
       "store": [],
@@ -5690,12 +5637,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda2enhanced/zelda2enhanced/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda2enhanced/zelda2enhanced/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda2enhanced.zip",
-      "date_updated": "2026-05-17T10:16",
+      "date_updated": "2026-05-27T23:16",
       "first_seen": "2026-05-14",
-      "md5": "09d64b823b2ff4d250c564e1fa9b15d0",
-      "size": 2824254,
-      "lifetime_downloads": 3,
-      "last_commit": "[ZELDA2] don't chmod permissions inside patchscript"
+      "md5": "04487a52f2805a6cfb519a03e83037a1",
+      "size": 2824595,
+      "lifetime_downloads": 13,
+      "last_commit": "Roll all GMS ports over to new gmtoolkit"
     }
   }
 ]
