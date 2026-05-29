@@ -1,0 +1,18 @@
+{
+    "set_flags":   ["Fullscreen"],
+    "compress_audio": {
+        "bitrate":   64,
+        "recompress_ogg": true
+    },
+    "code_patches": [
+        { "entry": "gml_Object_oShaderApply_Draw_0", "gml": "gml/gml_Object_oShaderApply_Draw_0.gml" },
+        { "entry": "gml_Object_osmPPFX_Draw_77",     "gml": "gml/gml_Object_osmPPFX_Draw_77.gml" },
+        { "entry": "gml_Object_oDepthSorting_Draw_0", "gml": "gml/gml_Object_oDepthSorting_Draw_0.gml" },
+        { "entry": "gml_Object_ormTitle_Create_0",    "gml": "gml/gml_Object_ormTitle_Create_0.gml" },
+        { "entry": "gml_GlobalScript_UIMenu",         "gml": "gml/gml_GlobalScript_UIMenu.gml" },
+        { "entry": "gml_Object_omDayNight_Create_0",  "gml": "gml/gml_Object_omDayNight_Create_0.gml" },
+        { "entry": "gml_GlobalScript_input_verb_get_icon", "gml": "gml/gml_GlobalScript_input_verb_get_icon.gml" },
+        { "entry": "gml_GlobalScript___input_config_verbs", "gml": "gml/gml_GlobalScript___input_config_verbs.gml" },
+        { "entry": "gml_GlobalScript_input_player_get_gamepad", "gml": "gml/gml_GlobalScript_input_player_get_gamepad.gml" }
+    ]
+}

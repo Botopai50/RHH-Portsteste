@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamelist>
+	<game>
+		<path>./Fishbowl.sh</path>
+		<name>Fishbowl</name>
+		<desc>A narrative game about dreams, grief, and hope. Rediscover your memories and find your way into the present in this intimate experience where slice-of-life meets surreal.</desc>
+		<image>./fishbowl/cover.png</image>
+		<thumbnail>./fishbowl/thumb.png</thumbnail>
+		<releasedate>20260402</releasedate>
+		<developer>imissmyfriends.studio</developer>
+		<genre>Adventure, Indie, Casual</genre>
+	</game>
+</gamelist>

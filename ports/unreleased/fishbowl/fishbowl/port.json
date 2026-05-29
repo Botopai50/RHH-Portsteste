@@ -1,0 +1,43 @@
+{
+  "version": 4,
+  "name": "fishbowl.zip",
+  "items": [
+    "Fishbowl.sh",
+    "fishbowl"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Fishbowl",
+    "porter": [
+      "Jeod"
+    ],
+    "desc": "A narrative game about dreams, grief, and hope. Rediscover your memories and find your way into the present in this intimate experience where slice-of-life meets surreal.",
+    "desc_md": null,
+    "inst": "Purchase Fishbowl on Steam and copy the game files to fishbowl/assets.",
+    "inst_md": null,
+    "genres": [
+      "adventure"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": false,
+    "runtime": [
+      "gmloadernext.squashfs"
+    ],
+    "store": [
+      {
+        "name": "Steam",
+        "gameurl": "https://store.steampowered.com/app/1638070/Fishbowl/",
+        "developerurl": ""
+      }
+    ],
+    "availability": "paid",
+    "reqs": [
+      "!lowres"
+    ],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": null
+  }
+}
