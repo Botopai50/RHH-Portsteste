@@ -91,14 +91,9 @@ export SDL_VIDEODRIVER=x11
 # Box64 settings
 export BOX64_NOBANNER=1
 export BOX64_DYNAREC=1
-export BOX64_DYNAREC_SAFEFLAGS=0
-export BOX64_DYNAREC_FASTROUND=1
-export BOX64_DYNAREC_BIGBLOCK=1
-export BOX64_DYNAREC_CALLRET=1
-export BOX64_DYNAREC_DIRTY=1
-export BOX64_DYNAREC_FORWARD=128
-export BOX64_RDTSC_1GHZ=1
-export BOX64_VSYNC=0
+
+# Mesa settings
+export TU_DEBUG=sysmem,nolrz,flushall
 
 # Run it
 cd "$GAMEDIR/data"
