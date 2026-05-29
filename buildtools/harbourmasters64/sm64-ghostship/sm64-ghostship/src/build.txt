@@ -14,7 +14,7 @@ project_configure_and_build GeneratePortO2R \
     -DUSE_OPENGLES=1 \
     -DBUILD_CROWD_CONTROL=0 \
     -DCMAKE_BUILD_TYPE=${BUILD_TYPE:-Release} \
-    -DCMAKE_EXE_LINKER_FLAGS="-ldl -pthread"
+    -DCMAKE_EXE_LINKER_FLAGS="-ldl -pthread -fuse-ld=lld"
 
 stage_libs Ghostship \
     libzip.so.5 \

@@ -242,7 +242,7 @@ jobs:
 
       - name: Build port
         id: build
-        continue-on-error: true
+        continue-on-error: ${{ inputs.port == '' || inputs.port == 'all' }}
         run: |
           set -uo pipefail
           FORCE="${{ inputs.force-build }}"
@@ -261,7 +261,11 @@ jobs:
           echo "rc=$rc" >> "$GITHUB_OUTPUT"
           if (( rc != 0 )); then
             echo "::error::[$id] build_port.sh failed (rc=$rc)"
-            exit 0
+            # Exit non-zero so the step records a failure. For batch runs the
+            # continue-on-error expression above masks it (job stays green,
+            # other ports proceed); for a single-port dispatch it surfaces as
+            # a failed run.
+            exit "$rc"
           fi
 
       - name: Validate artifacts and sync to target_dirs
