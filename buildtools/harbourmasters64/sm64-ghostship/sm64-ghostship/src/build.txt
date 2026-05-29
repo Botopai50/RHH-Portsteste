@@ -16,7 +16,6 @@ project_configure_and_build GeneratePortO2R \
     -DCMAKE_BUILD_TYPE=${BUILD_TYPE:-Release} \
     -DCMAKE_EXE_LINKER_FLAGS="-ldl -pthread"
 
-# Ghostship's NEEDED set is minimal — only zip and tinyxml2.
 stage_libs Ghostship \
     libzip.so.5 \
     libtinyxml2.so.10

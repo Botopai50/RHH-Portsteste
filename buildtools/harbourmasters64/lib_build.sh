@@ -238,14 +238,14 @@ build_gsl() {
         "$@"
 }
 
-# stage_libs <binary-relative-to-PROJECT_BUILD_DIR> <lib1> [lib2 ...]
-#   Each <libN> is either:
-#     - "src=dest"  copy absolute src to libs/<dest>
-#     - "name"      shorthand: try /usr/lib/aarch64-linux-gnu/<name>, then /usr/local/lib/<name>
-#
-#   After staging, verifies every staged lib appears in the binary's NEEDED
-#   list. Uses cp -L so each destination is a real file with the right SONAME
-#   (a symlink would silently fall through to the system library at runtime).
+HM64_DEVICE_PROVIDED_LIBS="libSDL2-2.0.so.0 \
+    libGL.so.1 libGLESv2.so.2 libGLESv1_CM.so.1 libEGL.so.1 \
+    libOpenGL.so.0 libGLdispatch.so.0 libGLX.so.0 \
+    libc.so.6 libm.so.6 libpthread.so.0 libdl.so.2 librt.so.1 libresolv.so.2 \
+    ld-linux-aarch64.so.1 \
+    libstdc++.so.6 libgcc_s.so.1 \
+    libasound.so.2 libpulse.so.0 libpulse-simple.so.0 libjack.so.0"
+
 stage_libs() {
     local binary_rel=$1; shift
     local libs_dir="$PROJECT_BUILD_DIR/libs"
@@ -292,4 +292,22 @@ stage_libs() {
             echo "ERROR: $lib missing from libs/"; exit 1
         fi
     done
+
+    # Completeness: every NEEDED entry must be staged or device-provided.
+    local staged_str=" ${staged[*]} "
+    local provided_str=" $HM64_DEVICE_PROVIDED_LIBS "
+    local unaccounted=()
+    while read -r lib; do
+        [[ -z "$lib" ]] && continue
+        [[ "$staged_str"   == *" $lib "* ]] && continue
+        [[ "$provided_str" == *" $lib "* ]] && continue
+        unaccounted+=("$lib")
+    done <<< "$needed"
+
+    if (( ${#unaccounted[@]} )); then
+        echo "ERROR: binary NEEDs these libs but they are neither staged nor on the device-provided allowlist:" >&2
+        printf '  %s\n' "${unaccounted[@]}" >&2
+        echo "Add each to the stage_libs call in build.txt, or to HM64_DEVICE_PROVIDED_LIBS in lib_build.sh if every supported device already provides it." >&2
+        exit 1
+    fi
 }
