@@ -7,10 +7,10 @@ Purchase [Fishbowl on Steam](https://store.steampowered.com/app/1638070/Fishbowl
 ## Default Gameplay Controls
 | Button             | Action |
 |--                  |--|
-| D-PAD / LEFT STICK | Move · Navigate menus · Move cursor |
-| A                  | Confirm · Interact · Advance · Grab |
-| B                  | Cancel · Back |
-| X                  | Phone · Context action |
+| D-PAD / LEFT STICK | Move / Navigate menus / Move cursor |
+| A                  | Confirm / Interact / Advance / Grab |
+| B                  | Cancel / Back |
+| X                  | Phone / Context action |
 | Y                  | Context action |
 | START              | Pause |
 
@@ -25,5 +25,5 @@ This port requires the following runtimes in `PortMaster/libs`:
 [Pharos](https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pharos.zip) will fetch these automatically when installing the port. Otherwise download them manually from the [runtimes folder](https://github.com/JeodC/RHH-Ports/tree/main/runtimes) and drop them in `PortMaster/libs`.
 
 ## Thanks
-imissmyfriends.studio &mdash; Fishbowl  
-JohnnyOnFlame &mdash; GMLoader-Next  
+imissmyfriends.studio -- Fishbowl  
+JohnnyOnFlame -- GMLoader-Next  
