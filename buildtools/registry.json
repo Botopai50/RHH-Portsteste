@@ -45,48 +45,48 @@
       "base": "self"
     },
     "soh": {
-      "port_dir": "buildtools/harbourmasters64/soh/soh",
-      "target_dirs": ["ports/released/harbourmasters64/soh/soh"],
+      "port_dir": "buildtools/harbourmasters/soh/soh",
+      "target_dirs": ["ports/released/harbourmasters/soh/soh"],
       "upstream_repo": "HarbourMasters/Shipwright",
       "track": "release",
       "commit_prefix": "SOH",
       "artifacts": ["soh.elf", "soh.o2r", "libs", "assets/extractor.zip"]
     },
     "soh2": {
-      "port_dir": "buildtools/harbourmasters64/soh2/soh2",
-      "target_dirs": ["ports/released/harbourmasters64/soh2/soh2"],
+      "port_dir": "buildtools/harbourmasters/soh2/soh2",
+      "target_dirs": ["ports/released/harbourmasters/soh2/soh2"],
       "upstream_repo": "HarbourMasters/2ship2harkinian",
       "track": "release",
       "commit_prefix": "SOH2",
       "artifacts": ["*.elf", "2ship.o2r", "libs", "assets/extractor.zip"]
     },
     "starship": {
-      "port_dir": "buildtools/harbourmasters64/starship/starship",
-      "target_dirs": ["ports/released/harbourmasters64/starship/starship"],
+      "port_dir": "buildtools/harbourmasters/starship/starship",
+      "target_dirs": ["ports/released/harbourmasters/starship/starship"],
       "upstream_repo": "HarbourMasters/Starship",
       "track": "release",
       "commit_prefix": "STARSHIP",
       "artifacts": ["Starship", "starship.o2r", "gamecontrollerdb.txt", "libs", "tools/torch", "tools/assets.zip", "tools/config.yml"]
     },
     "spaghettikart": {
-      "port_dir": "buildtools/harbourmasters64/spaghettikart/spaghettikart",
-      "target_dirs": ["ports/released/harbourmasters64/spaghettikart/spaghettikart"],
+      "port_dir": "buildtools/harbourmasters/spaghettikart/spaghettikart",
+      "target_dirs": ["ports/released/harbourmasters/spaghettikart/spaghettikart"],
       "upstream_repo": "HarbourMasters/SpaghettiKart",
       "track": "release",
       "commit_prefix": "SPAGHETTIKART",
       "artifacts": ["Spaghettify", "spaghetti.o2r", "gamecontrollerdb.txt", "libs", "tools/torch", "tools/assets.zip", "tools/config.yml"]
     },
     "sm64-ghostship": {
-      "port_dir": "buildtools/harbourmasters64/sm64-ghostship/sm64-ghostship",
-      "target_dirs": ["ports/released/harbourmasters64/sm64-ghostship/sm64-ghostship"],
+      "port_dir": "buildtools/harbourmasters/sm64-ghostship/sm64-ghostship",
+      "target_dirs": ["ports/released/harbourmasters/sm64-ghostship/sm64-ghostship"],
       "upstream_repo": "HarbourMasters/Ghostship",
       "track": "release",
       "commit_prefix": "GHOSTSHIP",
       "artifacts": ["Ghostship", "ghostship.o2r", "gamecontrollerdb.txt", "libs", "tools/torch", "tools/assets.zip", "tools/config.yml"]
     },
     "paperboat": {
-      "port_dir": "buildtools/harbourmasters64/paperboat/paperboat",
-      "target_dirs": ["ports/released/harbourmasters64/paperboat/paperboat"],
+      "port_dir": "buildtools/harbourmasters/paperboat/paperboat",
+      "target_dirs": ["ports/released/harbourmasters/paperboat/paperboat"],
       "upstream_repo": "HarbourMasters/paperboat",
       "track": "release",
       "commit_prefix": "PAPERBOAT",

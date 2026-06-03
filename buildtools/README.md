@@ -30,6 +30,8 @@ The inner `<id>/` is the staging dir the build writes into during a run (`sonicm
 
 `build_port.sh` builds the shared `rhh-base` image once per workflow run (Ubuntu focal + build-essential + SDL2 subsystem dev headers + newer CMake). Each port's Dockerfile then does `FROM rhh-base` and installs only its unique apt deps. Docker's layer cache makes subsequent ports in the same run near-instant.
 
+A port group whose ports all need the **same** deps can drop a single `Dockerfile` at the group level (e.g. [`harbourmasters/Dockerfile`](harbourmasters/Dockerfile)) and omit the per-port `src/Dockerfile` entirely — `build_port.sh` falls back to the nearest ancestor `Dockerfile` when a port has none of its own. Groups whose ports need port-specific deps just keep a `src/Dockerfile` per port and hit that path unchanged.
+
 ### The registry
 
 [`registry.json`](registry.json) lists every automated port. The workflow reads this file to know what to check and what to build. Each entry needs:
@@ -62,7 +64,7 @@ If one port's build fails, subsequent ports still run. Failures are surfaced as 
 ### Adding a new port
 
 1. Drop the build recipe in `buildtools/<id>/<id>/src/`:
-   - `Dockerfile` — starts with `FROM rhh-base` and installs only port-specific apt deps
+   - `Dockerfile` — starts with `FROM rhh-base` and installs only port-specific apt deps. Optional when the port's group ships a shared `Dockerfile` one or more levels up (e.g. `buildtools/harbourmasters/Dockerfile`); `build_port.sh` uses the nearest ancestor `Dockerfile` when `src/` has none.
    - `build.txt` — clones upstream, builds, stages libs into `build/libs/`
    - `retrieve-products.txt` — copies artifacts from the build tree into the port dir
 2. Create `buildtools/<id>/<id>/.gitignore` with exactly this content, which keeps the inner `<id>/` dir tracked only for `src/` and lets the rest serve as build scratch:

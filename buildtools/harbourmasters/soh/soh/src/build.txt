@@ -1,0 +1,47 @@
+set -e
+source /root/buildtools/harbourmasters/lib_build.sh
+
+# Project clone — fail fast on bad REPO_URL/REF.
+project_clone https://github.com/HarbourMasters/Shipwright.git
+
+# SDL2 from source so libzip/tinyxml2/opus/etc link against modern SDL2 at
+# build time. We do NOT ship libSDL2-2.0.so.0 — every supported device
+# already provides one, often with device-specific patches. Shipping ours
+# via LD_LIBRARY_PATH would override those patches.
+build_sdl2
+
+# SDL2_net is required by BUILD_REMOTE_CONTROL (anchor multiplayer). Devices
+# do NOT reliably provide libSDL2_net-2.0.so.0 so we ship our build.
+build_sdl2_net
+
+build_libzip
+build_json
+build_bzip2
+build_tinyxml2
+build_opus
+build_opusfile
+build_fmt
+build_spdlog -DSPDLOG_FMT_EXTERNAL=ON
+
+project_configure_and_build GenerateSohOtr \
+    -DCMAKE_PREFIX_PATH=/usr/local \
+    -DUSE_OPENGLES=1 \
+    -DBUILD_REMOTE_CONTROL=1 \
+    -DCMAKE_BUILD_TYPE=${BUILD_TYPE:-Release}
+
+# Stage shipped libraries. Filenames MUST match the binary's DT_NEEDED
+# entries exactly — stage_libs uses cp -L so each destination is a real
+# file with the right SONAME. libSDL2 is NOT shipped (device provides it).
+stage_libs soh/soh.elf \
+    libz.so.1 \
+    libogg.so.0 \
+    libvorbis.so.0 \
+    libvorbisenc.so.2 \
+    libvorbisfile.so.3 \
+    libpng16.so.16 \
+    libbz2.so.1 \
+    libzip.so.5 \
+    libtinyxml2.so.10 \
+    libopus.so.0 \
+    libopusfile.so.0 \
+    libSDL2_net-2.0.so.0
