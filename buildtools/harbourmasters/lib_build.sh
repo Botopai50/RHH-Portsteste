@@ -160,6 +160,11 @@ build_libzip() {
         -DBUILD_REGRESS=OFF \
         -DBUILD_EXAMPLES=OFF \
         -DBUILD_DOC=OFF \
+        -DENABLE_OPENSSL=OFF \
+        -DENABLE_GNUTLS=OFF \
+        -DENABLE_MBEDTLS=OFF \
+        -DENABLE_COMMONCRYPTO=OFF \
+        -DENABLE_WINDOWS_CRYPTO=OFF \
         "$@"
 }
 
