@@ -519,12 +519,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-04T16:32",
       "first_seen": "2025-05-18",
-      "md5": "9d8855ccbda77b6aa9671515c7a40561",
-      "size": 6231722,
-      "lifetime_downloads": 10,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "cbf9b5cffe1b67399405549f8a997c7e",
+      "size": 4391724,
+      "lifetime_downloads": 12,
+      "last_commit": "[GMS] Trim unused libs from ports"
     }
   },
   {
@@ -2896,12 +2896,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pocketcrystalleague/pocketcrystalleague/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pocketcrystalleague/pocketcrystalleague/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pocketcrystalleague.zip",
-      "date_updated": "2026-05-14T13:38",
+      "date_updated": "2026-06-04T16:32",
       "first_seen": "2025-05-18",
-      "md5": "655d11dc435a3d85f8f4a318dcd251a9",
-      "size": 19377800,
-      "lifetime_downloads": 16,
-      "last_commit": "Update readmes to add runtime requirements"
+      "md5": "d28f6caee5fccfa0d7d5f7bf64b596e7",
+      "size": 17537722,
+      "lifetime_downloads": 27,
+      "last_commit": "[GMS] Trim unused libs from ports"
     }
   },
   {
