@@ -82,7 +82,7 @@
       "upstream_repo": "HarbourMasters/Ghostship",
       "track": "release",
       "commit_prefix": "GHOSTSHIP",
-      "artifacts": ["Ghostship", "ghostship.o2r", "gamecontrollerdb.txt", "libs", "tools/torch", "tools/assets.zip", "tools/config.yml"]
+      "artifacts": ["Ghostship", "ghostship.o2r", "gamecontrollerdb.txt", "libs", ".tcc", "tools/torch", "tools/assets.zip", "tools/config.yml"]
     },
     "paperboat": {
       "port_dir": "buildtools/harbourmasters/paperboat/paperboat",

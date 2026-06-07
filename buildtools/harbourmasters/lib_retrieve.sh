@@ -90,6 +90,16 @@ replace_libs() {
     cp -r "$PROJECT_BUILD/libs" "$DESTDIR/"
 }
 
+copy_tcc_runtime() {
+    local src="$PROJECT_BUILD/.tcc"
+    if [[ ! -d "$src" ]]; then
+        echo "copy_tcc_runtime: WARNING: no .tcc at $src"
+        return 0
+    fi
+    rm -rf "$DESTDIR/.tcc"
+    cp -r "$src" "$DESTDIR/.tcc"
+}
+
 # package_soh_extractor_zip <extractor-src-rel> <xml-src-rel>
 #   Contents of <extractor-src> at the zip root + the <xml-src> directory itself.
 package_soh_extractor_zip() {

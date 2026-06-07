@@ -3,8 +3,12 @@
 # Set GAMEDIR to the current directory and set logfile
 GAMEDIR="$PWD"
 LOGFILE="$GAMEDIR/tools/otrlog.txt"
+# The game (RunExtract) checks for $GAMEDIR/assets on every launch, and torch's
+# -s srcdir must hold config.yml + assets/ together (config.yml's paths are
+# relative). So assets/ extracts to $GAMEDIR (not tools/) and is kept there.
 ASSETS_ZIP="$GAMEDIR/tools/assets.zip"
-ASSETS_DIR="$GAMEDIR/tools"
+ASSETS_DIR="$GAMEDIR"
+SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
 
 # Redirect output and error to the log file
 rm -rf $LOGFILE
@@ -24,8 +28,6 @@ echo "GAMEDIR is set to: $GAMEDIR"
 
 # Check if we need to unzip the assets archive
 unzip_assets() {
-    # Define 7zzs binary
-    SEVENZIP="$controlfolder/7zzs.${DEVICE_ARCH}"
     if [ ! -x "$SEVENZIP" ]; then
         emit_fail_msg "7zzs binary not found at $SEVENZIP"
         return 1
@@ -44,29 +46,37 @@ unzip_assets() {
 
 # Function handle the ROM file.
 process_rom() {
-    cd "$GAMEDIR/tools"
+    cd "$GAMEDIR"
     local input_file="$1"
-    if [ ! -f "../baseroms/$input_file" ]; then
+    if [ ! -f "baseroms/$input_file" ]; then
         emit_fail_msg "[OTRGEN] Error: File $input_file not found!"
         exit 1
     fi
 
-    # Run the extraction
+    # torch's -s srcdir needs config.yml beside assets/. config.yml ships in
+    # tools/, so place a copy at $GAMEDIR (alongside the extracted assets/).
+    cp -f "$GAMEDIR/tools/config.yml" "$GAMEDIR/config.yml"
+
     echo "Extracting data from $input_file..."
-    if ./torch o2r "../baseroms/$input_file" -a "$GAMEDIR/tools/portVersion" >/dev/null 2>&1; then
+    ver=$("$SEVENZIP" e -so "$GAMEDIR/ghostship.o2r" portVersion 2>/dev/null \
+          | dd bs=1 skip=1 count=6 2>/dev/null | od -An -t u2 | awk '{print $1"."$2"."$3}')
+    if [ -z "$ver" ]; then
+        emit_fail_msg "[OTRGEN] Couldn't read version from ghostship.o2r."
+        exit 1
+    fi
+    # -s $GAMEDIR: config.yml + assets/ live here; torch writes sm64.o2r to cwd.
+    if ./tools/torch o2r "baseroms/$input_file" -s "$GAMEDIR" -u "$ver"; then
         echo "[OTRGEN] Extraction complete. O2R generated."
-        mv sm64.o2r ../sm64.o2r
     else
         emit_fail_msg "[OTRGEN] Error: Extraction failed for $input_file."
         exit 1
     fi
-    cd "$GAMEDIR"
 }
 
 # Function to convert N64 ROM to Z64 format
 convert_n64() {
     local rom_file="$1"
-    local output_file="rom.z64"
+    local output_file="$GAMEDIR/baseroms/rom.z64"
 
     if [[ ! -f "$rom_file" ]]; then
         emit_fail_msg "Error: File $rom_file not found!"
@@ -101,8 +111,9 @@ convert_n64() {
 # Main logic
 rom_file=$(find "$GAMEDIR/baseroms" -maxdepth 1 \( -name "*.z64" -o -name "*.n64" \) -print -quit)
 
-# Test if regenerating o2r
-if [ -n "$REGEN" ] && [ ! -f "$ASSETS_ZIP" ]; then
+# Test if regenerating o2r. assets/ now persists unpacked at $GAMEDIR, so a
+# missing assets.zip is normal after first run — only fail if BOTH are gone.
+if [ -n "$REGEN" ] && [ ! -f "$ASSETS_ZIP" ] && [ ! -d "$GAMEDIR/assets" ]; then
     [ -z "$FAIL_MSG_SET" ] && emit_fail_msg "Patching failed. Report on the RHH-Ports GitHub with patcherr.txt."
     echo "Patching process failed!"
     exit 1

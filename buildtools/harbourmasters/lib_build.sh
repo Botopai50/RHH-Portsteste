@@ -219,6 +219,32 @@ build_opusfile() {
     cd - >/dev/null
 }
 
+# openssl uses its own Perl Configure, not cmake — custom helper like opusfile.
+# Built from source (3.5 LTS) rather than using focal's EOL 1.1.1 so we ship a
+# current, patchable, known-provenance TLS stack. Installed shared into
+# /usr/local; pass -DOPENSSL_ROOT_DIR=/usr/local to the project configure so
+# downstream find_package(OpenSSL) (ixwebsocket's TLS) picks this over the
+# system 1.1.1. no-docs/no-tests keeps the build lean.
+build_openssl() {
+    local src="$DEPS_DIR/openssl"
+    if [[ ! -d "$src/.git" ]]; then
+        echo ">>> build_openssl: cloning"
+        git_clone_retry --branch openssl-3.5.6 --depth 1 \
+            https://github.com/openssl/openssl.git "$src"
+    fi
+    cd "$src"
+    # Explicit target (don't rely on ./config auto-detect); --libdir=lib so it
+    # lands in /usr/local/lib, not lib64, matching our staging + find paths.
+    env -u LD ./Configure linux-aarch64 shared \
+        --prefix=/usr/local \
+        --openssldir=/usr/local/ssl \
+        --libdir=lib \
+        no-docs no-tests
+    env -u LD make -j"$(nproc)"
+    env -u LD make install_sw
+    cd - >/dev/null
+}
+
 build_fmt() {
     _build_dep fmt https://github.com/fmtlib/fmt.git 10.1.1 \
         -DCMAKE_POSITION_INDEPENDENT_CODE=ON \

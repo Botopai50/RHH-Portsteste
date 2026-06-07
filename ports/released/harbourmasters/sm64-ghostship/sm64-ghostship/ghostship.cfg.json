@@ -3,7 +3,6 @@
         "gAdvancedResolution": {
             "Enabled": 1
         },
-        "gControlNav": 1,
         "gControllers": {
         },
         "gEnhancements": {
@@ -19,6 +18,7 @@
             "Notifications": 1
         },
         "gSettings": {
+            "ControlNav": 1,
             "MatchRefreshRate": 1,
             "Menu": {
                 "ActiveHeader": "Dev Tools",

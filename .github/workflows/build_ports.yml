@@ -83,6 +83,12 @@ jobs:
               continue
             fi
 
+            # Skip sm64-ghostship on scheduled (cron) builds for now
+            if [[ "$GITHUB_EVENT_NAME" == "schedule" && "$id" == "sm64-ghostship" ]]; then
+              echo "[$id] TEMP skip in scheduled run (pinned to manual develop build; see workflow comment)"
+              continue
+            fi
+
             # A port can fan out to multiple target dirs (e.g. one build
             # produces both sonic.1 and sonic.2 payloads). Use the first as
             # the SHA marker source of truth; all targets stay in sync.
