@@ -36,12 +36,9 @@ else
     exit 1
 fi
 
-export GMLOADER_LIB_PATH="$GMLOADER/lib"
-
-# Permissions
-
 # Exports
 export LD_LIBRARY_PATH="$GMLOADER/lib:$GAMEDIR/libs:$LD_LIBRARY_PATH"
+export GMLOADER_LIB_PATH="$GMLOADER/lib"
 
 # Pretend we're on SteamDeck, some game code needs this
 export SteamDeck=1
@@ -59,12 +56,8 @@ check_patch() {
             export PATCHER_FILE="$GAMEDIR/tools/patchscript"
             export PATCHER_GAME="$(basename "${0%.*}")"
             export PATCHER_TIME="a while"
-            export controlfolder
-            export ESUDO
-            export DEVICE_ARCH
-            export DEVICE_RAM
-            export DISPLAY_WIDTH
-            export DISPLAY_HEIGHT
+            export controlfolder ESUDO DEVICE_ARCH DEVICE_RAM DISPLAY_WIDTH DISPLAY_HEIGHT
+            chmod +x "$PATCHER_FILE"
             source "$controlfolder/utils/patcher.txt"
         else
             pm_message "This port requires the latest version of PortMaster."
@@ -82,8 +75,6 @@ $GPTOKEYB "gmloadernext.aarch64" &
 pm_platform_helper "$GMLOADER/gmloadernext.aarch64" >/dev/null
 "$GMLOADER/gmloadernext.aarch64" -c gmloader.json
 
-# Kill processes
-# Unmount gmloadernext runtime
+# Cleanup
 $ESUDO umount "$GMLOADER" 2>/dev/null || true
-
 pm_finish

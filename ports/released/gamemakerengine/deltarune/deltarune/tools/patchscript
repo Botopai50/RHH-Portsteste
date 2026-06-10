@@ -107,10 +107,18 @@ clean_assets() {
 }
 
 patch_datafile() {
-    if ! "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --config "$GAMEDIR/tools/deltarune.json" $THREADS_FLAG $BLOCK_FLAGS "$INSTALLDIR/assets/data.win"; then
+    # Chapters with per-chapter perf patches carry their own config
+    # everything else uses base config
+    local config="$GAMEDIR/tools/deltarune.json"
+    if [ -f "$GAMEDIR/tools/$GAMEFILE.json" ]; then
+        config="$GAMEDIR/tools/$GAMEFILE.json"
+    fi
+
+    if ! "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --config "$config" $THREADS_FLAG $BLOCK_FLAGS "$INSTALLDIR/assets/data.win"; then
         emit_fail_msg "gmtoolkit failed for $GAMEFILE."
         return 1
     fi
+
     # Move the per-game texture dump into its namespaced spot under SAVEDIR.
     if [ -d "$INSTALLDIR/assets/textures" ]; then
         rm -rf "$SAVEDIR/textures/$GAMEFILE"

@@ -1,0 +1,11 @@
+{
+    "compress_audio": {
+        "bitrate":        64,
+        "recompress_ogg": true
+    },
+    "externalize_textures": "textures",
+    "code_patches": [
+        { "entry": "gml_Object_obj_lw_raindrop_Draw_0",    "gml": "gml/obj_lw_raindrop_Draw_0.gml" },
+        { "entry": "gml_Object_obj_lw_rain_effect_Draw_0", "gml": "gml/obj_lw_rain_effect_Draw_0.gml" }
+    ]
+}

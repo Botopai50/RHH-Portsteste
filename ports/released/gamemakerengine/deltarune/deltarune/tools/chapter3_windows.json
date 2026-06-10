@@ -1,0 +1,10 @@
+{
+    "compress_audio": {
+        "bitrate":        64,
+        "recompress_ogg": true
+    },
+    "externalize_textures": "textures",
+    "code_patches": [
+        { "entry": "gml_GlobalScript_scr_confetti", "gml": "gml/scr_confetti.gml" }
+    ]
+}
