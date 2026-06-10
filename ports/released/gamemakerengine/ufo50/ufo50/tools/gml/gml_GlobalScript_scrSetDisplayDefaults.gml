@@ -19,7 +19,7 @@ function scrSetDisplayDefaults(arg0)
         
         if (!global.fullscreen)
         {
-            window_set_size(global.SCREEN_WIDTH * global.scale, global.SCREEN_HEIGHT * global.scale);
+            window_set_size(384 * global.scale, 216 * global.scale);
             window_set_showborder(global.dispBordered);
         }
         
@@ -39,7 +39,7 @@ function scrSetDisplayDefaults(arg0)
         
         if (!global.fullscreen)
         {
-            window_set_size(global.SCREEN_WIDTH * global.scale, global.SCREEN_HEIGHT * global.scale);
+            window_set_size(384 * global.scale, 216 * global.scale);
             window_set_showborder(global.dispBordered);
         }
         

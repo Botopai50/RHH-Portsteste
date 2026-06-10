@@ -14,10 +14,10 @@ function scrSaveConfig()
     
     for (var p = 0; p <= 1; p++)
     {
-        for (var i = 0; i < global.NUM_INPUTS; i++)
+        for (var i = 0; i < 7; i++)
             scrWriteConfig("P" + string(p + 1) + "key" + string(i), global.keyMap[p][i]);
-        
-        for (var i = 0; i < global.NUM_INPUTS; i++)
+
+        for (var i = 0; i < 7; i++)
             scrWriteConfig("P" + string(p + 1) + "joy" + string(i), global.joyMap[p][i]);
     }
     

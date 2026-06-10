@@ -95,7 +95,6 @@ else if (substate == SUB_NAV)
                 window_enable_borderless_fullscreen(!global.dispBordered);
                 window_set_fullscreen(global.fullscreen);
                 prevFullScreen = window_get_fullscreen();
-                global.scrScaleDisplay();
                 delayLen = delayLenLong;
                 scrSwitchSub(SUB_DELAY);
                 break;
@@ -111,7 +110,7 @@ else if (substate == SUB_NAV)
                 scrSfxLibrary(soundToggle[currentSoundSet]);
                 global.scale = 1;
                 var _trueScale = min(global.scale, global.scaleFill);
-                window_set_size(global.SCREEN_WIDTH, global.SCREEN_HEIGHT);
+                window_set_size(384, 216);
                 delayLen = delayLenShort;
                 scrSwitchSub(SUB_DELAY);
                 break;

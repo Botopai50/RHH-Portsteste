@@ -1,25 +1,22 @@
 function scrInitDisplay()
 {
     display_reset(0, true);
-    global.SCREEN_WIDTH = 384;
-    global.SCREEN_HEIGHT = 216;
-    global.screenRatio = global.SCREEN_WIDTH / global.SCREEN_HEIGHT;
+    surface_depth_disable(true);
     global.windowHasFocus = window_has_focus();
     global.scaleMax = 1;
-    global.scaleFill = min(display_get_width() / global.SCREEN_WIDTH, display_get_height() / global.SCREEN_HEIGHT);
+    global.scaleFill = min(display_get_width() / 384, display_get_height() / 216);
     global.DEFAULT_SCALE = 1;
     scrSetDisplayDefaults(true);
     global.scale = 1;
     global.canDoShaders = shaders_are_supported();
     instance_create_depth(-32, -32, 0, oScreenHandler);
-    window_set_size(global.SCREEN_WIDTH * global.scale, global.SCREEN_HEIGHT * global.scale);
-    
+    window_set_size(384 * global.scale, 216 * global.scale);
+
     if (!window_get_fullscreen())
         window_center();
-    
+
     scrDefinePalette();
-    global.scrScaleDisplay();
-    texturegroup_set_mode(true);
+    texturegroup_set_mode(true, false, sBlank);
     global.TEXTUREGROUP = array_create(53);
     global.TEXTUREGROUP[0] = "texturegroup00_library";
     global.TEXTUREGROUP[1] = "texturegroup01";
