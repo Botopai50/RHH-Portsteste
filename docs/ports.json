@@ -5280,12 +5280,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ufo50/ufo50/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ufo50/ufo50/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/ufo50.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-10T13:44",
       "first_seen": "2025-05-18",
-      "md5": "89be5f84e403597d1e31366ffd3ee343",
-      "size": 5327035,
-      "lifetime_downloads": 69,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "cdccf52d93c97c0245128a566e825bfc",
+      "size": 5326992,
+      "lifetime_downloads": 83,
+      "last_commit": "[ufo50] Fix gml scripts for latest game version"
     }
   },
   {
