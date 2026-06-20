@@ -140,12 +140,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/arrestofastonebuddha/arrestofastonebuddha/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/arrestofastonebuddha/arrestofastonebuddha/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/arrestofastonebuddha.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-07-02",
-      "md5": "5c49875155faf2b3ef6b1ebd62c1c2aa",
-      "size": 2620742,
-      "lifetime_downloads": 39,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "57d03093151bee03da8df0b3e749de00",
+      "size": 2620944,
+      "lifetime_downloads": 44,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -200,12 +200,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/aurascope/aurascope/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/aurascope/aurascope/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/aurascope.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "ad0ff17d897da9641f728c3ed8cdfe8d",
-      "size": 2750636,
-      "lifetime_downloads": 20,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "397886d2bebf74d90286583a55d028e8",
+      "size": 2750838,
+      "lifetime_downloads": 23,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -519,12 +519,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity/darkdeity/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity.zip",
-      "date_updated": "2026-06-04T16:32",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "cbf9b5cffe1b67399405549f8a997c7e",
-      "size": 4391724,
-      "lifetime_downloads": 12,
-      "last_commit": "[GMS] Trim unused libs from ports"
+      "md5": "9439782c8de36d910043debfa97c53d2",
+      "size": 4391924,
+      "lifetime_downloads": 20,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -588,12 +588,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/darkdeity2/darkdeity2/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/darkdeity2.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "4243940361511617e4f21c2e28fa338a",
-      "size": 6131061,
-      "lifetime_downloads": 7,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "bb4eb934e1ebf527d23e3870c4a42339",
+      "size": 6131261,
+      "lifetime_downloads": 10,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -649,12 +649,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/deltarune.zip",
-      "date_updated": "2026-06-11T23:05",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "11bf4ac040d80103ae614cb22a6eac0a",
-      "size": 4200429,
-      "lifetime_downloads": 97,
-      "last_commit": "[DELTARUNE] Readme update"
+      "md5": "f3e693e2c45c58282f06a564d319d509",
+      "size": 4200571,
+      "lifetime_downloads": 107,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -875,12 +875,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/digitaltamersreborn/digitaltamersreborn/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/digitaltamersreborn/digitaltamersreborn/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/digitaltamersreborn.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "e69654e752351eca25c8ef97090740fb",
-      "size": 220690768,
-      "lifetime_downloads": 17,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "32207bbd0128e5a2729593ad3b9e7368",
+      "size": 220690964,
+      "lifetime_downloads": 21,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -1200,12 +1200,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/fadingafternoon/fadingafternoon/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/fadingafternoon/fadingafternoon/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/fadingafternoon.zip",
-      "date_updated": "2026-05-27T23:16",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-07-02",
-      "md5": "4f73cc80126f506a63b3f53b4794916c",
-      "size": 4082333,
-      "lifetime_downloads": 35,
-      "last_commit": "Roll all GMS ports over to new gmtoolkit"
+      "md5": "433f8b997b92a66aa9ee33643835eed5",
+      "size": 4082535,
+      "lifetime_downloads": 51,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -1254,12 +1254,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/fishbowl/fishbowl/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/fishbowl/fishbowl/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/fishbowl.zip",
-      "date_updated": "2026-05-30T16:58",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2026-05-29",
-      "md5": "da3a639f0a7f7e327cb3f2348bc433f4",
-      "size": 5827770,
-      "lifetime_downloads": 5,
-      "last_commit": "[FISHBOWL] Add note to readme"
+      "md5": "8942a2ae5a4ef48ca1716392536e1881",
+      "size": 5827921,
+      "lifetime_downloads": 20,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -1311,12 +1311,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/grappledog/grappledog/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/grappledog/grappledog/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/grappledog.zip",
-      "date_updated": "2026-05-27T23:16",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2026-05-20",
-      "md5": "25e22ff926ba0b44258a40998efce993",
-      "size": 5271760,
-      "lifetime_downloads": 9,
-      "last_commit": "Roll all GMS ports over to new gmtoolkit"
+      "md5": "0003d419bf373ff951499162a3c95ff5",
+      "size": 5272227,
+      "lifetime_downloads": 29,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -1364,12 +1364,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gunsoffury/gunsoffury/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gunsoffury/gunsoffury/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/gunsoffury.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "e86b6a9d4e980c453afdb2b530f55a7e",
-      "size": 5217114,
-      "lifetime_downloads": 46,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "ff4ec82732cdeb36ddd6b57441590e59",
+      "size": 5217315,
+      "lifetime_downloads": 58,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -1410,12 +1410,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gyakutenlive/gyakutenlive/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/gyakutenlive/gyakutenlive/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/gyakutenlive.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-07-09",
-      "md5": "3a880e5df883e10bda8107878d1692d7",
-      "size": 3216300,
+      "md5": "a0132f33040b05a2fb8f32c6c54e475c",
+      "size": 3216506,
       "lifetime_downloads": 16,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -1520,12 +1520,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/haque/haque/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/haque/haque/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/haque.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "0dc2e15dca584138fc2e292f4c0f8a08",
-      "size": 2735392,
+      "md5": "cb013b47150a51a3e305f50583ee195e",
+      "size": 2735593,
       "lifetime_downloads": 15,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -1777,12 +1777,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/iosas/iosas/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/iosas/iosas/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/iosas.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-11-11",
-      "md5": "d97b1e08811e06a9cce7e42c643d125e",
-      "size": 5653472,
-      "lifetime_downloads": 42,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "f8e3bf499923ad84c23631171953f12a",
+      "size": 5653666,
+      "lifetime_downloads": 49,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -2048,12 +2048,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/lunarlux/lunarlux/screenshot.jpg",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/lunarlux/lunarlux/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/lunarlux.zip",
-      "date_updated": "2026-06-03T15:01",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "298d5b5ed1ef936f444c61ca5587e6aa",
-      "size": 5324860,
-      "lifetime_downloads": 11,
-      "last_commit": "[LUNARLUX] Correct port.json"
+      "md5": "7d46f83b0b45995f9179ad847ab692ff",
+      "size": 5325061,
+      "lifetime_downloads": 14,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -2103,12 +2103,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/madhouse/madhouse/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/madhouse/madhouse/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/madhouse.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-28",
-      "md5": "64ffdb8e8dd56c7308abffd1a87d44e3",
-      "size": 5116564,
-      "lifetime_downloads": 15,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "bec7d0318d11535556efff354872497e",
+      "size": 5116765,
+      "lifetime_downloads": 22,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -2275,12 +2275,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mystikbelle/mystikbelle/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mystikbelle/mystikbelle/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/mystikbelle.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "9a8d8a42eb4f7ae384061f69f189b77a",
-      "size": 3045371,
-      "lifetime_downloads": 18,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "0c1129d92b959c4c29fa07ff898d6fd9",
+      "size": 3045577,
+      "lifetime_downloads": 20,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -2439,12 +2439,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ooo/ooo/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ooo/ooo/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/ooo.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2026-01-01",
-      "md5": "ad44fcf90564385a8136bcc28e7d0891",
-      "size": 4803437,
-      "lifetime_downloads": 11,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "22504f7b339bea3b8abd49315f1c3dad",
+      "size": 4803637,
+      "lifetime_downloads": 14,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -2540,12 +2540,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/outridermako/outridermako/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/outridermako/outridermako/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/outridermako.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-07-01",
-      "md5": "03e01a7ecfb94ed1a6c3a0107fcc08d3",
-      "size": 4906981,
-      "lifetime_downloads": 17,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "f8eaee3786575b58ea285f6d580859bb",
+      "size": 4907182,
+      "lifetime_downloads": 19,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -2684,12 +2684,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/picayunedreams/picayune/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/picayunedreams/picayune/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/picayune.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2026-01-01",
-      "md5": "63fafd2600548592d61beabbb71a9b73",
-      "size": 5228330,
-      "lifetime_downloads": 4,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "89661660590e7d14ed451cf9242b2937",
+      "size": 5228531,
+      "lifetime_downloads": 8,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -2741,12 +2741,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pizzatower/pizzatower/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/pizzatower/pizzatower/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pizzatower.zip",
-      "date_updated": "2026-05-27T23:16",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "bb886659e45f92bb0d79b76b98c07e6b",
-      "size": 7119572,
-      "lifetime_downloads": 47,
-      "last_commit": "Roll all GMS ports over to new gmtoolkit"
+      "md5": "7b50ead535b8398dfb2278c1d6668eff",
+      "size": 7119785,
+      "lifetime_downloads": 58,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -3131,12 +3131,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/rolusoutskirts/rolusoutskirts/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/experimental/rolusoutskirts/rolusoutskirts/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/rolusoutskirts.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2026-01-01",
-      "md5": "a047a527553a434a7ea84118979fbe87",
-      "size": 5247107,
-      "lifetime_downloads": 4,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "2ab2b9ca487dfb4e194abd1ff08f1e90",
+      "size": 5247309,
+      "lifetime_downloads": 6,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -3341,12 +3341,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/shrineslegacy/shrineslegacy/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/shrineslegacy/shrineslegacy/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/shrineslegacy.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-10-07",
-      "md5": "88b3c12503d986ea5136cf1a47dfa719",
-      "size": 5423384,
-      "lifetime_downloads": 21,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "d35ee885d46afd37c53f20650ae514b7",
+      "size": 5423584,
+      "lifetime_downloads": 33,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -3857,12 +3857,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/spinelasher/spinelasher/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/spinelasher/spinelasher/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/spinelasher.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-08-11",
-      "md5": "4e660cc26f15f8ae4b3eb0c113e79b0f",
-      "size": 5133694,
-      "lifetime_downloads": 14,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "62883bcd0749510fd33a0ba98c925fe6",
+      "size": 5133895,
+      "lifetime_downloads": 15,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -4161,12 +4161,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/mariokartzx/mariokartzx/screenshot.png",
       "readme_url": "",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/mariokartzx.zip",
-      "date_updated": "2026-05-29T03:25",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2026-02-08",
-      "md5": "5858875df2b9a5d91d83cb64c02b1e00",
-      "size": 2743629,
-      "lifetime_downloads": 47,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "b9ebc8f7fd34c37b196829e5ce299b83",
+      "size": 2743831,
+      "lifetime_downloads": 58,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -4312,12 +4312,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/friendsofringo/friendsofringo/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/yeotrilogy/friendsofringo/friendsofringo/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/friendsofringo.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-07-02",
-      "md5": "bb170e6e5abd9a03d21b182594cf86b5",
-      "size": 3985774,
-      "lifetime_downloads": 32,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "d2736c8fb526c5babab6fb0733210294",
+      "size": 3985976,
+      "lifetime_downloads": 38,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -4416,12 +4416,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-foer/zelda-foer/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-foer/zelda-foer/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-foer.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-11-07",
-      "md5": "b6b28e553dae6845edf78edab80e4850",
-      "size": 325257,
-      "lifetime_downloads": 48,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "a22888799c0b87c4dcd21fd18440497f",
+      "size": 325456,
+      "lifetime_downloads": 59,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -4464,12 +4464,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-wogr/zelda-wogr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda-wogr/zelda-wogr/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda-wogr.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-11-07",
-      "md5": "d31b90e3731a08eaed39ca6fe98f6061",
-      "size": 403890,
-      "lifetime_downloads": 37,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "9729311415e4f10239a754d34bcf4285",
+      "size": 404090,
+      "lifetime_downloads": 46,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -5120,12 +5120,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/triga/triga/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/triga/triga/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/triga.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-07-09",
-      "md5": "9381722f2e01185f08cb77ed556ebf25",
-      "size": 3621666,
-      "lifetime_downloads": 9,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "c847ec97f21253310f00cd5349fdaec3",
+      "size": 3621867,
+      "lifetime_downloads": 11,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -5217,12 +5217,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ufo50/ufo50/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/ufo50/ufo50/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/ufo50.zip",
-      "date_updated": "2026-06-10T13:44",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-18",
-      "md5": "cdccf52d93c97c0245128a566e825bfc",
-      "size": 5326992,
-      "lifetime_downloads": 83,
-      "last_commit": "[ufo50] Fix gml scripts for latest game version"
+      "md5": "631f19c7bc4a18fc90ba03ada07d4e63",
+      "size": 5327196,
+      "lifetime_downloads": 119,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -5334,12 +5334,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertaleredyellow/undertaleredyellow/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/undertaleredyellow/undertaleredyellow/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/undertaleredyellow.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-05-19",
-      "md5": "b77f77ec77b4804c245f5a7ed3c26996",
-      "size": 9965888,
-      "lifetime_downloads": 18,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "96257a32fb57f6f6ef3318c8ff519235",
+      "size": 9966089,
+      "lifetime_downloads": 27,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -5396,12 +5396,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/utyellow/utyellow/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/utyellow/utyellow/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/utyellow.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-11-11",
-      "md5": "6b8379aa487a6c9c3bdfe20104091c90",
-      "size": 3939201,
-      "lifetime_downloads": 17,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "9176cd6fdf1889eb9e14937ddb7ca61c",
+      "size": 3939402,
+      "lifetime_downloads": 22,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -5463,12 +5463,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/valhalla/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/valhalla/valhalla/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/valhalla.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-08-25",
-      "md5": "03d41442c0df8091599f1a8780510ca7",
-      "size": 2431432,
-      "lifetime_downloads": 28,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "b7ff5fe63c7079bfe5fe1145ca210424",
+      "size": 2431634,
+      "lifetime_downloads": 35,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -5528,12 +5528,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/vhr/vhr/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/vhr/vhr/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/vhr.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2025-11-11",
-      "md5": "57456970f887777a8aa2f479750d45d1",
-      "size": 5561502,
-      "lifetime_downloads": 64,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "eb6277a05681f53e2605c3236925faa3",
+      "size": 5561701,
+      "lifetime_downloads": 82,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   },
   {
@@ -5691,12 +5691,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda2enhanced/zelda2enhanced/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/zelda2enhanced/zelda2enhanced/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/zelda2enhanced.zip",
-      "date_updated": "2026-05-29T03:26",
+      "date_updated": "2026-06-20T21:08",
       "first_seen": "2026-05-14",
-      "md5": "b614c6cba1070e896f7d8cec6ce3b44e",
-      "size": 2824579,
-      "lifetime_downloads": 14,
-      "last_commit": "[GMS] Switch audio compression to auto, Pharos stores gmtoolkit version and updates it when stale"
+      "md5": "cc492640eb0e16be38ec9732c8d8d2c7",
+      "size": 2824781,
+      "lifetime_downloads": 27,
+      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
     }
   }
 ]
