@@ -72,17 +72,32 @@ prepare_files() {
         -name "*.gitkeep" -o -name "*.exe" -o -name "*.dll" -o -name "*.hashdb" -o \
         -name "*.ico" -o -name "*.lnk" -o -name "*.msg" -o -name "*.zip" \
     \) -exec rm -f {} \;
-
-    if [ -d "$SAVEDIR/textures" ]; then
-        rm -rf "$SAVEDIR/textures"
-    fi
 }
 
 patch_datafile() {
-    if ! "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --config "$GAMEDIR/tools/darkdeity.json" $THREADS_FLAG $BLOCK_FLAGS "$DATADIR/data.win"; then
-        emit_fail_msg "gmtoolkit patch failed."
-        return 1
-    fi
+    local config="$GAMEDIR/tools/darkdeity.json"
+
+    "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --check --config "$config" "$DATADIR/data.win"
+    case "$?" in
+        0)
+            echo "data.win already patched on a PC; using supplied textures."
+            if [ ! -d "$SAVEDIR/textures" ]; then
+                emit_fail_msg "data.win is pre-patched but saves/textures is missing. Copy the saves/textures folder from your PC as well."
+                return 1
+            fi
+            ;;
+        2)
+            emit_fail_msg "data.win was patched with different settings. Delete it and copy a fresh data.win from your game install."
+            return 1
+            ;;
+        *)
+            rm -rf "$SAVEDIR/textures"
+            if ! "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --config "$config" $THREADS_FLAG $BLOCK_FLAGS "$DATADIR/data.win"; then
+                emit_fail_msg "gmtoolkit patch failed."
+                return 1
+            fi
+            ;;
+    esac
 }
 
 # Zip it all into the .port file

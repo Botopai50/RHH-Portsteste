@@ -114,10 +114,22 @@ patch_datafile() {
         config="$GAMEDIR/tools/$GAMEFILE.json"
     fi
 
-    if ! "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --config "$config" $THREADS_FLAG $BLOCK_FLAGS "$INSTALLDIR/assets/data.win"; then
-        emit_fail_msg "gmtoolkit failed for $GAMEFILE."
-        return 1
-    fi
+    "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --check --config "$config" "$INSTALLDIR/assets/data.win"
+    case "$?" in
+        0)
+            echo "$GAMEFILE already patched on a PC; using supplied textures."
+            ;;
+        2)
+            emit_fail_msg "$GAMEFILE was patched with different settings. Delete it and copy fresh game data."
+            return 1
+            ;;
+        *)
+            if ! "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --config "$config" $THREADS_FLAG $BLOCK_FLAGS "$INSTALLDIR/assets/data.win"; then
+                emit_fail_msg "gmtoolkit failed for $GAMEFILE."
+                return 1
+            fi
+            ;;
+    esac
 
     # Move the per-game texture dump into its namespaced spot under SAVEDIR.
     if [ -d "$INSTALLDIR/assets/textures" ]; then

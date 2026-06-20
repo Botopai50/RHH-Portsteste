@@ -87,10 +87,24 @@ prepare_files() {
 }
 
 patch_datafile() {
-    if ! "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --config "$GAMEDIR/tools/fishbowl.json" $THREADS_FLAG $BLOCK_FLAGS "$DATADIR/data.win"; then
-        emit_fail_msg "gmtoolkit patch failed."
-        return 1
-    fi
+    local config="$GAMEDIR/tools/fishbowl.json"
+
+    "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --check --config "$config" "$DATADIR/data.win"
+    case "$?" in
+        0)
+            echo "data.win already patched on a PC; skipping patch."
+            ;;
+        2)
+            emit_fail_msg "data.win was patched with different settings. Delete it and copy a fresh data.win from your game install."
+            return 1
+            ;;
+        *)
+            if ! "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --config "$config" $THREADS_FLAG $BLOCK_FLAGS "$DATADIR/data.win"; then
+                emit_fail_msg "gmtoolkit patch failed."
+                return 1
+            fi
+            ;;
+    esac
 }
 
 # Zip it all into the .port file
