@@ -649,12 +649,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/deltarune.zip",
-      "date_updated": "2026-06-20T21:08",
+      "date_updated": "2026-06-22T22:45",
       "first_seen": "2025-05-18",
-      "md5": "f3e693e2c45c58282f06a564d319d509",
-      "size": 4200571,
-      "lifetime_downloads": 107,
-      "last_commit": "[GMS] Update all gms patchscripts to accommodate pc-patched data incoming from gmtoolkit"
+      "md5": "01552aa1018e3e9cfee2209befb5de7b",
+      "size": 4203515,
+      "lifetime_downloads": 112,
+      "last_commit": "[DELTARUNE] Attempt some more performance optimizations"
     }
   },
   {
