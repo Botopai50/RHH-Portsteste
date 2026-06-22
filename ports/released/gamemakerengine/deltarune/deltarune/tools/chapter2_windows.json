@@ -4,10 +4,6 @@
         "recompress_ogg": true
     },
     "externalize_textures": "textures",
-    "code_patches": [
-        { "entry": "gml_GlobalScript_scr_confetti",       "gml": "gml/scr_confetti.gml" },
-        { "entry": "gml_Object_obj_dw_blacksmoke_Draw_0", "gml": "gml/obj_dw_blacksmoke_Draw_0.gml" }
-    ],
     "shader_patches": [
         {
             "shader":  "shd_pal_swapper",
