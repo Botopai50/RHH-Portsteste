@@ -1,13 +1,10 @@
-// Perf patch: identical to the stock Draw event except all obj_lw_raindrop
-// instances are drawn here in one bm_add pass.
-// One blend-mode round trip per frame instead of one per drop.
-
 if (!active)
 {
     exit;
 }
 if (color_overlay)
 {
+    gpu_set_colorwriteenable(true, true, true, false);
     draw_set_blend_mode(bm_subtract);
     var _str = build_timer / 120;
     draw_set_color(merge_color(c_black, c_orange, 0.3 * _str));
@@ -16,6 +13,7 @@ if (color_overlay)
     draw_set_color(merge_color(c_black, c_white, 0.1 * _str));
     ossafe_fill_rectangle(camerax() - 10, cameray() - 10, camerax() + 650, cameray() + 490, false);
     draw_set_blend_mode(bm_normal);
+    gpu_set_colorwriteenable(true, true, true, true);
 }
 if (rain_style >= 4)
 {

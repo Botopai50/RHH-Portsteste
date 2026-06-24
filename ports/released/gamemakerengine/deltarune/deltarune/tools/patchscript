@@ -161,8 +161,11 @@ process_assets() {
     local rc=$?
     thermal_restore
     [ "$rc" -ne 0 ] && return 1
-    # Chapter 3 video assets live under saves.
-    [ -d "$INSTALLDIR/assets/vid" ] && mv "$INSTALLDIR/assets/vid" "$SAVEDIR"
+    if [ -d "$INSTALLDIR/assets/vid" ]; then
+        mkdir -p "$SAVEDIR/vid"
+        mv "$INSTALLDIR/assets/vid"/* "$SAVEDIR/vid/" 2>/dev/null
+        rmdir "$INSTALLDIR/assets/vid" 2>/dev/null
+    fi
     zip_archive || return 1
     rm -rf "$INSTALLDIR/assets"
     echo "Finished processing $GAMEFILE."

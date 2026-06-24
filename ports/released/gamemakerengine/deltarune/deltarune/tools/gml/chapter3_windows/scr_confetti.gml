@@ -1,8 +1,3 @@
-// Perf patch: scr_confetti_preload spawns half as many confetti instances.
-// The Tenna intro cutscene fires 40-count bursts on a stage that is already the
-// heaviest draw load in the chapter. scr_confetti / scr_confetti_ext are
-// left at stock counts.
-
 function scr_confetti(arg0, arg1, arg2, arg3)
 {
     var __popper = instance_create(arg0, arg1, obj_confetti_popper);
