@@ -11,7 +11,7 @@ Add your game data from your Steam or Itch.io installation to `ports/iosas/asset
 |R1|Reset room|
 
 ## Config
-The patch enables `saves/config.ini`, which has some performance options that affect certain rooms in the game. Testing found that `FrameSkip=40` works pretty well for the H700 chip. For no stuttering at all, you can set `IdolSFX=0` to turn off the special effect that bogs down the cpu.
+The patch enables `saves/config.ini`. The god-mandala effect (which bogs down the CPU in certain rooms) now throttles its own redraw rate automatically, so there is no frameskip to tune. The one remaining option is `IdolSFX`: set `IdolSFX=0` to turn the effect off entirely for no stuttering at all. The patcher picks a sensible default based on your device's CPU.
 
 ## Importing / Exporting Save Data
 Steam saves are located at `\AppData\Local\IslesOfSeaAndSky` on Windows. Copy `save_v1_000.dat` or similar to `ports/iosas/saves` to use it. To export save data to your Steam or Itch.io install, do the reverse.
@@ -20,7 +20,6 @@ Steam saves are located at `\AppData\Local\IslesOfSeaAndSky` on Windows. Copy `s
 
 This port requires the following runtimes in `PortMaster/libs`:
 
-- **.NET 8** — [dotnet-8.0.12.squashfs](https://github.com/JeodC/RHH-Ports/raw/main/runtimes/dotnet-8.0.12.squashfs)
 - **GMToolkit** — [gmtoolkit.squashfs](https://github.com/JeodC/RHH-Ports/raw/main/runtimes/gmtoolkit.squashfs)
 - **GMLoader-Next** — [gmloadernext.squashfs](https://github.com/JeodC/RHH-Ports/raw/main/runtimes/gmloadernext.squashfs)
 

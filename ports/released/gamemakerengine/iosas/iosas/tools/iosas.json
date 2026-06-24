@@ -9,6 +9,8 @@
     "code_patches": [
         { "entry": "gml_Object_code_game_init_Create_0",            "gml": "gml/gml_Object_code_game_init_Create_0.gml" },
         { "entry": "gml_Object_obj_god_gem_slot_controller_Draw_0", "gml": "gml/gml_Object_obj_god_gem_slot_controller_Draw_0.gml" },
-        { "entry": "gml_GlobalScript_localization_functions",       "gml": "gml/gml_GlobalScript_localization_functions.gml" }
+        { "entry": "gml_GlobalScript_localization_functions",       "gml": "gml/gml_GlobalScript_localization_functions.gml" },
+        { "entry": "gml_Object_code_font_loader_Create_0",          "gml": "gml/gml_Object_code_font_loader_Create_0.gml" },
+        { "entry": "gml_Object_obj_dropdown_languages_Create_0",    "gml": "gml/gml_Object_obj_dropdown_languages_Create_0.gml" }
     ]
 }

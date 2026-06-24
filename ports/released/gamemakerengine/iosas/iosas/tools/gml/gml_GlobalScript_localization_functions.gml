@@ -99,9 +99,14 @@ function font_setup(arg0)
     font_add_to_font_map("large", fontLarge);
 }
 
+function font_build_name(arg0, arg1)
+{
+    return arg0 + "_" + arg1;
+}
+
 function font_load_from_csv(arg0, arg1)
 {
-    var fontKey = arg0 + "_" + arg1;
+    var fontKey = font_build_name(arg0, arg1);
     var loadedFont = undefined;
     var bold = false;
     var italic = false;
@@ -123,6 +128,7 @@ function font_load_from_csv(arg0, arg1)
             italic = fontItalic;
         }
         loadedFont = font_add(fontName, fontSize, bold, italic, 0, 99999999);
+        show_debug_message("Loaded font: " + fontName);
     }
     ds_grid_destroy(fontGrid);
     return loadedFont;
@@ -148,7 +154,7 @@ function font_get(arg0)
     var font = ds_map_find_value(global.fontMap, arg0);
     if (is_undefined(font) && !ds_map_empty(global.fontMap))
     {
-        font = font_debug_text_norm;
+        font = font_debug_text;
     }
     return font;
 }
