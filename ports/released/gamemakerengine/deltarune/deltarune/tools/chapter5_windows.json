@@ -1,14 +1,404 @@
 {
     "compress_audio": {
-        "bitrate":        64,
+        "bitrate": 64,
         "recompress_ogg": true
     },
     "externalize_textures": "textures",
     "shader_patches": [
         {
-            "shader":  "shd_pal_swapper",
-            "stage":   "glsl_es_fragment",
-            "find":    "precision mediump float;",
+            "shader": "shd_blur_left",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_footprint",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_depthmap_trippy",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_palettemapper_withwave",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_underwater",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_crt",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_castlereflect_layerblend",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_plat_dashblend",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_tower",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_pal_swapper",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_grayscale_fade",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_fakedepth_tower",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_petalcut",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_linear_alpha",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_lut",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "sh_perspective",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_blur_h",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_cylinder",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_chromatic_reflection",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_depthmap",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_screen_blend",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_crt3",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_wind",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_outline",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_chromakey",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_shadowblend",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_prophecy_legend",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_alpha_ceil",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_crt2",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_fadetoblack",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_brightness_to_alpha",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_waterreflect",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_saturation",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_alpha",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_blur_cardinal",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_windstream",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_pinwheel",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_forcefullalpha",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_overlay_blend",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_texscroll",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_windwave",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_forcecolour",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_wobble",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_fakedepth",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_orb",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_alpha_floor",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_motionblur",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_palettemapper_simple",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_castlereflect",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_recolour",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_hue",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_grayscale",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_blur_radial",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_colormask",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_blur_directional",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_shoujo",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_shadowblend_evening",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "sh_saturation",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_default",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_texscroll_ext",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_ripple",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_palettemapper",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_invert",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_video_yuv",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "shd_tone",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
+            "replace": "precision highp float;"
+        },
+        {
+            "shader": "_filter_tintfilter_shader",
+            "stage": "glsl_es_fragment",
+            "find": "precision mediump float;",
             "replace": "precision highp float;"
         }
     ]
