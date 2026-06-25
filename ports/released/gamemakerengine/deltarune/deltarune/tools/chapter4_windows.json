@@ -8,7 +8,8 @@
         { "entry": "gml_Object_obj_lw_raindrop_Draw_0",             "gml": "gml/chapter4_windows/obj_lw_raindrop_Draw_0.gml" },
         { "entry": "gml_Object_obj_lw_rain_effect_Draw_0",          "gml": "gml/chapter4_windows/obj_lw_rain_effect_Draw_0.gml" },
         { "entry": "gml_Object_obj_overworld_knight_sword1_Draw_0", "gml": "gml/chapter4_windows/obj_overworld_knight_sword1_Draw_0.gml" },
-        { "entry": "gml_Object_obj_dw_church_glowtile_Step_0",      "gml": "gml/chapter4_windows/obj_dw_church_glowtile_Step_0.gml" }
+        { "entry": "gml_Object_obj_dw_church_glowtile_Step_0",      "gml": "gml/chapter4_windows/obj_dw_church_glowtile_Step_0.gml" },
+        { "entry": "gml_Object_obj_gamecontroller_Other_75",        "gml": "gml/chapter4_windows/obj_gamecontroller_Other_75.gml" }
     ],
     "shader_patches": [
         {

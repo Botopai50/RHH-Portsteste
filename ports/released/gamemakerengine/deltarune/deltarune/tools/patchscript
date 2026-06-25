@@ -103,7 +103,7 @@ move_shared_files() {
 }
 
 clean_assets() {
-    find "$INSTALLDIR/assets" -type f \( -name "*.exe" -o -name "*.dll" \) -exec rm -f {} \; 2>>"$LOGERR"
+    find "$INSTALLDIR/assets" -type f \( -name "*.exe" -o -name "*.dll" \) -exec rm -f {} \;
 }
 
 patch_datafile() {
