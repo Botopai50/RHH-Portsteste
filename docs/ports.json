@@ -649,12 +649,12 @@
       "screenshot_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/screenshot.png",
       "readme_url": "https://raw.githubusercontent.com/JeodC/RHH-Ports/main/ports/released/gamemakerengine/deltarune/deltarune/README.md",
       "download_url": "https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/deltarune.zip",
-      "date_updated": "2026-06-24T21:27",
+      "date_updated": "2026-06-25T12:22",
       "first_seen": "2025-05-18",
-      "md5": "4f360e4b77c12d562cfbc59f4e871647",
-      "size": 4204654,
-      "lifetime_downloads": 116,
-      "last_commit": "[DELTARUNE] Ch5 shader patches"
+      "md5": "0c18cf7577da16160c7912fea5f265ca",
+      "size": 4305783,
+      "lifetime_downloads": 120,
+      "last_commit": "[DELTARUNE] Add splash, patch post-credits crashes, reduce number of shaders converted to highp in Ch5"
     }
   },
   {
