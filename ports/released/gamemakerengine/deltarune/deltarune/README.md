@@ -8,15 +8,16 @@ This port works with the following data:
 Add all files to `ports/deltarune/assets/install`.
 
 ## Console Borders
-If you are using a widescreen device you may be interested in the [console borders mod](https://gamejolt.com/games/nxrune/629072) which enables the console borders present in the Switch and PS4/PS5 versions of the game. Apply the xdelta patches as the mod's readme states and then copy your data to the assets folder.
+If you are using a widescreen device you may be interested in the [console borders mod](https://gamejolt.com/games/nxrune/629072) which enables the console borders present in the Switch and PS4/PS5 versions of the game. Apply the xdelta patches as the mod's readme states and then copy your data to the assets folder, or just add the zip file to `deltarune/assets/install` with the rest of your game data.
 
 ## Runtimes
 
-This port requires the following runtimes in `PortMaster/libs`:
+This port requires the following:
 
-- **GMLoader-Next** — [gmloadernext.squashfs](https://github.com/JeodC/RHH-Ports/raw/main/runtimes/gmloadernext.squashfs)
+- [gmloadernext.squashfs](https://github.com/JeodC/RHH-Ports/raw/main/runtimes/gmloadernext.squashfs) placed in the `PortMaster/libs/` folder.
+- [gmtoolkit](https://github.com/JeodC/gmtoolkit/releases) placed in the `PortMaster/` folder.
 
-[Pharos](https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pharos.zip) will fetch this automatically when installing the port. Otherwise download it manually from the [runtimes folder](https://github.com/JeodC/RHH-Ports/tree/main/runtimes) and drop it in `PortMaster/libs`.
+[Pharos](https://github.com/JeodC/RHH-Ports/releases/download/ports-latest/pharos.zip) will fetch these automatically when installing the port. Otherwise download them manually and add them to the correct folders.
 
 ## Thanks
 TobyFox -- The absolutely amazing game  

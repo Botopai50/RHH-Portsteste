@@ -8,6 +8,10 @@
         {
             "entry": "gml_Object_obj_gamecontroller_Other_75",
             "gml": "gml/chapter5_windows/obj_gamecontroller_Other_75.gml"
+        },
+        {
+            "entry": "gml_Object_obj_gamecontroller_Step_1",
+            "gml": "gml/chapter5_windows/obj_gamecontroller_Step_1.gml"
         }
     ],
     "shader_patches": [

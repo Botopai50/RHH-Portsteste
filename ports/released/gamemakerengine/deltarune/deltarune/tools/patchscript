@@ -102,6 +102,64 @@ move_shared_files() {
     fi
 }
 
+BORDERS_DIR=""
+stage_borders() {
+    local staging="$GAMEDIR/tools/borders"
+    rm -rf "$staging"
+
+    local zip=""
+    while IFS= read -r z; do
+        [ -n "$z" ] || continue
+        if "$controlfolder/7zzs.${DEVICE_ARCH}" l "$z" 2>/dev/null | grep -q "\.xdelta"; then
+            zip="$z"
+            break
+        fi
+    done < <(find "$ASSETDIR" "$INSTALLDIR" -maxdepth 1 -type f -name "*.zip" 2>/dev/null)
+
+    if [ -n "$zip" ]; then
+        echo "Found console borders mod: $(basename "$zip")"
+        mkdir -p "$staging"
+        "$controlfolder/7zzs.${DEVICE_ARCH}" e -y -o"$staging" "$zip" "*.xdelta" >/dev/null 2>&1
+        rm -f "$zip"
+    fi
+
+    if find "$INSTALLDIR" -maxdepth 1 -type f -name "*.xdelta" -print -quit | grep -q .; then
+        mkdir -p "$staging"
+        find "$INSTALLDIR" -maxdepth 1 -type f -name "*.xdelta" -exec mv {} "$staging/" \;
+    fi
+
+    find "$ASSETDIR" "$INSTALLDIR" -maxdepth 1 -type f \
+        \( -name "batch_apply_xdelta.*" -o -name "xdelta.exe" \) -exec rm -f {} \; 2>/dev/null
+
+    if [ -d "$staging" ] && find "$staging" -name "*.xdelta" -print -quit | grep -q .; then
+        BORDERS_DIR="$staging"
+        echo "Console borders staged; applying before each data file is patched."
+    fi
+}
+
+apply_borders() {
+    [ -n "$BORDERS_DIR" ] || return 0
+    local name
+    if [ "$GAMEFILE" = "deltarune" ]; then
+        name="chapter_select.xdelta"
+    else
+        local num="${GAMEFILE#chapter}"
+        name="chapter${num%_windows}.xdelta"
+    fi
+    local patch="$BORDERS_DIR/$name"
+    [ -f "$patch" ] || return 0
+
+    echo "Applying console borders to $GAMEFILE..."
+    if "$controlfolder/xdelta3" -d -f -s "$INSTALLDIR/assets/data.win" "$patch" "$INSTALLDIR/assets/data_borders.win"; then
+        mv -f "$INSTALLDIR/assets/data_borders.win" "$INSTALLDIR/assets/data.win"
+        echo "Console borders applied to $GAMEFILE."
+    else
+        rm -f "$INSTALLDIR/assets/data_borders.win"
+        echo "WARNING: console borders patch failed for $GAMEFILE (game version mismatch?); continuing without borders."
+    fi
+    return 0
+}
+
 clean_assets() {
     find "$INSTALLDIR/assets" -type f \( -name "*.exe" -o -name "*.dll" \) -exec rm -f {} \;
 }
@@ -112,6 +170,16 @@ patch_datafile() {
     local config="$GAMEDIR/tools/deltarune.json"
     if [ -f "$GAMEDIR/tools/$GAMEFILE.json" ]; then
         config="$GAMEDIR/tools/$GAMEFILE.json"
+    fi
+
+    # Demo data gets a different config
+    if ! grep -q "is_connecting_controller" "$INSTALLDIR/assets/data.win"; then
+        if [ "$GAMEFILE" = "chapter2_windows" ] && [ -f "$GAMEDIR/tools/chapter2_windows.demo.json" ]; then
+            config="$GAMEDIR/tools/chapter2_windows.demo.json"
+        else
+            config="$GAMEDIR/tools/deltarune.json"
+        fi
+        echo "Demo data detected for $GAMEFILE; skipping controller code patch."
     fi
 
     "$controlfolder/gmtoolkit.${DEVICE_ARCH}" --check --config "$config" "$INSTALLDIR/assets/data.win"
@@ -156,6 +224,7 @@ process_assets() {
         rm -rf "$INSTALLDIR/assets"
         return 1
     fi
+    apply_borders
     thermal_setup
     patch_datafile
     local rc=$?
@@ -189,6 +258,7 @@ process_launcher() {
 
 process_game() {
     sanitize || return 1
+    stage_borders
 
     if [ -f "$INSTALLDIR/data.win" ]; then
         process_launcher || return 1
