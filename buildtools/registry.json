@@ -50,7 +50,7 @@
       "upstream_repo": "roborich/Shipwright",
       "track": "release",
       "commit_prefix": "SOH-CELSHADE",
-      "artifacts": ["soh.elf", "soh.elf.aarch64", "soh.o2r", "libs", "assets/extractor.zip"]
+      "artifacts": ["soh.zip"]
     },
     "soh2": {
       "port_dir": "buildtools/harbourmasters/soh2/soh2",
