@@ -34,7 +34,7 @@
       "track": "release",
       "commit_prefix": "SONIC3AIR",
       "artifacts": ["sonic3air_linux", "config.json", "doc/license.txt", "doc/license-thirdparty", "data", "audioremaster.7z.*"]
-    },
+      },
     "dusklight": {
       "port_dir": "buildtools/dusklight",
       "target_dirs": ["ports/released/zelda-dusklight/zelda-dusklight"],
@@ -43,7 +43,7 @@
       "commit_prefix": "DUSKLIGHT",
       "artifacts": ["dusklight", "libs", "res"],
       "base": "self"
-    },
+      },
     "soh": {
       "port_dir": "buildtools/harbourmasters/soh/soh",
       "target_dirs": ["ports/released/harbourmasters/soh/soh"],
@@ -51,7 +51,7 @@
       "track": "release",
       "commit_prefix": "SOH-CELSHADE",
       "artifacts": ["soh.zip"]
-    },
+      },
     "soh2": {
       "port_dir": "buildtools/harbourmasters/soh2/soh2",
       "target_dirs": ["ports/released/harbourmasters/soh2/soh2"],
