@@ -2,13 +2,223 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../../../.." && pwd)"
+
 source "$SCRIPT_DIR/../../../lib_retrieve.sh"
 
 retrieve_init "$1" "$2"
 
+# Primeiro pega os produtos normais do build.
 copy_binary soh/soh.elf
 copy_o2r soh/soh.o2r
 replace_libs
 package_soh_extractor_zip soh/assets/extractor soh/assets/xml
 
-echo "Packaging complete."
+# Agora monta um ZIP final no formato PortMaster.
+ZIP_NAME="soh.zip"
+STAGE="$DESTDIR/_pm_zip_stage"
+BASE_PORT="$REPO_ROOT/ports/released/harbourmasters/soh/soh"
+
+rm -rf "$STAGE"
+rm -f "$DESTDIR/$ZIP_NAME"
+
+mkdir -p "$STAGE/soh"
+
+# Copia os arquivos estáticos do port original, se existirem.
+if [ -d "$BASE_PORT" ]; then
+    cp -a "$BASE_PORT/." "$STAGE/soh/"
+fi
+
+# Remove binários/libs antigos para não misturar com builds velhos.
+rm -f "$STAGE/soh/soh.elf"
+rm -f "$STAGE/soh/soh.elf.aarch64"
+rm -f "$STAGE/soh/soh.elf.x86_64"
+rm -f "$STAGE/soh/soh.o2r"
+
+rm -rf "$STAGE/soh/libs"
+rm -rf "$STAGE/soh/libs.aarch64"
+rm -rf "$STAGE/soh/libs.x86_64"
+
+# Garante pastas básicas.
+mkdir -p "$STAGE/soh/assets"
+mkdir -p "$STAGE/soh/baseroms"
+mkdir -p "$STAGE/soh/mods"
+
+# Binário ARM64 no nome usado pelo seu PortMaster.
+cp "$PROJECT_BUILD/soh/soh.elf" "$STAGE/soh/soh.elf.aarch64"
+chmod +x "$STAGE/soh/soh.elf.aarch64"
+
+# O2R gerado pelo build.
+if [ -f "$PROJECT_BUILD/soh/soh.o2r" ]; then
+    cp "$PROJECT_BUILD/soh/soh.o2r" "$STAGE/soh/soh.o2r"
+elif [ -f "$DESTDIR/soh.o2r" ]; then
+    cp "$DESTDIR/soh.o2r" "$STAGE/soh/soh.o2r"
+fi
+
+# Libs ARM64 no formato do PortMaster antigo: libs.aarch64
+if [ -d "$DESTDIR/libs" ]; then
+    cp -a "$DESTDIR/libs" "$STAGE/soh/libs.aarch64"
+fi
+
+# extractor.zip
+if [ -f "$DESTDIR/assets/extractor.zip" ]; then
+    mkdir -p "$STAGE/soh/assets"
+    cp "$DESTDIR/assets/extractor.zip" "$STAGE/soh/assets/extractor.zip"
+fi
+
+# Copia extractor/ se existir.
+if [ -d "$PROJECT_SRC/soh/assets/extractor" ]; then
+    rm -rf "$STAGE/soh/assets/extractor"
+    cp -a "$PROJECT_SRC/soh/assets/extractor" "$STAGE/soh/assets/extractor"
+fi
+
+# Copia otrgen se existir em algum dos caminhos comuns.
+if [ -f "$PROJECT_BUILD/soh/assets/otrgen" ]; then
+    cp "$PROJECT_BUILD/soh/assets/otrgen" "$STAGE/soh/assets/otrgen"
+elif [ -f "$PROJECT_BUILD/soh/assets/extractor/otrgen" ]; then
+    cp "$PROJECT_BUILD/soh/assets/extractor/otrgen" "$STAGE/soh/assets/otrgen"
+elif [ -f "$PROJECT_BUILD/soh/tools/otrgen" ]; then
+    cp "$PROJECT_BUILD/soh/tools/otrgen" "$STAGE/soh/assets/otrgen"
+elif [ -f "$BASE_PORT/assets/otrgen" ]; then
+    cp "$BASE_PORT/assets/otrgen" "$STAGE/soh/assets/otrgen"
+fi
+
+if [ -f "$STAGE/soh/assets/otrgen" ]; then
+    chmod +x "$STAGE/soh/assets/otrgen"
+fi
+
+# Gera script raiz igual ao modelo PortMaster antigo.
+cat > "$STAGE/Ship of Harkinian.sh" <<'EOS'
+#!/bin/bash
+
+XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+
+if [ -d "/opt/system/Tools/PortMaster/" ]; then
+  controlfolder="/opt/system/Tools/PortMaster"
+elif [ -d "/opt/tools/PortMaster/" ]; then
+  controlfolder="/opt/tools/PortMaster"
+elif [ -d "$XDG_DATA_HOME/PortMaster/" ]; then
+  controlfolder="$XDG_DATA_HOME/PortMaster"
+else
+  controlfolder="/roms/ports/PortMaster"
+fi
+
+source $controlfolder/control.txt
+[ -f "${controlfolder}/mod_${CFW_NAME}.txt" ] && source "${controlfolder}/mod_${CFW_NAME}.txt"
+get_controls
+
+GAMEDIR="/$directory/ports/soh"
+
+export LD_LIBRARY_PATH="$GAMEDIR/libs.${DEVICE_ARCH}":$LD_LIBRARY_PATH
+export SDL_GAMECONTROLLERCONFIG=$sdl_controllerconfig
+
+cd $GAMEDIR
+> "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
+
+$ESUDO chmod +x "$GAMEDIR/soh.elf.${DEVICE_ARCH}"
+
+if [ -f "$GAMEDIR/assets/otrgen" ]; then
+  $ESUDO chmod +x "$GAMEDIR/assets/otrgen"
+fi
+
+sed -i 's/"Menu": *1/"Menu": 0/' shipofharkinian.json 2>/dev/null || true
+
+imgui_reset() {
+    input_file="imgui.ini"
+    temp_file="imgui_temp.ini"
+    skip_section=0
+
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^\[Window\]\[Main\ Game\] || "$line" =~ ^\[Window\]\[Main\ -\ Deck\] ]]; then
+            skip_section=1
+        elif [[ "$line" =~ ^\[Window\] ]]; then
+            skip_section=0
+        fi
+
+        if [[ $skip_section -eq 0 ]]; then
+            if [[ "$line" =~ ^Pos=.* ]]; then
+                echo "Pos=30,30" >> "$temp_file"
+            elif [[ "$line" =~ ^Size=.* ]]; then
+                echo "Size=400,300" >> "$temp_file"
+            else
+                echo "$line" >> "$temp_file"
+            fi
+        else
+            echo "$line" >> "$temp_file"
+        fi
+    done < "$input_file"
+
+    mv "$temp_file" "$input_file"
+}
+
+otr_check() {
+    if [ ! -f "oot.o2r" ] && [ ! -f "oot-mq.o2r" ]; then
+        if ls "$GAMEDIR/baseroms/"*.*64 1> /dev/null 2>&1; then
+            if [ -f "$controlfolder/utils/patcher.txt" ]; then
+                export PATCHER_FILE="$GAMEDIR/assets/otrgen"
+                export PATCHER_GAME="$(basename "${0%.*}")"
+                export PATCHER_TIME="5 to 10 minutes"
+                export controlfolder
+                export DEVICE_ARCH
+                source "$controlfolder/utils/patcher.txt"
+                $ESUDO kill -9 $(pidof gptokeyb) || true
+            else
+                pm_message "This port requires the latest version of PortMaster."
+            fi
+        else
+            pm_message "Missing ROM files! Can't generate o2r!"
+            sleep 5
+            exit
+        fi
+
+        if [ ! -f "oot.o2r" ] && [ ! -f "oot-mq.o2r" ]; then
+            pm_message "No o2r files, can't run the game!"
+            exit 1
+        fi
+    fi
+}
+
+otr_check
+
+if [ -f "imgui.ini" ]; then
+    imgui_reset
+fi
+
+$GPTOKEYB "soh.elf.${DEVICE_ARCH}" -c "soh.gptk" &
+pm_platform_helper "soh.elf.${DEVICE_ARCH}" >/dev/null
+./soh.elf.${DEVICE_ARCH}
+
+rm -rf "$GAMEDIR/logs/"
+pm_finish
+EOS
+
+chmod +x "$STAGE/Ship of Harkinian.sh"
+
+# Ajusta port.json para aarch64 se não tiver x86_64.
+if [ -f "$STAGE/soh/port.json" ] && [ ! -f "$STAGE/soh/soh.elf.x86_64" ]; then
+python3 - <<PY
+import json
+from pathlib import Path
+
+p = Path("$STAGE/soh/port.json")
+data = json.loads(p.read_text())
+data["name"] = "soh.zip"
+data.setdefault("attr", {})
+data["attr"]["arch"] = ["aarch64"]
+p.write_text(json.dumps(data, indent=4))
+PY
+fi
+
+# Mostra estrutura final.
+echo "Estrutura final do ZIP:"
+find "$STAGE" -maxdepth 3 -type f | sort
+
+# Cria o ZIP final estilo PortMaster.
+(
+    cd "$STAGE"
+    zip -r "$DESTDIR/$ZIP_NAME" "Ship of Harkinian.sh" soh
+)
+
+rm -rf "$STAGE"
+
+echo "Packaging complete: $DESTDIR/$ZIP_NAME"
