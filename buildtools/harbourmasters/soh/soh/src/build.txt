@@ -1,17 +1,18 @@
 set -e
+
 source /root/buildtools/harbourmasters/lib_build.sh
 
-# Project clone — fail fast on bad REPO_URL/REF.
-project_clone https://github.com/HarbourMasters/Shipwright.git
+# Usar o fork celshade do Shipwright.
+# Essa é a release mais recente do fork celshade.
+export REF="${REF:-9.2.3-celshade0.7}"
 
-# SDL2 from source so libzip/tinyxml2/opus/etc link against modern SDL2 at
-# build time. We do NOT ship libSDL2-2.0.so.0 — every supported device
-# already provides one, often with device-specific patches. Shipping ours
-# via LD_LIBRARY_PATH would override those patches.
+project_clone https://github.com/roborich/Shipwright.git
+
+# SDL2 é usado no build, mas NÃO é enviado junto.
+# O aparelho já fornece a SDL2 própria.
 build_sdl2
 
-# SDL2_net is required by BUILD_REMOTE_CONTROL (anchor multiplayer). Devices
-# do NOT reliably provide libSDL2_net-2.0.so.0 so we ship our build.
+# SDL2_net é necessário para BUILD_REMOTE_CONTROL.
 build_sdl2_net
 
 build_libzip
@@ -27,11 +28,13 @@ project_configure_and_build GenerateSohOtr \
     -DCMAKE_PREFIX_PATH=/usr/local \
     -DUSE_OPENGLES=1 \
     -DBUILD_REMOTE_CONTROL=1 \
+    -DCMAKE_CXX_STANDARD=20 \
+    -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+    -DCMAKE_CXX_FLAGS="-DFMT_CONSTEVAL=constexpr" \
     -DCMAKE_BUILD_TYPE=${BUILD_TYPE:-Release}
 
-# Stage shipped libraries. Filenames MUST match the binary's DT_NEEDED
-# entries exactly — stage_libs uses cp -L so each destination is a real
-# file with the right SONAME. libSDL2 is NOT shipped (device provides it).
+# Copia as libs que precisam ir junto do port.
+# Não colocar libSDL2 aqui.
 stage_libs soh/soh.elf \
     libz.so.1 \
     libogg.so.0 \
