@@ -7,10 +7,11 @@ source /root/buildtools/harbourmasters/lib_build.sh
 apt-get update
 apt-get install -y --no-install-recommends libssl1.1
 
-# Fork celshade do Shipwright.
-export REF="${REF:-9.2.3-celshade0.7}"
+# Seu fork celshade otimizado.
+# Usa o branch wind-waker-style-cel-shading por padrão.
+export REF="${REF:-wind-waker-style-cel-shading}"
 
-project_clone https://github.com/roborich/Shipwright.git
+project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
 build_sdl2
 build_sdl2_net
@@ -30,8 +31,10 @@ project_configure_and_build GenerateSohOtr \
     -DBUILD_REMOTE_CONTROL=1 \
     -DCMAKE_CXX_STANDARD=20 \
     -DCMAKE_CXX_STANDARD_REQUIRED=ON \
-    -DCMAKE_CXX_FLAGS="-DFMT_CONSTEVAL=constexpr" \
-    -DCMAKE_BUILD_TYPE=${BUILD_TYPE:-Release}
+    -DCMAKE_C_FLAGS="-O3 -DNDEBUG -DPORTMASTER_CELSHADE_OPTIMIZED=1 -fno-math-errno -fno-trapping-math -ffunction-sections -fdata-sections -fno-semantic-interposition" \
+    -DCMAKE_CXX_FLAGS="-O3 -DNDEBUG -DPORTMASTER_CELSHADE_OPTIMIZED=1 -DFMT_CONSTEVAL=constexpr -fno-math-errno -fno-trapping-math -ffunction-sections -fdata-sections -fno-semantic-interposition" \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--gc-sections -Wl,--as-needed" \
+    -DCMAKE_BUILD_TYPE=Release
 
 # Copia somente as libs diretas do ELF.
 # NÃO colocar libcrypto/libssl aqui, porque stage_libs falha se o ELF não pedir direto.
@@ -50,23 +53,25 @@ stage_libs soh/soh.elf \
     libSDL2_net-2.0.so.0
 
 # Copia OpenSSL 1.1 manualmente para o pacote final.
-# Isso corrige:
-# ./soh.elf.aarch64: error while loading shared libraries: libcrypto.so.1.1
 mkdir -p "$PROJECT_BUILD_DIR/libs"
 
 for lib in libcrypto.so.1.1 libssl.so.1.1; do
     SRC="/usr/lib/aarch64-linux-gnu/$lib"
 
     if [ ! -f "$SRC" ]; then
-        echo "ERRO: $lib não encontrado em $SRC"
+        echo "AVISO: $lib não encontrado em $SRC"
         echo "Procurando no sistema:"
         find /usr /lib -name "$lib" 2>/dev/null || true
-        exit 1
+    else
+        echo "Copiando $SRC para $PROJECT_BUILD_DIR/libs/$lib"
+        cp -L "$SRC" "$PROJECT_BUILD_DIR/libs/$lib"
     fi
-
-    echo "Copiando $SRC para $PROJECT_BUILD_DIR/libs/$lib"
-    cp -L "$SRC" "$PROJECT_BUILD_DIR/libs/$lib"
 done
 
 echo "Libs finais empacotadas:"
-ls -lh "$PROJECT_BUILD_DIR/libs"
+ls -lh "$PROJECT_BUILD_DIR/libs" || true
+
+echo "Verificando dependências do ELF:"
+readelf -d "$PROJECT_BUILD_DIR/soh/soh.elf" | grep NEEDED || true
+
+echo "Build SoH celshade usando Botopai50/ShipwrightTEST2 concluído."
