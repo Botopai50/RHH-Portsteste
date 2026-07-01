@@ -3,12 +3,10 @@ set -e
 source /root/buildtools/harbourmasters/lib_build.sh
 
 # Garante OpenSSL 1.1 ARM64 no container.
-# Essas libs são copiadas manualmente depois, sem passar pelo stage_libs.
 apt-get update
 apt-get install -y --no-install-recommends libssl1.1
 
 # Seu fork celshade otimizado.
-# Usa o branch wind-waker-style-cel-shading por padrão.
 export REF="${REF:-wind-waker-style-cel-shading}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
@@ -36,42 +34,100 @@ project_configure_and_build GenerateSohOtr \
     -DCMAKE_EXE_LINKER_FLAGS="-Wl,--gc-sections -Wl,--as-needed" \
     -DCMAKE_BUILD_TYPE=Release
 
-# Copia somente as libs diretas do ELF.
-# NÃO colocar libcrypto/libssl aqui, porque stage_libs falha se o ELF não pedir direto.
-stage_libs soh/soh.elf \
-    libz.so.1 \
-    libogg.so.0 \
-    libvorbis.so.0 \
-    libvorbisenc.so.2 \
-    libvorbisfile.so.3 \
-    libpng16.so.16 \
-    libbz2.so.1 \
-    libzip.so.5 \
-    libtinyxml2.so.10 \
-    libopus.so.0 \
-    libopusfile.so.0 \
-    libSDL2_net-2.0.so.0
+ELF="$PROJECT_BUILD_DIR/soh/soh.elf"
 
-# Copia OpenSSL 1.1 manualmente para o pacote final.
+echo "Dependências diretas do ELF:"
+readelf -d "$ELF" | grep NEEDED || true
+
+NEEDED_LIBS="$(readelf -d "$ELF" | sed -n 's/.*Shared library: \[\(.*\)\].*/\1/p')"
+
+STAGE_LIBS=()
+
+add_if_needed() {
+    local lib="$1"
+
+    if echo "$NEEDED_LIBS" | grep -Fxq "$lib"; then
+        echo "stage_libs: adicionando dependência direta: $lib"
+        STAGE_LIBS+=("$lib")
+    else
+        echo "stage_libs: pulando dependência indireta/não usada diretamente: $lib"
+    fi
+}
+
+# Lista ampla de libs possíveis.
+# Só entram no stage_libs se aparecerem diretamente no readelf NEEDED.
+add_if_needed libz.so.1
+add_if_needed libogg.so.0
+add_if_needed libvorbis.so.0
+add_if_needed libvorbisenc.so.2
+add_if_needed libvorbisfile.so.3
+add_if_needed libpng16.so.16
+add_if_needed libbz2.so.1
+add_if_needed libzip.so.5
+add_if_needed libtinyxml2.so.10
+add_if_needed libopus.so.0
+add_if_needed libopusfile.so.0
+add_if_needed libSDL2_net-2.0.so.0
+
+if [ "${#STAGE_LIBS[@]}" -gt 0 ]; then
+    stage_libs soh/soh.elf "${STAGE_LIBS[@]}"
+else
+    echo "AVISO: nenhuma lib direta extra foi encontrada para stage_libs."
+fi
+
 mkdir -p "$PROJECT_BUILD_DIR/libs"
 
-for lib in libcrypto.so.1.1 libssl.so.1.1; do
-    SRC="/usr/lib/aarch64-linux-gnu/$lib"
+copy_runtime_lib() {
+    local lib="$1"
+    local src=""
 
-    if [ ! -f "$SRC" ]; then
-        echo "AVISO: $lib não encontrado em $SRC"
-        echo "Procurando no sistema:"
-        find /usr /lib -name "$lib" 2>/dev/null || true
-    else
-        echo "Copiando $SRC para $PROJECT_BUILD_DIR/libs/$lib"
-        cp -L "$SRC" "$PROJECT_BUILD_DIR/libs/$lib"
+    if [ -f "$PROJECT_BUILD_DIR/libs/$lib" ]; then
+        echo "runtime lib já existe: $lib"
+        return 0
     fi
-done
+
+    for dir in \
+        /usr/local/lib \
+        /usr/lib/aarch64-linux-gnu \
+        /lib/aarch64-linux-gnu \
+        /usr/lib \
+        /lib
+    do
+        if [ -e "$dir/$lib" ]; then
+            src="$dir/$lib"
+            break
+        fi
+    done
+
+    if [ -z "$src" ]; then
+        src="$(find /usr/local /usr /lib \( -type f -o -type l \) -name "$lib" 2>/dev/null | head -n 1 || true)"
+    fi
+
+    if [ -n "$src" ] && [ -e "$src" ]; then
+        echo "Copiando runtime lib manual: $src -> $PROJECT_BUILD_DIR/libs/$lib"
+        cp -L "$src" "$PROJECT_BUILD_DIR/libs/$lib"
+    else
+        echo "AVISO: runtime lib não encontrada para cópia manual: $lib"
+    fi
+}
+
+# Copiadas manualmente porque podem ser dependências indiretas.
+# O stage_libs rejeita libs que o ELF não NEED diretamente.
+copy_runtime_lib libvorbis.so.0
+copy_runtime_lib libvorbisenc.so.2
+copy_runtime_lib libvorbisfile.so.3
+copy_runtime_lib libogg.so.0
+copy_runtime_lib libopus.so.0
+copy_runtime_lib libopusfile.so.0
+
+# OpenSSL 1.1 pode ser necessário indiretamente em alguns pacotes.
+copy_runtime_lib libcrypto.so.1.1
+copy_runtime_lib libssl.so.1.1
 
 echo "Libs finais empacotadas:"
 ls -lh "$PROJECT_BUILD_DIR/libs" || true
 
-echo "Verificando dependências do ELF:"
-readelf -d "$PROJECT_BUILD_DIR/soh/soh.elf" | grep NEEDED || true
+echo "Dependências diretas finais do ELF:"
+readelf -d "$ELF" | grep NEEDED || true
 
 echo "Build SoH celshade usando Botopai50/ShipwrightTEST2 concluído."
