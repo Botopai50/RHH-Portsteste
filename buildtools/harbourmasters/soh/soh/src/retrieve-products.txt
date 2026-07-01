@@ -8,6 +8,7 @@ source "$SCRIPT_DIR/../../../lib_retrieve.sh"
 
 retrieve_init "$1" "$2"
 
+# Produtos normais do build.
 copy_binary soh/soh.elf
 copy_o2r soh/soh.o2r
 replace_libs
@@ -15,17 +16,20 @@ package_soh_extractor_zip soh/assets/extractor soh/assets/xml
 
 ZIP_NAME="soh.zip"
 STAGE="$DESTDIR/_pm_zip_stage"
-BASE_PORT="$REPO_ROOT/ports/released/harbourmasters/soh/soh"
+BASE_ROOT="$REPO_ROOT/ports/released/harbourmasters/soh"
+BASE_PORT="$BASE_ROOT/soh"
 
 rm -rf "$STAGE"
 rm -f "$DESTDIR/$ZIP_NAME"
 
 mkdir -p "$STAGE/soh"
 
+# Copia arquivos estáticos do port base.
 if [ -d "$BASE_PORT" ]; then
     cp -a "$BASE_PORT/." "$STAGE/soh/"
 fi
 
+# Limpa binários/libs antigos para não misturar builds.
 rm -f "$STAGE/soh/soh.elf"
 rm -f "$STAGE/soh/soh.elf.aarch64"
 rm -f "$STAGE/soh/soh.elf.x86_64"
@@ -38,17 +42,19 @@ rm -rf "$STAGE/soh/libs.x86_64"
 mkdir -p "$STAGE/soh/assets"
 mkdir -p "$STAGE/soh/baseroms"
 mkdir -p "$STAGE/soh/mods"
+mkdir -p "$STAGE/soh/tools"
 mkdir -p "$STAGE/soh/libs.aarch64"
 
-# Binário ARM64 no nome que o script PortMaster antigo usa.
+# Binário ARM64 com os dois nomes:
+# - soh.elf.aarch64 para o script PortMaster antigo
+# - soh.elf para compatibilidade com o RHH novo
 cp "$PROJECT_BUILD/soh/soh.elf" "$STAGE/soh/soh.elf.aarch64"
-chmod +x "$STAGE/soh/soh.elf.aarch64"
-
-# Também deixa o nome soh.elf por compatibilidade com o RHH novo.
 cp "$PROJECT_BUILD/soh/soh.elf" "$STAGE/soh/soh.elf"
+
+chmod +x "$STAGE/soh/soh.elf.aarch64"
 chmod +x "$STAGE/soh/soh.elf"
 
-# O2R gerado pelo build.
+# O2R do Ship of Harkinian gerado pelo build.
 if [ -f "$PROJECT_BUILD/soh/soh.o2r" ]; then
     cp "$PROJECT_BUILD/soh/soh.o2r" "$STAGE/soh/soh.o2r"
 elif [ -f "$DESTDIR/soh.o2r" ]; then
@@ -60,34 +66,24 @@ if [ -d "$DESTDIR/libs" ]; then
     cp -a "$DESTDIR/libs/." "$STAGE/soh/libs.aarch64/"
 fi
 
-# Garantia extra: se libcrypto/libssl não tiverem ido por replace_libs,
-# copia direto do sistema ARM64 do container.
-for lib in libcrypto.so.1.1 libssl.so.1.1; do
-    if [ ! -f "$STAGE/soh/libs.aarch64/$lib" ]; then
-        FOUND_LIB="$(find /usr/lib /lib /usr/local/lib -name "$lib" 2>/dev/null | head -n 1 || true)"
-        if [ -n "$FOUND_LIB" ]; then
-            echo "Copiando $lib de $FOUND_LIB"
-            cp -L "$FOUND_LIB" "$STAGE/soh/libs.aarch64/$lib"
-        else
-            echo "AVISO: $lib não encontrado no container"
-        fi
-    fi
-done
-
 # extractor.zip
 if [ -f "$DESTDIR/assets/extractor.zip" ]; then
     mkdir -p "$STAGE/soh/assets"
     cp "$DESTDIR/assets/extractor.zip" "$STAGE/soh/assets/extractor.zip"
 fi
 
-# otrgen, se existir no port base.
+# Mantém tools/otrgen do port base, se existir.
 if [ -f "$BASE_PORT/tools/otrgen" ]; then
-    mkdir -p "$STAGE/soh/tools"
     cp "$BASE_PORT/tools/otrgen" "$STAGE/soh/tools/otrgen"
     chmod +x "$STAGE/soh/tools/otrgen"
 fi
 
-# Script raiz estilo PortMaster antigo.
+# Mantém soh.gptk do port base, se existir.
+if [ -f "$BASE_PORT/soh.gptk" ]; then
+    cp "$BASE_PORT/soh.gptk" "$STAGE/soh/soh.gptk"
+fi
+
+# Cria script raiz no estilo PortMaster antigo.
 cat > "$STAGE/Ship of Harkinian.sh" <<'EOS'
 #!/bin/bash
 
@@ -113,9 +109,14 @@ export LD_LIBRARY_PATH="$GAMEDIR/libs.${DEVICE_ARCH}":$LD_LIBRARY_PATH
 export SDL_GAMECONTROLLERCONFIG=$sdl_controllerconfig
 
 cd $GAMEDIR
+
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
 $ESUDO chmod +x "$GAMEDIR/soh.elf.${DEVICE_ARCH}"
+
+if [ -f "$GAMEDIR/tools/otrgen" ]; then
+  $ESUDO chmod +x "$GAMEDIR/tools/otrgen"
+fi
 
 otr_check() {
     if [ ! -f "oot.o2r" ] && [ ! -f "oot-mq.o2r" ]; then
@@ -155,7 +156,7 @@ EOS
 
 chmod +x "$STAGE/Ship of Harkinian.sh"
 
-# port.json só aarch64.
+# Ajusta port.json para aarch64.
 if [ -f "$STAGE/soh/port.json" ]; then
 python3 - <<PY
 import json
@@ -170,8 +171,8 @@ p.write_text(json.dumps(data, indent=4))
 PY
 fi
 
-echo "Estrutura final:"
-find "$STAGE" -maxdepth 3 -type f | sort
+echo "Estrutura final do ZIP:"
+find "$STAGE" -maxdepth 4 -type f | sort
 
 (
     cd "$STAGE"
