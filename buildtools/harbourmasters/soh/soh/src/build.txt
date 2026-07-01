@@ -32,7 +32,7 @@ project_configure_and_build GenerateSohOtr \
     -DCMAKE_CXX_FLAGS="-DFMT_CONSTEVAL=constexpr" \
     -DCMAKE_BUILD_TYPE=${BUILD_TYPE:-Release}
 
-# Copia SOMENTE as libs que o ELF realmente pede.
+# Copia SOMENTE as libs que o ELF realmente precisa.
 # NÃO colocar libSDL2, libcrypto ou libssl aqui.
 stage_libs soh/soh.elf \
     libz.so.1 \
