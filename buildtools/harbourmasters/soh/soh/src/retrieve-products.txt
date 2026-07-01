@@ -8,7 +8,6 @@ source "$SCRIPT_DIR/../../../lib_retrieve.sh"
 
 retrieve_init "$1" "$2"
 
-# Produtos normais do build.
 copy_binary soh/soh.elf
 copy_o2r soh/soh.o2r
 replace_libs
@@ -24,12 +23,10 @@ rm -f "$DESTDIR/$ZIP_NAME"
 
 mkdir -p "$STAGE/soh"
 
-# Copia arquivos estáticos do port base.
 if [ -d "$BASE_PORT" ]; then
     cp -a "$BASE_PORT/." "$STAGE/soh/"
 fi
 
-# Limpa binários/libs antigos para não misturar builds.
 rm -f "$STAGE/soh/soh.elf"
 rm -f "$STAGE/soh/soh.elf.aarch64"
 rm -f "$STAGE/soh/soh.elf.x86_64"
@@ -45,45 +42,51 @@ mkdir -p "$STAGE/soh/mods"
 mkdir -p "$STAGE/soh/tools"
 mkdir -p "$STAGE/soh/libs.aarch64"
 
-# Binário ARM64 com os dois nomes:
-# - soh.elf.aarch64 para o script PortMaster antigo
-# - soh.elf para compatibilidade com o RHH novo
 cp "$PROJECT_BUILD/soh/soh.elf" "$STAGE/soh/soh.elf.aarch64"
 cp "$PROJECT_BUILD/soh/soh.elf" "$STAGE/soh/soh.elf"
 
 chmod +x "$STAGE/soh/soh.elf.aarch64"
 chmod +x "$STAGE/soh/soh.elf"
 
-# O2R do Ship of Harkinian gerado pelo build.
 if [ -f "$PROJECT_BUILD/soh/soh.o2r" ]; then
     cp "$PROJECT_BUILD/soh/soh.o2r" "$STAGE/soh/soh.o2r"
 elif [ -f "$DESTDIR/soh.o2r" ]; then
     cp "$DESTDIR/soh.o2r" "$STAGE/soh/soh.o2r"
 fi
 
-# Libs do build viram libs.aarch64 no ZIP PortMaster.
 if [ -d "$DESTDIR/libs" ]; then
     cp -a "$DESTDIR/libs/." "$STAGE/soh/libs.aarch64/"
 fi
 
-# extractor.zip
+# Correção para o erro:
+# ./soh.elf.aarch64: error while loading shared libraries: libcrypto.so.1.1
+for lib in libcrypto.so.1.1 libssl.so.1.1; do
+    if [ ! -f "$STAGE/soh/libs.aarch64/$lib" ]; then
+        FOUND_LIB="$(find /usr/lib /lib /usr/local/lib -name "$lib" 2>/dev/null | head -n 1 || true)"
+
+        if [ -n "$FOUND_LIB" ]; then
+            echo "Copiando $lib de $FOUND_LIB para libs.aarch64"
+            cp -L "$FOUND_LIB" "$STAGE/soh/libs.aarch64/$lib"
+        else
+            echo "AVISO: $lib não encontrado no container"
+        fi
+    fi
+done
+
 if [ -f "$DESTDIR/assets/extractor.zip" ]; then
     mkdir -p "$STAGE/soh/assets"
     cp "$DESTDIR/assets/extractor.zip" "$STAGE/soh/assets/extractor.zip"
 fi
 
-# Mantém tools/otrgen do port base, se existir.
 if [ -f "$BASE_PORT/tools/otrgen" ]; then
     cp "$BASE_PORT/tools/otrgen" "$STAGE/soh/tools/otrgen"
     chmod +x "$STAGE/soh/tools/otrgen"
 fi
 
-# Mantém soh.gptk do port base, se existir.
 if [ -f "$BASE_PORT/soh.gptk" ]; then
     cp "$BASE_PORT/soh.gptk" "$STAGE/soh/soh.gptk"
 fi
 
-# Cria script raiz no estilo PortMaster antigo.
 cat > "$STAGE/Ship of Harkinian.sh" <<'EOS'
 #!/bin/bash
 
@@ -156,7 +159,6 @@ EOS
 
 chmod +x "$STAGE/Ship of Harkinian.sh"
 
-# Ajusta port.json para aarch64.
 if [ -f "$STAGE/soh/port.json" ]; then
 python3 - <<PY
 import json
