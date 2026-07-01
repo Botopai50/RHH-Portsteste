@@ -2,6 +2,12 @@ set -e
 
 source /root/buildtools/harbourmasters/lib_build.sh
 
+# Garante OpenSSL 1.1 ARM64 no container.
+# Essas libs são copiadas manualmente depois, sem passar pelo stage_libs.
+apt-get update
+apt-get install -y --no-install-recommends libssl1.1
+
+# Fork celshade do Shipwright.
 export REF="${REF:-9.2.3-celshade0.7}"
 
 project_clone https://github.com/roborich/Shipwright.git
@@ -27,6 +33,8 @@ project_configure_and_build GenerateSohOtr \
     -DCMAKE_CXX_FLAGS="-DFMT_CONSTEVAL=constexpr" \
     -DCMAKE_BUILD_TYPE=${BUILD_TYPE:-Release}
 
+# Copia somente as libs diretas do ELF.
+# NÃO colocar libcrypto/libssl aqui, porque stage_libs falha se o ELF não pedir direto.
 stage_libs soh/soh.elf \
     libz.so.1 \
     libogg.so.0 \
@@ -40,3 +48,25 @@ stage_libs soh/soh.elf \
     libopus.so.0 \
     libopusfile.so.0 \
     libSDL2_net-2.0.so.0
+
+# Copia OpenSSL 1.1 manualmente para o pacote final.
+# Isso corrige:
+# ./soh.elf.aarch64: error while loading shared libraries: libcrypto.so.1.1
+mkdir -p "$PROJECT_BUILD_DIR/libs"
+
+for lib in libcrypto.so.1.1 libssl.so.1.1; do
+    SRC="/usr/lib/aarch64-linux-gnu/$lib"
+
+    if [ ! -f "$SRC" ]; then
+        echo "ERRO: $lib não encontrado em $SRC"
+        echo "Procurando no sistema:"
+        find /usr /lib -name "$lib" 2>/dev/null || true
+        exit 1
+    fi
+
+    echo "Copiando $SRC para $PROJECT_BUILD_DIR/libs/$lib"
+    cp -L "$SRC" "$PROJECT_BUILD_DIR/libs/$lib"
+done
+
+echo "Libs finais empacotadas:"
+ls -lh "$PROJECT_BUILD_DIR/libs"
