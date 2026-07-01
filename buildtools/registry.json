@@ -44,14 +44,14 @@
       "artifacts": ["dusklight", "libs", "res"],
       "base": "self"
       },
-    "soh": {
+   "soh": {
       "port_dir": "buildtools/harbourmasters/soh/soh",
       "target_dirs": ["ports/released/harbourmasters/soh/soh"],
-      "upstream_repo": "roborich/Shipwright",
+      "upstream_repo": "Botopai50/ShipwrightTEST2",
       "track": "release",
       "commit_prefix": "SOH-CELSHADE",
       "artifacts": ["soh.zip"]
-      },
+    },
     "soh2": {
       "port_dir": "buildtools/harbourmasters/soh2/soh2",
       "target_dirs": ["ports/released/harbourmasters/soh2/soh2"],
