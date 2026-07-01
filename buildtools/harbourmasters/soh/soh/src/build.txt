@@ -32,10 +32,8 @@ project_configure_and_build GenerateSohOtr \
     -DCMAKE_CXX_FLAGS="-DFMT_CONSTEVAL=constexpr" \
     -DCMAKE_BUILD_TYPE=${BUILD_TYPE:-Release}
 
-# Copia as libs que o soh.elf precisa.
-# IMPORTANTE:
-# - NÃO colocar libSDL2-2.0.so.0 aqui.
-# - libcrypto/libssl foram adicionadas porque o ELF celshade está pedindo elas.
+# Copia SOMENTE as libs que o ELF realmente pede.
+# NÃO colocar libSDL2, libcrypto ou libssl aqui.
 stage_libs soh/soh.elf \
     libz.so.1 \
     libogg.so.0 \
@@ -48,6 +46,4 @@ stage_libs soh/soh.elf \
     libtinyxml2.so.10 \
     libopus.so.0 \
     libopusfile.so.0 \
-    libSDL2_net-2.0.so.0 \
-    libcrypto.so.1.1 \
-    libssl.so.1.1
+    libSDL2_net-2.0.so.0
