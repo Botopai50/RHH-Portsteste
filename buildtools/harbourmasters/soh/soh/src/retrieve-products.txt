@@ -42,47 +42,48 @@ mkdir -p "$STAGE/soh/mods"
 mkdir -p "$STAGE/soh/tools"
 mkdir -p "$STAGE/soh/libs.aarch64"
 
+# Binário ARM64 com os dois nomes.
 cp "$PROJECT_BUILD/soh/soh.elf" "$STAGE/soh/soh.elf.aarch64"
 cp "$PROJECT_BUILD/soh/soh.elf" "$STAGE/soh/soh.elf"
 
 chmod +x "$STAGE/soh/soh.elf.aarch64"
 chmod +x "$STAGE/soh/soh.elf"
 
+# O2R do Ship of Harkinian.
 if [ -f "$PROJECT_BUILD/soh/soh.o2r" ]; then
     cp "$PROJECT_BUILD/soh/soh.o2r" "$STAGE/soh/soh.o2r"
 elif [ -f "$DESTDIR/soh.o2r" ]; then
     cp "$DESTDIR/soh.o2r" "$STAGE/soh/soh.o2r"
 fi
 
+# Libs do build viram libs.aarch64 no ZIP PortMaster.
 if [ -d "$DESTDIR/libs" ]; then
     cp -a "$DESTDIR/libs/." "$STAGE/soh/libs.aarch64/"
 fi
 
-# Correção para o erro:
-# ./soh.elf.aarch64: error while loading shared libraries: libcrypto.so.1.1
+# Validação obrigatória: se essas libs não estiverem no ZIP, o console vai dar erro.
 for lib in libcrypto.so.1.1 libssl.so.1.1; do
     if [ ! -f "$STAGE/soh/libs.aarch64/$lib" ]; then
-        FOUND_LIB="$(find /usr/lib /lib /usr/local/lib -name "$lib" 2>/dev/null | head -n 1 || true)"
-
-        if [ -n "$FOUND_LIB" ]; then
-            echo "Copiando $lib de $FOUND_LIB para libs.aarch64"
-            cp -L "$FOUND_LIB" "$STAGE/soh/libs.aarch64/$lib"
-        else
-            echo "AVISO: $lib não encontrado no container"
-        fi
+        echo "ERRO: $lib não entrou em soh/libs.aarch64/"
+        echo "Conteúdo atual de libs.aarch64:"
+        ls -lh "$STAGE/soh/libs.aarch64/" || true
+        exit 1
     fi
 done
 
+# extractor.zip
 if [ -f "$DESTDIR/assets/extractor.zip" ]; then
     mkdir -p "$STAGE/soh/assets"
     cp "$DESTDIR/assets/extractor.zip" "$STAGE/soh/assets/extractor.zip"
 fi
 
+# tools/otrgen do port base.
 if [ -f "$BASE_PORT/tools/otrgen" ]; then
     cp "$BASE_PORT/tools/otrgen" "$STAGE/soh/tools/otrgen"
     chmod +x "$STAGE/soh/tools/otrgen"
 fi
 
+# soh.gptk do port base.
 if [ -f "$BASE_PORT/soh.gptk" ]; then
     cp "$BASE_PORT/soh.gptk" "$STAGE/soh/soh.gptk"
 fi
