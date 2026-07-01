@@ -2,16 +2,11 @@ set -e
 
 source /root/buildtools/harbourmasters/lib_build.sh
 
-# Fork celshade do Shipwright.
 export REF="${REF:-9.2.3-celshade0.7}"
 
 project_clone https://github.com/roborich/Shipwright.git
 
-# SDL2 é usado no build, mas NÃO vai junto no pacote.
-# O aparelho já fornece a SDL2 própria.
 build_sdl2
-
-# Necessário para BUILD_REMOTE_CONTROL.
 build_sdl2_net
 
 build_libzip
@@ -32,8 +27,6 @@ project_configure_and_build GenerateSohOtr \
     -DCMAKE_CXX_FLAGS="-DFMT_CONSTEVAL=constexpr" \
     -DCMAKE_BUILD_TYPE=${BUILD_TYPE:-Release}
 
-# Copia SOMENTE as libs que o ELF realmente precisa.
-# NÃO colocar libSDL2, libcrypto ou libssl aqui.
 stage_libs soh/soh.elf \
     libz.so.1 \
     libogg.so.0 \
