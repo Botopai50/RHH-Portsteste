@@ -2,9 +2,9 @@ set -e
 
 source /root/buildtools/harbourmasters/lib_build.sh
 
-# Garante OpenSSL 1.1 ARM64 no container.
+# Garante dependências básicas usadas durante o build.
 apt-get update
-apt-get install -y --no-install-recommends libssl1.1
+apt-get install -y --no-install-recommends libssl1.1 python3
 
 # Seu fork celshade otimizado.
 # Se o workflow passar REF pela matriz/release, respeita o valor.
@@ -16,14 +16,30 @@ project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 # --------------------------------------------------------------------
 # Correção limpa de compatibilidade com libultraship novo.
 #
+# Problema 1:
 # O código do ShipwrightTEST2 ainda tem vários arquivos chamando:
 #   Ship::Context::GetRawInstance()
 #
 # Mas o libultraship atual só expõe:
 #   Ship::Context::GetInstance()
 #
-# GetInstance() retorna shared_ptr e continua aceitando chamadas com "->",
-# então para esses usos encadeados é a correção correta.
+# Correção:
+#   GetRawInstance() -> GetInstance()
+#
+# Problema 2:
+# Depois da troca, alguns arquivos passam a usar:
+#   Ship::Context::GetInstance()->GetWindow()->GetGui()
+#
+# Porém alguns desses arquivos não incluem a definição completa de Ship::Window.
+# Eles pegam só uma forward declaration vinda de Gui.h:
+#   class Window;
+#
+# Aí o clang falha com:
+#   member access into incomplete type 'Ship::Window'
+#
+# Correção:
+#   adicionar #include <ship/window/Window.h>
+#   em todo arquivo que usa Context::GetInstance()->GetWindow()
 #
 # Importante:
 # - Não mexe no header do libultraship.
@@ -31,62 +47,125 @@ project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 # - Corrige o código fonte clonado antes de compilar.
 # - Evita o ciclo "corrige um arquivo e quebra no próximo".
 # --------------------------------------------------------------------
-echo "Procurando chamadas antigas GetRawInstance() no código do SoH..."
+echo "Aplicando compatibilidade GetInstance/Window.h no código do SoH..."
 
-if [ -d "$PROJECT_DIR/soh" ]; then
-    OLD_COUNT="$(grep -RIn "GetRawInstance()" "$PROJECT_DIR/soh" \
-        --include='*.cpp' \
-        --include='*.hpp' \
-        --include='*.h' \
-        --include='*.cc' \
-        --include='*.cxx' \
-        2>/dev/null | wc -l || true)"
+python3 - <<'PY'
+from pathlib import Path
+import re
 
-    echo "Ocorrências encontradas antes da correção: $OLD_COUNT"
+root = Path("/root/build-port/project/soh/soh")
 
-    if [ "$OLD_COUNT" -gt 0 ]; then
-        echo "Arquivos com GetRawInstance() antes da correção:"
-        grep -RIn "GetRawInstance()" "$PROJECT_DIR/soh" \
-            --include='*.cpp' \
-            --include='*.hpp' \
-            --include='*.h' \
-            --include='*.cc' \
-            --include='*.cxx' \
-            2>/dev/null || true
+if not root.exists():
+    raise SystemExit(f"ERRO: diretório não encontrado: {root}")
 
-        find "$PROJECT_DIR/soh" \
-            -type f \
-            \( -name '*.cpp' -o -name '*.hpp' -o -name '*.h' -o -name '*.cc' -o -name '*.cxx' \) \
-            -print0 | xargs -0 sed -i 's/GetRawInstance()/GetInstance()/g'
-    fi
+extensions = {".cpp", ".hpp", ".h", ".cc", ".cxx"}
+files = [p for p in root.rglob("*") if p.is_file() and p.suffix in extensions]
 
-    LEFT_COUNT="$(grep -RIn "GetRawInstance()" "$PROJECT_DIR/soh" \
-        --include='*.cpp' \
-        --include='*.hpp' \
-        --include='*.h' \
-        --include='*.cc' \
-        --include='*.cxx' \
-        2>/dev/null | wc -l || true)"
+changed_getraw = []
+added_window_include = []
 
-    echo "Ocorrências restantes após a correção: $LEFT_COUNT"
+for path in files:
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    original = text
 
-    if [ "$LEFT_COUNT" -ne 0 ]; then
-        echo "ERRO: ainda existem chamadas GetRawInstance() após a correção:"
-        grep -RIn "GetRawInstance()" "$PROJECT_DIR/soh" \
-            --include='*.cpp' \
-            --include='*.hpp' \
-            --include='*.h' \
-            --include='*.cc' \
-            --include='*.cxx' \
-            2>/dev/null || true
-        exit 1
-    fi
-else
-    echo "ERRO: diretório $PROJECT_DIR/soh não encontrado após project_clone."
-    echo "Conteúdo de $PROJECT_DIR:"
-    ls -la "$PROJECT_DIR" || true
-    exit 1
-fi
+    # Atualiza chamadas antigas da API.
+    text = text.replace("Ship::Context::GetRawInstance()", "Ship::Context::GetInstance()")
+    text = text.replace("Context::GetRawInstance()", "Context::GetInstance()")
+
+    if text != original:
+        changed_getraw.append(path)
+
+    # Se o arquivo acessa GetWindow(), precisa enxergar a definição completa de Ship::Window.
+    uses_context_window = (
+        "Ship::Context::GetInstance()->GetWindow()" in text
+        or "Context::GetInstance()->GetWindow()" in text
+    )
+
+    has_window_include = (
+        "#include <ship/window/Window.h>" in text
+        or '#include "ship/window/Window.h"' in text
+        or '#include <libultraship/window/Window.h>' in text
+        or '#include "libultraship/window/Window.h"' in text
+    )
+
+    if uses_context_window and not has_window_include:
+        lines = text.splitlines()
+
+        insert_at = None
+
+        # Preferimos colocar logo depois de ship/Context.h, se existir.
+        for i, line in enumerate(lines):
+            if "#include <ship/Context.h>" in line or '#include "ship/Context.h"' in line:
+                insert_at = i + 1
+                break
+
+        # Caso não exista include direto de Context.h, coloca depois do último include inicial.
+        if insert_at is None:
+            last_include = None
+            for i, line in enumerate(lines):
+                stripped = line.strip()
+                if stripped.startswith("#include"):
+                    last_include = i
+                    continue
+
+                # Parou o bloco inicial de includes ao chegar em código real.
+                if last_include is not None and stripped and not stripped.startswith("//"):
+                    break
+
+            if last_include is not None:
+                insert_at = last_include + 1
+            else:
+                insert_at = 0
+
+        lines.insert(insert_at, "#include <ship/window/Window.h>")
+        text = "\n".join(lines) + "\n"
+        added_window_include.append(path)
+
+    if text != original:
+        path.write_text(text, encoding="utf-8", newline="\n")
+
+remaining_getraw = []
+for path in files:
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    if "GetRawInstance()" in text:
+        remaining_getraw.append(path)
+
+remaining_window_missing = []
+for path in files:
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    uses_context_window = (
+        "Ship::Context::GetInstance()->GetWindow()" in text
+        or "Context::GetInstance()->GetWindow()" in text
+    )
+    has_window_include = (
+        "#include <ship/window/Window.h>" in text
+        or '#include "ship/window/Window.h"' in text
+        or '#include <libultraship/window/Window.h>' in text
+        or '#include "libultraship/window/Window.h"' in text
+    )
+
+    if uses_context_window and not has_window_include:
+        remaining_window_missing.append(path)
+
+print(f"Arquivos com GetRawInstance() corrigidos: {len(changed_getraw)}")
+for p in changed_getraw:
+    print(f"  fixed-api: {p}")
+
+print(f"Arquivos que receberam #include <ship/window/Window.h>: {len(added_window_include)}")
+for p in added_window_include:
+    print(f"  added-window-include: {p}")
+
+print(f"Ocorrências restantes de GetRawInstance(): {len(remaining_getraw)}")
+for p in remaining_getraw:
+    print(f"  remaining-getraw: {p}")
+
+print(f"Arquivos ainda usando GetWindow() sem Window.h: {len(remaining_window_missing)}")
+for p in remaining_window_missing:
+    print(f"  missing-window-include: {p}")
+
+if remaining_getraw or remaining_window_missing:
+    raise SystemExit("ERRO: patch de compatibilidade incompleto.")
+PY
 
 build_sdl2
 build_sdl2_net
