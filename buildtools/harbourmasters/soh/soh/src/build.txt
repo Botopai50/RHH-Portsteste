@@ -2,55 +2,18 @@ set -e
 
 source /root/buildtools/harbourmasters/lib_build.sh
 
-# Garante dependências básicas usadas durante o build.
 apt-get update
 apt-get install -y --no-install-recommends libssl1.1 python3
 
-# Seu fork celshade otimizado.
-# Se o workflow passar REF pela matriz/release, respeita o valor.
-# Caso contrário, usa o branch do cel shading.
 export REF="${REF:-wind-waker-style-cel-shading}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
-# --------------------------------------------------------------------
-# Correção limpa de compatibilidade com libultraship novo.
-#
-# Problema 1:
-# O código do ShipwrightTEST2 ainda tem vários arquivos chamando:
-#   Ship::Context::GetRawInstance()
-#
-# Mas o libultraship atual só expõe:
-#   Ship::Context::GetInstance()
-#
-# Correção:
-#   GetRawInstance() -> GetInstance()
-#
-# Problema 2:
-# Depois da troca, alguns arquivos passam a usar:
-#   Ship::Context::GetInstance()->GetWindow()->GetGui()
-#
-# Porém alguns desses arquivos não incluem a definição completa de Ship::Window.
-# Eles pegam só uma forward declaration vinda de Gui.h:
-#   class Window;
-#
-# Aí o clang falha com:
-#   member access into incomplete type 'Ship::Window'
-#
-# Correção:
-#   adicionar #include <ship/window/Window.h>
-#   em todo arquivo que usa Context::GetInstance()->GetWindow()
-#
-# Importante:
-# - Não mexe no header do libultraship.
-# - Não cria wrapper/gambiarra em Context.h.
-# - Corrige o código fonte clonado antes de compilar.
-# - Compatível com Python 3.8 do Ubuntu focal.
-# --------------------------------------------------------------------
 echo "Aplicando compatibilidade GetInstance/Window.h no código do SoH..."
 
 python3 - <<'PY'
 from pathlib import Path
+import re
 
 root = Path("/root/build-port/project/soh")
 
@@ -64,8 +27,6 @@ changed_getraw = []
 added_window_include = []
 
 def write_text_lf(path, text):
-    # Compatível com Python 3.8.
-    # Path.write_text(..., newline="\n") só existe em versões mais novas.
     with path.open("w", encoding="utf-8", newline="\n") as f:
         f.write(text)
 
@@ -73,14 +34,11 @@ for path in files:
     text = path.read_text(encoding="utf-8", errors="ignore")
     original = text
 
-    # Atualiza chamadas antigas da API.
-    text = text.replace("Ship::Context::GetRawInstance()", "Ship::Context::GetInstance()")
-    text = text.replace("Context::GetRawInstance()", "Context::GetInstance()")
+    text = re.sub(r"\bGetRawInstance\s*\(", "GetInstance(", text)
 
     if text != original:
         changed_getraw.append(path)
 
-    # Se o arquivo acessa GetWindow(), precisa enxergar a definição completa de Ship::Window.
     uses_context_window = (
         "Ship::Context::GetInstance()->GetWindow()" in text
         or "Context::GetInstance()->GetWindow()" in text
@@ -95,18 +53,16 @@ for path in files:
 
     if uses_context_window and not has_window_include:
         lines = text.splitlines()
-
         insert_at = None
 
-        # Preferimos colocar logo depois de ship/Context.h, se existir.
         for i, line in enumerate(lines):
             if "#include <ship/Context.h>" in line or '#include "ship/Context.h"' in line:
                 insert_at = i + 1
                 break
 
-        # Caso não exista include direto de Context.h, coloca depois do último include inicial.
         if insert_at is None:
             last_include = None
+
             for i, line in enumerate(lines):
                 stripped = line.strip()
 
@@ -114,7 +70,6 @@ for path in files:
                     last_include = i
                     continue
 
-                # Parou o bloco inicial de includes ao chegar em código real.
                 if last_include is not None and stripped and not stripped.startswith("//"):
                     break
 
@@ -131,12 +86,15 @@ for path in files:
         write_text_lf(path, text)
 
 remaining_getraw = []
+
 for path in files:
     text = path.read_text(encoding="utf-8", errors="ignore")
-    if "GetRawInstance()" in text:
+
+    if "GetRawInstance" in text:
         remaining_getraw.append(path)
 
 remaining_window_missing = []
+
 for path in files:
     text = path.read_text(encoding="utf-8", errors="ignore")
 
@@ -155,7 +113,7 @@ for path in files:
     if uses_context_window and not has_window_include:
         remaining_window_missing.append(path)
 
-print(f"Arquivos com GetRawInstance() corrigidos: {len(changed_getraw)}")
+print(f"Arquivos com GetRawInstance corrigidos: {len(changed_getraw)}")
 for p in changed_getraw:
     print(f"  fixed-api: {p}")
 
@@ -163,7 +121,7 @@ print(f"Arquivos que receberam #include <ship/window/Window.h>: {len(added_windo
 for p in added_window_include:
     print(f"  added-window-include: {p}")
 
-print(f"Ocorrências restantes de GetRawInstance(): {len(remaining_getraw)}")
+print(f"Arquivos restantes contendo GetRawInstance: {len(remaining_getraw)}")
 for p in remaining_getraw:
     print(f"  remaining-getraw: {p}")
 
@@ -216,8 +174,6 @@ add_if_needed() {
     fi
 }
 
-# Lista ampla de libs possíveis.
-# Só entram no stage_libs se aparecerem diretamente no readelf NEEDED.
 add_if_needed libz.so.1
 add_if_needed libogg.so.0
 add_if_needed libvorbis.so.0
@@ -273,16 +229,12 @@ copy_runtime_lib() {
     fi
 }
 
-# Copiadas manualmente porque podem ser dependências indiretas.
-# O stage_libs rejeita libs que o ELF não NEED diretamente.
 copy_runtime_lib libvorbis.so.0
 copy_runtime_lib libvorbisenc.so.2
 copy_runtime_lib libvorbisfile.so.3
 copy_runtime_lib libogg.so.0
 copy_runtime_lib libopus.so.0
 copy_runtime_lib libopusfile.so.0
-
-# OpenSSL 1.1 pode ser necessário indiretamente em alguns pacotes.
 copy_runtime_lib libcrypto.so.1.1
 copy_runtime_lib libssl.so.1.1
 
