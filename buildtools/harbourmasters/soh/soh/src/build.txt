@@ -7,13 +7,89 @@ apt-get update
 apt-get install -y --no-install-recommends libssl1.1
 
 # Seu fork celshade otimizado.
+# Se o workflow passar REF pela matriz/release, respeita o valor.
+# Caso contrário, usa o branch do cel shading.
 export REF="${REF:-wind-waker-style-cel-shading}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
+# --------------------------------------------------------------------
+# Correção limpa de compatibilidade com libultraship novo.
+#
+# O código do ShipwrightTEST2 ainda tem vários arquivos chamando:
+#   Ship::Context::GetRawInstance()
+#
+# Mas o libultraship atual só expõe:
+#   Ship::Context::GetInstance()
+#
+# GetInstance() retorna shared_ptr e continua aceitando chamadas com "->",
+# então para esses usos encadeados é a correção correta.
+#
+# Importante:
+# - Não mexe no header do libultraship.
+# - Não cria wrapper/gambiarra em Context.h.
+# - Corrige o código fonte clonado antes de compilar.
+# - Evita o ciclo "corrige um arquivo e quebra no próximo".
+# --------------------------------------------------------------------
+echo "Procurando chamadas antigas GetRawInstance() no código do SoH..."
+
+if [ -d "$PROJECT_DIR/soh" ]; then
+    OLD_COUNT="$(grep -RIn "GetRawInstance()" "$PROJECT_DIR/soh" \
+        --include='*.cpp' \
+        --include='*.hpp' \
+        --include='*.h' \
+        --include='*.cc' \
+        --include='*.cxx' \
+        2>/dev/null | wc -l || true)"
+
+    echo "Ocorrências encontradas antes da correção: $OLD_COUNT"
+
+    if [ "$OLD_COUNT" -gt 0 ]; then
+        echo "Arquivos com GetRawInstance() antes da correção:"
+        grep -RIn "GetRawInstance()" "$PROJECT_DIR/soh" \
+            --include='*.cpp' \
+            --include='*.hpp' \
+            --include='*.h' \
+            --include='*.cc' \
+            --include='*.cxx' \
+            2>/dev/null || true
+
+        find "$PROJECT_DIR/soh" \
+            -type f \
+            \( -name '*.cpp' -o -name '*.hpp' -o -name '*.h' -o -name '*.cc' -o -name '*.cxx' \) \
+            -print0 | xargs -0 sed -i 's/GetRawInstance()/GetInstance()/g'
+    fi
+
+    LEFT_COUNT="$(grep -RIn "GetRawInstance()" "$PROJECT_DIR/soh" \
+        --include='*.cpp' \
+        --include='*.hpp' \
+        --include='*.h' \
+        --include='*.cc' \
+        --include='*.cxx' \
+        2>/dev/null | wc -l || true)"
+
+    echo "Ocorrências restantes após a correção: $LEFT_COUNT"
+
+    if [ "$LEFT_COUNT" -ne 0 ]; then
+        echo "ERRO: ainda existem chamadas GetRawInstance() após a correção:"
+        grep -RIn "GetRawInstance()" "$PROJECT_DIR/soh" \
+            --include='*.cpp' \
+            --include='*.hpp' \
+            --include='*.h' \
+            --include='*.cc' \
+            --include='*.cxx' \
+            2>/dev/null || true
+        exit 1
+    fi
+else
+    echo "ERRO: diretório $PROJECT_DIR/soh não encontrado após project_clone."
+    echo "Conteúdo de $PROJECT_DIR:"
+    ls -la "$PROJECT_DIR" || true
+    exit 1
+fi
+
 build_sdl2
 build_sdl2_net
-
 build_libzip
 build_json
 build_bzip2
@@ -40,7 +116,6 @@ echo "Dependências diretas do ELF:"
 readelf -d "$ELF" | grep NEEDED || true
 
 NEEDED_LIBS="$(readelf -d "$ELF" | sed -n 's/.*Shared library: \[\(.*\)\].*/\1/p')"
-
 STAGE_LIBS=()
 
 add_if_needed() {
