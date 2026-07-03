@@ -1,7 +1,4 @@
-from pathlib import Path
-import zipfile
-
-build_txt = r'''set -e
+set -e
 
 source /root/buildtools/harbourmasters/lib_build.sh
 
@@ -296,14 +293,3 @@ echo "Dependências diretas finais do ELF:"
 readelf -d "$ELF" | grep NEEDED || true
 
 echo "Build SoH celshade usando Botopai50/ShipwrightTEST2 concluído."
-'''
-
-out_dir = Path("/mnt/data/rhh_soh_buildtxt_python38_fix")
-out_dir.mkdir(parents=True, exist_ok=True)
-(out_dir / "build.txt").write_text(build_txt, encoding="utf-8")
-
-zip_path = Path("/mnt/data/rhh_soh_buildtxt_python38_fix.zip")
-with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
-    z.write(out_dir / "build.txt", arcname="build.txt")
-
-print(zip_path)
