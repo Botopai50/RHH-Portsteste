@@ -1,4 +1,7 @@
-set -e
+from pathlib import Path
+import zipfile
+
+build_txt = r'''set -e
 
 source /root/buildtools/harbourmasters/lib_build.sh
 
@@ -45,15 +48,14 @@ project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 # - Não mexe no header do libultraship.
 # - Não cria wrapper/gambiarra em Context.h.
 # - Corrige o código fonte clonado antes de compilar.
-# - Evita o ciclo "corrige um arquivo e quebra no próximo".
+# - Compatível com Python 3.8 do Ubuntu focal.
 # --------------------------------------------------------------------
 echo "Aplicando compatibilidade GetInstance/Window.h no código do SoH..."
 
 python3 - <<'PY'
 from pathlib import Path
-import re
 
-root = Path("/root/build-port/project/soh/soh")
+root = Path("/root/build-port/project/soh")
 
 if not root.exists():
     raise SystemExit(f"ERRO: diretório não encontrado: {root}")
@@ -63,6 +65,12 @@ files = [p for p in root.rglob("*") if p.is_file() and p.suffix in extensions]
 
 changed_getraw = []
 added_window_include = []
+
+def write_text_lf(path, text):
+    # Compatível com Python 3.8.
+    # Path.write_text(..., newline="\n") só existe em versões mais novas.
+    with path.open("w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
 
 for path in files:
     text = path.read_text(encoding="utf-8", errors="ignore")
@@ -104,6 +112,7 @@ for path in files:
             last_include = None
             for i, line in enumerate(lines):
                 stripped = line.strip()
+
                 if stripped.startswith("#include"):
                     last_include = i
                     continue
@@ -122,7 +131,7 @@ for path in files:
         added_window_include.append(path)
 
     if text != original:
-        path.write_text(text, encoding="utf-8", newline="\n")
+        write_text_lf(path, text)
 
 remaining_getraw = []
 for path in files:
@@ -133,10 +142,12 @@ for path in files:
 remaining_window_missing = []
 for path in files:
     text = path.read_text(encoding="utf-8", errors="ignore")
+
     uses_context_window = (
         "Ship::Context::GetInstance()->GetWindow()" in text
         or "Context::GetInstance()->GetWindow()" in text
     )
+
     has_window_include = (
         "#include <ship/window/Window.h>" in text
         or '#include "ship/window/Window.h"' in text
@@ -285,3 +296,14 @@ echo "Dependências diretas finais do ELF:"
 readelf -d "$ELF" | grep NEEDED || true
 
 echo "Build SoH celshade usando Botopai50/ShipwrightTEST2 concluído."
+'''
+
+out_dir = Path("/mnt/data/rhh_soh_buildtxt_python38_fix")
+out_dir.mkdir(parents=True, exist_ok=True)
+(out_dir / "build.txt").write_text(build_txt, encoding="utf-8")
+
+zip_path = Path("/mnt/data/rhh_soh_buildtxt_python38_fix.zip")
+with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+    z.write(out_dir / "build.txt", arcname="build.txt")
+
+print(zip_path)
