@@ -5,7 +5,7 @@ source /root/buildtools/harbourmasters/lib_build.sh
 apt-get update
 apt-get install -y --no-install-recommends libssl1.1 python3
 
-export REF="${REF:-spatial-scene-lod-rings}"
+export REF="${REF:-wind-waker-style-cel-shading}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
