@@ -9,7 +9,7 @@ export REF="${REF:-wind-waker-style-cel-shading}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
-echo "Aplicando compatibilidade GetInstance/Window.h/CreateUninitializedInstance/destructors no código do SoH..."
+echo "Aplicando compatibilidade GetInstance/Window.h/destructors no código do SoH..."
 
 python3 - <<'PY'
 from pathlib import Path
@@ -24,23 +24,11 @@ files = [p for p in root.rglob("*") if p.is_file() and p.suffix in extensions]
 
 changed_getraw = []
 added_window_include = []
-patched_context_create = []
 patched_virtual_destructors = []
 
 def write_text_lf(path, text):
     with path.open("w", encoding="utf-8", newline="\n") as f:
         f.write(text)
-
-def patch_create_uninitialized_instance(text):
-    pattern = re.compile(r"context\s*=\s*Ship::Context::CreateUninitializedInstance\s*\((.*?)\)\s*;", re.DOTALL)
-    def repl(match):
-        args = match.group(1)
-        return (
-            "static std::shared_ptr<Ship::Context> sohContextHolder;\n"
-            f"    sohContextHolder = Ship::Context::CreateUninitializedInstance({args});\n"
-            "    context = sohContextHolder.get();"
-        )
-    return pattern.sub(repl, text)
 
 def patch_virtual_destructors(text):
     text = text.replace(
@@ -60,11 +48,6 @@ for path in files:
     text = re.sub(r"\bGetRawInstance\s*\(", "GetInstance(", text)
     if text != original:
         changed_getraw.append(path)
-
-    before_context_patch = text
-    text = patch_create_uninitialized_instance(text)
-    if text != before_context_patch:
-        patched_context_create.append(path)
 
     before_destructor_patch = text
     if path.name == "GameInteractionEffect.h":
@@ -109,7 +92,6 @@ for path in files:
 
 remaining_getraw = []
 remaining_window_missing = []
-remaining_bad_context_assignment = []
 remaining_missing_virtual_destructors = []
 
 for path in files:
@@ -128,8 +110,6 @@ for path in files:
     )
     if uses_context_window and not has_window_include:
         remaining_window_missing.append(path)
-    if re.search(r"context\s*=\s*Ship::Context::CreateUninitializedInstance\s*\(", text):
-        remaining_bad_context_assignment.append(path)
     if path.name == "GameInteractionEffect.h":
         if "virtual ~GameInteractionEffectBase() = default;" not in text:
             remaining_missing_virtual_destructors.append(path)
@@ -142,9 +122,6 @@ for p in changed_getraw:
 print(f"Arquivos que receberam #include <ship/window/Window.h>: {len(added_window_include)}")
 for p in added_window_include:
     print(f"  added-window-include: {p}")
-print(f"Arquivos com CreateUninitializedInstance corrigido: {len(patched_context_create)}")
-for p in patched_context_create:
-    print(f"  fixed-context-create: {p}")
 print(f"Arquivos com destrutores virtuais corrigidos: {len(patched_virtual_destructors)}")
 for p in patched_virtual_destructors:
     print(f"  fixed-virtual-destructor: {p}")
@@ -154,14 +131,11 @@ for p in remaining_getraw:
 print(f"Arquivos ainda usando GetWindow() sem Window.h: {len(remaining_window_missing)}")
 for p in remaining_window_missing:
     print(f"  missing-window-include: {p}")
-print(f"Arquivos ainda com atribuição direta de CreateUninitializedInstance: {len(remaining_bad_context_assignment)}")
-for p in remaining_bad_context_assignment:
-    print(f"  remaining-bad-context-assignment: {p}")
 print(f"Arquivos ainda sem destrutores virtuais necessários: {len(remaining_missing_virtual_destructors)}")
 for p in remaining_missing_virtual_destructors:
     print(f"  remaining-missing-virtual-destructor: {p}")
 
-if remaining_getraw or remaining_window_missing or remaining_bad_context_assignment or remaining_missing_virtual_destructors:
+if remaining_getraw or remaining_window_missing or remaining_missing_virtual_destructors:
     raise SystemExit("ERRO: patch de compatibilidade incompleto.")
 PY
 
