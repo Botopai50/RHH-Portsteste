@@ -1,34 +1,276 @@
 set -e
 
-# Keep the full surface-distance Texture LOD build script pinned to the previous commit, but patch a Python 3.8
-# incompatibility before executing it. Python 3.8 pathlib.Path.write_text() does not support the newline= argument.
-SCRIPT_URL="https://raw.githubusercontent.com/Botopai50/RHH-Portsteste/db8d2d84bd3e5cc39427f5d8ec5acc96c3502cf4/buildtools/harbourmasters/soh/soh/src/build.txt"
-SCRIPT_PATH="/tmp/soh-build-with-surface-lod.sh"
+source /root/buildtools/harbourmasters/lib_build.sh
 
-if command -v curl >/dev/null 2>&1; then
-    curl -fsSL "$SCRIPT_URL" -o "$SCRIPT_PATH"
-elif command -v wget >/dev/null 2>&1; then
-    wget -qO "$SCRIPT_PATH" "$SCRIPT_URL"
-else
-    echo "ERRO: curl/wget não encontrado para baixar o build script base"
-    exit 1
-fi
+apt-get update
+apt-get install -y --no-install-recommends libssl1.1 python3
+
+export REF="${REF:-wind-waker-style-cel-shading}"
+
+project_clone https://github.com/Botopai50/ShipwrightTEST2.git
+
+echo "Aplicando compatibilidade GetInstance/Window.h/destructors no código do SoH..."
+
+python3 - <<'PY'
+from pathlib import Path
+import re
+
+root = Path("/root/build-port/project/soh")
+if not root.exists():
+    raise SystemExit(f"ERRO: diretório não encontrado: {root}")
+
+extensions = {".cpp", ".hpp", ".h", ".cc", ".cxx"}
+files = [p for p in root.rglob("*") if p.is_file() and p.suffix in extensions]
+
+changed_getraw = []
+added_window_include = []
+patched_virtual_destructors = []
+
+def write_text_lf(path, text):
+    with path.open("w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
+
+def patch_virtual_destructors(text):
+    text = text.replace(
+        "class GameInteractionEffectBase {\n  public:\n    virtual GameInteractionEffectQueryResult CanBeApplied() = 0;",
+        "class GameInteractionEffectBase {\n  public:\n    virtual ~GameInteractionEffectBase() = default;\n    virtual GameInteractionEffectQueryResult CanBeApplied() = 0;",
+    )
+    text = text.replace(
+        "class RemovableGameInteractionEffect : public GameInteractionEffectBase {\n  public:\n    virtual GameInteractionEffectQueryResult CanBeRemoved();",
+        "class RemovableGameInteractionEffect : public GameInteractionEffectBase {\n  public:\n    virtual ~RemovableGameInteractionEffect() = default;\n    virtual GameInteractionEffectQueryResult CanBeRemoved();",
+    )
+    return text
+
+for path in files:
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    original = text
+
+    text = re.sub(r"\bGetRawInstance\s*\(", "GetInstance(", text)
+    if text != original:
+        changed_getraw.append(path)
+
+    before_destructor_patch = text
+    if path.name == "GameInteractionEffect.h":
+        text = patch_virtual_destructors(text)
+    if text != before_destructor_patch:
+        patched_virtual_destructors.append(path)
+
+    uses_context_window = (
+        "Ship::Context::GetInstance()->GetWindow()" in text
+        or "Context::GetInstance()->GetWindow()" in text
+    )
+    has_window_include = (
+        "#include <ship/window/Window.h>" in text
+        or '#include "ship/window/Window.h"' in text
+        or '#include <libultraship/window/Window.h>' in text
+        or '#include "libultraship/window/Window.h"' in text
+    )
+
+    if uses_context_window and not has_window_include:
+        lines = text.splitlines()
+        insert_at = None
+        for i, line in enumerate(lines):
+            if "#include <ship/Context.h>" in line or '#include "ship/Context.h"' in line:
+                insert_at = i + 1
+                break
+        if insert_at is None:
+            last_include = None
+            for i, line in enumerate(lines):
+                stripped = line.strip()
+                if stripped.startswith("#include"):
+                    last_include = i
+                    continue
+                if last_include is not None and stripped and not stripped.startswith("//"):
+                    break
+            insert_at = last_include + 1 if last_include is not None else 0
+        lines.insert(insert_at, "#include <ship/window/Window.h>")
+        text = "\n".join(lines) + "\n"
+        added_window_include.append(path)
+
+    if text != original:
+        write_text_lf(path, text)
+
+remaining_getraw = []
+remaining_window_missing = []
+remaining_missing_virtual_destructors = []
+
+for path in files:
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    if "GetRawInstance" in text:
+        remaining_getraw.append(path)
+    uses_context_window = (
+        "Ship::Context::GetInstance()->GetWindow()" in text
+        or "Context::GetInstance()->GetWindow()" in text
+    )
+    has_window_include = (
+        "#include <ship/window/Window.h>" in text
+        or '#include "ship/window/Window.h"' in text
+        or '#include <libultraship/window/Window.h>' in text
+        or '#include "libultraship/window/Window.h"' in text
+    )
+    if uses_context_window and not has_window_include:
+        remaining_window_missing.append(path)
+    if path.name == "GameInteractionEffect.h":
+        if "virtual ~GameInteractionEffectBase() = default;" not in text:
+            remaining_missing_virtual_destructors.append(path)
+        if "virtual ~RemovableGameInteractionEffect() = default;" not in text:
+            remaining_missing_virtual_destructors.append(path)
+
+print(f"Arquivos com GetRawInstance corrigidos: {len(changed_getraw)}")
+for p in changed_getraw:
+    print(f"  fixed-api: {p}")
+print(f"Arquivos que receberam #include <ship/window/Window.h>: {len(added_window_include)}")
+for p in added_window_include:
+    print(f"  added-window-include: {p}")
+print(f"Arquivos com destrutores virtuais corrigidos: {len(patched_virtual_destructors)}")
+for p in patched_virtual_destructors:
+    print(f"  fixed-virtual-destructor: {p}")
+print(f"Arquivos restantes contendo GetRawInstance: {len(remaining_getraw)}")
+for p in remaining_getraw:
+    print(f"  remaining-getraw: {p}")
+print(f"Arquivos ainda usando GetWindow() sem Window.h: {len(remaining_window_missing)}")
+for p in remaining_window_missing:
+    print(f"  missing-window-include: {p}")
+print(f"Arquivos ainda sem destrutores virtuais necessários: {len(remaining_missing_virtual_destructors)}")
+for p in remaining_missing_virtual_destructors:
+    print(f"  remaining-missing-virtual-destructor: {p}")
+
+if remaining_getraw or remaining_window_missing or remaining_missing_virtual_destructors:
+    raise SystemExit("ERRO: patch de compatibilidade incompleto.")
+PY
+
+echo "Desativando Texture LOD experimental no SoH..."
 
 python3 - <<'PY'
 from pathlib import Path
 
-path = Path("/tmp/soh-build-with-surface-lod.sh")
+path = Path("/root/build-port/project/soh/soh/Enhancements/Graphics/ToonLighting.cpp")
+if not path.exists():
+    raise SystemExit(f"ERRO: arquivo não encontrado: {path}")
+
 text = path.read_text(encoding="utf-8")
-old = 'path.write_text(text, encoding="utf-8", newline="\\n")'
-new = '''with path.open("w", encoding="utf-8", newline="\\n") as f:
-    f.write(text)'''
+old = '        const bool textureLods = CVarGetInteger(CVAR_ENHANCEMENT("Graphics.DynamicLOD.Textures"), 1);'
+new = '        const bool textureLods = false; // Texture LOD experimental desativado: instável e sem ganho real no PortMaster.'
 
 if old not in text:
-    raise SystemExit("ERRO: chamada Path.write_text(..., newline=...) não encontrada no build script base")
+    raise SystemExit("ERRO: linha Graphics.DynamicLOD.Textures não encontrada em ToonLighting.cpp")
 
 text = text.replace(old, new, 1)
-path.write_text(text, encoding="utf-8")
-print("Compatibilidade Python 3.8 aplicada ao build script base.")
+with path.open("w", encoding="utf-8", newline="\n") as f:
+    f.write(text)
+
+print("Texture LOD experimental desativado. Dynamic LOD de modelos continua ativo.")
 PY
 
-bash "$SCRIPT_PATH"
+build_sdl2
+build_sdl2_net
+build_libzip
+build_json
+build_bzip2
+build_tinyxml2
+build_opus
+build_opusfile
+build_fmt
+build_spdlog -DSPDLOG_FMT_EXTERNAL=ON
+
+project_configure_and_build GenerateSohOtr \
+    -DCMAKE_PREFIX_PATH=/usr/local \
+    -DUSE_OPENGLES=1 \
+    -DBUILD_REMOTE_CONTROL=1 \
+    -DCMAKE_CXX_STANDARD=20 \
+    -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+    -DCMAKE_C_FLAGS="-O3 -DNDEBUG -DPORTMASTER_CELSHADE_OPTIMIZED=1 -fno-math-errno -fno-trapping-math -ffunction-sections -fdata-sections -fno-semantic-interposition" \
+    -DCMAKE_CXX_FLAGS="-O3 -DNDEBUG -DPORTMASTER_CELSHADE_OPTIMIZED=1 -DFMT_CONSTEVAL=constexpr -fno-math-errno -fno-trapping-math -ffunction-sections -fdata-sections -fno-semantic-interposition" \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--gc-sections -Wl,--as-needed" \
+    -DCMAKE_BUILD_TYPE=Release
+
+ELF="$PROJECT_BUILD_DIR/soh/soh.elf"
+
+echo "Dependências diretas do ELF:"
+readelf -d "$ELF" | grep NEEDED || true
+
+NEEDED_LIBS="$(readelf -d "$ELF" | sed -n 's/.*Shared library: \[\(.*\)\].*/\1/p')"
+STAGE_LIBS=()
+
+add_if_needed() {
+    local lib="$1"
+
+    if echo "$NEEDED_LIBS" | grep -Fxq "$lib"; then
+        echo "stage_libs: adicionando dependência direta: $lib"
+        STAGE_LIBS+=("$lib")
+    else
+        echo "stage_libs: pulando dependência indireta/não usada diretamente: $lib"
+    fi
+}
+
+add_if_needed libz.so.1
+add_if_needed libogg.so.0
+add_if_needed libvorbis.so.0
+add_if_needed libvorbisenc.so.2
+add_if_needed libvorbisfile.so.3
+add_if_needed libpng16.so.16
+add_if_needed libbz2.so.1
+add_if_needed libzip.so.5
+add_if_needed libtinyxml2.so.10
+add_if_needed libopus.so.0
+add_if_needed libopusfile.so.0
+add_if_needed libSDL2_net-2.0.so.0
+
+if [ "${#STAGE_LIBS[@]}" -gt 0 ]; then
+    stage_libs soh/soh.elf "${STAGE_LIBS[@]}"
+else
+    echo "AVISO: nenhuma lib direta extra foi encontrada para stage_libs."
+fi
+
+mkdir -p "$PROJECT_BUILD_DIR/libs"
+
+copy_runtime_lib() {
+    local lib="$1"
+    local src=""
+
+    if [ -f "$PROJECT_BUILD_DIR/libs/$lib" ]; then
+        echo "runtime lib já existe: $lib"
+        return 0
+    fi
+
+    for dir in \
+        /usr/local/lib \
+        /usr/lib/aarch64-linux-gnu \
+        /lib/aarch64-linux-gnu \
+        /usr/lib \
+        /lib
+    do
+        if [ -e "$dir/$lib" ]; then
+            src="$dir/$lib"
+            break
+        fi
+    done
+
+    if [ -z "$src" ]; then
+        src="$(find /usr/local /usr /lib \( -type f -o -type l \) -name "$lib" 2>/dev/null | head -n 1 || true)"
+    fi
+
+    if [ -n "$src" ] && [ -e "$src" ]; then
+        echo "Copiando runtime lib manual: $src -> $PROJECT_BUILD_DIR/libs/$lib"
+        cp -L "$src" "$PROJECT_BUILD_DIR/libs/$lib"
+    else
+        echo "AVISO: runtime lib não encontrada para cópia manual: $lib"
+    fi
+}
+
+copy_runtime_lib libvorbis.so.0
+copy_runtime_lib libvorbisenc.so.2
+copy_runtime_lib libvorbisfile.so.3
+copy_runtime_lib libogg.so.0
+copy_runtime_lib libopus.so.0
+copy_runtime_lib libopusfile.so.0
+copy_runtime_lib libcrypto.so.1.1
+copy_runtime_lib libssl.so.1.1
+
+echo "Libs finais empacotadas:"
+ls -lh "$PROJECT_BUILD_DIR/libs" || true
+
+echo "Dependências diretas finais do ELF:"
+readelf -d "$ELF" | grep NEEDED || true
+
+echo "Build SoH celshade usando Botopai50/ShipwrightTEST2 concluído."
