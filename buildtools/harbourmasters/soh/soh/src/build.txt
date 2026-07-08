@@ -144,9 +144,9 @@ echo "Aplicando Texture LOD por proximidade real da superfície..."
 python3 - <<'PY'
 from pathlib import Path
 
-root = Path("/root/build-port/project/soh")
-header = root / "libultraship/include/fast/interpreter.h"
-cpp = root / "libultraship/src/fast/interpreter.cpp"
+project_root = Path("/root/build-port/project")
+header = project_root / "libultraship/include/fast/interpreter.h"
+cpp = project_root / "libultraship/src/fast/interpreter.cpp"
 
 for path in (header, cpp):
     if not path.exists():
@@ -274,8 +274,6 @@ void Interpreter::UpdateDynamicTextureLodsForTriangle(const LoadedVertex* v1, co
             continue;
         }
 
-        // Only image-replacement uploads are safe to retarget here. Native RAW loads need the original RDP load
-        // window/line-size math, so they stay on the already-loaded path.
         if ((loaded.tex_flags & TEX_FLAG_LOAD_AS_IMG) == 0) {
             continue;
         }
