@@ -139,6 +139,34 @@ if remaining_getraw or remaining_window_missing or remaining_missing_virtual_des
     raise SystemExit("ERRO: patch de compatibilidade incompleto.")
 PY
 
+echo "Aplicando Dynamic LOD com origem no Link..."
+
+python3 - <<'PY'
+from pathlib import Path
+
+path = Path("/root/build-port/project/soh/soh/Enhancements/Graphics/ToonLighting.cpp")
+if not path.exists():
+    raise SystemExit(f"ERRO: arquivo não encontrado: {path}")
+
+text = path.read_text(encoding="utf-8")
+old = '''        const Vec3f eye = gPlayState != NULL ? gPlayState->view.eye : Vec3f{ 0.0f, 0.0f, 0.0f };
+        interp->SetDynamicLodParams(
+            lodEnabled, textureLods, debugColors, forcedLod, eye.x, eye.y, eye.z,'''
+new = '''        Vec3f lodOrigin = { 0.0f, 0.0f, 0.0f };
+        if (gPlayState != NULL) {
+            Player* player = GET_PLAYER(gPlayState);
+            lodOrigin = (player != NULL) ? player->actor.world.pos : gPlayState->view.eye;
+        }
+        interp->SetDynamicLodParams(
+            lodEnabled, textureLods, debugColors, forcedLod, lodOrigin.x, lodOrigin.y, lodOrigin.z,'''
+
+if old not in text:
+    raise SystemExit("ERRO: bloco de Dynamic LOD por câmera não encontrado em ToonLighting.cpp")
+text = text.replace(old, new, 1)
+path.write_text(text, encoding="utf-8", newline="\n")
+print("Dynamic LOD agora usa a posição do Link como origem; câmera fica apenas como fallback.")
+PY
+
 echo "Aplicando Texture LOD por proximidade real da superfície..."
 
 python3 - <<'PY'
@@ -333,7 +361,7 @@ if c == orig_c:
 write_text_lf(cpp, c)
 
 print("Texture LOD agora é recalculado pela posição média do triângulo/superfície antes do upload.")
-print("Texturas de IMG/HD podem voltar para alta resolução quando a superfície estiver perto da câmera/Link.")
+print("A distância usada é a posição do Link recebida do SoH, com fallback para câmera se não houver player.")
 PY
 
 build_sdl2
