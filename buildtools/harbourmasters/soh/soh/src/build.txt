@@ -9,13 +9,155 @@ export REF="${REF:-18a8e719cfdd5fe27e4a597960dfc8ba1cee6d06}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
-# Mipmap-only performance patch for the OpenGL/GLES Fast3D backend.
+# Mipmap-only performance patch for the OpenGL/GLES Fast3D backend + menu toggle.
 # This does not change texture resolution, actor/model LOD, or texture selection logic.
 python3 <<'PY'
 from pathlib import Path
 
+# --------------------------------------------------------------------------------------
+# 1) Add menu controls under Wind Waker Style -> Performance.
+# --------------------------------------------------------------------------------------
+menu = Path('/root/build-port/project/soh/soh/SohGui/SohMenuWindWakerStyle.cpp')
+s = menu.read_text()
+
+anchor = '''    // ===========================================================================================
+    // Sky — the Wind Waker-style sky replacement: gradient dome + drifting clouds + night stars.
+    // ===========================================================================================
+'''
+
+performance_menu = '''    // ===========================================================================================
+    // Performance — lightweight GPU texture tuning for handhelds.
+    // ===========================================================================================
+    auto hideUnlessTextureMipmaps = [](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("Graphics.TextureMipmaps.Enabled"), 0);
+    };
+    path = { "Wind Waker Style", "Performance", SECTION_COLUMN_1 };
+    AddSidebarEntry("Wind Waker Style", "Performance", 2);
+
+    AddWidget(path, "Texture Mipmaps", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enable Texture Mipmaps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("Graphics.TextureMipmaps.Enabled"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().DefaultValue(false).Tooltip(
+            "Generates GPU mipmaps for loaded textures and uses them only when textures are minified. "
+            "This can reduce texture shimmer and sampling cost on distant floors, walls and scenery without "
+            "replacing textures or changing model/actor LOD."));
+    AddWidget(path, "Mipmap Bias", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.TextureMipmaps.Bias"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessTextureMipmaps)
+        .Options(FloatSliderOptions()
+                     .Tooltip("Adjusts how early smaller mip levels are chosen when supported by the backend. "
+                              "0 = normal. Positive values prefer smaller/cheaper mip levels sooner; too high "
+                              "can make distant textures blurrier. Negative values keep sharper mips longer.")
+                     .Format("%.2f")
+                     .Min(-1.0f)
+                     .Max(2.0f)
+                     .DefaultValue(0.0f));
+
+    AddWidget(path, "Debug", WIDGET_SEPARATOR_TEXT).PreFunc(hideUnlessTextureMipmaps);
+    AddWidget(path, "Log Mipmap Uploads", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("TextureMipmaps.LogUploads"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessTextureMipmaps)
+        .Options(CheckboxOptions().DefaultValue(false).Tooltip(
+            "Writes a limited [SOH-MIPMAP] line to the log when the renderer creates texture mipmaps. "
+            "Useful on small screens where the visual difference is hard to see."));
+
+'''
+
+if performance_menu not in s:
+    if anchor not in s:
+        raise SystemExit('mipmap menu patch failed: Sky section anchor not found')
+    s = s.replace(anchor, performance_menu + anchor, 1)
+    menu.write_text(s)
+    print('Applied Wind Waker Style -> Performance mipmap menu patch')
+else:
+    print('Mipmap menu patch already present')
+
+# --------------------------------------------------------------------------------------
+# 2) Track per-texture mipmap generation state in the OpenGL backend.
+# --------------------------------------------------------------------------------------
+h = Path('/root/build-port/project/libultraship/include/fast/backends/gfx_opengl.h')
+s = h.read_text()
+old_texture_info = '''struct TextureInfo {
+    uint16_t width;
+    uint16_t height;
+    uint16_t filtering;
+};
+'''
+new_texture_info = '''struct TextureInfo {
+    uint16_t width;
+    uint16_t height;
+    uint16_t filtering;
+    bool hasMipmaps = false;
+};
+'''
+if new_texture_info not in s:
+    if old_texture_info not in s:
+        raise SystemExit('mipmap patch failed: TextureInfo block not found')
+    s = s.replace(old_texture_info, new_texture_info, 1)
+    h.write_text(s)
+    print('Applied TextureInfo mipmap state patch')
+else:
+    print('TextureInfo mipmap state already present')
+
+# --------------------------------------------------------------------------------------
+# 3) Make OpenGL/GLES generate mipmaps only when enabled by the menu CVar.
+# --------------------------------------------------------------------------------------
 p = Path('/root/build-port/project/libultraship/src/fast/backends/gfx_opengl.cpp')
 s = p.read_text()
+
+namespace_marker = 'namespace Fast {\n'
+helpers = r'''namespace {
+constexpr const char* kTextureMipmapsEnabledCVar = "gEnhancements.Graphics.TextureMipmaps.Enabled";
+constexpr const char* kTextureMipmapsBiasCVar = "gEnhancements.Graphics.TextureMipmaps.Bias";
+constexpr const char* kTextureMipmapsLogCVar = "gDeveloperTools.TextureMipmaps.LogUploads";
+int sMipmapLogCount = 0;
+
+bool TextureMipmapsEnabled() {
+    return Ship::Context::GetInstance()->GetConsoleVariables()->GetInteger(kTextureMipmapsEnabledCVar, 0) != 0;
+}
+
+float TextureMipmapBias() {
+    float bias = Ship::Context::GetInstance()->GetConsoleVariables()->GetFloat(kTextureMipmapsBiasCVar, 0.0f);
+    if (bias < -1.0f) {
+        bias = -1.0f;
+    } else if (bias > 2.0f) {
+        bias = 2.0f;
+    }
+    return bias;
+}
+
+bool TextureMipmapLogUploads() {
+    return Ship::Context::GetInstance()->GetConsoleVariables()->GetInteger(kTextureMipmapsLogCVar, 0) != 0;
+}
+
+void GenerateTextureMipmapsIfNeeded(TextureInfo& info) {
+    if (!TextureMipmapsEnabled() || info.hasMipmaps || (info.width <= 1 && info.height <= 1)) {
+        return;
+    }
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+    info.hasMipmaps = true;
+
+#ifdef GL_TEXTURE_LOD_BIAS
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, TextureMipmapBias());
+#endif
+
+    if (TextureMipmapLogUploads() && sMipmapLogCount < 32) {
+        SPDLOG_INFO("[SOH-MIPMAP] generated {}x{} bias={}", info.width, info.height, TextureMipmapBias());
+        sMipmapLogCount++;
+    }
+}
+} // namespace
+
+'''
+
+if helpers not in s:
+    if namespace_marker not in s:
+        raise SystemExit('mipmap patch failed: namespace Fast marker not found')
+    s = s.replace(namespace_marker, namespace_marker + helpers, 1)
 
 old_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width, uint32_t height) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
@@ -31,35 +173,40 @@ new_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
 
-    // Mipmap-only optimization: keep the original texture as level 0 and let the GPU
-    // create smaller levels for minification. This does not replace textures and does
-    // not add any distance-based LOD logic.
-    if (width > 1 || height > 1) {
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-
-    textures[mCurrentTextureIds[mCurrentTile]].width = width;
-    textures[mCurrentTextureIds[mCurrentTile]].height = height;
+    TextureInfo& info = textures[mCurrentTextureIds[mCurrentTile]];
+    info.width = width;
+    info.height = height;
+    info.hasMipmaps = false;
+    GenerateTextureMipmapsIfNeeded(info);
 }
 '''
 
+if new_upload not in s:
+    if old_upload not in s:
+        raise SystemExit('mipmap patch failed: UploadTexture block not found for celshade libultraship')
+    s = s.replace(old_upload, new_upload, 1)
+
 old_sampler_line = '    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);\n    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);'
-new_sampler_line = '''    const GLint minFilter = filter == GL_LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST;
+new_sampler_line = '''    TextureInfo& info = textures[mCurrentTextureIds[tile]];
+    GenerateTextureMipmapsIfNeeded(info);
 
-    // Use mipmaps only for minification. Magnification stays untouched so close-up
-    // textures/HUD are not forced through mip levels.
+    const bool useMipmaps = TextureMipmapsEnabled();
+    const GLint minFilter = useMipmaps ? (filter == GL_LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST)
+                                      : filter;
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);'''
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+#ifdef GL_TEXTURE_LOD_BIAS
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, useMipmaps ? TextureMipmapBias() : 0.0f);
+#endif'''
 
-if old_upload not in s:
-    raise SystemExit('mipmap patch failed: UploadTexture block not found for celshade libultraship')
-if old_sampler_line not in s:
-    raise SystemExit('mipmap patch failed: sampler filter lines not found for celshade libultraship')
+if new_sampler_line not in s:
+    if old_sampler_line not in s:
+        raise SystemExit('mipmap patch failed: sampler filter lines not found for celshade libultraship')
+    s = s.replace(old_sampler_line, new_sampler_line, 1)
 
-s = s.replace(old_upload, new_upload, 1)
-s = s.replace(old_sampler_line, new_sampler_line, 1)
 p.write_text(s)
-print('Applied mipmap-only OpenGL/GLES texture patch')
+print('Applied menu-controlled mipmap-only OpenGL/GLES texture patch')
 PY
 
 build_sdl2
@@ -173,4 +320,4 @@ ls -lh "$PROJECT_BUILD_DIR/libs" || true
 echo "Dependências diretas finais do ELF:"
 readelf -d "$ELF" | grep NEEDED || true
 
-echo "Build SoH limpo usando Botopai50/ShipwrightTEST2 no commit celshade ${REF} com mipmap-only patch concluído."
+echo "Build SoH limpo usando Botopai50/ShipwrightTEST2 no commit celshade ${REF} com menu-controlled mipmap patch concluído."
