@@ -5,7 +5,7 @@ source /root/buildtools/harbourmasters/lib_build.sh
 apt-get update
 apt-get install -y --no-install-recommends libssl1.1
 
-export REF="${REF:-wind-waker-style-cel-shading}"
+export REF="${REF:-18a8e719cfdd5fe27e4a597960dfc8ba1cee6d06}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
@@ -120,4 +120,4 @@ ls -lh "$PROJECT_BUILD_DIR/libs" || true
 echo "Dependências diretas finais do ELF:"
 readelf -d "$ELF" | grep NEEDED || true
 
-echo "Build SoH limpo usando Botopai50/ShipwrightTEST2 + libultrashipTEST2 com mipmaps concluído."
+echo "Build SoH limpo usando Botopai50/ShipwrightTEST2 no commit celshade ${REF} concluído."
