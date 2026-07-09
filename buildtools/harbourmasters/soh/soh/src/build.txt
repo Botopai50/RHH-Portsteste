@@ -42,7 +42,7 @@ anchor = '''    // =============================================================
     // ===========================================================================================
 '''
 
-performance_menu = r'''    // ===========================================================================================
+performance_menu = '''    // ===========================================================================================
     // Performance — handheld-friendly texture and overlay options.
     // ===========================================================================================
     auto hideUnlessTextureMipmaps = [](WidgetInfo& info) {
@@ -121,9 +121,6 @@ performance_menu = r'''    // ==================================================
         .Options(ButtonOptions().Tooltip("Resets FPS average, minimum and maximum. Shortcut: hold L1 + R1 and press Y."));
 
 '''
-
-# This patch text is a Python raw string, so unescape only the C++ quotes before writing it.
-performance_menu = performance_menu.replace('\\"', '"')
 
 if 'Graphics.PerformanceOverlay.Corner' not in s:
     if anchor not in s:
@@ -473,7 +470,6 @@ void SohStatsWindow::DrawElement() {
     PlaceOverlayWindow();
 
     ImGui::SetWindowFontScale(OverlayScale());
-    ImGui::SetWindowBgAlpha(0.42f);
 
     bool detailed = CVarGetInteger(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.Detailed"), 0) != 0;
     float fpsMin = (gFps.samples > 0) ? gFps.minimum : 0.0f;
@@ -514,7 +510,7 @@ void SohStatsWindow::DrawElement() {
     ImGui::TextUnformatted("RST L1+R1+Y");
 }
 '''
-stats_cpp.write_text(stats_source.replace('\\"', '"'))
+stats_cpp.write_text(stats_source)
 print('Compact CPU/RAM/GPU/FPS overlay implementation: applied')
 
 
