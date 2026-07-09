@@ -13,7 +13,14 @@ project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 # - Wind Waker Style -> Performance menu
 # - menu-controlled texture mipmaps
 # - compact 640x480-friendly FPS/CPU/RAM/GPU overlay
-python3 /root/buildtools/harbourmasters/soh/soh/src/patch_performance.py
+python3 <<'PY'
+from pathlib import Path
+patch = Path('/root/buildtools/harbourmasters/soh/soh/src/patch_performance.py')
+source = patch.read_text()
+# Keep the generated C++ '\\0' character literal intact when Python writes SohStatsWindow.cpp.
+source = source.replace("stats_cpp.write_text('''#include", "stats_cpp.write_text(r'''#include", 1)
+exec(compile(source, str(patch), 'exec'))
+PY
 
 build_sdl2
 build_sdl2_net
