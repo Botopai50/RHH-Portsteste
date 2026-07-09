@@ -122,6 +122,9 @@ performance_menu = r'''    // ==================================================
 
 '''
 
+# This patch text is a Python raw string, so unescape only the C++ quotes before writing it.
+performance_menu = performance_menu.replace('\\"', '"')
+
 if 'Graphics.PerformanceOverlay.Corner' not in s:
     if anchor not in s:
         raise SystemExit('performance menu patch failed: Sky section anchor not found')
@@ -155,7 +158,7 @@ soh_gui_cpp.write_text(s)
 # 3) Compact FPS/CPU/RAM/GPU overlay implementation
 # --------------------------------------------------------------------------------------
 stats_cpp = SOH / 'Enhancements' / 'debugger' / 'SohStatsWindow.cpp'
-stats_cpp.write_text(r'''#include "SohStatsWindow.h"
+stats_source = r'''#include "SohStatsWindow.h"
 #include "soh/cvar_prefixes.h"
 #include <ship/Context.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
@@ -310,13 +313,6 @@ static bool TryReadGpuFile(const std::string& path, float& gpuPct) {
     return ReadTextFile(path, text) && ParseLeadingPercent(text, gpuPct);
 }
 
-static std::string Lower(std::string text) {
-    for (char& c : text) {
-        c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
-    }
-    return text;
-}
-
 static bool ReadGpuPercent(float& gpuPct) {
     const char* commonPaths[] = {
         "/sys/class/devfreq/fde60000.gpu/load",
@@ -329,27 +325,7 @@ static bool ReadGpuPercent(float& gpuPct) {
             return true;
         }
     }
-
-    DIR* dir = opendir("/sys/class/devfreq");
-    if (dir == nullptr) {
-        return false;
-    }
-    bool found = false;
-    struct dirent* ent = nullptr;
-    while ((ent = readdir(dir)) != nullptr) {
-        std::string name = ent->d_name;
-        std::string lower = Lower(name);
-        if (lower.find("gpu") == std::string::npos && lower.find("mali") == std::string::npos) {
-            continue;
-        }
-        std::string base = std::string("/sys/class/devfreq/") + name;
-        if (TryReadGpuFile(base + "/load", gpuPct) || TryReadGpuFile(base + "/utilization", gpuPct)) {
-            found = true;
-            break;
-        }
-    }
-    closedir(dir);
-    return found;
+    return false;
 }
 
 static bool ReadThermalC(float& tempC) {
@@ -404,8 +380,7 @@ static bool ResetComboPressed() {
     }
 
     const uint16_t buttons = pads[0].button;
-    const bool yLike = (buttons & BTN_CUP) || (buttons & BTN_B) || (buttons & BTN_CUSTOM_MODIFIER1) ||
-                       (buttons & BTN_CUSTOM_MODIFIER2);
+    const bool yLike = (buttons & BTN_CUP) || (buttons & BTN_B);
     const bool comboDown = (buttons & BTN_L) && (buttons & BTN_R) && yLike;
     const bool pressed = comboDown && !gFps.comboWasDown;
     gFps.comboWasDown = comboDown;
@@ -538,7 +513,8 @@ void SohStatsWindow::DrawElement() {
     }
     ImGui::TextUnformatted("RST L1+R1+Y");
 }
-''')
+'''
+stats_cpp.write_text(stats_source.replace('\\"', '"'))
 print('Compact CPU/RAM/GPU/FPS overlay implementation: applied')
 
 
