@@ -21,6 +21,7 @@ source = patch.read_text()
 source = source.replace("stats_cpp.write_text('''#include", "stats_cpp.write_text(r'''#include", 1)
 exec(compile(source, str(patch), 'exec'))
 PY
+python3 /root/buildtools/harbourmasters/soh/soh/src/patch_overlay_fix.py
 
 build_sdl2
 build_sdl2_net
