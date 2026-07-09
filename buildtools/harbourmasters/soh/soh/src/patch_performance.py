@@ -148,7 +148,7 @@ soh_gui_cpp.write_text(s)
 # 3) Compact CPU/RAM/GPU/FPS overlay implementation.
 # --------------------------------------------------------------------------------------
 stats_cpp = SOH / 'Enhancements' / 'debugger' / 'SohStatsWindow.cpp'
-stats_cpp.write_text(r'''#include "SohStatsWindow.h"
+stats_cpp.write_text('''#include "SohStatsWindow.h"
 #include "soh/cvar_prefixes.h"
 
 #include <algorithm>
@@ -597,7 +597,7 @@ p = LUS / 'src' / 'fast' / 'backends' / 'gfx_opengl.cpp'
 s = p.read_text()
 
 namespace_marker = 'namespace Fast {\n'
-helpers = r'''namespace {
+helpers = '''namespace {
 constexpr const char* kTextureMipmapsEnabledCVar = "gEnhancements.Graphics.TextureMipmaps.Enabled";
 constexpr const char* kTextureMipmapsBiasCVar = "gEnhancements.Graphics.TextureMipmaps.Bias";
 constexpr const char* kTextureMipmapsLogCVar = "gDeveloperTools.TextureMipmaps.LogUploads";
