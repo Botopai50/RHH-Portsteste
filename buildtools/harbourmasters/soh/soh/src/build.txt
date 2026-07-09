@@ -1,125 +1,123 @@
 set -e
 
-# Base estável: Texture LOD experimental desligado, correções de compatibilidade e otimizações atuais.
-# Em cima disso, aplicamos mipmaps reais no backend OpenGL/GLES. Isso deixa o GPU escolher o nível de textura
-# por tamanho na tela, sem troca manual por triângulo e sem depender da proximidade do Link.
-SCRIPT_URL="https://raw.githubusercontent.com/Botopai50/RHH-Portsteste/96a9907d979d9864601b00efb23847680abe8c34/buildtools/harbourmasters/soh/soh/src/build.txt"
-SCRIPT_PATH="/tmp/soh-build-stable-gpu-mipmaps.sh"
+source /root/buildtools/harbourmasters/lib_build.sh
 
-if command -v curl >/dev/null 2>&1; then
-    curl -fsSL "$SCRIPT_URL" -o "$SCRIPT_PATH"
-elif command -v wget >/dev/null 2>&1; then
-    wget -qO "$SCRIPT_PATH" "$SCRIPT_URL"
-else
-    echo "ERRO: curl/wget não encontrado para baixar o build script base"
-    exit 1
-fi
+apt-get update
+apt-get install -y --no-install-recommends libssl1.1
 
-python3 - <<'PY'
-from pathlib import Path
+export REF="${REF:-wind-waker-style-cel-shading}"
 
-script = Path("/tmp/soh-build-stable-gpu-mipmaps.sh")
-text = script.read_text(encoding="utf-8")
-marker = '''print("Texture LOD experimental desativado. Dynamic LOD de modelos continua ativo.")
-PY
+project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
-build_sdl2'''
-insert = '''print("Texture LOD experimental desativado. Dynamic LOD de modelos continua ativo.")
-PY
+build_sdl2
+build_sdl2_net
+build_libzip
+build_json
+build_bzip2
+build_tinyxml2
+build_opus
+build_opusfile
+build_fmt
+build_spdlog -DSPDLOG_FMT_EXTERNAL=ON
 
-echo "Aplicando GPU mipmaps para desempenho de texturas HD..."
+project_configure_and_build GenerateSohOtr \
+    -DCMAKE_PREFIX_PATH=/usr/local \
+    -DUSE_OPENGLES=1 \
+    -DBUILD_REMOTE_CONTROL=1 \
+    -DCMAKE_CXX_STANDARD=20 \
+    -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+    -DCMAKE_C_FLAGS="-O3 -DNDEBUG -fno-math-errno -fno-trapping-math -ffunction-sections -fdata-sections -fno-semantic-interposition" \
+    -DCMAKE_CXX_FLAGS="-O3 -DNDEBUG -DFMT_CONSTEVAL=constexpr -fno-math-errno -fno-trapping-math -ffunction-sections -fdata-sections -fno-semantic-interposition" \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--gc-sections -Wl,--as-needed" \
+    -DCMAKE_BUILD_TYPE=Release
 
-python3 - <<'PY2'
-from pathlib import Path
+ELF="$PROJECT_BUILD_DIR/soh/soh.elf"
 
-root = Path("/root/build-port/project/libultraship")
-header = root / "include/fast/backends/gfx_opengl.h"
-cpp = root / "src/fast/backends/gfx_opengl.cpp"
+echo "Dependências diretas do ELF:"
+readelf -d "$ELF" | grep NEEDED || true
 
-for path in (header, cpp):
-    if not path.exists():
-        raise SystemExit(f"ERRO: arquivo não encontrado: {path}")
+NEEDED_LIBS="$(readelf -d "$ELF" | sed -n 's/.*Shared library: \[\(.*\)\].*/\1/p')"
+STAGE_LIBS=()
 
-def write_text_lf(path, content):
-    with path.open("w", encoding="utf-8", newline="\\n") as f:
-        f.write(content)
+add_if_needed() {
+    local lib="$1"
 
-h = header.read_text(encoding="utf-8")
-old_h = '''struct TextureInfo {
-    uint16_t width;
-    uint16_t height;
-    uint16_t filtering;
-};'''
-new_h = '''struct TextureInfo {
-    uint16_t width;
-    uint16_t height;
-    uint16_t filtering;
-    bool mipmapped = false;
-};'''
-if old_h not in h and "bool mipmapped = false;" not in h:
-    raise SystemExit("ERRO: bloco TextureInfo não encontrado em gfx_opengl.h")
-if old_h in h:
-    h = h.replace(old_h, new_h, 1)
-write_text_lf(header, h)
-
-c = cpp.read_text(encoding="utf-8")
-old_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width, uint32_t height) {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
-    textures[mCurrentTextureIds[mCurrentTile]].width = width;
-    textures[mCurrentTextureIds[mCurrentTile]].height = height;
-}'''
-new_upload = '''static bool GfxShouldGenerateMipmaps(uint32_t width, uint32_t height) {
-    // Mipmaps aumentam o uso de VRAM em ~33%, então não vale para texturas pequenas.
-    // Para texturas HD grandes, reduzem bandwidth/cache miss quando vistas longe ou em ângulo.
-    return width >= 64 || height >= 64;
+    if echo "$NEEDED_LIBS" | grep -Fxq "$lib"; then
+        echo "stage_libs: adicionando dependência direta: $lib"
+        STAGE_LIBS+=("$lib")
+    else
+        echo "stage_libs: pulando dependência indireta/não usada diretamente: $lib"
+    fi
 }
 
-void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width, uint32_t height) {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
+add_if_needed libz.so.1
+add_if_needed libogg.so.0
+add_if_needed libvorbis.so.0
+add_if_needed libvorbisenc.so.2
+add_if_needed libvorbisfile.so.3
+add_if_needed libpng16.so.16
+add_if_needed libbz2.so.1
+add_if_needed libzip.so.5
+add_if_needed libtinyxml2.so.10
+add_if_needed libopus.so.0
+add_if_needed libopusfile.so.0
+add_if_needed libSDL2_net-2.0.so.0
 
-    TextureInfo& texture = textures[mCurrentTextureIds[mCurrentTile]];
-    texture.width = width;
-    texture.height = height;
-    texture.mipmapped = GfxShouldGenerateMipmaps(width, height);
+if [ "${#STAGE_LIBS[@]}" -gt 0 ]; then
+    stage_libs soh/soh.elf "${STAGE_LIBS[@]}"
+else
+    echo "AVISO: nenhuma lib direta extra foi encontrada para stage_libs."
+fi
 
-    if (texture.mipmapped) {
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-}'''
-if old_upload not in c and "GfxShouldGenerateMipmaps" not in c:
-    raise SystemExit("ERRO: função UploadTexture original não encontrada em gfx_opengl.cpp")
-if old_upload in c:
-    c = c.replace(old_upload, new_upload, 1)
+mkdir -p "$PROJECT_BUILD_DIR/libs"
 
-old_sampler = '''    const GLint filter = linear_filter && mCurrentFilterMode == FILTER_LINEAR ? GL_LINEAR : GL_NEAREST;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-    textures[mCurrentTextureIds[tile]].filtering = !linear_filter ? FILTER_LINEAR : FILTER_THREE_POINT;'''
-new_sampler = '''    TextureInfo& texture = textures[mCurrentTextureIds[tile]];
-    const GLint magFilter = linear_filter && mCurrentFilterMode == FILTER_LINEAR ? GL_LINEAR : GL_NEAREST;
-    GLint minFilter = magFilter;
-    if (texture.mipmapped) {
-        minFilter = magFilter == GL_LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_LINEAR;
-    }
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-    texture.filtering = !linear_filter ? FILTER_LINEAR : FILTER_THREE_POINT;'''
-if old_sampler not in c and "GL_NEAREST_MIPMAP_LINEAR" not in c:
-    raise SystemExit("ERRO: bloco SetSamplerParameters original não encontrado em gfx_opengl.cpp")
-if old_sampler in c:
-    c = c.replace(old_sampler, new_sampler, 1)
+copy_runtime_lib() {
+    local lib="$1"
+    local src=""
 
-write_text_lf(cpp, c)
-print("GPU mipmaps ativado para texturas grandes: o GPU escolhe o mip por tamanho na tela.")
-PY2
+    if [ -f "$PROJECT_BUILD_DIR/libs/$lib" ]; then
+        echo "runtime lib já existe: $lib"
+        return 0
+    fi
 
-build_sdl2'''
+    for dir in \
+        /usr/local/lib \
+        /usr/lib/aarch64-linux-gnu \
+        /lib/aarch64-linux-gnu \
+        /usr/lib \
+        /lib
+    do
+        if [ -e "$dir/$lib" ]; then
+            src="$dir/$lib"
+            break
+        fi
+    done
 
-if marker not in text:
-    raise SystemExit("ERRO: marcador para inserir GPU mipmaps não encontrado no build script base")
-text = text.replace(marker, insert, 1)
-script.write_text(text, encoding="utf-8")
-print("Build script estável preparado com GPU mipmaps.")
-PY
+    if [ -z "$src" ]; then
+        src="$(find /usr/local /usr /lib \( -type f -o -type l \) -name "$lib" 2>/dev/null | head -n 1 || true)"
+    fi
 
-bash "$SCRIPT_PATH"
+    if [ -n "$src" ] && [ -e "$src" ]; then
+        echo "Copiando runtime lib manual: $src -> $PROJECT_BUILD_DIR/libs/$lib"
+        cp -L "$src" "$PROJECT_BUILD_DIR/libs/$lib"
+    else
+        echo "AVISO: runtime lib não encontrada para cópia manual: $lib"
+    fi
+}
+
+copy_runtime_lib libvorbis.so.0
+copy_runtime_lib libvorbisenc.so.2
+copy_runtime_lib libvorbisfile.so.3
+copy_runtime_lib libogg.so.0
+copy_runtime_lib libopus.so.0
+copy_runtime_lib libopusfile.so.0
+copy_runtime_lib libcrypto.so.1.1
+copy_runtime_lib libssl.so.1.1
+
+echo "Libs finais empacotadas:"
+ls -lh "$PROJECT_BUILD_DIR/libs" || true
+
+echo "Dependências diretas finais do ELF:"
+readelf -d "$ELF" | grep NEEDED || true
+
+echo "Build SoH limpo usando Botopai50/ShipwrightTEST2 + libultrashipTEST2 com mipmaps concluído."
