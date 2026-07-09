@@ -9,19 +9,647 @@ export REF="${REF:-18a8e719cfdd5fe27e4a597960dfc8ba1cee6d06}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
-# Handheld performance patch:
+# Handheld performance patch in one self-contained step:
 # - Wind Waker Style -> Performance menu
 # - menu-controlled texture mipmaps
 # - compact 640x480-friendly FPS/CPU/RAM/GPU overlay
 python3 <<'PY'
 from pathlib import Path
-patch = Path('/root/buildtools/harbourmasters/soh/soh/src/patch_performance.py')
-source = patch.read_text()
-# Keep the generated C++ '\\0' character literal intact when Python writes SohStatsWindow.cpp.
-source = source.replace("stats_cpp.write_text('''#include", "stats_cpp.write_text(r'''#include", 1)
-exec(compile(source, str(patch), 'exec'))
+
+PROJECT = Path('/root/build-port/project')
+SOH = PROJECT / 'soh' / 'soh'
+LUS = PROJECT / 'libultraship'
+
+
+def replace_once(text: str, old: str, new: str, label: str) -> str:
+    if new in text:
+        print(f'{label}: already applied')
+        return text
+    if old not in text:
+        raise SystemExit(f'{label}: target block not found')
+    print(f'{label}: applied')
+    return text.replace(old, new, 1)
+
+
+# --------------------------------------------------------------------------------------
+# 1) Wind Waker Style -> Performance menu
+# --------------------------------------------------------------------------------------
+menu = SOH / 'SohGui' / 'SohMenuWindWakerStyle.cpp'
+s = menu.read_text()
+
+anchor = '''    // ===========================================================================================
+    // Sky — the Wind Waker-style sky replacement: gradient dome + drifting clouds + night stars.
+    // ===========================================================================================
+'''
+
+performance_menu = r'''    // ===========================================================================================
+    // Performance — handheld-friendly texture and overlay options.
+    // ===========================================================================================
+    auto hideUnlessTextureMipmaps = [](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("Graphics.TextureMipmaps.Enabled"), 0);
+    };
+    auto hideUnlessPerfOverlay = [](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_WINDOW("SohStats"), 0);
+    };
+
+    path = { "Wind Waker Style", "Performance", SECTION_COLUMN_1 };
+    AddSidebarEntry("Wind Waker Style", "Performance", 2);
+
+    AddWidget(path, "Texture Mipmaps", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enable Texture Mipmaps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("Graphics.TextureMipmaps.Enabled"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().DefaultValue(false).Tooltip(
+            "Generates GPU mipmaps for loaded textures and uses them only when textures are minified. "
+            "This can reduce shimmer on distant scenery without replacing textures or changing model LOD."));
+    AddWidget(path, "Mipmap Bias", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.TextureMipmaps.Bias"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessTextureMipmaps)
+        .Options(FloatSliderOptions()
+                     .Tooltip("0 = normal. Positive values choose smaller/cheaper mip levels sooner; too high can blur distant textures.")
+                     .Format("%.2f")
+                     .Min(-1.0f)
+                     .Max(2.0f)
+                     .DefaultValue(0.0f));
+    AddWidget(path, "Log Mipmap Uploads", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("TextureMipmaps.LogUploads"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessTextureMipmaps)
+        .Options(CheckboxOptions().DefaultValue(false).Tooltip(
+            "Writes limited [SOH-MIPMAP] lines to the log so you can confirm mipmaps are actually generated."));
+
+    path = { "Wind Waker Style", "Performance", SECTION_COLUMN_2 };
+    AddWidget(path, "Performance Overlay", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Show Performance Overlay", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_WINDOW("SohStats"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().DefaultValue(false).Tooltip(
+            "Shows a tiny corner overlay with FPS, average/min/max FPS, frame time, CPU, RAM and GPU load when available."));
+    AddWidget(path, "Overlay Corner: %d", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.Corner"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessPerfOverlay)
+        .Options(IntSliderOptions()
+                     .Tooltip("0 = top-left, 1 = top-right, 2 = bottom-left, 3 = bottom-right.")
+                     .Min(0)
+                     .Max(3)
+                     .DefaultValue(1)
+                     .Format("%d"));
+    AddWidget(path, "Overlay Scale", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.Scale"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessPerfOverlay)
+        .Options(FloatSliderOptions()
+                     .Tooltip("Text scale for the tiny overlay. Lower values fit better on 640x480 screens.")
+                     .Format("%.2fx")
+                     .Min(0.65f)
+                     .Max(1.05f)
+                     .DefaultValue(0.78f));
+    AddWidget(path, "Detailed Overlay", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.Detailed"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessPerfOverlay)
+        .Options(CheckboxOptions().DefaultValue(false).Tooltip("Shows extra app CPU and system RAM details."));
+    AddWidget(path, "Reset FPS Stats", WIDGET_BUTTON)
+        .PreFunc(hideUnlessPerfOverlay)
+        .Callback([](WidgetInfo& info) {
+            int resetSerial = CVarGetInteger(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.ResetStats"), 0) + 1;
+            CVarSetInteger(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.ResetStats"), resetSerial);
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        })
+        .Options(ButtonOptions().Tooltip("Resets FPS average, minimum and maximum. Shortcut: hold L1 + R1 and press Y."));
+
+'''
+
+if 'Graphics.PerformanceOverlay.Corner' not in s:
+    if anchor not in s:
+        raise SystemExit('performance menu patch failed: Sky section anchor not found')
+    s = s.replace(anchor, performance_menu + anchor, 1)
+    menu.write_text(s)
+    print('Performance menu patch: applied')
+else:
+    print('Performance menu patch: already present')
+
+
+# --------------------------------------------------------------------------------------
+# 2) Turn the existing Stats window into a compact no-decoration overlay
+# --------------------------------------------------------------------------------------
+soh_gui_cpp = SOH / 'SohGui' / 'SohGui.cpp'
+s = soh_gui_cpp.read_text()
+old_stats_window = '''    mStatsWindow = std::make_shared<SohStatsWindow>(CVAR_WINDOW("SohStats"), "Stats##Soh", ImVec2(400, 100));
+    gui->AddGuiWindow(mStatsWindow);
+'''
+new_stats_window = '''    mStatsWindow = std::make_shared<SohStatsWindow>(
+        CVAR_WINDOW("SohStats"), false, "Perf##SohStats", ImVec2(1, 1),
+        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings |
+            ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
+    gui->AddGuiWindow(mStatsWindow);
+'''
+s = replace_once(s, old_stats_window, new_stats_window, 'Compact stats overlay registration')
+soh_gui_cpp.write_text(s)
+
+
+# --------------------------------------------------------------------------------------
+# 3) Compact FPS/CPU/RAM/GPU overlay implementation
+# --------------------------------------------------------------------------------------
+stats_cpp = SOH / 'Enhancements' / 'debugger' / 'SohStatsWindow.cpp'
+stats_cpp.write_text(r'''#include "SohStatsWindow.h"
+#include "soh/cvar_prefixes.h"
+#include <ship/Context.h>
+#include <libultraship/controller/controldeck/ControlDeck.h>
+#include "libultraship/libultra/controller.h"
+
+#include <algorithm>
+#include <cctype>
+#include <cstdint>
+#include <cstdlib>
+#include <fstream>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
+
+#if defined(__linux__)
+#include <dirent.h>
+#include <unistd.h>
+#endif
+
+namespace {
+struct PerfMetrics {
+    float cpuTotal = -1.0f;
+    float appCpu = -1.0f;
+    float ramUsedPct = -1.0f;
+    unsigned long long appRamMb = 0;
+    float gpuPct = -1.0f;
+    float tempC = -1.0f;
+    double lastUpdate = -1.0;
+};
+
+struct FpsStats {
+    float current = 0.0f;
+    float average = 0.0f;
+    float minimum = 9999.0f;
+    float maximum = 0.0f;
+    double sum = 0.0;
+    unsigned int samples = 0;
+    int seenResetSerial = 0;
+    bool comboWasDown = false;
+};
+
+PerfMetrics gPerf;
+FpsStats gFps;
+
+#if defined(__linux__)
+unsigned long long gPrevCpuTotal = 0;
+unsigned long long gPrevCpuIdle = 0;
+unsigned long long gPrevProcTicks = 0;
+
+static bool ReadTextFile(const std::string& path, std::string& out) {
+    std::ifstream file(path);
+    if (!file.good()) {
+        return false;
+    }
+    std::ostringstream ss;
+    ss << file.rdbuf();
+    out = ss.str();
+    return true;
+}
+
+static bool ReadSystemCpu(unsigned long long& total, unsigned long long& idle) {
+    std::ifstream file("/proc/stat");
+    if (!file.good()) {
+        return false;
+    }
+    std::string cpu;
+    unsigned long long user = 0, nice = 0, system = 0, idleTime = 0, iowait = 0, irq = 0, softirq = 0, steal = 0;
+    file >> cpu >> user >> nice >> system >> idleTime >> iowait >> irq >> softirq >> steal;
+    if (cpu != "cpu") {
+        return false;
+    }
+    idle = idleTime + iowait;
+    total = user + nice + system + idleTime + iowait + irq + softirq + steal;
+    return total > 0;
+}
+
+static bool ReadProcessCpu(unsigned long long& procTicks) {
+    std::string stat;
+    if (!ReadTextFile("/proc/self/stat", stat)) {
+        return false;
+    }
+    size_t endName = stat.rfind(')');
+    if (endName == std::string::npos || endName + 2 >= stat.size()) {
+        return false;
+    }
+    std::istringstream ss(stat.substr(endName + 2));
+    std::vector<std::string> fields;
+    std::string field;
+    while (ss >> field) {
+        fields.push_back(field);
+    }
+    if (fields.size() <= 12) {
+        return false;
+    }
+    procTicks = std::strtoull(fields[11].c_str(), nullptr, 10) + std::strtoull(fields[12].c_str(), nullptr, 10);
+    return true;
+}
+
+static bool ReadMemory(unsigned long long& appRamMb, float& usedPct) {
+    unsigned long long totalKb = 0;
+    unsigned long long availableKb = 0;
+    std::ifstream meminfo("/proc/meminfo");
+    if (meminfo.good()) {
+        std::string key;
+        unsigned long long value = 0;
+        std::string unit;
+        while (meminfo >> key >> value >> unit) {
+            if (key == "MemTotal:") {
+                totalKb = value;
+            } else if (key == "MemAvailable:") {
+                availableKb = value;
+            }
+        }
+    }
+
+    std::ifstream statm("/proc/self/statm");
+    unsigned long long residentPages = 0;
+    if (statm.good()) {
+        unsigned long long sizePages = 0;
+        statm >> sizePages >> residentPages;
+    }
+
+    long pageSize = sysconf(_SC_PAGESIZE);
+    if (pageSize <= 0) {
+        pageSize = 4096;
+    }
+    appRamMb = (residentPages * static_cast<unsigned long long>(pageSize)) / (1024ULL * 1024ULL);
+    usedPct = (totalKb > 0 && availableKb <= totalKb) ? ((float)(totalKb - availableKb) * 100.0f / (float)totalKb) : -1.0f;
+    return totalKb > 0;
+}
+
+static bool ParseLeadingPercent(const std::string& text, float& percent) {
+    const char* p = text.c_str();
+    while (*p != '\0' && std::isspace(static_cast<unsigned char>(*p))) {
+        p++;
+    }
+    char* end = nullptr;
+    float value = std::strtof(p, &end);
+    if (end == p) {
+        return false;
+    }
+    if (value > 100.0f && value <= 1000.0f) {
+        value /= 10.0f;
+    }
+    percent = std::max(0.0f, std::min(100.0f, value));
+    return true;
+}
+
+static bool TryReadGpuFile(const std::string& path, float& gpuPct) {
+    std::string text;
+    return ReadTextFile(path, text) && ParseLeadingPercent(text, gpuPct);
+}
+
+static std::string Lower(std::string text) {
+    for (char& c : text) {
+        c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    }
+    return text;
+}
+
+static bool ReadGpuPercent(float& gpuPct) {
+    const char* commonPaths[] = {
+        "/sys/class/devfreq/fde60000.gpu/load",
+        "/sys/class/devfreq/fb000000.gpu/load",
+        "/sys/class/devfreq/gpu/load",
+        "/sys/class/misc/mali0/device/utilization",
+    };
+    for (const char* path : commonPaths) {
+        if (TryReadGpuFile(path, gpuPct)) {
+            return true;
+        }
+    }
+
+    DIR* dir = opendir("/sys/class/devfreq");
+    if (dir == nullptr) {
+        return false;
+    }
+    bool found = false;
+    struct dirent* ent = nullptr;
+    while ((ent = readdir(dir)) != nullptr) {
+        std::string name = ent->d_name;
+        std::string lower = Lower(name);
+        if (lower.find("gpu") == std::string::npos && lower.find("mali") == std::string::npos) {
+            continue;
+        }
+        std::string base = std::string("/sys/class/devfreq/") + name;
+        if (TryReadGpuFile(base + "/load", gpuPct) || TryReadGpuFile(base + "/utilization", gpuPct)) {
+            found = true;
+            break;
+        }
+    }
+    closedir(dir);
+    return found;
+}
+
+static bool ReadThermalC(float& tempC) {
+    DIR* dir = opendir("/sys/class/thermal");
+    if (dir == nullptr) {
+        return false;
+    }
+    bool found = false;
+    struct dirent* ent = nullptr;
+    while ((ent = readdir(dir)) != nullptr) {
+        std::string name = ent->d_name;
+        if (name.find("thermal_zone") != 0) {
+            continue;
+        }
+        std::string text;
+        if (!ReadTextFile(std::string("/sys/class/thermal/") + name + "/temp", text)) {
+            continue;
+        }
+        float value = std::strtof(text.c_str(), nullptr);
+        if (value > 1000.0f) {
+            value /= 1000.0f;
+        }
+        if (value >= 10.0f && value <= 120.0f) {
+            tempC = value;
+            found = true;
+            break;
+        }
+    }
+    closedir(dir);
+    return found;
+}
+#endif
+
+static void ResetFpsStats() {
+    gFps.average = 0.0f;
+    gFps.minimum = 9999.0f;
+    gFps.maximum = 0.0f;
+    gFps.sum = 0.0;
+    gFps.samples = 0;
+}
+
+static bool ResetComboPressed() {
+    auto deck = std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck());
+    if (deck == nullptr) {
+        gFps.comboWasDown = false;
+        return false;
+    }
+    OSContPad* pads = deck->GetPads();
+    if (pads == nullptr) {
+        gFps.comboWasDown = false;
+        return false;
+    }
+
+    const uint16_t buttons = pads[0].button;
+    const bool yLike = (buttons & BTN_CUP) || (buttons & BTN_B) || (buttons & BTN_CUSTOM_MODIFIER1) ||
+                       (buttons & BTN_CUSTOM_MODIFIER2);
+    const bool comboDown = (buttons & BTN_L) && (buttons & BTN_R) && yLike;
+    const bool pressed = comboDown && !gFps.comboWasDown;
+    gFps.comboWasDown = comboDown;
+    return pressed;
+}
+
+static void UpdateFpsStats(float fps) {
+    int resetSerial = CVarGetInteger(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.ResetStats"), 0);
+    if (resetSerial != gFps.seenResetSerial || ResetComboPressed()) {
+        gFps.seenResetSerial = resetSerial;
+        ResetFpsStats();
+    }
+    if (fps <= 0.0f || fps > 1000.0f) {
+        return;
+    }
+    gFps.current = fps;
+    gFps.minimum = std::min(gFps.minimum, fps);
+    gFps.maximum = std::max(gFps.maximum, fps);
+    gFps.sum += fps;
+    gFps.samples++;
+    gFps.average = (float)(gFps.sum / (double)gFps.samples);
+}
+
+static void UpdatePerfMetrics() {
+    double now = ImGui::GetTime();
+    if (gPerf.lastUpdate >= 0.0 && (now - gPerf.lastUpdate) < 0.50) {
+        return;
+    }
+    gPerf.lastUpdate = now;
+
+#if defined(__linux__)
+    unsigned long long cpuTotal = 0, cpuIdle = 0, procTicks = 0;
+    if (ReadSystemCpu(cpuTotal, cpuIdle) && ReadProcessCpu(procTicks)) {
+        if (gPrevCpuTotal != 0 && cpuTotal > gPrevCpuTotal) {
+            unsigned long long totalDelta = cpuTotal - gPrevCpuTotal;
+            unsigned long long idleDelta = cpuIdle - gPrevCpuIdle;
+            unsigned long long procDelta = procTicks - gPrevProcTicks;
+            gPerf.cpuTotal = totalDelta > 0 ? ((float)(totalDelta - idleDelta) * 100.0f / (float)totalDelta) : -1.0f;
+            gPerf.appCpu = totalDelta > 0 ? ((float)procDelta * 100.0f / (float)totalDelta) : -1.0f;
+        }
+        gPrevCpuTotal = cpuTotal;
+        gPrevCpuIdle = cpuIdle;
+        gPrevProcTicks = procTicks;
+    }
+    ReadMemory(gPerf.appRamMb, gPerf.ramUsedPct);
+    float gpu = -1.0f;
+    gPerf.gpuPct = ReadGpuPercent(gpu) ? gpu : -1.0f;
+    float temp = -1.0f;
+    gPerf.tempC = ReadThermalC(temp) ? temp : -1.0f;
+#endif
+}
+
+static float OverlayScale() {
+    float scale = CVarGetFloat(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.Scale"), 0.78f);
+    return std::max(0.65f, std::min(1.05f, scale));
+}
+
+static void PlaceOverlayWindow() {
+    int corner = CVarGetInteger(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.Corner"), 1);
+    corner = std::max(0, std::min(3, corner));
+    const float margin = 4.0f;
+    ImVec2 display = ImGui::GetIO().DisplaySize;
+    ImVec2 size = ImGui::GetWindowSize();
+    if (size.x < 40.0f) {
+        size.x = 170.0f;
+    }
+    if (size.y < 20.0f) {
+        size.y = 54.0f;
+    }
+    ImVec2 pos;
+    pos.x = (corner == 1 || corner == 3) ? std::max(margin, display.x - size.x - margin) : margin;
+    pos.y = (corner == 2 || corner == 3) ? std::max(margin, display.y - size.y - margin) : margin;
+    ImGui::SetWindowPos(pos, ImGuiCond_Always);
+}
+
+static void TextPercentOrDash(const char* label, float value) {
+    if (value >= 0.0f) {
+        ImGui::Text("%s %.0f%%", label, value);
+    } else {
+        ImGui::Text("%s --", label);
+    }
+}
+} // namespace
+
+void SohStatsWindow::DrawElement() {
+    float fps = ImGui::GetIO().Framerate;
+    float frameMs = ImGui::GetIO().DeltaTime * 1000.0f;
+    UpdateFpsStats(fps);
+    UpdatePerfMetrics();
+    PlaceOverlayWindow();
+
+    ImGui::SetWindowFontScale(OverlayScale());
+    ImGui::SetWindowBgAlpha(0.42f);
+
+    bool detailed = CVarGetInteger(CVAR_ENHANCEMENT("Graphics.PerformanceOverlay.Detailed"), 0) != 0;
+    float fpsMin = (gFps.samples > 0) ? gFps.minimum : 0.0f;
+    float fpsMax = (gFps.samples > 0) ? gFps.maximum : 0.0f;
+
+    ImGui::Text("FPS %.1f A%.1f", gFps.current, gFps.average);
+    ImGui::Text("L%.1f H%.1f %.1fms", fpsMin, fpsMax, frameMs);
+
+    if (!detailed) {
+        if (gPerf.cpuTotal >= 0.0f) {
+            ImGui::Text("CPU %.0f%% APP %.0f%%", gPerf.cpuTotal, std::max(0.0f, gPerf.appCpu));
+        } else {
+            ImGui::TextUnformatted("CPU -- APP --");
+        }
+        if (gPerf.gpuPct >= 0.0f && gPerf.tempC >= 0.0f) {
+            ImGui::Text("RAM %lluM GPU %.0f%% %.0fC", gPerf.appRamMb, gPerf.gpuPct, gPerf.tempC);
+        } else if (gPerf.gpuPct >= 0.0f) {
+            ImGui::Text("RAM %lluM GPU %.0f%%", gPerf.appRamMb, gPerf.gpuPct);
+        } else if (gPerf.tempC >= 0.0f) {
+            ImGui::Text("RAM %lluM GPU -- %.0fC", gPerf.appRamMb, gPerf.tempC);
+        } else {
+            ImGui::Text("RAM %lluM GPU --", gPerf.appRamMb);
+        }
+        return;
+    }
+
+    TextPercentOrDash("CPU", gPerf.cpuTotal);
+    TextPercentOrDash("APP", gPerf.appCpu);
+    if (gPerf.ramUsedPct >= 0.0f) {
+        ImGui::Text("RAM %lluM %.0f%%", gPerf.appRamMb, gPerf.ramUsedPct);
+    } else {
+        ImGui::Text("RAM %lluM", gPerf.appRamMb);
+    }
+    TextPercentOrDash("GPU", gPerf.gpuPct);
+    if (gPerf.tempC >= 0.0f) {
+        ImGui::Text("TMP %.0fC", gPerf.tempC);
+    }
+    ImGui::TextUnformatted("RST L1+R1+Y");
+}
+''')
+print('Compact CPU/RAM/GPU/FPS overlay implementation: applied')
+
+
+# --------------------------------------------------------------------------------------
+# 4) Menu-controlled mipmaps in the OpenGL/GLES backend
+# --------------------------------------------------------------------------------------
+gfx_header = LUS / 'include' / 'fast' / 'backends' / 'gfx_opengl.h'
+s = gfx_header.read_text()
+old_texture_info = '''struct TextureInfo {
+    uint16_t width;
+    uint16_t height;
+    uint16_t filtering;
+};
+'''
+new_texture_info = '''struct TextureInfo {
+    uint16_t width;
+    uint16_t height;
+    uint16_t filtering;
+    bool hasMipmaps = false;
+};
+'''
+s = replace_once(s, old_texture_info, new_texture_info, 'TextureInfo mipmap state')
+gfx_header.write_text(s)
+
+gfx_cpp = LUS / 'src' / 'fast' / 'backends' / 'gfx_opengl.cpp'
+s = gfx_cpp.read_text()
+if '#include <spdlog/spdlog.h>' not in s:
+    s = s.replace('#include <fstream>\n', '#include <fstream>\n#include <spdlog/spdlog.h>\n', 1)
+
+namespace_marker = 'namespace Fast {\n'
+helpers = '''namespace {
+constexpr const char* kTextureMipmapsEnabledCVar = "gEnhancements.Graphics.TextureMipmaps.Enabled";
+constexpr const char* kTextureMipmapsBiasCVar = "gEnhancements.Graphics.TextureMipmaps.Bias";
+constexpr const char* kTextureMipmapsLogCVar = "gDeveloperTools.TextureMipmaps.LogUploads";
+int sMipmapLogCount = 0;
+
+bool TextureMipmapsEnabled() {
+    return Ship::Context::GetInstance()->GetConsoleVariables()->GetInteger(kTextureMipmapsEnabledCVar, 0) != 0;
+}
+
+float TextureMipmapBias() {
+    float bias = Ship::Context::GetInstance()->GetConsoleVariables()->GetFloat(kTextureMipmapsBiasCVar, 0.0f);
+    if (bias < -1.0f) {
+        bias = -1.0f;
+    } else if (bias > 2.0f) {
+        bias = 2.0f;
+    }
+    return bias;
+}
+
+bool TextureMipmapLogUploads() {
+    return Ship::Context::GetInstance()->GetConsoleVariables()->GetInteger(kTextureMipmapsLogCVar, 0) != 0;
+}
+
+void GenerateTextureMipmapsIfNeeded(TextureInfo& info) {
+    if (!TextureMipmapsEnabled() || info.hasMipmaps || (info.width <= 1 && info.height <= 1)) {
+        return;
+    }
+    glGenerateMipmap(GL_TEXTURE_2D);
+    info.hasMipmaps = true;
+#ifdef GL_TEXTURE_LOD_BIAS
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, TextureMipmapBias());
+#endif
+    if (TextureMipmapLogUploads() && sMipmapLogCount < 32) {
+        SPDLOG_INFO("[SOH-MIPMAP] generated {}x{} bias={}", info.width, info.height, TextureMipmapBias());
+        sMipmapLogCount++;
+    }
+}
+} // namespace
+
+'''
+if helpers not in s:
+    if namespace_marker not in s:
+        raise SystemExit('mipmap patch failed: namespace Fast marker not found')
+    s = s.replace(namespace_marker, namespace_marker + helpers, 1)
+
+old_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width, uint32_t height) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
+    textures[mCurrentTextureIds[mCurrentTile]].width = width;
+    textures[mCurrentTextureIds[mCurrentTile]].height = height;
+}
+'''
+new_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width, uint32_t height) {
+    if (width == 0 || height == 0) {
+        return;
+    }
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
+    TextureInfo& info = textures[mCurrentTextureIds[mCurrentTile]];
+    info.width = width;
+    info.height = height;
+    info.hasMipmaps = false;
+    GenerateTextureMipmapsIfNeeded(info);
+}
+'''
+s = replace_once(s, old_upload, new_upload, 'Texture upload mipmap generation')
+
+old_sampler = '''    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);'''
+new_sampler = '''    TextureInfo& info = textures[mCurrentTextureIds[tile]];
+    GenerateTextureMipmapsIfNeeded(info);
+    const bool useMipmaps = TextureMipmapsEnabled();
+    const GLint minFilter = useMipmaps ? (filter == GL_LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST) : filter;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+#ifdef GL_TEXTURE_LOD_BIAS
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, useMipmaps ? TextureMipmapBias() : 0.0f);
+#endif'''
+s = replace_once(s, old_sampler, new_sampler, 'Texture sampler mipmap filter')
+gfx_cpp.write_text(s)
+print('Performance patch completed')
 PY
-python3 /root/buildtools/harbourmasters/soh/soh/src/patch_overlay_fix.py
 
 build_sdl2
 build_sdl2_net
@@ -134,4 +762,4 @@ ls -lh "$PROJECT_BUILD_DIR/libs" || true
 echo "Dependências diretas finais do ELF:"
 readelf -d "$ELF" | grep NEEDED || true
 
-echo "Build SoH celshade ${REF} concluído com patch de performance handheld."
+echo "Build SoH celshade ${REF} concluído com patch de performance handheld em etapa única."
