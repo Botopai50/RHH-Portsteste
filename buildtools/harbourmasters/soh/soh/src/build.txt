@@ -9,6 +9,87 @@ export REF="${REF:-18a8e719cfdd5fe27e4a597960dfc8ba1cee6d06}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
+# Mipmap-only performance patch for the OpenGL/GLES Fast3D backend.
+# This does not change texture resolution, actor/model LOD, or texture selection logic.
+python3 <<'PY'
+from pathlib import Path
+
+p = Path('/root/build-port/project/libultraship/src/fast/backends/gfx_opengl.cpp')
+s = p.read_text()
+
+old_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width, uint32_t height) {
+    if (width == 0 || height == 0) {
+        return;
+    }
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
+    textures[mCurrentTextureIds[mCurrentTile]].width = width;
+    textures[mCurrentTextureIds[mCurrentTile]].height = height;
+}
+'''
+
+new_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width, uint32_t height) {
+    if (width == 0 || height == 0) {
+        return;
+    }
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
+
+    // Performance-only mipmaps: keep the original texture as level 0 and let the GPU
+    // create smaller levels for minification. This avoids any distance-based texture
+    // replacement/LOD logic and leaves UI/HUD magnification controlled by MAG_FILTER.
+    if (width > 1 || height > 1) {
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    textures[mCurrentTextureIds[mCurrentTile]].width = width;
+    textures[mCurrentTextureIds[mCurrentTile]].height = height;
+}
+'''
+
+old_sampler = '''void GfxRenderingAPIOGL::SetSamplerParameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
+    if (mLastActiveTexture != tile) {
+        mLastActiveTexture = tile;
+        glActiveTexture(GL_TEXTURE0 + tile);
+    }
+    const GLint filter = linear_filter && mCurrentFilterMode == FILTER_LINEAR ? GL_LINEAR : GL_NEAREST;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+    textures[mCurrentTextureIds[tile]].filtering = !linear_filter ? FILTER_LINEAR : FILTER_THREE_POINT;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gfx_cm_to_opengl(cms));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gfx_cm_to_opengl(cmt));
+}
+'''
+
+new_sampler = '''void GfxRenderingAPIOGL::SetSamplerParameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
+    if (mLastActiveTexture != tile) {
+        mLastActiveTexture = tile;
+        glActiveTexture(GL_TEXTURE0 + tile);
+    }
+
+    const GLint filter = linear_filter && mCurrentFilterMode == FILTER_LINEAR ? GL_LINEAR : GL_NEAREST;
+    const GLint minFilter = filter == GL_LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST;
+
+    // Use mipmaps only when the texture is minified. Magnification keeps the original
+    // filter so close-up/HUD/pixel-art behaviour is not forced through mip levels.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+    textures[mCurrentTextureIds[tile]].filtering = !linear_filter ? FILTER_LINEAR : FILTER_THREE_POINT;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gfx_cm_to_opengl(cms));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gfx_cm_to_opengl(cmt));
+}
+'''
+
+if old_upload not in s:
+    raise SystemExit('mipmap patch failed: UploadTexture block not found')
+if old_sampler not in s:
+    raise SystemExit('mipmap patch failed: SetSamplerParameters block not found')
+
+s = s.replace(old_upload, new_upload, 1)
+s = s.replace(old_sampler, new_sampler, 1)
+p.write_text(s)
+print('Applied mipmap-only OpenGL/GLES texture patch')
+PY
+
 build_sdl2
 build_sdl2_net
 build_libzip
@@ -120,4 +201,4 @@ ls -lh "$PROJECT_BUILD_DIR/libs" || true
 echo "Dependências diretas finais do ELF:"
 readelf -d "$ELF" | grep NEEDED || true
 
-echo "Build SoH limpo usando Botopai50/ShipwrightTEST2 no commit celshade ${REF} concluído."
+echo "Build SoH limpo usando Botopai50/ShipwrightTEST2 no commit celshade ${REF} com mipmap-only patch concluído."
