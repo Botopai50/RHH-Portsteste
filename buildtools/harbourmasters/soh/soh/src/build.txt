@@ -18,9 +18,6 @@ p = Path('/root/build-port/project/libultraship/src/fast/backends/gfx_opengl.cpp
 s = p.read_text()
 
 old_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width, uint32_t height) {
-    if (width == 0 || height == 0) {
-        return;
-    }
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
     textures[mCurrentTextureIds[mCurrentTile]].width = width;
     textures[mCurrentTextureIds[mCurrentTile]].height = height;
@@ -34,9 +31,9 @@ new_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
 
-    // Performance-only mipmaps: keep the original texture as level 0 and let the GPU
-    // create smaller levels for minification. This avoids any distance-based texture
-    // replacement/LOD logic and leaves UI/HUD magnification controlled by MAG_FILTER.
+    // Mipmap-only optimization: keep the original texture as level 0 and let the GPU
+    // create smaller levels for minification. This does not replace textures and does
+    // not add any distance-based LOD logic.
     if (width > 1 || height > 1) {
         glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -46,46 +43,21 @@ new_upload = '''void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf
 }
 '''
 
-old_sampler = '''void GfxRenderingAPIOGL::SetSamplerParameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
-    if (mLastActiveTexture != tile) {
-        mLastActiveTexture = tile;
-        glActiveTexture(GL_TEXTURE0 + tile);
-    }
-    const GLint filter = linear_filter && mCurrentFilterMode == FILTER_LINEAR ? GL_LINEAR : GL_NEAREST;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-    textures[mCurrentTextureIds[tile]].filtering = !linear_filter ? FILTER_LINEAR : FILTER_THREE_POINT;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gfx_cm_to_opengl(cms));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gfx_cm_to_opengl(cmt));
-}
-'''
+old_sampler_line = '    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);\n    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);'
+new_sampler_line = '''    const GLint minFilter = filter == GL_LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST;
 
-new_sampler = '''void GfxRenderingAPIOGL::SetSamplerParameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
-    if (mLastActiveTexture != tile) {
-        mLastActiveTexture = tile;
-        glActiveTexture(GL_TEXTURE0 + tile);
-    }
-
-    const GLint filter = linear_filter && mCurrentFilterMode == FILTER_LINEAR ? GL_LINEAR : GL_NEAREST;
-    const GLint minFilter = filter == GL_LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST;
-
-    // Use mipmaps only when the texture is minified. Magnification keeps the original
-    // filter so close-up/HUD/pixel-art behaviour is not forced through mip levels.
+    // Use mipmaps only for minification. Magnification stays untouched so close-up
+    // textures/HUD are not forced through mip levels.
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-    textures[mCurrentTextureIds[tile]].filtering = !linear_filter ? FILTER_LINEAR : FILTER_THREE_POINT;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gfx_cm_to_opengl(cms));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gfx_cm_to_opengl(cmt));
-}
-'''
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);'''
 
 if old_upload not in s:
-    raise SystemExit('mipmap patch failed: UploadTexture block not found')
-if old_sampler not in s:
-    raise SystemExit('mipmap patch failed: SetSamplerParameters block not found')
+    raise SystemExit('mipmap patch failed: UploadTexture block not found for celshade libultraship')
+if old_sampler_line not in s:
+    raise SystemExit('mipmap patch failed: sampler filter lines not found for celshade libultraship')
 
 s = s.replace(old_upload, new_upload, 1)
-s = s.replace(old_sampler, new_sampler, 1)
+s = s.replace(old_sampler_line, new_sampler_line, 1)
 p.write_text(s)
 print('Applied mipmap-only OpenGL/GLES texture patch')
 PY
