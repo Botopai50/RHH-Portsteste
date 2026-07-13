@@ -27,6 +27,10 @@ if [ -d "$BASE_PORT" ]; then
     cp -a "$BASE_PORT/." "$STAGE/soh/"
 fi
 
+# The previous release contains the generated package itself. Do not nest it
+# inside the next package: that duplicates tens of megabytes and can cross the
+# GitHub 100 MB per-file limit.
+rm -f "$STAGE/soh/soh.zip"
 rm -f "$STAGE/soh/soh.elf"
 rm -f "$STAGE/soh/soh.elf.aarch64"
 rm -f "$STAGE/soh/soh.elf.x86_64"
@@ -182,6 +186,14 @@ find "$STAGE" -maxdepth 4 -type f | sort
     zip -r "$DESTDIR/$ZIP_NAME" "Ship of Harkinian.sh" soh
 )
 
+ZIP_SIZE=$(stat -c %s "$DESTDIR/$ZIP_NAME")
+if (( ZIP_SIZE >= 100000000 )); then
+    echo "ERRO: $DESTDIR/$ZIP_NAME tem $ZIP_SIZE bytes; o GitHub limita arquivos Git a 100000000 bytes."
+    rm -f "$DESTDIR/$ZIP_NAME"
+    exit 1
+fi
+
+echo "Package size: $ZIP_SIZE bytes"
 rm -rf "$STAGE"
 
 echo "Packaging complete: $DESTDIR/$ZIP_NAME"
