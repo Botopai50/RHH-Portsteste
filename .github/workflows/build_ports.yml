@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       port:
-        description: "Which port to consider (all = every port in registry)"
+        description: "Port to build (this fork is restricted to soh)"
         type: string
         required: false
-        default: "all"
+        default: "soh"
       force-build:
         description: "Force build (bypass SHA check, upload artifact only, no commit)"
         type: boolean
@@ -49,17 +49,22 @@ jobs:
 
           SELECTED="${{ inputs.port }}"
           FORCE="${{ inputs.force-build }}"
-          : "${SELECTED:=all}"
+          : "${SELECTED:=soh}"
           : "${FORCE:=false}"
 
-          if [[ "$SELECTED" == "all" ]]; then
-            ids=$(jq -r '.ports | keys[]' buildtools/registry.json)
-          else
-            if ! jq -e --arg id "$SELECTED" '.ports[$id]' buildtools/registry.json > /dev/null; then
-              echo "Port '$SELECTED' not found in buildtools/registry.json"; exit 1
-            fi
-            ids="$SELECTED"
+          # This fork publishes the Ship of Harkinian port only. Normalize
+          # legacy/all or scheduled invocations to soh so no other port can
+          # enter the matrix accidentally.
+          if [[ -z "$SELECTED" || "$SELECTED" == "all" ]]; then
+            SELECTED="soh"
           fi
+          if [[ "$SELECTED" != "soh" ]]; then
+            echo "This fork is restricted to soh; requested '$SELECTED'"; exit 1
+          fi
+          if ! jq -e --arg id "$SELECTED" '.ports[$id]' buildtools/registry.json > /dev/null; then
+            echo "Port '$SELECTED' not found in buildtools/registry.json"; exit 1
+          fi
+          ids="$SELECTED"
 
           matrix_entries=()
           while read -r id; do
@@ -248,7 +253,7 @@ jobs:
 
       - name: Build port
         id: build
-        continue-on-error: ${{ inputs.port == '' || inputs.port == 'all' }}
+        continue-on-error: false
         run: |
           set -uo pipefail
           FORCE="${{ inputs.force-build }}"
