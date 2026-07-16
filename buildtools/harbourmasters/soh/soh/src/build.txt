@@ -6,7 +6,7 @@ apt-get update
 apt-get install -y --no-install-recommends libssl1.1
 
 # Commit from Botopai50/ShipwrightTEST2 wind-waker-style-cel-shading with the compact transparent perf overlay.
-export REF="${REF:-1b84a395c91426fcc2c654848310ca9e72fd235d}"
+export REF="${REF:-89ac464724cfd123bf85c6e80a3650688a73f72a}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
 
