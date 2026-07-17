@@ -48,7 +48,7 @@
       "port_dir": "buildtools/harbourmasters/soh/soh",
       "target_dirs": ["ports/released/harbourmasters/soh/soh"],
       "upstream_repo": "Botopai50/ShipwrightTEST2",
-      "upstream_branch": "f5cf6d66553a4b1ca7465b1fd05afd583430cc5e",
+      "upstream_branch": "306711d0d91aa520b8ce99ae5868e4a6a0e1bc81",
       "commit_prefix": "SOH-CELSHADE",
       "artifacts": ["soh.zip"]
     },
