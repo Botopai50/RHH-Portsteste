@@ -133,6 +133,26 @@ jobs:
                 ;;
             esac
 
+            # Optional second branch tracked by a port (for SoH, libultraship).
+            # Append its SHA to the marker so a change in either repository
+            # triggers a fresh build.
+            dependency_repo=$(jq -r --arg id "$id" '.ports[$id].dependency_repo // empty' buildtools/registry.json)
+            dependency_branch=$(jq -r --arg id "$id" '.ports[$id].dependency_branch // empty' buildtools/registry.json)
+            if [[ -n "$dependency_repo" || -n "$dependency_branch" ]]; then
+              if [[ -z "$dependency_repo" || -z "$dependency_branch" ]]; then
+                echo "[$id] dependency_repo and dependency_branch must both be set — skipping"
+                continue
+              fi
+              dependency_sha=$(curl -sf "https://api.github.com/repos/$dependency_repo/commits/$dependency_branch" | jq -r .sha) || dependency_sha=""
+              if [[ -z "$dependency_sha" || "$dependency_sha" == "null" ]]; then
+                echo "[$id] failed to resolve dependency SHA on $dependency_repo@$dependency_branch — skipping"
+                continue
+              fi
+              source="$source + $dependency_repo@$dependency_branch"
+              label="${label}+${dependency_sha:0:7}"
+              upstream_sha="${upstream_sha}+${dependency_sha}"
+            fi
+
             if [[ -z "$upstream_sha" || "$upstream_sha" == "null" ]]; then
               echo "[$id] failed to resolve upstream SHA on $source — skipping"
               continue
