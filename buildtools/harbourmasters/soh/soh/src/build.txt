@@ -5,10 +5,25 @@ source /root/buildtools/harbourmasters/lib_build.sh
 apt-get update
 apt-get install -y --no-install-recommends libssl1.1
 
-# Commit from Botopai50/ShipwrightTEST2 wind-waker-style-cel-shading with the compact transparent perf overlay.
-export REF="${REF:-b5eca129d9c15935891dc95b2294af300358554a}"
+# Pull both toon-lighting-polish branches explicitly.
+export REF="${REF:-toon-lighting-polish}"
+export LIBULTRASHIP_REPO_URL="${LIBULTRASHIP_REPO_URL:-https://github.com/Botopai50/libultrashipTEST2.git}"
+export LIBULTRASHIP_REF="${LIBULTRASHIP_REF:-toon-lighting-polish}"
 
 project_clone https://github.com/Botopai50/ShipwrightTEST2.git
+
+# project_clone initializes the submodule at the commit recorded by Shipwright.
+# Override it with the current HEAD of libultrashipTEST2/toon-lighting-polish
+# so RHH always builds the two requested branches together.
+echo ">>> Shipwright source: Botopai50/ShipwrightTEST2@${REF}"
+echo ">>> libultraship source: ${LIBULTRASHIP_REPO_URL}@${LIBULTRASHIP_REF}"
+git -C "$PROJECT_DIR" submodule sync -- libultraship
+git -C "$PROJECT_DIR/libultraship" remote set-url origin "$LIBULTRASHIP_REPO_URL"
+git -C "$PROJECT_DIR/libultraship" fetch --depth=1 origin "$LIBULTRASHIP_REF"
+git -C "$PROJECT_DIR/libultraship" checkout --detach FETCH_HEAD
+git -C "$PROJECT_DIR/libultraship" submodule update --init --recursive
+echo ">>> Shipwright commit: $(git -C "$PROJECT_DIR" rev-parse HEAD)"
+echo ">>> libultraship commit: $(git -C "$PROJECT_DIR/libultraship" rev-parse HEAD)"
 
 # Handheld performance patch in one self-contained step:
 # - Adds Wind Waker Style -> Performance menu entries.
